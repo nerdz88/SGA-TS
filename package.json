@@ -34,7 +34,7 @@
         "@types/express-session": "^1.15.14",
         "@types/jest": "^26.0.10",
         "@types/morgan": "^1.9.1",
-        "@types/node": "^14.6.2",
+        "@types/node": "^14.17.0",
         "@types/supertest": "^2.0.10",
         "coveralls": "^3.1.0",
         "gitinspector": "^0.5.0-dev-2",
@@ -53,9 +53,10 @@
     },
     "dependencies": {
         "body-parser": "^1.19.0",
-        "debug": "^4.1.1",
+        "debug": "^4.3.1",
         "express": "^4.17.1",
         "express-session": "^1.16.2",
+        "http": "*",
         "morgan": "^1.9.1",
         "node-twinkle": "0.0.3",
         "pug": "^3.0.2"
