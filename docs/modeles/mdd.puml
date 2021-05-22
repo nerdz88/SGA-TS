@@ -2,7 +2,7 @@
 skinparam defaultfontname Verdana
 skinparam RoundCorner 20
 
-title Modèle du domaine (adapté au )
+title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
 class CatalogueCours {
 
