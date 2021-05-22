@@ -1,21 +1,43 @@
 @startuml MDD
-skinparam style strictuml
 skinparam defaultfontname Verdana
-left to right direction
-hide empty members
-'skinparam linetype ortho
-title Modèle du domaine (adapté du Jeu de dés du Ch. 1 de Larman)
-class Joueur {
-  nom : String
-  nbParties : int
-  nbPartiesGagnées : int
-}
-class Dé {
-  valeur : int
-}
-class JeuDeDés
+skinparam RoundCorner 20
 
-JeuDeDés "1" -- "2" Dé : inclut > 
-Joueur "*" -l- "1" JeuDeDés : joue > 
-'Joueur "1" -- "2" Dé : lance > 
+title Modèle du domaine (adapté au )
+
+class CatalogueCours {
+
+}
+
+class Cours {
+    nom : String
+}
+
+class GroupeCours {
+    numeroGroupe : int
+}
+
+class Enseignant {
+    nom : String
+}
+
+class SGA {
+
+}
+
+class Operation {
+
+}
+
+class Etudiant {
+    nom : String
+}
+
+SGA"1" *-- "1"CatalogueCours : contient >
+Etudiant"1..*" --* "1"GroupeCours : sont-inscrit-dans >
+Cours"1" o-- "*"GroupeCours : contient >
+CatalogueCours"1" *-- "*"Cours : contient >
+Enseignant"*" -- "1"SGA : utilise >
+Operation"1" -- "1"Cours : est-effectué-sur >
+SGA"1" -- "*"Operation : effectue >
+
 @enduml
