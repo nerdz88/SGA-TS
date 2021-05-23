@@ -1,0 +1,18 @@
+@startuml MDD
+
+class Enseignant{
+
+}
+
+class Cours{
+
+}
+
+class Étudiant{
+
+}
+
+Cours -- Enseignant : crée <
+Étudiant -- Cours : est attitré à >
+
+@enduml

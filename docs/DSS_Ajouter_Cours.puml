@@ -1,0 +1,23 @@
+@startuml DSS_Ajouter_Cours_Succes
+title DSS_Ajouter_Cours_Succes
+hide footbox
+actor ":Professeur" as prof
+participant ":Systeme" as sys
+
+prof -> sys : creerNouveauCours()
+sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
+prof -> sys : selectionnerGroupeCours()
+sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant
+@enduml
+
+@startuml DSS_Ajouter_Cours_Groupe_Cours_Selectionne_Existe_deja
+title DSS_Ajouter_Cours_Groupe_Cours_Selectionne_Existe_deja
+hide footbox
+actor ":Professeur" as prof
+participant ":Systeme" as sys
+
+prof -> sys : creerNouveauCours()
+sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
+prof -> sys : selectionnerGroupeCours()
+sys --> prof : message erreur
+@enduml
