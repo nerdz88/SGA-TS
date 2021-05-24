@@ -1,19 +1,20 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { token } from 'morgan';
 import * as flash from 'node-twinkle';
 
-import { JeuDeDes } from '../core/JeuDeDes';
+import { EnseignantControlleur } from '../core/EnseignantControlleur';
 import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 
 // TODO: rethink the name for this "router" function, since it's not really an Express router (no longer being "use()"ed inside Express)
-export class JeuRouter {
+export class SgaRouteur {
   router: Router;
-  jeu: JeuDeDes;  // contrôleur GRASP
+  controlleur: EnseignantControlleur;  // contrôleur GRASP
 
   /**
    * Initialize the Router
    */
   constructor() {
-    this.jeu = new JeuDeDes();  // init contrôleur GRASP
+    this.controlleur = new EnseignantControlleur();  // init contrôleur GRASP
     this.router = Router();
     this.init();
   }
@@ -38,7 +39,7 @@ export class JeuRouter {
     }
 
     // Invoquer l'opération système (du DSS) dans le contrôleur GRASP
-    let joueur = this.jeu.demarrerJeu(nom);
+    let joueur = this.controlleur.demarrerJeu(nom);
     let joueurObj = JSON.parse(joueur);
     (req as any).flash('Nouveau jeu pour ' + nom);
     res.status(201)
@@ -72,7 +73,7 @@ export class JeuRouter {
 
   private _jouer(req, res: Response<any>) {
     let nom = req.params.nom;
-    let resultat = this.jeu.jouer(nom);
+    let resultat = this.controlleur.jouer(nom);
     let resultatObj = JSON.parse(resultat);
     (req as any).flash('Resultat pour ' + nom + ': ' + resultatObj.v1 + ' + ' + resultatObj.v2 + ' = ' + resultatObj.somme);
     res.status(200)
@@ -93,7 +94,7 @@ export class JeuRouter {
 
     try {
       // Invoquer l'opération système (du DSS) dans le contrôleur GRASP
-      let resultat = this.jeu.terminerJeu(nom);
+      let resultat = this.controlleur.terminerJeu(nom);
       (req as any).flash('Jeu terminé pour ' + nom);      
       res.status(200)
         .send({
@@ -110,6 +111,42 @@ export class JeuRouter {
   }
 
   /**
+   * Methode creer cours
+   */
+
+  public recupererCours(req: Request, res: Response, next: NextFunction) {
+
+    let tokenEnseignant = req.headers.token as string
+    
+    let reponse = this.controlleur.recupererCours(tokenEnseignant);
+    reponse.then(function(reponse) {
+      (req as any).flash('Requete de liste de cours');
+      res.status(200)
+      .send({reponse})
+    })
+
+  }
+
+  /**
+   * Methode qui retourne les details d'un cour
+   */
+  public recupererDetailCour(req: Request, res: Response, next: NextFunction) {
+
+    let tokenEnseignant = req.headers.token as string;
+    console.log(tokenEnseignant)
+    let id = req.params.id;
+    console.log(id);
+
+    let reponse = this.controlleur.recupererDetailCour(tokenEnseignant,id);
+    reponse.then(function(reponse) {
+      (req as any).flash('Requete details des etudiants dans un cour');
+      res.status(200)
+      .send({reponse})
+    })
+
+
+  }
+  /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
      */
@@ -118,10 +155,12 @@ export class JeuRouter {
     this.router.post('/demarrerJeu', this.demarrerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/jouer/:nom', this.jouer.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
+    this.router.get('/recupererCours/',this.recupererCours.bind(this));
+    this.router.get('/recupererDetailCour/:id', this.recupererDetailCour.bind(this));
   }
 
 }
 
 // exporter its configured Express.Router
-export const jeuRoutes = new JeuRouter();
-jeuRoutes.init();
+export const SgaRoutes = new SgaRouteur();
+SgaRoutes.init();
