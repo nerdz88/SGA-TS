@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { token } from 'morgan';
 import * as flash from 'node-twinkle';
 
 import { EnseignantControlleur } from '../core/EnseignantControlleur';
@@ -115,16 +116,35 @@ export class SgaRouteur {
 
   public recupererCours(req: Request, res: Response, next: NextFunction) {
 
-    let tokenEnseignant = req.params.token;
+    let tokenEnseignant = req.headers.token as string
     
     let reponse = this.controlleur.recupererCours(tokenEnseignant);
+    reponse.then(function(reponse) {
+      (req as any).flash('Requete de liste de cours');
+      res.status(200)
+      .send({reponse})
+    })
 
-    (req as any).flash('Requete de liste de cours');
-    res.status(200)
-    .send({reponse})
+  }
 
-    
-    
+  /**
+   * Methode qui retourne les details d'un cour
+   */
+  public recupererDetailCour(req: Request, res: Response, next: NextFunction) {
+
+    let tokenEnseignant = req.headers.token as string;
+    console.log(tokenEnseignant)
+    let id = req.params.id;
+    console.log(id);
+
+    let reponse = this.controlleur.recupererDetailCour(tokenEnseignant,id);
+    reponse.then(function(reponse) {
+      (req as any).flash('Requete details des etudiants dans un cour');
+      res.status(200)
+      .send({reponse})
+    })
+
+
   }
   /**
      * Take each handler, and attach to one of the Express.Router's
@@ -135,7 +155,8 @@ export class SgaRouteur {
     this.router.post('/demarrerJeu', this.demarrerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/jouer/:nom', this.jouer.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
-    this.router.get('/recupererCours/:token',this.recupererCours.bind(this));
+    this.router.get('/recupererCours/',this.recupererCours.bind(this));
+    this.router.get('/recupererDetailCour/:id', this.recupererDetailCour.bind(this));
   }
 
 }

@@ -13,5 +13,12 @@ describe('GET /api/v1/sga/recupererCours', () => {
         const response = await request.get('/api/v1/sga/recupererCours/'+tokenEnseignant);
         expect(response.status).toBe(200);
         expect(response.type).toBe("application/json");
+        expect(response.text).toInclude('\"_sigle\":\"LOG210\"');
+        expect(response.text).toInclude('\"_id\":1');
+        expect(response.text).toInclude('\"_nb_max_student\":5');
+        expect(response.text).toInclude('\"_groupe\":\"01\"')
+        expect(response.text).toInclude('\"_titre\":\"Analyse et conception de logiciels\"');
+        expect(response.text).toInclude('\"_date_debut\":\"2019-09-01\"');
+        expect(response.text).toInclude('\"_date_fin\":\"2019-09-02\"');
     });
 });

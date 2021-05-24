@@ -13,7 +13,7 @@ export class EnseignantControlleur {
     private d1: De;
     private d2: De;
     private baseUrl: string = "http://127.0.0.1:3001";
-    private endPoint: string = "/api/v1/courses";
+    private endPoint: string = "/api/v1/";
 
     constructor() {
         console.log("Initialiser JeuDeDes");
@@ -88,10 +88,20 @@ export class EnseignantControlleur {
 
     public async recupererCours(tokenEnseignant: string) {
         
-        const reponse = await fetch(this.baseUrl+this.endPoint, {headers: { token: tokenEnseignant}})
+        const reponse = await fetch(this.baseUrl+this.endPoint+"courses", {headers: { token: tokenEnseignant}})
         const json = await reponse.json();
         return json;
         
+    }
+
+    public async recupererDetailCour(tokenEnseignant: string, id: string) {
+
+        const path = "course/"+id+"/students"
+        const reponse = await fetch(this.baseUrl+this.endPoint+path, {headers: { token: tokenEnseignant}})
+        console.log(reponse);
+        const json = await reponse.json()
+        return json;
+
     }
 
 }
