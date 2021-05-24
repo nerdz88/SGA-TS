@@ -10,9 +10,11 @@ participant "enseignants:\nMap<String, Enseignants>" as CollectionEnseignants
 coursControleur -> CollectionEnseignants : e = chercher(idEnseignant) 
 note right : selon Transformer ID en objets
 'TODO - SGB ici mais je ne suis pas sure sion on peut mettre une Map
-participant ":SGB" as sgb
-coursControleur -> sgb : cours = chercher(e.token)
-note right : selon Transformer ID en objets
-'TODO ecq je dois mettre un retour?
+participant ":SGB" as sgb << acteur >>
+'TODO je ne sais pas comment mettre la note en haut du participant
+'rnote over sgb: Service Acteur externe 
+coursControleur -> sgb : response = request.get(e.token)
+coursControleur -> coursControleur : parseJSONEnCours 
+note right: Transformer le JSON en objet cours
 
 @enduml
