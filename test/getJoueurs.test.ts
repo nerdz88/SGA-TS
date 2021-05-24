@@ -4,7 +4,7 @@ import app from '../src/App';
 
 const request = supertest(app);
 
-import { jeuRoutes } from "../src/routes/JeuRouter";
+import { jeuRoutes } from "../src/routes/SgaRouteur";
 
 let testNom1 = 'Jean-Marc-in-getJoueurs';
 let testNom2 = 'Pierre-in-getJoueurs';

@@ -2,14 +2,18 @@ import { De } from "./De";
 import { Joueur } from "./Joueur";
 import { NotFoundError } from "./errors/NotFoundError";
 import { AlreadyExistsError } from "./errors/AlreadyExistsError";
+import fetch = require('node-fetch');
+import { Application, Request, Response } from 'express'
 
-export class JeuDeDes {
+export class EnseignantControlleur {
     // classe contrôleur GRASP
 
     // map des Joueurs
     private joueurs: Map<string, Joueur>;
     private d1: De;
     private d2: De;
+    private baseUrl: string = "http://127.0.0.1:3001";
+    private endPoint: string = "/api/v1/courses";
 
     constructor() {
         console.log("Initialiser JeuDeDes");
@@ -80,6 +84,14 @@ export class JeuDeDes {
     // d'autres méthodes
     public getJoueurs() {
         return JSON.stringify(Array.from(this.joueurs.values()));
+    }
+
+    public async recupererCours(tokenEnseignant: string) {
+        
+        const reponse = await fetch(this.baseUrl+this.endPoint, {headers: { token: tokenEnseignant}})
+        const json = await reponse.json();
+        return json;
+        
     }
 
 }
