@@ -2,19 +2,29 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer tous les cours d'un enseignant
-participant ":CoursControleur" as coursControleur
+participant ":enseignantControleur" as enseignantControleur
 
-->coursControleur : recupererCours(idEnseignant)
-note right : selon Contrôleur\n(CoursControleur est\nl'objet racine des cours)
-participant "enseignants:\nMap<String, Enseignants>" as CollectionEnseignants
-coursControleur -> CollectionEnseignants : e = chercher(idEnseignant) 
-note right : selon Transformer ID en objets
-'TODO - SGB ici mais je ne suis pas sure sion on peut mettre une Map
+->enseignantControleur : recupererCours(tokenEnseignant)
+note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours)
 participant ":SGB" as sgb << acteur >>
-'TODO je ne sais pas comment mettre la note en haut du participant
-'rnote over sgb: Service Acteur externe 
-coursControleur -> sgb : response = request.get(e.token)
-coursControleur -> coursControleur : parseJSONEnCours 
-note right: Transformer le JSON en objet cours
+note over sgb: Service Acteur externe 
+enseignantControleur -> sgb : response = request.get(tokenEnseignant)
+'enseignantControleur -> enseignantControleur : parseJSONEnCours 
+@enduml
 
+@startuml 
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer un cours d'un enseignant
+participant ":enseignantControleur" as enseignantControleur
+->enseignantControleur : recupererCours(tokenEnseignant, idCours)
+note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours)
+enseignantControleur -> enseignantControleur : cours = recupererCours(tokenEnseignant)
+note right : Obtenir tous les cours de l'enseignant
+participant "cours:\nMap<String, Cours>" as CollectionCours
+enseignantControleur -> CollectionCours : c = chercher(idCours) 
+note right : selon Transformer ID en objets
+participant ":SGB" as sgb << acteur >>
+note over sgb: Service Acteur externe 
+enseignantControleur -> sgb : response = request.get(tokenEnseignant, idCours)
 @enduml
