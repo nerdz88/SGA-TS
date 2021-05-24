@@ -133,9 +133,7 @@ export class SgaRouteur {
   public recupererDetailCour(req: Request, res: Response, next: NextFunction) {
 
     let tokenEnseignant = req.headers.token as string;
-    console.log(tokenEnseignant)
     let id = req.params.id;
-    console.log(id);
 
     let reponse = this.controlleur.recupererDetailCour(tokenEnseignant,id);
     reponse.then(function(reponse) {
@@ -144,6 +142,23 @@ export class SgaRouteur {
       .send({reponse})
     })
 
+
+  }
+
+  /**
+   * Methode qui permet de login
+   */
+  public login(req: Request, res: Response, next: NextFunction) {
+
+  let user = req.body.user;
+  
+  let reponse = this.controlleur.login(user);
+
+  reponse.then(function(reponse) {
+    (req as any).flash('Requete details des etudiants dans un cour');
+      res.status(200)
+      .send({reponse})
+  })
 
   }
   /**
@@ -157,6 +172,7 @@ export class SgaRouteur {
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/recupererCours/',this.recupererCours.bind(this));
     this.router.get('/recupererDetailCour/:id', this.recupererDetailCour.bind(this));
+    this.router.get('/login', this.login.bind(this))
   }
 
 }

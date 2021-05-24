@@ -104,4 +104,11 @@ export class EnseignantControlleur {
 
     }
 
+    public async login(user: string) {
+
+        const reponse = await fetch(this.baseUrl+this.endPoint+"login", { params: {login: encodeURIComponent(user)}})
+        const json = await reponse.json();
+        return json;
+    }
+
 }
