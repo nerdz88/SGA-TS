@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as flash from 'node-twinkle';
 import * as ExpressSession from 'express-session';
 
-import { jeuRoutes } from './routes/JeuRouter';
+import { SgaRoutes } from './routes/SgaRouteur';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -40,14 +40,14 @@ class App {
     let router = express.Router();
     router.get('/', (req, res, next) => {
       let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-      res.render('index', { title: 'Jeu de dés', flashedMessages: messages, joueurs: JSON.parse(jeuRoutes.jeu.getJoueurs())});
+      res.render('index', { title: 'Jeu de dés', flashedMessages: messages, joueurs: JSON.parse(SgaRoutes.controlleur.getJoueurs())});
     });
 
    
 
     this.expressApp.use('/', router);  // routage de base
 
-    this.expressApp.use('/api/v1/jeu', jeuRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+    this.expressApp.use('/api/v1/sga', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
   }
 
 }
