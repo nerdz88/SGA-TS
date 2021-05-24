@@ -1,0 +1,18 @@
+@startuml 
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer tous les cours d'un enseignant
+participant ":CoursControleur" as coursControleur
+
+->coursControleur : recupererCours(idEnseignant)
+note right : selon Contrôleur\n(CoursControleur est\nl'objet racine des cours)
+participant "enseignants:\nMap<String, Enseignants>" as CollectionEnseignants
+coursControleur -> CollectionEnseignants : e = chercher(idEnseignant) 
+note right : selon Transformer ID en objets
+'TODO - SGB ici mais je ne suis pas sure sion on peut mettre une Map
+participant ":SGB" as sgb
+coursControleur -> sgb : cours = chercher(e.token)
+note right : selon Transformer ID en objets
+'TODO ecq je dois mettre un retour?
+
+@enduml
