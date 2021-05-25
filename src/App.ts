@@ -40,7 +40,7 @@ class App {
     let router = express.Router();
     router.get('/', (req, res, next) => {
       let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-      res.render('index', { title: 'Jeu de dés', flashedMessages: messages, joueurs: JSON.parse(SgaRoutes.controlleur.getJoueurs())});
+      res.render('connection', { title: 'Jeu de dés', flashedMessages: messages, joueurs: JSON.parse(SgaRoutes.controlleur.getJoueurs())});
     });
 
    

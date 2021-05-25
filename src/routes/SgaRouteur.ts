@@ -151,7 +151,6 @@ export class SgaRouteur {
   public login(req: Request, res: Response, next: NextFunction) {
 
   let user = req.body.user;
-  
   let reponse = this.controlleur.login(user);
 
   reponse.then(function(reponse) {
