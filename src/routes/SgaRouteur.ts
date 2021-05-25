@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction, response } from 'express';
 import { token } from 'morgan';
 import * as flash from 'node-twinkle';
 
-import { EnseignantControlleur } from '../core/EnseignantControlleur';
+import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
 import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 
 // TODO: rethink the name for this "router" function, since it's not really an Express router (no longer being "use()"ed inside Express)
