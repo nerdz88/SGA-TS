@@ -1,0 +1,22 @@
+html
+  head
+    title= title
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/css/style.css')
+  body
+
+    div.container
+      h1 Cours de TODO 
+    
+      ul.entries
+        each unCours in cours
+          li         
+           strong #{unCours._sigle} - #{unCours._titre} - Gr: #{unCours._groupe}       
+            a(class="btn-detail-cours", href="/api/v1/sga/enseignant/cours/" + unCours._id + "/detail") Détail    
+        else
+          li
+            em Vous n'avez pas de cours
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/lib/enseignant/liste-cours.js"></script>

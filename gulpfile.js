@@ -3,7 +3,7 @@ const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const JSON_FILES = ['src/*.json', 'src/**/*.json'];
 const CSS_FILES = ['public/css/*.css'];
-const JS_FILES = ['public/lib/*.js'];
+const JS_FILES = ['public/lib/*.js', 'public/lib/**/*.js'];
 
 // pull in the project TypeScript config
 const tsProject = ts.createProject('tsconfig.json');
