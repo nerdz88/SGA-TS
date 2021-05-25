@@ -8,11 +8,21 @@ window.addEventListener("load", function()
             email = document.getElementById("email").value;
             password = document.getElementById("password").value;
             alert("se connecte");
-            fetch('/api/v1/sga/login/'+email+'&'+password,function(){
-                //Todo 
-                // Save token cookies
+            fetch('/api/v1/sga/login/'+email+'&'+password).then(function(html){
+                document.opend
+                document.write(html)
+                document.close
             });
         });
     });
+
+    this.document.querySelectorAll("button.rechercherCours").forEach(function(element)
+    {
+        element.addEventListener("click", function(val){
+            fetch('api/v1/sga/recupererCours', {
+                headers: "tokentokentoken"
+            })
+        })
+    } )
 
 });

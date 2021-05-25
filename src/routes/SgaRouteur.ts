@@ -74,14 +74,13 @@ export class SgaRouteur {
   let password = req.params.password;
   let reponse = this.controlleur.login(username,password);
   reponse.then(function(reponse) {
-    console.log("--------");
-    console.log(reponse);
-    (req as any).flash('Requete details des etudiants dans un cour');
-      res.status(200)
-      .send({reponse})
-  })
-
+    (req as any).flash('Login successful');
+    res.render("index", function(error, html) {
+      res.send(html)
+      });
+    })
   }
+
   /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
