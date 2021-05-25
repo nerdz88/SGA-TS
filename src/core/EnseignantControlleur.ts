@@ -87,26 +87,29 @@ export class EnseignantControlleur {
     }
 
     public async recupererCours(tokenEnseignant: string) {
-        
-        const reponse = await fetch(this.baseUrl+this.endPoint+"courses", {headers: { token: tokenEnseignant}})
+
+        const reponse = await fetch(this.baseUrl + this.endPoint + "courses", { headers: { token: tokenEnseignant } })
         const json = await reponse.json();
         return json;
-        
+
     }
 
     public async recupererDetailCour(tokenEnseignant: string, id: string) {
 
-        const path = "course/"+id+"/students"
-        const reponse = await fetch(this.baseUrl+this.endPoint+path, {headers: { token: tokenEnseignant}})
+        const path = "course/" + id + "/students"
+        const reponse = await fetch(this.baseUrl + this.endPoint + path, { headers: { token: tokenEnseignant } })
         console.log(reponse);
         const json = await reponse.json()
         return json;
 
     }
 
-    public async login(user: string) {
+    public async login(username: string, password: string) {
 
-        const reponse = await fetch(this.baseUrl+this.endPoint+"login", { params: {login: encodeURIComponent(user)}})
+        const reponse = await fetch(this.baseUrl + this.endPoint +
+             'login?email='+encodeURIComponent(username)+'&password='+password);
+        
+            
         const json = await reponse.json();
         return json;
     }

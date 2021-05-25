@@ -8,7 +8,10 @@ window.addEventListener("load", function()
             email = document.getElementById("email").value;
             password = document.getElementById("password").value;
             alert("se connecte");
-            fetch('/api/v1/sga/login?email='+email+'&password='+password);
+            fetch('/api/v1/sga/login/'+email+'&'+password,function(){
+                //Todo 
+                // Save token cookies
+            });
         });
     });
 

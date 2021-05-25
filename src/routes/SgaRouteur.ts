@@ -150,10 +150,12 @@ export class SgaRouteur {
    */
   public login(req: Request, res: Response, next: NextFunction) {
 
-  let user = req.body.user;
-  let reponse = this.controlleur.login(user);
-
+  let username = req.params.username;
+  let password = req.params.password;
+  let reponse = this.controlleur.login(username,password);
   reponse.then(function(reponse) {
+    console.log("--------");
+    console.log(reponse);
     (req as any).flash('Requete details des etudiants dans un cour');
       res.status(200)
       .send({reponse})
@@ -171,7 +173,7 @@ export class SgaRouteur {
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/recupererCours/',this.recupererCours.bind(this));
     this.router.get('/recupererDetailCour/:id', this.recupererDetailCour.bind(this));
-    this.router.get('/login', this.login.bind(this))
+    this.router.get('/login/:username&:password', this.login.bind(this))
   }
 
 }
