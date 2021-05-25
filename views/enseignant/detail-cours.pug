@@ -1,0 +1,27 @@
+html
+  head
+    title= title
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
+    link(rel='stylesheet' href='/css/style.css')
+  body
+
+    div.container
+      h1 #{cours._sigle} - #{cours._titre} - Gr: #{cours._groupe} 
+      ul.entries 
+        li Nb étudiant Max: #{cours._nb_max_student}
+        li Date début: #{cours._date_debut}
+        li Date fin: #{cours._date_fin}
+
+      h1 Liste des étudiants  
+      ul.entries
+        each unEtudiant in etudiants
+          li         
+            strong #{unEtudiant._last_name} #{unEtudiant._first_name} 
+            | : #{unEtudiant._email} - #{unEtudiant._permanent_code}
+        else
+          li
+            em Pas d'étudiants dans le cours
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/lib/enseignant/liste-cours.js"></script>

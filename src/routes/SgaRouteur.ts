@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction, response } from 'express';
 import { token } from 'morgan';
 import * as flash from 'node-twinkle';
 
@@ -95,7 +95,7 @@ export class SgaRouteur {
     try {
       // Invoquer l'opération système (du DSS) dans le contrôleur GRASP
       let resultat = this.controlleur.terminerJeu(nom);
-      (req as any).flash('Jeu terminé pour ' + nom);      
+      (req as any).flash('Jeu terminé pour ' + nom);
       res.status(200)
         .send({
           message: 'Success',
@@ -115,34 +115,43 @@ export class SgaRouteur {
    */
 
   public recupererCours(req: Request, res: Response, next: NextFunction) {
+    //TODO remove le token hardcodé apres le login
+    let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string
 
-    let tokenEnseignant = req.headers.token as string
-    
     let reponse = this.controlleur.recupererCours(tokenEnseignant);
-    reponse.then(function(reponse) {
-      (req as any).flash('Requete de liste de cours');
-      res.status(200)
-      .send({reponse})
-    })
-
+    reponse.then(function (reponse) {
+      //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
+      res.render("enseignant/liste-cours", { cours: reponse.data });
+    });
   }
 
   /**
-   * Methode qui retourne les details d'un cour
+   * Methode qui retourne les details d'un cours
    */
-  public recupererDetailCour(req: Request, res: Response, next: NextFunction) {
+  public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
 
-    let tokenEnseignant = req.headers.token as string;
-    console.log(tokenEnseignant)
-    let id = req.params.id;
-    console.log(id);
+    //TODO remove le token hardcodé apres le login
+    let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string
+    let idCours = req.params.id;
+    let self = this;
 
-    let reponse = this.controlleur.recupererDetailCour(tokenEnseignant,id);
-    reponse.then(function(reponse) {
-      (req as any).flash('Requete details des etudiants dans un cour');
-      res.status(200)
-      .send({reponse})
-    })
+    //On get nos cours
+    let reponseCours = self.controlleur.recupererCours(tokenEnseignant);
+    reponseCours.then(function (repCours) {
+      //On cherche le cours courant
+      let coursCourant;
+      repCours.data.forEach(element => {
+        if (element._id == idCours)
+          coursCourant = element;
+      });
+      
+      //On get la liste des 
+      let reponseDetail = self.controlleur.recupererDetailCours(tokenEnseignant, idCours);
+      reponseDetail.then(function (repDetail) {
+        //Render la view!
+        res.render("enseignant/detail-cours", { cours: coursCourant, etudiants: repDetail.data });
+      });
+    });
 
 
   }
@@ -150,13 +159,12 @@ export class SgaRouteur {
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
      */
-  init()
-  {
+  init() {
     this.router.post('/demarrerJeu', this.demarrerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/jouer/:nom', this.jouer.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
-    this.router.get('/recupererCours/',this.recupererCours.bind(this));
-    this.router.get('/recupererDetailCour/:id', this.recupererDetailCour.bind(this));
+    this.router.get('/enseignant/cours', this.recupererCours.bind(this));
+    this.router.get('/enseignant/cours/:id/detail', this.recupererDetailCours.bind(this));
   }
 
 }
