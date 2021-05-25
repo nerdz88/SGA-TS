@@ -19,6 +19,39 @@ export class SgaRouteur {
     this.init();
   }
 
+
+  public pageAccueil(req: Request, res: Response, next: NextFunction) {
+    //TODO - login - afficher le nom de l'utilisateur dans accueil.pug
+    res.render("enseignant/accueil");
+  }
+
+  public pageAjouterCours(req: Request, res: Response, next: NextFunction) {
+    //TODO - login - afficher le nom de l'utilisateur dans accueil.pug
+    let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string;
+
+    let reponse = this.controlleur.recupererCoursSGB(tokenEnseignant);
+    reponse.then(function (reponse) {
+      //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
+      res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
+    });
+  }
+
+  public ajouterCours(req: Request, res: Response, next: NextFunction) {
+    //TODO - login - afficher le nom de l'utilisateur dans accueil.pug
+    let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string;
+    let idCours = req.params.id;
+    let self = this;
+    //todo try catch si  le cours existe deja
+
+    try {
+      self.controlleur.ajouterCours(tokenEnseignant, idCours);
+      res.redirect("/api/v1/sga/enseignant/cours/" + idCours + "/detail");
+    } catch (error) {
+      console.log(error.message);
+      this._errorCode500(error, req, res);
+    }    
+  }
+
   /**
    * Methode creer cours
    */
@@ -26,43 +59,26 @@ export class SgaRouteur {
   public recupererCours(req: Request, res: Response, next: NextFunction) {
     //TODO remove le token hardcodé apres le login
     let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string
-
-    let reponse = this.controlleur.recupererCours(tokenEnseignant);
-    reponse.then(function (reponse) {
-      //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
-      res.render("enseignant/liste-cours", { cours: reponse.data });
-    });
+    res.render("enseignant/liste-cours-sga", { cours: this.controlleur.recupererTousCoursSGA(tokenEnseignant) });
   }
 
   /**
    * Methode qui retourne les details d'un cours
    */
   public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
-
     //TODO remove le token hardcodé apres le login
     let tokenEnseignant = (req.headers.token ? req.headers.token : "e44cd054a9b7f4edee4f1f0ede5ee704") as string
     let idCours = req.params.id;
-    let self = this;
+    res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(tokenEnseignant, idCours) });
+  }
 
-    //On get nos cours
-    let reponseCours = self.controlleur.recupererCours(tokenEnseignant);
-    reponseCours.then(function (repCours) {
-      //On cherche le cours courant
-      let coursCourant;
-      repCours.data.forEach(element => {
-        if (element._id == idCours)
-          coursCourant = element;
-      });
-      
-      //On get la liste des 
-      let reponseDetail = self.controlleur.recupererDetailCours(tokenEnseignant, idCours);
-      reponseDetail.then(function (repDetail) {
-        //Render la view!
-        res.render("enseignant/detail-cours", { cours: coursCourant, etudiants: repDetail.data });
-      });
-    });
-
-
+  private _errorCode500(error: any, req, res: Response<any>) {
+    var code = 500;
+    if (error.code) {
+      (req as any).flash(error.message);
+      code = error.code;
+    }
+    res.status(code).json({ error: error.toString() });
   }
 
   /**
@@ -70,16 +86,16 @@ export class SgaRouteur {
    */
   public login(req: Request, res: Response, next: NextFunction) {
 
-  let username = req.params.username;
-  let password = req.params.password;
-  let reponse = this.controlleur.login(username,password);
-  reponse.then(function(reponse) {
-    console.log("--------");
-    console.log(reponse);
-    (req as any).flash('Requete details des etudiants dans un cour');
+    let username = req.params.username;
+    let password = req.params.password;
+    let reponse = this.controlleur.login(username, password);
+    reponse.then(function (reponse) {
+      console.log("--------");
+      console.log(reponse);
+      (req as any).flash('Requete details des etudiants dans un cour');
       res.status(200)
-      .send({reponse})
-  })
+        .send({ reponse })
+    })
 
   }
   /**
@@ -87,7 +103,10 @@ export class SgaRouteur {
      * endpoints.
      */
   init() {
+    this.router.get('/enseignant/accueil', this.pageAccueil.bind(this));
     this.router.get('/enseignant/cours', this.recupererCours.bind(this));
+    this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this));
+    this.router.get('/enseignant/cours/ajouter/:id', this.ajouterCours.bind(this));
     this.router.get('/enseignant/cours/:id/detail', this.recupererDetailCours.bind(this));
     this.router.get('/login/:username&:password', this.login.bind(this))
   }
