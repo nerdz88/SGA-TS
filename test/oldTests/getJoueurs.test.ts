@@ -1,10 +1,10 @@
 import * as supertest from "supertest";
 import 'jest-extended';
-import app from '../src/App';
+import app from '../../src/App';
 
 const request = supertest(app);
 
-import { SgaRoutes } from "../src/routes/SgaRouteur";
+import { SgaRoutes } from "../../src/routes/SgaRouteur";
 
 let testNom1 = 'Jean-Marc-in-getJoueurs';
 let testNom2 = 'Pierre-in-getJoueurs';
