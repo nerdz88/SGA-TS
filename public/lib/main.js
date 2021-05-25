@@ -7,11 +7,8 @@ window.addEventListener("load", function()
         {
             email = document.getElementById("email").value;
             password = document.getElementById("password").value;
-            alert("se connecte");
             fetch('/api/v1/sga/login/'+email+'&'+password).then(function(html){
-                document.opend
-                document.write(html)
-                document.close
+                window.location.href="http://localhost:3000/api/v1/sga/index";
             });
         });
     });

@@ -34,6 +34,10 @@ export class SgaRouteur {
     });
   }
 
+  public renderAccueil(req: Request, res: Response, next: NextFunction){
+      res.render("index");
+  }
+
   /**
    * Methode qui retourne les details d'un cours
    */
@@ -89,6 +93,7 @@ export class SgaRouteur {
     this.router.get('/enseignant/cours', this.recupererCours.bind(this));
     this.router.get('/enseignant/cours/:id/detail', this.recupererDetailCours.bind(this));
     this.router.get('/login/:username&:password', this.login.bind(this))
+    this.router.get('/index', this.renderAccueil.bind(this))
   }
 }
 
