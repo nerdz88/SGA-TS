@@ -3,6 +3,7 @@ import { Joueur } from "../domaine/Joueur";
 import { NotFoundError } from "../errors/NotFoundError";
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import fetch = require('node-fetch');
+import {SGA} from "../domaine/SGA";
 import { Application, Request, Response } from 'express'
 
 export class EnseignantControlleur {
@@ -14,17 +15,16 @@ export class EnseignantControlleur {
     private d2: De;
     private baseUrl: string = "http://127.0.0.1:3001";
     private endPoint: string = "/api/v1/";
+    private sga : SGA;
 
     constructor() {
-        console.log("Initialiser JeuDeDes");
+        this.sga = new SGA();
+
+
         this.joueurs = new Map<string, Joueur>();
         this.d1 = new De();
         this.d2 = new De();
     }
-
-    /**
-     *  opérations systèmes
-     */
 
     public demarrerJeu(nom: string): string {
 
@@ -87,9 +87,14 @@ export class EnseignantControlleur {
     }
 
     public async recupererCours(tokenEnseignant: string) {
-
         const reponse = await fetch(this.baseUrl + this.endPoint + "courses", { headers: { token: tokenEnseignant } })
         const json = await reponse.json();
+        let val=this.sga.buildCours(json.data);
+        //TODO essayer de modifier l'affichage avec le nouvelle map de cours qui contient des groupeCours
+        //console.log(val);
+        /*val.get("LOG210").getGroupeCours().forEach(element => {
+            console.log(element);
+        });*/
         return json;
 
     }

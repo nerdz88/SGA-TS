@@ -165,6 +165,7 @@ export class SgaRouteur {
     this.router.get('/terminerJeu/:nom', this.terminerJeu.bind(this)); // pour .bind voir https://stackoverflow.com/a/15605064/1168342
     this.router.get('/enseignant/cours', this.recupererCours.bind(this));
     this.router.get('/enseignant/cours/:id/detail', this.recupererDetailCours.bind(this));
+
   }
 
 }

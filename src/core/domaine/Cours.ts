@@ -17,8 +17,8 @@ export class Cours {
         this.groupeCours = new Set();
     }
 
-    public ajoutGroupeCours(numero : string, nb_max_student: number){
-        let groupe = new GroupeCours(numero, nb_max_student);
+    public ajoutGroupeCours(numero : string, nb_max_student: number,id : number){
+        let groupe = new GroupeCours(id,numero, nb_max_student);
         return this.groupeCours.add(groupe);
     }
 

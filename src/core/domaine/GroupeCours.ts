@@ -5,23 +5,29 @@ export class GroupeCours {
     private _numero : string;
     private _nb_max_student : number;
     private _etudiants : Set<Etudiant>;
+    private _id : number;
     //private _enseignant : Enseignant à créer
 
-    constructor(numero : string, nb_max_student : number) {
-        this._numero
+    constructor(id : number, numero : string, nb_max_student : number) {
+        this._id=id;
+        this._numero = numero;
         this._nb_max_student = nb_max_student; 
         this._etudiants = new Set();
     }
 
-    get numero() {
+    public getNumero() {
         return this._numero;
     }
 
-    get nb_max_student() {
+    public getId(){
+        return this._id;
+    }
+
+    public get_Nb_max_student() {
         return this._nb_max_student;
     }
 
-    get etudiants() {
+    public getEtudiants() {
         return this._etudiants;
     }
 
