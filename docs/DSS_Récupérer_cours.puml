@@ -1,0 +1,11 @@
+@startuml DSS de Récupérer cours
+title DSS de Récupérer cours
+hide footbox
+actor ":Professeur" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererCours(idEnseignants)
+professeur <- systeme : Liste de cours de l'enseignant
+professeur -> systeme : chercherCours(idCours)
+professeur <- systeme : Information du cours et affiche la liste des étudiants inscrits.
+@enduml
