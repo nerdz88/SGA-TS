@@ -1,7 +1,7 @@
-import { De } from "./De";
-import { Joueur } from "./Joueur";
-import { NotFoundError } from "./errors/NotFoundError";
-import { AlreadyExistsError } from "./errors/AlreadyExistsError";
+import { De } from "../domaine/De";
+import { Joueur } from "../domaine/Joueur";
+import { NotFoundError } from "../errors/NotFoundError";
+import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import fetch = require('node-fetch');
 import { Application, Request, Response } from 'express'
 
