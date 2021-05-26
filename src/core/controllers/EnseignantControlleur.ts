@@ -1,19 +1,24 @@
-import { De } from "../reference/De";
-import { Joueur } from "../reference/Joueur";
-import { NotFoundError } from "./errors/NotFoundError";
-import { AlreadyExistsError } from "./errors/AlreadyExistsError";
 import fetch = require('node-fetch');
-import { Application, Request, Response } from 'express'
+import {SGA} from "../domaine/SGA";
 
 export class EnseignantControlleur {
     // classe contrôleur GRASP
     private baseUrl: string = "http://127.0.0.1:3001";
     private endPoint: string = "/api/v1/";
-    
-    public async recupererCours(tokenEnseignant: string) {
+    private sga : SGA;
 
+    constructor() {
+        this.sga = new SGA();
+    }
+    public async recupererCours(tokenEnseignant: string) {
         const reponse = await fetch(this.baseUrl + this.endPoint + "courses", { headers: { token: tokenEnseignant } })
         const json = await reponse.json();
+        let val=this.sga.buildCours(json.data);
+        //TODO essayer de modifier l'affichage avec le nouvelle map de cours qui contient des groupeCours
+        //console.log(val);
+        /*val.get("LOG210").getGroupeCours().forEach(element => {
+            console.log(element);
+        });*/
         return json;
 
     }
