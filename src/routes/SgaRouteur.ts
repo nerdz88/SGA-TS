@@ -72,17 +72,22 @@ export class SgaRouteur {
   /**
    * Methode qui permet de login
    */
-  public login(req: Request, res: Response, next: NextFunction) {
+  public async login(req: Request, res: Response, next: NextFunction) {
 
   let username = req.params.username;
   let password = req.params.password;
-  let reponse = this.controlleur.login(username,password);
-  reponse.then(function(reponse) {
-    (req as any).flash('Login successful');
-    res.render("index", function(error, html) {
-      res.send(html)
-      });
-    })
+  let reponse = await this.controlleur.login(username,password);
+  if(reponse.error){
+    (req as any).flash(reponse.error);
+    return res.status(500).json({ error: reponse.error.toString() });
+  }else{
+    return res.status(200)
+        .send({
+          message: 'Success',
+          status: res.status,
+          reponse
+        });
+  }
   }
 
   /**
