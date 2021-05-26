@@ -31,7 +31,7 @@ export class EnseignantControlleur {
         return json;
     }
 
-    public ajouterCours(tokenEnseignant: string, idCours: string) {
+    public async ajouterCours(tokenEnseignant: string, idCours: string) : Promise<void> {
         //On get nos cours
         if (this.coursService.coursExiste(tokenEnseignant, idCours)) {
             throw new AlreadyExistsError("Le cours '" + idCours + "' existe déjà.");

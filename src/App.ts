@@ -29,7 +29,8 @@ class App {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
     this.expressApp.use(ExpressSession(
-      { secret: 'My Secret Key',
+      {
+        secret: 'My Secret Key',
         resave: false,
         saveUninitialized: true
       }));
@@ -40,8 +41,13 @@ class App {
   private routes(): void {
     let router = express.Router();
     router.get('/', (req, res, next) => {
-      let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-      res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages});
+      if (req.session.loggedIn) {
+        res.redirect("/api/v1/sga/enseignant/accueil");
+      } 
+      else {
+        let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
+        res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
+      }
     });
 
     this.expressApp.use('/', router);  // routage de base
