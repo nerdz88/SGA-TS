@@ -1,37 +1,73 @@
 import fetch = require('node-fetch');
+import { AlreadyExistsError } from '../errors/AlreadyExistsError';
+import { Cours } from '../model/Cours';
+import { SGA } from "../model/SGA";
+import { CoursService } from '../service/CoursService';
 import {Session} from "inspector";
-import {SGA} from "../domaine/SGA";
 
 export class EnseignantControlleur {
     // classe contrôleur GRASP
     private baseUrl: string = "http://127.0.0.1:3001";
     private endPoint: string = "/api/v1/";
-    private sga : SGA;
+    private sga: SGA;
+    //private sgbService: SGBService;
+    private coursService: CoursService;
 
     constructor() {
         this.sga = new SGA();
+        // this.sgbService = new SGBService();
+        this.coursService = new CoursService();
     }
-    public async recupererCours(tokenEnseignant: string) {
+    public async recupererCoursSGB(tokenEnseignant: string) {
         const reponse = await fetch(this.baseUrl + this.endPoint + "courses", { headers: { token: tokenEnseignant } })
         const json = await reponse.json();
-        let val=this.sga.buildCours(json.data);
-        //TODO essayer de modifier l'affichage avec le nouvelle map de cours qui contient des groupeCours
-        //console.log(val);
-        /*val.get("LOG210").getGroupeCours().forEach(element => {
-            console.log(element);
-        });*/
         return json;
-
     }
 
-    public async recupererDetailCours(tokenEnseignant: string, id: string) {
-
+    public async recupererEtudiantsCoursSGB(tokenEnseignant: string, id: string) {
         const path = "course/" + id + "/students"
         const reponse = await fetch(this.baseUrl + this.endPoint + path, { headers: { token: tokenEnseignant } })
-        console.log(reponse);
         const json = await reponse.json()
         return json;
+    }
 
+    public ajouterCours(tokenEnseignant: string, idCours: string) {
+        //On get nos cours
+        if (this.coursService.coursExiste(tokenEnseignant, idCours)) {
+            throw new AlreadyExistsError("Le cours '" + idCours + "' existe déjà.");
+        }
+        let reponseCours = this.recupererCoursSGB(tokenEnseignant);
+        let self = this;
+        reponseCours.then(function (repCours) {
+            //On cherche le cours courant
+            let coursCourant;
+            repCours.data.forEach(element => {
+                if (element._id == idCours)
+                    coursCourant = element;
+            });
+            //TODO gestion si le cours existe deja, alors on ajoute un nouveau groupe, Si le groupe existe deja en throw
+            let cours: Cours = self.coursService.parseCoursFromSgbJSON(coursCourant);
+
+            //On get la liste des étudiants
+            let etudiants = self.recupererEtudiantsCoursSGB(tokenEnseignant, idCours);           
+            etudiants.then(function (repEtudiant) {
+                //On ajoute nos étudiants à notre seul groupe
+                repEtudiant.data.forEach(element => {
+                    cours.getGroupeCours()[0].getEtudiants().push(self.coursService.parseEtudiantFromSgbJSON(element));
+                });                      
+                
+                self.coursService.ajouterCours(tokenEnseignant, cours);
+              
+            });
+        });
+    }
+
+    public recupererTousCoursSGA(token: string): Cours[] {
+        return this.coursService.recupererTousCours(token);
+    }
+
+    public recupererUnCoursSGA(token: string, idCours: string): Cours {
+        return this.coursService.recupererUnCours(token, idCours);
     }
 
     public async login(username: string, password: string) {
