@@ -65,7 +65,6 @@ export class SgaRouteur {
      */
 
     public recupererCours(req: Request, res: Response, next: NextFunction) {
-        console.log("This is the loggedIn session thing : " + req.session.loggedIn);
         if (!req.session.loggedIn) {
             res.sendStatus(401);
             return;
@@ -98,11 +97,8 @@ export class SgaRouteur {
     public login(req: Request, res: Response, next: NextFunction) {
         let email = req.query.email as string;
         let password = req.query.password as string;
-        console.log(email);
-        console.log(password);
         let reponse = this.controlleur.login(email, password);
         reponse.then(response => {
-            console.log(response);
             if ("message" in response && response["message"] == "Success") {
                 let token = response["token"];
                 req.session.email = email;
