@@ -3,7 +3,7 @@ import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { Cours } from '../model/Cours';
 import { SGA } from "../model/SGA";
 import { CoursService } from '../service/CoursService';
-import {Session} from "inspector";
+import { Session } from "inspector";
 
 export class EnseignantControlleur {
     // classe contrôleur GRASP
@@ -31,35 +31,23 @@ export class EnseignantControlleur {
         return json;
     }
 
-    public async ajouterCours(tokenEnseignant: string, idCours: string) : Promise<void> {
+    public async ajouterCours(tokenEnseignant: string, idCours: string) {
         //On get nos cours
         if (this.coursService.coursExiste(tokenEnseignant, idCours)) {
             throw new AlreadyExistsError("Le cours '" + idCours + "' existe déjà.");
         }
-        let reponseCours = this.recupererCoursSGB(tokenEnseignant);
-        let self = this;
-        reponseCours.then(function (repCours) {
-            //On cherche le cours courant
-            let coursCourant;
-            repCours.data.forEach(element => {
-                if (element._id == idCours)
-                    coursCourant = element;
-            });
-            //TODO gestion si le cours existe deja, alors on ajoute un nouveau groupe, Si le groupe existe deja en throw
-            let cours: Cours = self.coursService.parseCoursFromSgbJSON(coursCourant);
+        const reponseCours = await this.recupererCoursSGB(tokenEnseignant);
 
-            //On get la liste des étudiants
-            let etudiants = self.recupererEtudiantsCoursSGB(tokenEnseignant, idCours);           
-            etudiants.then(function (repEtudiant) {
-                //On ajoute nos étudiants à notre seul groupe
-                repEtudiant.data.forEach(element => {
-                    cours.getGroupeCours()[0].getEtudiants().push(self.coursService.parseEtudiantFromSgbJSON(element));
-                });                      
-                
-                self.coursService.ajouterCours(tokenEnseignant, cours);
-              
-            });
+
+        let cours: Cours = this.coursService.parseCoursFromSgbJSON(reponseCours.data.find(c => c._id == idCours));
+
+        const reponseEtudiants = await this.recupererEtudiantsCoursSGB(tokenEnseignant, idCours);
+        //On ajoute nos étudiants à notre seul groupe  
+        reponseEtudiants.data.forEach((etudiant: any) => {
+            cours.getGroupeCours()[0].getEtudiants().push(this.coursService.parseEtudiantFromSgbJSON(etudiant));
         });
+        //On cherche le cours courant
+        this.coursService.ajouterCours(tokenEnseignant, cours);
     }
 
     public recupererTousCoursSGA(token: string): Cours[] {
@@ -72,7 +60,7 @@ export class EnseignantControlleur {
 
     public async login(username: string, password: string) {
         const response = await fetch(this.baseUrl + this.endPoint +
-             'login?email='+encodeURIComponent(username)+'&password='+password);
+            'login?email=' + encodeURIComponent(username) + '&password=' + password);
         return await response.json();
     }
 

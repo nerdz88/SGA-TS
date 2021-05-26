@@ -53,10 +53,8 @@ export class SgaRouteur {
         let idCours = req.params.id;
         let self = this;
 
-        self.controlleur.ajouterCours(tokenEnseignant, idCours).
-            then(function (result) {
-                res.redirect("/api/v1/sga/enseignant/cours/" + idCours + "/detail");
-            })
+        self.controlleur.ajouterCours(tokenEnseignant, idCours)
+            .then(() => res.redirect("/api/v1/sga/enseignant/cours/" + idCours + "/detail"))
             .catch(function (error) {               
                 self._errorCode500(error, req, res);
             });
