@@ -31,7 +31,8 @@ class App {
     this.expressApp.use(ExpressSession(
       { secret: 'My Secret Key',
         resave: false,
-        saveUninitialized: true}));
+        saveUninitialized: true
+      }));
     this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
   }
 
@@ -43,10 +44,7 @@ class App {
       res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages});
     });
 
-   
-
     this.expressApp.use('/', router);  // routage de base
-
     this.expressApp.use('/api/v1/sga', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
   }
 

@@ -9,14 +9,14 @@ html(lang="fr")
     link(rel='stylesheet' href='/css/style.css')
   body
     #main
-     form#formConnection.form-group(action='javascript:void(0);')
+     form#formConnection.form-group(action='/api/v1/sga/login/' method="GET")
        div.label Authentification
        div.username
-        input.form-control.col-sm-4(type="text" id="email" placeholder="email")
+        input.form-control.col-sm-4(type="text" name="email" id="email" placeholder="email")
        div.password
-        input(type="password" id="password" placeholder="mot de passe")
+        input(type="password" name="password"  id="password" placeholder="mot de passe")
        div.checkbox
         input(type='checkbox' name='agreement' checked)
-        |se rappeller de moi
-       button.connect(type="button") se connecter
+        |Se rappeller de moi
+       button.connect(type="submit") Se connecter
 <script type="text/javascript" src="/lib/main.js"></script>
