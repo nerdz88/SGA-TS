@@ -1,4 +1,5 @@
 import fetch = require('node-fetch');
+import {Session} from "inspector";
 import {SGA} from "../domaine/SGA";
 
 export class EnseignantControlleur {
@@ -34,13 +35,9 @@ export class EnseignantControlleur {
     }
 
     public async login(username: string, password: string) {
-
-        const reponse = await fetch(this.baseUrl + this.endPoint +
+        const response = await fetch(this.baseUrl + this.endPoint +
              'login?email='+encodeURIComponent(username)+'&password='+password);
-        
-            
-        const json = await reponse.json();
-        return json;
+        return await response.json();
     }
 
 }
