@@ -24,15 +24,7 @@ export class CoursService {
     }
 
     public recupererUnCours(token: string, idCours: string): Cours {
-        let leCours: Cours;
-        console.log("recupererUnCours");
-        console.log(this.recupererTousCours(token));
-        this.recupererTousCours(token).forEach(function (element) {
-            console.log(element.getID());
-            if (element.getID() == idCours)
-                leCours = element;
-        });
-
+        let leCours: Cours = this.recupererTousCours(token).find(c => c.getID() == idCours);
         if (leCours === undefined) {
             throw new NotFoundError("Le cours '" + idCours + "' n'existe pas.");
         }
@@ -40,13 +32,7 @@ export class CoursService {
     }
 
     public coursExiste(token: string, idCours: string): boolean {
-        let leCours: Cours;
-        this.recupererTousCours(token).forEach(function (element) {
-            console.log(element.getID());
-            if (element.getID() == idCours)
-                leCours = element;
-        });
-        return !(leCours === undefined)
+        return this.recupererTousCours(token).find(c => c.getID() == idCours) != undefined;        
     }
 
     public ajouterCours(token: string, leCours: Cours): void {

@@ -8,7 +8,7 @@ export class SGA {
     }
 
     public getCatalogueCours() {
-        return this.catalogueCours();
+      //  return this.catalogueCours();
     }
 
     /**
