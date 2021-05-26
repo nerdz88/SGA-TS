@@ -1,0 +1,25 @@
+@startuml 
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer tous les cours créés d'un enseignant
+participant ":coursControleur" as controleur
+participant "mCours:\nMap<String, Cours>" as mapCours
+
+->controleur : recupererCours(idEnseignant)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours)
+controleur -> mapCours : coursEnseignant = chercher(idEnseignant)
+note right : selon Transformer ID en objets 
+@enduml
+
+@startuml 
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer un cours crée d'un enseignant
+participant ":coursControleur" as controleur
+->controleur : recupererCours(idEnseignant, idCours)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours)
+controleur -> controleur : cours[] = recupererCours(idEnseignant)
+note right : Obtenir tous les cours de l'enseignant
+controleur -> controleur  : c = cours.chercher(idCours) 
+note right : selon Transformer ID en objets
+@enduml

@@ -36,6 +36,7 @@ export class CoursService {
     }
 
     public ajouterCours(token: string, leCours: Cours): void {
+
         let cours: Cours[] = this._coursSelonEnseignant.get(token);
         //Le prof est déjà dans la map
         if (cours === undefined) {
