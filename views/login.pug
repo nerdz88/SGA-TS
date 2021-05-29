@@ -9,7 +9,7 @@ html(lang="fr")
     link(rel='stylesheet' href='/css/style.css')
   body
     #main
-     form#formConnection.form-group(action='/api/v1/sga/login/' method="GET")
+     form#formConnection.form-group(action='/login/' method="POST")
        div.label Authentification
        div.username
         input.form-control.col-sm-4(type="text" name="email" id="email" placeholder="email")
