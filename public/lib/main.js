@@ -21,13 +21,9 @@ window.addEventListener("load", function()
         });
     });
 
-    this.document.querySelectorAll("button.rechercherCours").forEach(function(element)
-    {
-        element.addEventListener("click", function(val){
-            fetch('api/v1/sga/recupererCours', {
-                headers: "tokentokentoken"
-            })
-        })
-    } )
+    this.document.getElementById("accueil").addEventListener("click" , async function() {
+        console.log("this button Accueil is working like a champ !!!!!!!!!!!!")
+        window.location.href="http://localhost:3000/api/v1/sga/accueil";
+    })
 
 });

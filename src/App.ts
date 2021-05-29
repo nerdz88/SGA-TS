@@ -46,7 +46,7 @@ class App {
       } 
       else {
         let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-        res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
+        res.render('login', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
       }
     });
 

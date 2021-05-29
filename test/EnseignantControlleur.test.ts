@@ -38,7 +38,7 @@ describe('GET /api/v1/sga/recupererCours', () => {
         const reponse = await request.get('api/v1/sga/enseignant/cours/ajouter/1').set('Cookie', 'loggedIn=true;'+sessionCookie)
         expect(reponse.status).toBe(200);
     })
-    it("repond par un appel avec succes pour avoir les details d'un groupe cours", async() =>{
+    it("repond par un appel avec succes pour avoir les details d'un groupe cours", async() => {
         const reponse = await request.get('api/v1/sga/enseignant/cours/1/detail').set('Cookie', 'loggedIn=true;'+sessionCookie)
         expect(reponse.status).toBe(200); 
     })
