@@ -29,6 +29,14 @@ export class SgaRouteur {
         res.render("enseignant/accueil");
     }
 
+    public pageAccueil2(req: Request, res: Response, next: NextFunction) {
+        if(!req.session.loggedIn) {
+            res.sendStatus(401);
+            return
+        }
+        res.render("enseignant/accueil2")
+    }
+
     public pageAjouterCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
@@ -109,7 +117,7 @@ export class SgaRouteur {
                 //res.cookie("token", token);
                 (req as any).flash('Requete details des etudiants dans un cour');
                 res.status(200);
-                res.redirect("/api/v1/sga/enseignant/accueil");
+                res.redirect("/api/v1/sga/enseignant/accueil2");
             } else {
                 req.session.loggedIn = false;
                 (req as any).flash('Unauthorized');
@@ -139,6 +147,7 @@ export class SgaRouteur {
         this.router.get('/enseignant/cours/ajouter/:id', this.ajouterCours.bind(this));
         this.router.get('/enseignant/cours/:id/detail', this.recupererDetailCours.bind(this));
         this.router.get('/login/', this.login.bind(this))
+        this.router.get('/enseignant/accueil2', this.pageAccueil2.bind(this))
     }
 }
 
