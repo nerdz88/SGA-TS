@@ -1,19 +1,21 @@
-@startuml
+@startuml creerNouveauCours
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour créer un nouveau Cours
-participant ":SGA" as sga
-->sga : creerNouveauCours(token)
-participant "c:Cours" as cours
+participant ":EnseignantControlleur" as sga
 participant "<<Actor>> : \n SGB" as sgb
-participant "cours : \n Map<String,Cours>" as map
-sga-->sgb: response = getCourses(token)
-loop response.hasNext()
+participant "coursService : CoursService" as map
+participant "c:groupeCours" as cours
+
+->sga : cours = recupererCoursSGB(token)
+sga->sgb: response = recupererCours(token)
+-> sga : ajouterCours(numeroGroupe)
   create cours
-  sga-->cours : c = create()
+  sga->cours : c = create()
   note left : selon Créateur\n(SGA\n//agrège// Cours)
-  sga->map : put(c)
+  sga->map : ajouterCours(token, c)
   note right : selon Expert
-end loop
-<--sga : cours
+  -> sga : information = recupererCoursSGA(token)
+  note left : opération pour l'affichage,\npas une opération système
+  sga -> map : information = recupereCours(token)
 @enduml

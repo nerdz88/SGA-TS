@@ -75,6 +75,14 @@ export class SgaRouteur {
         });
     }
 
+    public pageAccueil2(req: Request, res: Response, next: NextFunction) {
+        if(!req.session.loggedIn) {
+            res.sendStatus(401);
+            return
+        }
+        res.render("enseignant/accueil2")
+    }
+
     public pageAjouterCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
@@ -136,7 +144,6 @@ export class SgaRouteur {
         let sigleCours = req.params.sigle;
         res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(tokenEnseignant, sigleCours) });
     }
-
 
 
     private _errorCode500(error: any, req, res: Response<any>) {

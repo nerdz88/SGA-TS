@@ -1,22 +1,46 @@
 doctype html
 html(lang="fr")
   head
-    title Page de connexion
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
-    link(rel='stylesheet' href='/css/style.css')
-  body
-    #main
-     form#formConnection.form-group(action='/login/' method="POST")
-       div.label Authentification
-       div.username
-        input.form-control.col-sm-4(type="text" name="email" id="email" placeholder="email")
-       div.password
-        input(type="password" name="password"  id="password" placeholder="mot de passe")
-       div.checkbox
-        input(type='checkbox' name='agreement' checked)
-        |Se rappeller de moi
-       button.connect(type="submit") Se connecter
-<script type="text/javascript" src="/lib/main.js"></script>
+    title Page d'accueil
+    link(rel='stylesheet' href='/css/materialStyle.css')
+      
+
+.materialContainer
+  .box
+    form#formConnection.form-group(action='/login' method="POST")
+      .title LOGIN
+      .input
+        label(for='name') Username
+        input#name(type='text' name='email')
+        span.spin
+      .input
+        label(for='pass') Password
+        input#pass(type='password' name='password')
+        span.spin
+      .button.login
+        button#login(type='submit')
+          span GO
+          i.fa.fa-check
+      a.pass-forgot(href='') Forgot your password?
+  .overbox
+    .material-button.alt-2
+      span.shape
+    .title REGISTER
+    .input
+      label(for='regname') Username
+      input#regname(type='text' name='regname')
+      span.spin
+    .input
+      label(for='regpass') Password
+      input#regpass(type='password' name='regpass')
+      span.spin
+    .input
+      label(for='reregpass') Repeat Password
+      input#reregpass(type='password' name='reregpass')
+      span.spin
+    .button
+      button
+        span NEXT
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/lib/login.js"></script>

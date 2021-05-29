@@ -4,8 +4,8 @@ hide footbox
 actor ":Professeur" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererCours(idEnseignants)
-professeur <- systeme : Liste de cours de l'enseignant
-professeur -> systeme : chercherCours(idCours)
-professeur <- systeme : Information du cours et affiche la liste des étudiants inscrits.
+professeur ->  systeme : recupererCours(token : String)
+professeur <-- systeme : Liste de cours de l'enseignant
+professeur -> systeme : chercherCours(numeroGroupe : int)
+professeur <-- systeme : Information du cours et affiche la liste des étudiants inscrits.
 @enduml
