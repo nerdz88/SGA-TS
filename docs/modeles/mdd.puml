@@ -4,7 +4,7 @@ skinparam RoundCorner 20
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
-class CatalogueCours {
+class CoursService {
 
 }
 
@@ -24,20 +24,13 @@ class SGA {
 
 }
 
-class Operation {
-
-}
-
 class Etudiant {
     nom : String
 }
 
-SGA"1" *-- "1"CatalogueCours : contient >
-Etudiant"1..*" --* "1"GroupeCours : sont-inscrit-dans >
-Cours"1" o-- "*"GroupeCours : contient >
-CatalogueCours"1" *-- "*"Cours : contient >
-Enseignant"*" -- "1"SGA : utilise >
-Operation"1" -- "1"Cours : est-effectué-sur >
-SGA"1" -- "*"Operation : effectue >
-
+SGA "1" -- "1"CoursService : fais des opérations avec >
+Etudiant "1..*" --* "1"GroupeCours : sont-inscrit-dans >
+Cours "1" o-- "*"GroupeCours : contient >
+CoursService "1" *-- "*"Cours : contient >
+Enseignant "*" -- "1"SGA : utilise >
 @enduml

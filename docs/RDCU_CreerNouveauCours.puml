@@ -1,4 +1,4 @@
-@startuml
+@startuml creerNouveauCours
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour créer un nouveau Cours
