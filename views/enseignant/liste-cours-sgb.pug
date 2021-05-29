@@ -10,9 +10,12 @@ html
     
       ul.entries
         each unCours in cours
-          li         
-           strong #{unCours._sigle} - #{unCours._titre} - Gr: #{unCours._groupe}       
-           a(class="btn-ajouter-cours", href="/api/v1/sga/enseignant/cours/ajouter/" + unCours._id) Ajouter    
+          li 
+            strong #{unCours._sigle} - #{unCours._titre} - Gr: #{unCours._groupe} 
+            br
+            form.form-ajouter-cours(id=unCours._id, action="/enseignant/cours/ajouter", method="POST") 
+              input.coursData(name="data", type="hidden", value=unCours)
+              button.connect(type="submit") Ajouter
         else
           li
             em Vous n'avez pas de groupes-cours

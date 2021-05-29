@@ -97,6 +97,9 @@ export class SgaRouteur {
         });
     }
 
+    /**
+     * Methode POST pour creer cours
+     */
     public ajouterCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
@@ -104,11 +107,13 @@ export class SgaRouteur {
         }
         let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
 
-        let idCours = req.params.id;
-        let self = this;
+        let coursSGB = JSON.parse(req.body.data) as any;
+        console.log("=============");
+        console.log(coursSGB);
 
-        self.controlleur.ajouterCours(tokenEnseignant, idCours)
-            .then(() => res.redirect("/api/v1/sga/enseignant/cours/" + idCours + "/detail"))
+        let self = this;
+        self.controlleur.ajouterCours(tokenEnseignant, coursSGB)
+            .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle))
             .catch(function (error) {
                 self._errorCode500(error, req, res);
             });
@@ -172,7 +177,7 @@ export class SgaRouteur {
 
         //Cours
         this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours
-        this.router.get('/enseignant/cours/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
+        this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
         this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
         this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
 
