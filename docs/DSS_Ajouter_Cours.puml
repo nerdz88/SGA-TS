@@ -1,23 +1,11 @@
 @startuml DSS_Ajouter_Cours_Succes
-title DSS_Ajouter_Cours_Succes
+title DSS. ajouter cours
 hide footbox
-actor ":Professeur" as prof
+actor ":Enseignant" as prof
 participant ":Systeme" as sys
 
-prof -> sys : creerNouveauCours()
+prof -> sys : recupererCoursSgb(token : String)
 sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
-prof -> sys : selectionnerGroupeCours()
+prof -> sys : ajouterCours(tokenEnseignant : String, idCours : String)
 sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant
-@enduml
-
-@startuml DSS_Ajouter_Cours_Groupe_Cours_Selectionne_Existe_deja
-title DSS_Ajouter_Cours_Groupe_Cours_Selectionne_Existe_deja
-hide footbox
-actor ":Professeur" as prof
-participant ":Systeme" as sys
-
-prof -> sys : creerNouveauCours()
-sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
-prof -> sys : selectionnerGroupeCours()
-sys --> prof : message erreur
 @enduml

@@ -1,11 +1,11 @@
-@startuml DSS de Récupérer cours
-title DSS de Récupérer cours
+@startuml DSS Récupérer cours
+title DSS. de Récupérer cours
 hide footbox
-actor ":Professeur" as professeur
+actor ":Enseignant" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererCours(token : String)
-professeur <-- systeme : Liste de cours de l'enseignant
-professeur -> systeme : chercherCours(numeroGroupe : int)
-professeur <-- systeme : Information du cours et affiche la liste des étudiants inscrits.
+professeur ->  systeme : recupererTousCoursSga(token : String)
+professeur <-- systeme : liste de cours de l'enseignant
+professeur -> systeme : recupererUnCoursSga(token : String, idCours : String)
+professeur <-- systeme : information du cours et affiche la liste des étudiants inscrits.
 @enduml

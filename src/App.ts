@@ -39,19 +39,19 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    let router = express.Router();
-    router.get('/', (req, res, next) => {
-      if (req.session.loggedIn) {
-        res.redirect("/api/v1/sga/enseignant/accueil");
-      } 
-      else {
-        let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-        res.render('login', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
-      }
-    });
+    // let router = express.Router();
+    // router.get('/', (req, res, next) => {
+    //   if (req.session.loggedIn) {
+    //     res.redirect("/api/v1/sga/enseignant/accueil");
+    //   } 
+    //   else {
+    //     let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
+    //     res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
+    //   }
+    // });
 
-    this.expressApp.use('/', router);  // routage de base
-    this.expressApp.use('/api/v1/sga', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+    //this.expressApp.use('/', router);  // routage de base
+    this.expressApp.use('/', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
   }
 
 }
