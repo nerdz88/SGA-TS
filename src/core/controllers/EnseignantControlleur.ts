@@ -35,7 +35,7 @@ export class EnseignantControlleur {
 
     public recupererElement(params : any){
         let operation = this.getOperationParCle(params.type);
-        operation.recupererObjet(params);
+        return operation.recupererObjet(params);
     }
 
     public recupererElementById(params : any){

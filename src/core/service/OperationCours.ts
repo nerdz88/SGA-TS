@@ -1,5 +1,6 @@
 import { NotFoundError } from '../errors/NotFoundError';
 import {Cours} from '../model/Cours';
+import fetch = require('node-fetch');
 import { GroupeCours } from '../model/GroupeCours';
 import {Operation} from './Operation';
 export class OperationCours extends Operation<Cours> {
@@ -54,6 +55,8 @@ export class OperationCours extends Operation<Cours> {
 
     }
     recupererObjet(params: any) {
+        if (super.operationObject == undefined)
+           return [];
         return super.operationObject;
     }
     

@@ -90,7 +90,6 @@ export class SgaRouteur {
             res.sendStatus(401);
             return;
         }
-        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
         let params={
             token:this.token,
             type:TYPES.COURS,
@@ -209,7 +208,7 @@ export class SgaRouteur {
 
         //Cours, Devoirs, Question ou Questionnaire
         this.router.get('/enseignant/cours',this.recupererCours.bind(this));
-        //this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
+        this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
         this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
 
         //Cours
