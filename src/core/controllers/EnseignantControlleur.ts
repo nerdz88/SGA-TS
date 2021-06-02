@@ -20,6 +20,7 @@ export class EnseignantControlleur {
     constructor() {
         this.operations = new Map<String,Operation<any>>();
         this.operations.set(TYPES.COURS,new OperationCours());
+        
         // Rajouter les question,questionaires et devoirs à fur et à mesure
 
         //this.sga = new SGA();
@@ -28,9 +29,10 @@ export class EnseignantControlleur {
 
     }
 
-    public ajouterElement(params : any){
+    public async ajouterElement(params : any){
         let operation = this.getOperationParCle(params.type);
-        operation.creerObjet(params.cours);
+        console.log("----> objet créer")
+        operation.creerObjet(params);
     }
 
     public recupererElement(params : any){

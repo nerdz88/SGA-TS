@@ -125,14 +125,15 @@ export class SgaRouteur {
         let self = this;
         let params = {
             type:TYPES.COURS,
-            cours:coursSGB
-        }
+            cours:coursSGB,
+            token: this.token
+        }       
 
-        /*self.controlleur.ajouterCours(tokenEnseignant, coursSGB)
-            .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle))
+        self.controlleur.ajouterElement(params)        
+            .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle + "/" + coursSGB._id))
             .catch(function (error) {
                 self._errorCode500(error, req, res);
-            });*/
+            });
     }
 
     /**
@@ -152,9 +153,8 @@ export class SgaRouteur {
         let params = {
             type:TYPES.COURS,
         }
+        console.log("===>")
         let value = this.controlleur.recupererElement(params);
-        console.log("-------")
-        console.log(value)
         res.render("enseignant/liste-cours-sga",{cours:value})
     }
 
@@ -173,11 +173,13 @@ export class SgaRouteur {
         //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
 
         let sigleCours = req.params.sigle;
+        let idCoursGroupe = req.params.idCoursGroupe;
         let params = {            
             type:TYPES.COURS,
             sigle:sigleCours
         }
-        res.render("enseignant/detail-cours", { cours:this.controlleur.recupererElementById(params)});
+        let cours = this.controlleur.recupererElementById(params);
+        res.render("enseignant/detail-cours", { cours: cours, groupe: cours.getGroupeCoursById(idCoursGroupe) });
         //res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(this.token, sigleCours) });
         
 
@@ -209,14 +211,15 @@ export class SgaRouteur {
         //Cours, Devoirs, Question ou Questionnaire
         this.router.get('/enseignant/cours',this.recupererCours.bind(this));
         this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
-        this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
+        this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); // Détail d'un cours
+        this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
 
         //Cours
         /*
         **this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours
         **this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
         **this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
-        this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
+        **this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
         */
         // this.router.get('/enseignant/cours', this.recupererCours.bind(this));
         // this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this));

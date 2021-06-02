@@ -10,7 +10,7 @@ export abstract class Operation<T> {
     protected operationObject : T[];
 
     constructor(){
-        this.operationObject = [];
+        this.operationObject = new Array()
     }
 
     abstract creerObjet(params : any): void

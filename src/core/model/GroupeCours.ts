@@ -20,6 +20,12 @@ export class GroupeCours {
         //this._cours = cours;
         this._etudiants = [];
     }
+    
+    ajouterEtudiants(etudiants: any) {
+        etudiants.forEach((element) => {
+           this._etudiants.push(new Etudiant(element._id, element._last_name, element._first_name, element._email, element._permanent_code));
+        }) 
+    }
 
     public getID() {
         return this._id;

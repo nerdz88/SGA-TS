@@ -55,7 +55,7 @@ export class CoursService {
         if (!this.coursExiste(token, sigle)) {
             return false;
         }
-        return this._coursSelonEnseignant.get(token).get(sigle).getGroupeCours(idGroupeCours) != undefined;
+        return this._coursSelonEnseignant.get(token).get(sigle).getGroupeCoursById(idGroupeCours) != undefined;
     }
 
     private creerCours(coursSgb: any): Cours {

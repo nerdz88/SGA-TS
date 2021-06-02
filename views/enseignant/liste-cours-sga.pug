@@ -10,9 +10,12 @@ html
     
       ul.entries
         each unCours in cours
-          li         
-           strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{unCours.getGroupeCours()[0].getNumero()}       
-           a(class="btn-detail-cours", href="/api/v1/sga/enseignant/cours/" + unCours.getID() + "/detail") Détail 
+          each groupe in unCours.getGroupeCours()
+            li         
+              strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
+              a(class="btn-detail-cours", href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
+          else
+            strong #{unCours.getSigle()} - #{unCours.getTitre()} 
         else
           li
             em Vous n'avez pas de cours

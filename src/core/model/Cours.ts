@@ -1,23 +1,25 @@
-import { threadId } from 'worker_threads';
-import { InvalidParameterError } from '../errors/InvalidParameterError';
+import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { GroupeCours } from "./GroupeCours"
 export class Cours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _sigle: string;
     private _titre: string;
     private _nbMaxEtudiant: number;
-
-    private groupeCours: Map<number, GroupeCours>;
-
+    private groupeCours : GroupeCours[]
+    //private groupeCours: Map<number, GroupeCours>;
     constructor(sigle: string, titre: string, nbMaxEtudiant: number) {
         this._titre = titre;
         this._sigle = sigle;
         this._nbMaxEtudiant = nbMaxEtudiant;
-        this.groupeCours = new Map<number, GroupeCours>();
+        //this.groupeCours = new Map<number, GroupeCours>();
+        this.groupeCours =new Array()
     }
 
     public ajoutGroupeCours(groupeCours: GroupeCours): void {
-        this.groupeCours.set(groupeCours.getID(), groupeCours);
+        if(this.groupeCours.find(c=>c.getID() == groupeCours.getID()) != undefined){
+            throw new AlreadyExistsError("Le groupe " + groupeCours.getID() + "existe déjà");  
+        }
+        this.groupeCours.push(groupeCours)
     }
 
     public getSigle() {
@@ -32,20 +34,21 @@ export class Cours {
         return this._nbMaxEtudiant;
     }
 
-    // public getGroupeCours(): Map {
-    //     return this.groupeCours;
-    // }
+     public getGroupeCours(){
+         return this.groupeCours;
+     }
 
     public deleteGroupeById(id: number){
-        this.groupeCours.delete(id)
+        //this.groupeCours.delete(id)
+
     }
 
     public getTailleCours(){
-        return this.groupeCours.size
+        return this.groupeCours.length
     }
 
-    public getGroupeCours(id: number): GroupeCours {
-        return this.groupeCours.get(id);
+    public getGroupeCoursById(id: number) {
+        return this.groupeCours.find(c => c.getID() == id);
     }
     // public toJSON() {
     //     return {

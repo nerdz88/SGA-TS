@@ -10,29 +10,45 @@ export class OperationCours extends Operation<Cours> {
     }
 
 
-    creerObjet(params: any): void {
-        try{
-            if(super.operationObject.find(c => c.getSigle() == params._sigle)){
-
-            }else{
-                let cours = new Cours(params.sigle,params._titre,params._nb_max_student);
-                let groupe = new GroupeCours(params._id, params._groupe, params.date_debut, params.date_fin)
-                cours.ajoutGroupeCours(groupe)
-                super.operationObject.push(cours);
+    async creerObjet(params: any): Promise<void>{
+        try {
+            let cours = params.cours;
+            let index=-1;
+            if(this.operationObject!=undefined){
+                this.operationObject.forEach((c,i)=>{if(c.getSigle()==cours._sigle){ index=i}})
             }
-        }catch(error){
-            
+
+            let etudiants = await this.recupererJsonSGB({typeJson:"etudiant", id:cours._id, token: params.token})
+            if(index!=-1){
+                let groupe = new GroupeCours(cours._id, cours._groupe, cours._date_debut, cours._date_fin)
+                groupe.ajouterEtudiants(etudiants);
+                console.log(groupe);
+                this.operationObject[index].ajoutGroupeCours(groupe);
+            }else if(cours._sigle!=null){
+                let course = new Cours(cours._sigle,cours._titre,cours._nb_max_student);
+                let groupe = new GroupeCours(cours._id, cours._groupe, cours._date_debut, cours._date_fin)
+                groupe.ajouterEtudiants(etudiants);
+                course.ajoutGroupeCours(groupe);
+                console.log(course);
+                this.operationObject.push(course);                
+            }
         }
+        catch(error) {
+           //return new Promise<fail
+            return error;
+        }
+
     }
 
     
     recupererObjetParId(id: any) {
-        let leCours: Cours = super.operationObject.find(c => c.getSigle() == id);
+        let leCours: Cours = this.operationObject.find(c => c.getSigle() == id);
         if (leCours == undefined) {
             throw new NotFoundError("Le cours '" + id + "' n'existe pas.");
         }
         return leCours;
-    }
+    } 
+    
 
     /**
      * 
@@ -43,7 +59,7 @@ export class OperationCours extends Operation<Cours> {
             let cours = this.recupererObjetParId(params.sigle);
             cours.deleteGroupeById(params.groupe);
             if(cours.getTailleCours()==0){
-                super.operationObject.forEach((cours,index)=>{
+                this.operationObject.forEach((cours,index)=>{
                     if(cours.getSigle()==params.sigle){
                         delete this.operationObject[index];
                     }
@@ -55,9 +71,9 @@ export class OperationCours extends Operation<Cours> {
 
     }
     recupererObjet(params: any) {
-        if (super.operationObject == undefined)
+        if (this.operationObject == undefined)
            return [];
-        return super.operationObject;
+        return this.operationObject;
     }
     
     async recupererJsonSGB(params: any){
@@ -69,10 +85,10 @@ export class OperationCours extends Operation<Cours> {
                 return json;
             }
             case "etudiant":{
-                const reponse = await fetch("http://127.0.0.1:3001/api/v1/courses"+ params.id + "/students",
+                const reponse = await fetch("http://127.0.0.1:3001/api/v1/course/"+ params.id + "/students",
                  { headers: { token: params.token } })
                 const json = await reponse.json()
-                return json;
+                return json.data;
             }
         }
     }
