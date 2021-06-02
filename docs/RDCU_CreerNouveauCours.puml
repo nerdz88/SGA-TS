@@ -1,19 +1,23 @@
-@startuml
+@startuml creerNouveauCours
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour créer un nouveau Cours
-participant ":SGA" as sga
-->sga : creerNouveauCours(token)
-participant "c:Cours" as cours
-participant "<<Actor>> : \n SGB" as sgb
-participant "cours : \n Map<String,Cours>" as map
-sga-->sgb: response = getCourses(token)
-loop response.hasNext()
+title RDCU. pour créer un nouveau Cours
+participant ":EnseignantControlleur" as sga
+participant "<<Actor>> : Sgb" as sgb
+participant "coursService : CoursService" as map
+participant "c:GroupeCours" as cours
+
+->sga : cours = recupererCoursSgb(token)
+note left : Selon Contôleur,\nreçoit la première opération système
+sga->sgb: cours = recupererCours(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
+-> sga : ajouterCours(numeroGroupe)
+ note left : Selon Contôleur,\nreçoit la deuxième opération système
   create cours
-  sga-->cours : c = create()
-  note left : selon Créateur\n(SGA\n//agrège// Cours)
-  sga->map : put(c)
-  note right : selon Expert
-end loop
-<--sga : cours
+  sga->cours : c = create()
+  note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
+  sga->map : ajouterCours(tokenEnseignant, c)
+  -> sga : information = recupererCoursSga(token)
+  note left : JeuRisk est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
+  sga -> map : information = recupereCours(token)
 @enduml

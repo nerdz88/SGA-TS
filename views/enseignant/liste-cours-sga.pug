@@ -2,17 +2,17 @@ html
   head
     title= title
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
-    link(rel='stylesheet' href='/css/style.css')
+    <!-- link(rel='stylesheet' href='/css/style.css') -->
   body
 
     div.container
-      h1 Cours de TODO 
+      h1 Vos cours
     
       ul.entries
         each unCours in cours
           li         
-           strong #{unCours._sigle} - #{unCours._titre} - Gr: #{unCours._groupe}       
-            a(class="btn-detail-cours", href="/api/v1/sga/enseignant/cours/" + unCours._id + "/detail") Détail    
+           strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{unCours.getGroupeCours()[0].getNumero()}       
+           a(class="btn-detail-cours", href="/api/v1/sga/enseignant/cours/" + unCours.getID() + "/detail") Détail 
         else
           li
             em Vous n'avez pas de cours

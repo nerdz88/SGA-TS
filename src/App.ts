@@ -29,25 +29,29 @@ class App {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
     this.expressApp.use(ExpressSession(
-      { secret: 'My Secret Key',
+      {
+        secret: 'My Secret Key',
         resave: false,
-        saveUninitialized: true}));
+        saveUninitialized: true
+      }));
     this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
   }
 
   // Configure API endpoints.
   private routes(): void {
-    let router = express.Router();
-    router.get('/', (req, res, next) => {
-      let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-      res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages});
-    });
+    // let router = express.Router();
+    // router.get('/', (req, res, next) => {
+    //   if (req.session.loggedIn) {
+    //     res.redirect("/api/v1/sga/enseignant/accueil");
+    //   } 
+    //   else {
+    //     let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
+    //     res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
+    //   }
+    // });
 
-   
-
-    this.expressApp.use('/', router);  // routage de base
-
-    this.expressApp.use('/api/v1/sga', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+    //this.expressApp.use('/', router);  // routage de base
+    this.expressApp.use('/', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
   }
 
 }
