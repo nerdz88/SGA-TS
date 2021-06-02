@@ -36,6 +36,14 @@ export class Cours {
     //     return this.groupeCours;
     // }
 
+    public deleteGroupeById(id: number){
+        this.groupeCours.delete(id)
+    }
+
+    public getTailleCours(){
+        return this.groupeCours.size
+    }
+
     public getGroupeCours(id: number): GroupeCours {
         return this.groupeCours.get(id);
     }

@@ -3,6 +3,7 @@ import { token } from 'morgan';
 import * as flash from 'node-twinkle';
 
 import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
+import {TYPES} from "../core/service/Operation"
 import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 
 
@@ -10,7 +11,7 @@ import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 export class SgaRouteur {
     router: Router;
     controlleur: EnseignantControlleur;  // contrôleur GRASP
-
+    token : string
     /**
      * Initialize the Router
      */
@@ -29,6 +30,7 @@ export class SgaRouteur {
             res.redirect("/login");
         }
         else {
+            this.token=(req.headers.token ? req.headers.token : req.session.token) as string
             res.render("enseignant/accueil");
         }
     }
@@ -88,13 +90,23 @@ export class SgaRouteur {
             res.sendStatus(401);
             return;
         }
-        let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
-
-        let reponse = this.controlleur.recupererCoursSGB(tokenEnseignant);
+        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
+        let params={
+            token:this.token,
+            type:TYPES.COURS,
+            typeJson:"cours"
+        }
+        let reponse = this.controlleur.recupererElementSGB(params);
         reponse.then(function (reponse) {
             //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
             res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
         });
+
+        /*let reponse = this.controlleur.recupererCoursSGB(tokenEnseignant);
+        reponse.then(function (reponse) {
+            //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
+            res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
+        });*/
     }
 
     /**
@@ -105,18 +117,23 @@ export class SgaRouteur {
             res.sendStatus(401);
             return;
         }
-        let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
+        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
 
         let coursSGB = JSON.parse(req.body.data) as any;
         console.log("=============");
         console.log(coursSGB);
 
         let self = this;
-        self.controlleur.ajouterCours(tokenEnseignant, coursSGB)
+        let params = {
+            type:TYPES.COURS,
+            cours:coursSGB
+        }
+
+        /*self.controlleur.ajouterCours(tokenEnseignant, coursSGB)
             .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle))
             .catch(function (error) {
                 self._errorCode500(error, req, res);
-            });
+            });*/
     }
 
     /**
@@ -128,8 +145,18 @@ export class SgaRouteur {
             res.sendStatus(401);
             return;
         }
-        let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
-        res.render("enseignant/liste-cours-sga", { cours: this.controlleur.recupererTousCoursSGA(tokenEnseignant) });
+        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
+        //res.render("enseignant/liste-cours-sga", { cours: this.controlleur.recupererTousCoursSGA(tokenEnseignant) });
+        
+        
+        //params du frontend normalement... X(
+        let params = {
+            type:TYPES.COURS,
+        }
+        let value = this.controlleur.recupererElement(params);
+        console.log("-------")
+        console.log(value)
+        res.render("enseignant/liste-cours-sga",{cours:value})
     }
 
     /**
@@ -144,10 +171,17 @@ export class SgaRouteur {
             return;
         }
         //TODO remove le token hardcodé apres le login
-        let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
+        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
 
         let sigleCours = req.params.sigle;
-        res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(tokenEnseignant, sigleCours) });
+        let params = {            
+            type:TYPES.COURS,
+            sigle:sigleCours
+        }
+        res.render("enseignant/detail-cours", { cours:this.controlleur.recupererElementById(params)});
+        //res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(this.token, sigleCours) });
+        
+
     }
 
 
@@ -173,14 +207,18 @@ export class SgaRouteur {
         this.router.get('/login', this.loginPage.bind(this));
         this.router.post('/login', this.login.bind(this));
 
-
+        //Cours, Devoirs, Question ou Questionnaire
+        this.router.get('/enseignant/cours',this.recupererCours.bind(this));
+        //this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
+        this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
 
         //Cours
-        this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours
-        this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
-        this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
+        /*
+        **this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours
+        **this.router.get('/enseignant/cours/detail/:sigle', this.recupererDetailCours.bind(this)); // Détail d'un cours
+        **this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
         this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
-
+        */
         // this.router.get('/enseignant/cours', this.recupererCours.bind(this));
         // this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this));
         // this.router.get('/enseignant/cours/ajouter/:id', this.ajouterCours.bind(this));
