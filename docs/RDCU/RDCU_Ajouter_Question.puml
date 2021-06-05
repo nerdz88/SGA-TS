@@ -1,0 +1,28 @@
+@startuml ajouterQuestion
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouter question
+participant ":EnseignantControleur" as sga
+participant "operationCours : OperationCours" as opCours
+participant "operationQuestion : OperationQuestion" as opQuestion
+participant "q:Question" as question
+
+->sga : cours = recupererCoursSga(token)
+note left : Selon Contôleur,\nreçoit la première opération système
+sga->opCours: cours = recupererCours(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
+loop [!terminerQuestion]
+-> sga : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+ note left : Selon Contôleur,\nreçoit la deuxième opération système 
+  sga->opQuestion : ajouterElement(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+  create question
+  opQuestion->question : q = create()
+  note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
+  opQuestion->opQuestion : ajouterQuestion(q)
+end
+-> sga : terminerAjouterQuestion()
+note left : Ce n'est pas une opération système, \nmais nous aide à déterminer la fin de la boucle
+  -> sga : information = recupererCoursSga(idGroupeCours)
+  note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
+  sga -> opQuestion : information = recupereCours(token)
+@enduml

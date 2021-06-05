@@ -1,10 +1,10 @@
 @startuml creerNouveauCours
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. pour créer un nouveau Cours
-participant ":EnseignantControlleur" as sga
+title RDCU pour créer un nouveau Cours
+participant ":EnseignantControleur" as sga
 participant "<<Actor>> : Sgb" as sgb
-participant "coursService : CoursService" as map
+participant "OperationCours : OperationCours" as map
 participant "c:GroupeCours" as cours
 
 ->sga : cours = recupererCoursSgb(token)
@@ -18,6 +18,6 @@ note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toute
   note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
   sga->map : ajouterCours(tokenEnseignant, c)
   -> sga : information = recupererCoursSga(token)
-  note left : JeuRisk est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
+  note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
   sga -> map : information = recupereCours(token)
 @enduml

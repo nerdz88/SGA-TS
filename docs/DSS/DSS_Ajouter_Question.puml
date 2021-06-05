@@ -1,0 +1,19 @@
+@startuml DSS_Ajouter_Question
+title DSS ajouter question
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererTousCoursSga(token : String)
+professeur <-- systeme : liste de cours de l'enseignant
+professeur -> systeme : recupererUnCoursSgaQuestion(token : String, idCours : String)
+professeur <-- systeme : questions associées au cours
+
+loop !terminerQuestion
+professeur -> systeme : ajouterQuestion(tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
+systeme --> professeur : liste de questions mise à jour
+end
+professeur -> systeme : terminerAjouterQuestion()
+
+
+@enduml

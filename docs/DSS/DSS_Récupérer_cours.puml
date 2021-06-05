@@ -1,5 +1,5 @@
-@startuml DSS Récupérer cours
-title DSS. de Récupérer cours
+@startuml DSS_Récupérer_Cours
+title DSS récupérer cours
 hide footbox
 actor ":Enseignant" as professeur
 participant ":Systeme" as systeme

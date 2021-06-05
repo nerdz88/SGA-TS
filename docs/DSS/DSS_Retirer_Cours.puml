@@ -1,0 +1,16 @@
+@startuml DSS_Retirer_Cours
+title DSS retirer cours
+hide footbox
+actor ":Enseignant" as prof
+participant ":Systeme" as sys
+
+prof->  sys : recupererTousCoursSga(token : String)
+sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
+prof -> sys : recupererUnCoursSga(token : String, idCours : String)
+sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant
+prof -> sys : retirerCours(token : String, idCours : String)
+sys --> prof : demande de confirmation
+prof -> sys : confirmer()
+sys --> prof : nouvelle liste de cours
+
+@enduml

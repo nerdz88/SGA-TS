@@ -1,0 +1,22 @@
+@startuml recupererQuestion
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer toutes les questions créées d'un enseignant
+participant ":EnseignantControleur" as controleur
+participant "operationQuestion : OperationQuestion" as mapCours
+
+->controleur : questions = recupererToutesQuestionsSga(token)
+note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
+controleur -> mapCours : questions = recupererToutCours(token)
+@enduml
+
+@startuml recupererUneQuestion
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer une question créée d'un enseignant
+participant ":coursControleur" as controleur
+participant "OperationCours : OperationCours" as mapCours
+->controleur : question = recupererUneQuestionSga(token, idQuestion)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+controleur -> mapCours : question = recupererUneQuestion(token, idQuestion)
+@enduml

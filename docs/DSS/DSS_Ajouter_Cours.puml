@@ -1,5 +1,5 @@
 @startuml DSS_Ajouter_Cours_Succes
-title DSS. ajouter cours
+title DSS Ajouter Cours Succes
 hide footbox
 actor ":Enseignant" as prof
 participant ":Systeme" as sys

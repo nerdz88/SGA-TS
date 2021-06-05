@@ -1,8 +1,8 @@
 @startuml récupérer tous les cours créés
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. Récupérer tous les cours créés d'un enseignant
-participant ":CoursControleur" as controleur
+title RDCU pour récupérer tous les cours créés d'un enseignant
+participant ":EnseignantControleur" as controleur
 participant "coursService : CoursService" as mapCours
 
 ->controleur : cours = recupererTousCoursSga(token)
@@ -13,9 +13,9 @@ controleur -> mapCours : cours = recupererTousCours(token)
 @startuml récupérer un cours
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. Récupérer l'information d'un cours créés d'un enseignant
-participant ":coursControleur" as controleur
-participant "coursService : CoursService" as mapCours
+title RDCU pour récupérer un cours créé d'un enseignant
+participant ":EnseignantControleur" as controleur
+participant "coursService : coursService" as mapCours
 ->controleur : cours = recupererUnCoursSga(token, idCours)
 note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
 controleur -> mapCours : cours = recupererUnCours(token, idCours)
