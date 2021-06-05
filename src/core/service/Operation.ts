@@ -23,5 +23,5 @@ export abstract class Operation<T> {
 
     abstract recupererJsonSGB(params : any) : any
 
-    abstract updateObjet(params : any) : void
+    //abstract updateObjet(params : any) : void
 }

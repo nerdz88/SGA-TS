@@ -96,11 +96,11 @@ export class OperationCours extends Operation<Cours> {
      * 
      * @param params prend un nouveau coursSGB en paramètre...
      */
-    updateObjet(params: any): void {
+    /*updateObjet(params: any): void {
         if(params.cours==null){
             //throw new exception
         }
         this.supprimerObjet({sigle:params.cours._sigle,groupe:params._id})
         this.creerObjet(params.cours)
-    }
+    }*/
 }

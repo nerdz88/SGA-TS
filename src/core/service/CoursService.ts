@@ -1,4 +1,4 @@
-import { NotFoundError } from "../errors/NotFoundError";
+/*import { NotFoundError } from "../errors/NotFoundError";
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import fetch = require('node-fetch');
 import { Application, Request, Response } from 'express'
@@ -103,4 +103,4 @@ export class CoursService {
     //     return c;
     // }
 
-}
+}*/

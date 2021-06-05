@@ -39,8 +39,12 @@ export class Cours {
      }
 
     public deleteGroupeById(id: number){
-        //this.groupeCours.delete(id)
-
+        this.groupeCours.forEach((groupeCours,index)=>{
+            if(groupeCours.getID() == id){
+                this.groupeCours.splice(index,1);
+                //break;
+            }
+        });
     }
 
     public getTailleCours(){
