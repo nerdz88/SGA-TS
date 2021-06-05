@@ -188,12 +188,12 @@ export class SgaRouteur {
             return res.sendStatus(401);
         }
 
-        let groupeCours = req.params.groupeCours;
-        let sigleCours = req.params.sigleCours;
+        let sigleCours = req.params.sigle;
+        let idCoursGroupe = req.params.idCoursGroupe;
         let params = {
             type: TYPES.COURS,
             sigle : sigleCours,
-            groupe : groupeCours
+            groupe : idCoursGroupe
         }
         this.controlleur.supprimerElement(params);
         res.redirect("/enseignant/cours");
@@ -311,7 +311,7 @@ export class SgaRouteur {
         this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
         this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); // Détail d'un cours
         this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
-        this.router.get('/enseignant/cours/supprimer', this.supprimerCours.bind(this));
+        this.router.get('/enseignant/cours/supprimer/:sigle/:idCoursGroupe', this.supprimerCours.bind(this));
 
 
         //Question
