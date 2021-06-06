@@ -43,13 +43,10 @@ export class OperationQuestion extends Operation<Question> {
     }
 
     supprimerObjet(id: any): boolean {
-        if (id != null) {
-            this.operationObject.forEach((question, index) => {
-                if (question.getId() == id) {
-                    this.operationObject.splice(index, 1);
-                    return true;
-                }
-            });
+        let index = this.operationObject.findIndex(q => q.getId() == id);        
+        if (id != -1) {
+            this.operationObject.splice(index, 1);
+            return true;
         }
         return false;
     }

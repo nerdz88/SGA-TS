@@ -18,4 +18,14 @@ block content
       else
         li
           em Pas d'étudiants dans le cours
+
+
+   
+    a(class="btn btn-delete-cours" href="javascript:void(0)" 
+      data-id-groupe=groupe.getID() 
+      data-no-groupe=groupe.getNumero() 
+      data-sigle=cours.getSigle()) Supprimer 
   //- End bloc content
+
+block more-script
+  script(type="text/javascript" src="/lib/enseignant/cours.js")

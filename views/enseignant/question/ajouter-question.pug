@@ -5,7 +5,7 @@ block content
     div.w3-container(style='padding:32px')
         h1 Ajouter une question   
 
-        if cours
+        if cours && cours.length > 0
             form.form-ajouter-question(id="form-ajouter-question") 
                 //- Début Form 
                 h3 Cours:

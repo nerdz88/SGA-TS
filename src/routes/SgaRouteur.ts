@@ -5,6 +5,7 @@ import * as flash from 'node-twinkle';
 import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
 import { TYPES } from "../core/service/Operation"
 import { InvalidParameterError } from '../core/errors/InvalidParameterError';
+import { NotFoundError } from '../core/errors/NotFoundError';
 
 
 // TODO: rethink the name for this "router" function, since it's not really an Express router (no longer being "use()"ed inside Express)
@@ -155,7 +156,7 @@ export class SgaRouteur {
         }
         console.log("===>")
         let value = this.controlleur.recupererElement(params);
-        res.render("enseignant/liste-cours-sga", { cours: value })
+        res.render("enseignant/liste-cours-sga", { cours: value  })
     }
 
     /**
@@ -191,10 +192,18 @@ export class SgaRouteur {
         let params = {
             type: TYPES.COURS,
             sigle: sigleCours,
-            groupe: idCoursGroupe
+            idGroupe: idCoursGroupe
         }
-        this.controlleur.supprimerElement(params);
-        res.redirect("/enseignant/cours");
+
+        if (this.controlleur.supprimerElement(params)) {
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status
+                });
+        } else {
+            this._errorCode500(new NotFoundError("Le cours n'a pas été supprimé"), req, res);
+        }
     }
 
     public recupererQuestions(req: Request, res: Response, next: NextFunction) {
@@ -214,7 +223,7 @@ export class SgaRouteur {
             return res.sendStatus(401);
         }
 
-        let idQuestion = req.params.idQuestion;
+        let idQuestion = req.params.id;
         let params = {
             type: TYPES.QUESTION,
             id: idQuestion
@@ -266,13 +275,22 @@ export class SgaRouteur {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
+
         let idQuestion = req.params.id;
         let params = {
             type: TYPES.QUESTION,
             id: idQuestion
         }
-        this.controlleur.supprimerElement(params);
-        //TODO création du front-End **Lionel
+
+        if (this.controlleur.supprimerElement(params)) {
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status
+                });
+        } else {
+            this._errorCode500(new NotFoundError("La question n'a pas été supprimé"), req, res);
+        }
 
     }
 

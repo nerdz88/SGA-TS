@@ -15,7 +15,7 @@ export abstract class Operation<T> {
 
     abstract creerObjet(params: any)
 
-    abstract supprimerObjet(params: any): void
+    abstract supprimerObjet(params: any)
 
     abstract recupererObjet(params: any): any
 
