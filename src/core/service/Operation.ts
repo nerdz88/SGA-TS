@@ -17,6 +17,8 @@ export abstract class Operation<T> {
 
     abstract supprimerObjet(params: any) : boolean
 
+    abstract updateObjet(id : number, params: any) 
+
     abstract recupererObjet(params: any): any
 
     abstract recupererObjetParId(id: any): any

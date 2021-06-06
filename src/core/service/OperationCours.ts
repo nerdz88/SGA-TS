@@ -61,6 +61,12 @@ export class OperationCours extends Operation<Cours> {
         return true;
     }
 
+
+    public updateObjet(id: number, values: any) {
+        //Pas de update 
+    }
+
+
     recupererObjet(params: any) {
         if (this.operationObject == undefined)
             return [];

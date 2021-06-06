@@ -20,7 +20,12 @@ block content
             br
             |#{question.getMauvaiseReponseDescription()}
 
-    a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=question.getId() data-nom=question.getNom()) Supprimer 
+    a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + question.getGroupeCoursID() + "/modifier/" + question.getId()) Modifier  
+    a(class="btn btn-delete-question" href="javascript:void(0)" 
+        data-id-question=question.getId() 
+        data-nom=question.getNom()
+        data-id-coursgroupe=question.getGroupeCoursID()) Supprimer 
+    
 
     //- End bloc content
 block more-script

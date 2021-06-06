@@ -9,6 +9,7 @@ block content
         li         
           strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
           a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
+          a(class="btn btn-question-cours" href="/enseignant/question/groupe/" + groupe.getID()) Questions 
           a(class="btn btn-delete-cours" href="javascript:void(0)" 
             data-id-groupe=groupe.getID() 
             data-no-groupe=groupe.getNumero() 

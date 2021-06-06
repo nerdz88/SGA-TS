@@ -23,7 +23,7 @@ export class OperationQuestion extends Operation<Question> {
         if (this.existeQuestion(questionJson.nom)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
-        let questionObject = new Question(questionJson.idGroupeCours,
+        let questionObject = new Question(questionJson.idCoursGroupe,
             questionJson.tags.split(","),
             questionJson.nom,
             questionJson.description,
@@ -36,8 +36,19 @@ export class OperationQuestion extends Operation<Question> {
         return this.operationObject.find(q => q.getNom() == nom) != undefined;
     }
 
+
+    public updateObjet(idQuestion: number, values: any) {
+        if (this.existeQuestion(values.nom)) {
+            throw new AlreadyExistsError("la question " + values.nom + " existe déjà")
+        }
+        this.recupererObjetParId(idQuestion).update(values);
+    }
+
     supprimerObjet(id: any): boolean {
-        let index = this.operationObject.findIndex(q => q.getId() == id);        
+        let index = this.operationObject.findIndex(q => q.getId() == id); 
+        console.log("supprimerObjet");
+        console.log(id);       
+        console.log(index);       
         if (id != -1) {
             this.operationObject.splice(index, 1);
             return true;

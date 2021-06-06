@@ -3,14 +3,19 @@ extends ../../commun/master-template.pug
 block content
     //- Start bloc content  
     h1 Questions
+    if idCoursGroupe
+        a(class="btn btn-ajouter-question" href="/enseignant/question/groupe/" + idCoursGroupe + "/ajouter") Ajouter
     ul.entries
         each uneQuestion in questions
             li 
                 strong #{uneQuestion.getNom()} 
                 |- Tag: #{uneQuestion.getTag()}      
                 a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.getId()) Détail
-                //- TODO mettre de l'espace
-                a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=uneQuestion.getId() data-nom=uneQuestion.getNom()) Supprimer 
+                a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + idCoursGroupe +"/modifier/" + uneQuestion.getId()) Modifier              
+                a(class="btn btn-delete-question" href="javascript:void(0)"
+                    data-id-question=uneQuestion.getId() 
+                    data-nom=uneQuestion.getNom() 
+                    data-id-coursgroupe=idCoursGroupe) Supprimer 
         else
             li
                 em Vous n'avez pas de questions

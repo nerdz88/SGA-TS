@@ -156,7 +156,7 @@ export class SgaRouteur {
         }
         console.log("===>")
         let value = this.controlleur.recupererElement(params);
-        res.render("enseignant/liste-cours-sga", { cours: value  })
+        res.render("enseignant/liste-cours-sga", { cours: value })
     }
 
     /**
@@ -194,7 +194,7 @@ export class SgaRouteur {
             sigle: sigleCours,
             idGroupe: idCoursGroupe
         }
-        
+
         if (this.controlleur.supprimerElement(params)) {
             res.status(200)
                 .send({
@@ -210,12 +210,20 @@ export class SgaRouteur {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
+
+        let idCoursGroupe = req.params.idCoursGroupe;
+
         let params = {
             type: TYPES.QUESTION,
         }
 
         let questions = this.controlleur.recupererElement(params);
-        res.render("enseignant/question/liste-question", { questions: questions, })
+
+        if (idCoursGroupe != undefined) {
+            questions = questions.filter(q => q.getGroupeCoursID() == idCoursGroupe);
+        }
+
+        res.render("enseignant/question/liste-question", { questions: questions, idCoursGroupe: idCoursGroupe })
     }
 
     public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
@@ -243,9 +251,9 @@ export class SgaRouteur {
         let params = {
             type: TYPES.COURS,
         }
-        let groupeCours = this.controlleur.recupererElement({ type: TYPES.COURS });
+        let idCoursGroupe = req.params.idCoursGroupe;
 
-        res.render("enseignant/question/ajouter-question", { cours: groupeCours });
+        res.render("enseignant/question/ajouter-modifier-question", { idCoursGroupe: idCoursGroupe, question: {}, estModifiable: false });
     }
 
 
@@ -294,6 +302,18 @@ export class SgaRouteur {
 
     }
 
+
+    public pageModifierQuestion(req: Request, res: Response, next: NextFunction) {
+        if (!this.isLoggedIn) {
+            return res.sendStatus(401);
+        }
+
+        let idCoursGroupe = req.params.idCoursGroupe;
+        let question = this.controlleur.recupererElementById({ type: TYPES.QUESTION, id: req.params.idQuestion });
+
+        res.render("enseignant/question/ajouter-modifier-question", { idCoursGroupe: idCoursGroupe, question: question, estModifiable: true });
+    }
+
     public modifierQuestion(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
@@ -301,10 +321,15 @@ export class SgaRouteur {
         let idQuestion = req.params.id;
         let params = {
             type: TYPES.QUESTION,
-            id: idQuestion
+            id: idQuestion,
+            values: req.body
         }
-        let question = this.controlleur.updateElement(params);
-        //TODO création du front-End **Lionel
+        this.controlleur.updateElement(params);
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status
+            });
     }
 
     public isLoggedIn(req) {
@@ -349,10 +374,13 @@ export class SgaRouteur {
 
         //Question
         this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
-        this.router.get('/enseignant/question/ajouter', this.pageAjouterQuestion.bind(this));
-        this.router.post('/enseignant/question/ajouter', this.ajouterQuestion.bind(this));
+        this.router.get('/enseignant/question/groupe/:idCoursGroupe', this.recupererQuestions.bind(this));
+        this.router.get('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.pageAjouterQuestion.bind(this));
+        this.router.post('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.ajouterQuestion.bind(this));
+
         this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));
-        this.router.get('/enseignant/question/modification/:id', this.modifierQuestion.bind(this));
+        this.router.get('/enseignant/question/groupe/:idCoursGroupe/modifier/:idQuestion', this.pageModifierQuestion.bind(this));
+        this.router.post('/enseignant/question/modifier/:id', this.modifierQuestion.bind(this));
         this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));
         //Cours
         /*

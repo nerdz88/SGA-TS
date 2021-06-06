@@ -21,6 +21,14 @@ export class Question {
         this.id = ++Question.currentId;
     }
 
+    public update(values: any) {
+        this._tags = values.tags.split(",");
+        this._nom = values.nom;
+        this._descriptionQuestion = values.description;
+        this._reponse = values.reponse;
+        this._descriptionReponse = values.descriptionReponse
+        this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
+    }
 
     public getGroupeCoursID() {
         return this._idGroupeCours;
