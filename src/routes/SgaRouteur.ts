@@ -194,7 +194,7 @@ export class SgaRouteur {
             sigle: sigleCours,
             idGroupe: idCoursGroupe
         }
-
+        
         if (this.controlleur.supprimerElement(params)) {
             res.status(200)
                 .send({

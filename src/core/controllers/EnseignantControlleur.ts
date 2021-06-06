@@ -53,7 +53,7 @@ export class EnseignantControlleur {
         return operation.recupererObjetParId(params.id);
     }
 
-    public supprimerElement(params: any) {
+    public supprimerElement(params: any) : boolean {
         let operation = this.getOperationParCle(params.type);
         return operation.supprimerObjet(params);
     }

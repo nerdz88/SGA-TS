@@ -10,6 +10,8 @@ link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-
     crossorigin="anonymous" 
     referrerpolicy="no-referrer")
 link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css")
+link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", integrity="undefined", crossorigin="anonymous")
+link(rel='stylesheet' href='/css/style.css')
 style.
   body {font-family: "Roboto", sans-serif}
   .w3-bar-block .w3-bar-item {
@@ -46,9 +48,12 @@ nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-animate-left.w3-card(style=
     h1.w3-xxxlarge Systeme de Gestion des Apprentissages
 
   //- Début du contenu
-  block content
-    //- Placeholder si la page n'est pas de contenu
-    p Pas encore de contenu 
+  div.container
+    div.row
+      div.col-md
+        block content
+          //- Placeholder si la page n'est pas de contenu
+          h1 Pas encore de contenu 
 
   footer.w3-container.w3-theme(style='padding:32px')
     p Tous droits réservés, équipe 3, les champions !
@@ -94,7 +99,7 @@ script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jqu
   integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" 
   crossorigin="anonymous" 
   referrerpolicy="no-referrer")
-script(src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js")
+link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", integrity="undefined", crossorigin="anonymous")
 script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js")
 script(type="text/javascript" src="/lib/main.js")
 

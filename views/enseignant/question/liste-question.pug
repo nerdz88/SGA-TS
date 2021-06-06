@@ -1,22 +1,19 @@
 extends ../../commun/master-template.pug 
 
 block content
-    //- Start bloc content
-    div.w3-container(style='padding:32px')
-        h1 Vos questions
-
-        ul.entries
-            each uneQuestion in questions
-                li 
-                    strong #{uneQuestion.getNom()} 
-                    |- Tag: #{uneQuestion.getTag()}      
-                    a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.getId()) Détail
-                    //- TODO mettre de l'espace
-                    a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=uneQuestion.getId() data-nom=uneQuestion.getNom()) Supprimer 
-
-            else
-                li
-                    em Vous n'avez pas de questions
+    //- Start bloc content  
+    h1 Questions
+    ul.entries
+        each uneQuestion in questions
+            li 
+                strong #{uneQuestion.getNom()} 
+                |- Tag: #{uneQuestion.getTag()}      
+                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.getId()) Détail
+                //- TODO mettre de l'espace
+                a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=uneQuestion.getId() data-nom=uneQuestion.getNom()) Supprimer 
+        else
+            li
+                em Vous n'avez pas de questions
 
     //- End bloc content
 block more-script

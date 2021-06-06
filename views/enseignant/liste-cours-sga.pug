@@ -2,22 +2,20 @@ extends ../commun/master-template.pug
 
 block content
   //- Start bloc content
-  div.w3-container(style='padding:32px')
-    h1 Vos cours
-    ul.entries
-      each unCours in cours
-        each groupe in unCours.getGroupeCours()
-          li         
-            strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
-            a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
-            //- TODO mettre de l'espace
-            a(class="btn btn-delete-cours" href="javascript:void(0)" 
-              data-id-groupe=groupe.getID() 
-              data-no-groupe=groupe.getNumero() 
-              data-sigle=unCours.getSigle()) Supprimer 
-      else
-        li
-          em Vous n'avez pas de cours
+  h1 Mes cours
+  ul.entries
+    each unCours in cours
+      each groupe in unCours.getGroupeCours()
+        li         
+          strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
+          a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
+          a(class="btn btn-delete-cours" href="javascript:void(0)" 
+            data-id-groupe=groupe.getID() 
+            data-no-groupe=groupe.getNumero() 
+            data-sigle=unCours.getSigle()) Supprimer 
+    else
+      li
+        em Vous n'avez pas de cours
 
   //- End bloc content
 

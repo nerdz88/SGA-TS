@@ -1,29 +1,26 @@
 extends ../../commun/master-template.pug 
 
 block content
-    //- Start bloc content
-    div.w3-container(style='padding:32px')
-        h1 #{question.getNom()}
-        ul.entries 
-            li 
-                <strong>Tag:</strong> #{question.getTag()}
-            li 
-                <strong>Description</strong>: 
-                br
-                |#{question.getDescriptionQuestion()} 
-            li 
-                <strong>Réponse:</strong> #{question.getReponse() ? "Vrai" : "Faux"}
-            li 
-                <strong>Description bonne réponse:</strong> 
-                br
-                |#{question.getDescriptionReponse()}
-            li 
-                <strong>Description mauvaise réponse:</strong>
-                br
-                |#{question.getMauvaiseReponseDescription()}
+    h1 #{question.getNom()}
+    ul.entries 
+        li 
+            <strong>Tag:</strong> #{question.getTag()}
+        li 
+            <strong>Description</strong>: 
+            br
+            |#{question.getDescriptionQuestion()} 
+        li 
+            <strong>Réponse:</strong> #{question.getReponse() ? "Vrai" : "Faux"}
+        li 
+            <strong>Description bonne réponse:</strong> 
+            br
+            |#{question.getDescriptionReponse()}
+        li 
+            <strong>Description mauvaise réponse:</strong>
+            br
+            |#{question.getMauvaiseReponseDescription()}
 
-
-        a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=question.getId() data-nom=question.getNom()) Supprimer 
+    a(class="btn btn-delete-question" href="javascript:void(0)" data-id-question=question.getId() data-nom=question.getNom()) Supprimer 
 
     //- End bloc content
 block more-script

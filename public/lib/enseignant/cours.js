@@ -17,7 +17,7 @@ window.addEventListener("load", function () {
                         type: 'GET',
                         url: '/enseignant/cours/supprimer/' + sigle + "/" + idGroupe,
                         success: function () {
-                            window.location.href = "/enseignant/question";
+                            window.location.href = "/enseignant/cours";
                         },
                         error: function () {
                             console.log("Supprimer Cours - KO");

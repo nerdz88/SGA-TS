@@ -42,7 +42,7 @@ export class OperationCours extends Operation<Cours> {
      * 
      * @param params Sigle et groupe en params
      */
-    supprimerObjet(params: any) {
+    supprimerObjet(params: any) : boolean {
 
         let indexCours = this.operationObject.findIndex(c => c.getSigle() == params.sigle);
 
@@ -58,6 +58,7 @@ export class OperationCours extends Operation<Cours> {
                 return false;
             cours.getGroupeCours().splice(indexGroupe, 1);
         }
+        return true;
     }
 
     recupererObjet(params: any) {
