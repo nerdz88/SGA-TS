@@ -21,8 +21,8 @@ nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-animate-left.w3-card(style=
   //- a.w3-bar-item.w3-button.w3-teal(type="button" id="accueil") Accueil
   a.w3-bar-item.w3-button(href='/enseignant/cours') Mes Cours
   a.w3-bar-item.w3-button(href='/enseignant/cours/ajouter') Ajouter Cours
-  a.w3-bar-item.w3-button(href='/enseignant/questions') Mes Questions
-  a.w3-bar-item.w3-button(href='/enseignant/questions/ajouter') Ajouter Questions
+  a.w3-bar-item.w3-button(href='/enseignant/question') Mes Questions
+  a.w3-bar-item.w3-button(href='/enseignant/question/ajouter') Ajouter Questions
   div
     a.w3-bar-item.w3-button(onclick="myAccordion('demo')" href='javascript:void(0)')
       | Dropdown 
@@ -39,12 +39,12 @@ nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-animate-left.w3-card(style=
       span#myIntro.w3-hide SGA : Premiere iteration
   header.w3-container.w3-theme(style='padding:64px 32px')
     h1.w3-xxxlarge Systeme de Gestion des Apprentissages
- 
+
   //- Début du contenu
   block content
     //- Placeholder si la page n'est pas de contenu
     p Pas encore de contenu 
-  
+
   footer.w3-container.w3-theme(style='padding:32px')
     p Tous droits réservés, équipe 3, les champions !
 script.
@@ -81,6 +81,8 @@ script.
   }
   }
 
-  <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-  <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/lib/main.js"></script>
+script( src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous")
+script(src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js")
+script(type="text/javascript" src="/lib/main.js")
+
+block more-script

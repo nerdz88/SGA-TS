@@ -1,0 +1,14 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content
+    div.w3-container(style='padding:32px')
+        h1 #{question.getNom()}
+        ul.entries 
+            li Tag: #{question.getTag()}
+            li Description: #{question.getDescriptionQuestion()} 
+            li Réponse: #{question.getReponse() ? "Vrai" : "Faux"}
+            li Description bonne réponse: #{question.getDescriptionReponse()}
+            li Description mauvaise réponse: #{question.getMauvaiseReponseDescription()}
+
+    //- End bloc content

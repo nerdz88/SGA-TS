@@ -10,7 +10,7 @@ block content
           each groupe in unCours.getGroupeCours()
             li         
               strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
-              a(class="btn-detail-cours", href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
+              a(class="btn btn-detail-cours", href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
           else
             strong #{unCours.getSigle()} - #{unCours.getTitre()} 
         else

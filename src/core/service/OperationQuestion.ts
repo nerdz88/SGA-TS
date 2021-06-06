@@ -19,15 +19,17 @@ export class OperationQuestion extends Operation<Question> {
 
     creerObjet(params: any): void {
         let questionJson = this.getJSON(params.question);
+        //TODO MORE VALIDATION
         if (this.existeQuestion(questionJson.nom)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
-        let questionObject = new Question(questionJson.numeroGroupe,
-            questionJson.tags, questionJson.nom,
-            questionJson.descriptionQuestion,
+        let questionObject = new Question(questionJson.idGroupeCours,
+            questionJson.tags.split(","),
+            questionJson.nom,
+            questionJson.description,
             questionJson.reponse,
             questionJson.descriptionReponse,
-            questionJson.texteMauvaiseReponse)
+            questionJson.descriptionMauvaiseReponse)
         this.operationObject.push(questionObject);
     }
     private existeQuestion(nom: any): boolean {

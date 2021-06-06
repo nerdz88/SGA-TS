@@ -131,7 +131,7 @@ export class SgaRouteur {
 
         self.controlleur.ajouterElement(params)
             .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle + "/" + coursSGB._id))
-            .catch(function (error) {
+            .catch(error => {
                 self._errorCode500(error, req, res);
             });
     }
@@ -179,8 +179,6 @@ export class SgaRouteur {
         let cours = this.controlleur.recupererElementById(params);
         res.render("enseignant/detail-cours", { cours: cours, groupe: cours.getGroupeCoursById(idCoursGroupe) });
         //res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(this.token, sigleCours) });
-
-
     }
 
     public supprimerCours(req: Request, res: Response, next: NextFunction) {
@@ -199,15 +197,6 @@ export class SgaRouteur {
         res.redirect("/enseignant/cours");
     }
 
-    private _errorCode500(error: any, req, res: Response<any>) {
-        var code = 500;
-        if (error.code) {
-            (req as any).flash(error.message);
-            code = error.code;
-        }
-        res.status(code).json({ error: error.toString() });
-    }
-
     public recupererQuestions(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
@@ -217,11 +206,8 @@ export class SgaRouteur {
         }
 
         let questions = this.controlleur.recupererElement(params);
-        //TODO création du front-End **Lionel
-        res.render("enseignant/question", { questions: questions, })
+        res.render("enseignant/question/liste-question", { questions: questions, })
     }
-
-
 
     public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
@@ -234,28 +220,47 @@ export class SgaRouteur {
             id: idQuestion
         }
         let question = this.controlleur.recupererElementById(params);
-        //TODO création du front-End **Lionel
-        res.render("enseignant/question", { question: question });
+        res.render("enseignant/question/detail-question", { question: question });
     }
+
+
+    /**
+     * Methode GET pour afficher toutes les questions d'un prof
+     */
+    public pageAjouterQuestion(req: Request, res: Response, next: NextFunction) {
+        if (!this.isLoggedIn) {
+            return res.sendStatus(401);
+        }
+        let params = {
+            type: TYPES.COURS,
+        }
+        let groupeCours = this.controlleur.recupererElement({ type: TYPES.COURS });
+
+        res.render("enseignant/question/ajouter-question", { cours: groupeCours });
+    }
+
 
     public ajouterQuestion(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-        //let idCoursGroupe = req.params.idCoursGroupe;
-        //let questionJson = req.params.question;
-        let questionJson = req.headers.question;
+        let self = this;
         let params = {
             type: TYPES.QUESTION,
-            question: questionJson
+            question: req.body
         }
-        this.controlleur.ajouterElement(params);
-
-
-        //TODO création du front-End **Lionel
+        this.controlleur.ajouterElement(params)
+            .then(() => {
+                res.status(200)
+                    .send({
+                        message: 'Success',
+                        status: res.status
+                    });
+            })
+            .catch(error => {
+                self._errorCode500(error, req, res);
+            });
     }
-
-
 
     public supprimerQuestion(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
@@ -293,6 +298,16 @@ export class SgaRouteur {
         return true;
     }
 
+
+    private _errorCode500(error: any, req, res: Response<any>) {
+        var code = 500;
+        if (error.code) {
+            (req as any).flash(error.message);
+            code = error.code;
+        }
+        res.status(code).json({ error: error.toString() });
+    }
+
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
@@ -309,17 +324,18 @@ export class SgaRouteur {
         //Cours
         this.router.get('/enseignant/cours', this.recupererCours.bind(this));
         this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
-        this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); // Détail d'un cours
         this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
+        this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); // Détail d'un cours
         this.router.get('/enseignant/cours/supprimer/:sigle/:idCoursGroupe', this.supprimerCours.bind(this));
 
 
         //Question
+        this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
+        this.router.get('/enseignant/question/ajouter', this.pageAjouterQuestion.bind(this));
         this.router.post('/enseignant/question/ajouter', this.ajouterQuestion.bind(this));
-        this.router.get('/enseignant/question/recuperer', this.recupererQuestions.bind(this))
-        this.router.get('/enseignant/question/recuperer/:id', this.recupererQuestionsParId.bind(this));
-        this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));
+        this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));
         this.router.get('/enseignant/question/modification/:id', this.modifierQuestion.bind(this));
+        this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));
         //Cours
         /*
         **this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours

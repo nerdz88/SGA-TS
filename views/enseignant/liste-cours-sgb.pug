@@ -12,7 +12,7 @@ block content
             br
             form.form-ajouter-cours(id=unCours._id, action="/enseignant/cours/ajouter", method="POST") 
               input.coursData(name="data", type="hidden", value=unCours)
-              button.connect(type="submit") Ajouter
+              button.btn(type="submit") Ajouter
         else
           li
             em Vous n'avez pas de groupes-cours
