@@ -163,12 +163,10 @@ export class SgaRouteur {
      */
     public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
 
-        // IF the session variable loggedIn is not found, then we return a 401 response
-        // TODO Add an unauthorized page instead of simply returning a 401
-        if (!req.session.loggedIn) {
-            res.sendStatus(401);
-            return;
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
         }
+
         //TODO remove le token hardcodé apres le login
         //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
 
@@ -176,7 +174,7 @@ export class SgaRouteur {
         let idCoursGroupe = req.params.idCoursGroupe;
         let params = {            
             type:TYPES.COURS,
-            sigle:sigleCours
+            id:sigleCours
         }
         let cours = this.controlleur.recupererElementById(params);
         res.render("enseignant/detail-cours", { cours: cours, groupe: cours.getGroupeCoursById(idCoursGroupe) });
@@ -185,6 +183,21 @@ export class SgaRouteur {
 
     }
 
+    public supprimerCours(req: Request, res: Response, next: NextFunction){
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+
+        let sigleCours = req.params.sigle;
+        let idCoursGroupe = req.params.idCoursGroupe;
+        let params = {
+            type: TYPES.COURS,
+            sigle : sigleCours,
+            groupe : idCoursGroupe
+        }
+        this.controlleur.supprimerElement(params);
+        res.redirect("/enseignant/cours");
+    }
 
     private _errorCode500(error: any, req, res: Response<any>) {
         var code = 500;
@@ -193,6 +206,91 @@ export class SgaRouteur {
             code = error.code;
         }
         res.status(code).json({ error: error.toString() });
+    }
+
+    public recupererQuestions(req: Request, res: Response, next: NextFunction) {
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+        let params = {
+            type:TYPES.QUESTION,
+        }
+
+        let questions = this.controlleur.recupererElement(params);
+        //TODO création du front-End **Lionel
+        res.render("enseignant/question", {questions: questions, })
+    }
+    
+    
+
+    public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+        
+        let idQuestion = req.params.idQuestion;
+        let params = {
+            type:TYPES.QUESTION,
+            id : idQuestion 
+        }
+        let question = this.controlleur.recupererElementById(params);        
+        //TODO création du front-End **Lionel
+        res.render("enseignant/question", {question: question});
+    }
+
+    public ajouterQuestion(req: Request, res: Response, next: NextFunction) {
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+        //let idCoursGroupe = req.params.idCoursGroupe;
+        //let questionJson = req.params.question;
+        let questionJson = req.headers.question;
+        let params = {            
+            type:TYPES.QUESTION,
+            question:questionJson
+        }
+        this.controlleur.ajouterElement(params);
+
+
+        //TODO création du front-End **Lionel
+    }
+
+
+
+    public supprimerQuestion(req: Request, res: Response, next: NextFunction){
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+        let idQuestion = req.params.id;
+        let params ={
+            type:TYPES.QUESTION,            
+            id : idQuestion 
+        }
+        this.controlleur.supprimerElement(params);
+        //TODO création du front-End **Lionel
+
+    }
+
+    public modifierQuestion(req: Request, res: Response, next: NextFunction){
+        if(!this.isLoggedIn){
+            return res.sendStatus(401);
+        }
+        let idQuestion = req.params.id;
+        let params = {
+            type: TYPES.QUESTION,
+            id: idQuestion
+        }
+        let question = this.controlleur.updateElement(params);
+        //TODO création du front-End **Lionel
+    }
+
+    public isLoggedIn(req) {
+        // IF the session variable loggedIn is not found, then we return a 401 response
+        // TODO Add an unauthorized page instead of simply returning a 401
+        if (!req.session.loggedIn) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -208,12 +306,20 @@ export class SgaRouteur {
         this.router.get('/login', this.loginPage.bind(this));
         this.router.post('/login', this.login.bind(this));
 
-        //Cours, Devoirs, Question ou Questionnaire
+        //Cours
         this.router.get('/enseignant/cours',this.recupererCours.bind(this));
         this.router.get('/enseignant/cours/ajouter', this.pageAjouterCours.bind(this)); //La page pour ajouter un cours 
         this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); // Détail d'un cours
         this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); //Le post ajouter un cours 
+        this.router.get('/enseignant/cours/supprimer/:sigle/:idCoursGroupe', this.supprimerCours.bind(this));
 
+
+        //Question
+        this.router.post('/enseignant/question/ajouter',this.ajouterQuestion.bind(this));
+        this.router.get('/enseignant/question/recuperer', this.recupererQuestions.bind(this))
+        this.router.get('/enseignant/question/recuperer/:id',this.recupererQuestionsParId.bind(this));
+        this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));
+        this.router.get('/enseignant/question/modification/:id', this.modifierQuestion.bind(this));
         //Cours
         /*
         **this.router.get('/enseignant/cours', this.recupererCours.bind(this)); // Détail d'un cours

@@ -7,7 +7,7 @@ participant "operationQuestion : OperationQuestion" as mapCours
 
 ->controleur : questions = recupererToutesQuestionsSga(token)
 note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur -> mapCours : questions = recupererToutCours(token)
+controleur -> mapCours : questions = recupererToutQuestion(token)
 @enduml
 
 @startuml recupererUneQuestion
