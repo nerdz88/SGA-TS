@@ -1,7 +1,7 @@
 
 /*import { Operation } from './Operation';
 export class OperationCours extends Operation<> {
-   
+
     constructor(){
         super();
     }

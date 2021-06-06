@@ -1,6 +1,6 @@
 import { InvalidParameterError } from '../errors/InvalidParameterError';
 
-import {GroupeCours} from "./GroupeCours"
+import { GroupeCours } from "./GroupeCours"
 export abstract class User {
     // classe inspirée de la classe conceptuelle (du MDD) et SGB
     private _id: number;
@@ -9,19 +9,19 @@ export abstract class User {
     private _email: string;
     private _groupes: [GroupeCours]
 
-    constructor(id : number, nom : string, prenom : string, email : string, groupe:[GroupeCours]) {
+    constructor(id: number, nom: string, prenom: string, email: string, groupe: [GroupeCours]) {
         this._nom = nom;
         this._prenom = prenom;
-        this._email = email; 
+        this._email = email;
         this._id = id;
         this._groupes = groupe;
     }
 
-    public getId(){
+    public getId() {
         return this._id;
     }
 
-    public getGroupes(){
+    public getGroupes() {
         return this._groupes;
     }
 

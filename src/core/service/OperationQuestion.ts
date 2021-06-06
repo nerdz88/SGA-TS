@@ -8,47 +8,43 @@ export class OperationQuestion extends Operation<Question> {
         super();
     }
 
-    private getJSON(object : any){
+    private getJSON(object: any) {
         try {
             let json = JSON.parse(object);
             return json;
-          } catch (exception) {
-              return object;
-          }
+        } catch (exception) {
+            return object;
+        }
     }
 
     creerObjet(params: any): void {
-       // try {
-            let questionJson = this.getJSON(params.question);
-            if(this.existeQuestion(questionJson.nom)){
-                throw new AlreadyExistsError("la question "+questionJson.nom + " existe déjà")
-            }
-            let questionObject = new Question(questionJson.numeroGroupe, 
-                questionJson.tags, questionJson.nom, 
-                questionJson.descriptionQuestion, 
-                questionJson.reponse, 
-                questionJson.descriptionReponse, 
-                questionJson.texteMauvaiseReponse)
-            this.operationObject.push(questionObject);    
-        /*} catch (error) {
-            return error;
-        }*/
+        let questionJson = this.getJSON(params.question);
+        if (this.existeQuestion(questionJson.nom)) {
+            throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
+        }
+        let questionObject = new Question(questionJson.numeroGroupe,
+            questionJson.tags, questionJson.nom,
+            questionJson.descriptionQuestion,
+            questionJson.reponse,
+            questionJson.descriptionReponse,
+            questionJson.texteMauvaiseReponse)
+        this.operationObject.push(questionObject);
     }
-    private existeQuestion(nom:any) : boolean{
-        let existe=false;
+    private existeQuestion(nom: any): boolean {
+        let existe = false;
         this.operationObject.forEach(element => {
-            if(element.getNom() == nom){
-                existe=true;
+            if (element.getNom() == nom) {
+                existe = true;
             }
         });
         return existe;
     }
-    
+
     supprimerObjet(id: any): boolean {
-        if (id != null){
-            this.operationObject.forEach((question,index)=>{
-                if(question.getId() == id){
-                    this.operationObject.splice(index,1);
+        if (id != null) {
+            this.operationObject.forEach((question, index) => {
+                if (question.getId() == id) {
+                    this.operationObject.splice(index, 1);
                     return true;
                 }
             });

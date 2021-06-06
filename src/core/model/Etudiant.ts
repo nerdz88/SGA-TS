@@ -1,6 +1,6 @@
 import { InvalidParameterError } from '../errors/InvalidParameterError';
-import {User} from "./User";
-export class Etudiant{
+import { User } from "./User";
+export class Etudiant {
     // classe inspirée de la classe conceptuelle (du MDD) et SGB
     private _id: number;
     private _nom: string;
@@ -8,14 +8,14 @@ export class Etudiant{
     private _email: string;
     private _code_permanent: string
     //array de cours dans un futur proche
-    constructor(id : number, nom : string, prenom : string, email : string, codePermanent : string) {
+    constructor(id: number, nom: string, prenom: string, email: string, codePermanent: string) {
         this._id = id;
         this._nom = nom;
         this._prenom = prenom;
-        this._email = email;      
-        this._code_permanent=codePermanent;
+        this._email = email;
+        this._code_permanent = codePermanent;
     }
-    public getId(){
+    public getId() {
         return this._id;
     }
 
@@ -30,7 +30,7 @@ export class Etudiant{
     public getEmail() {
         return this._email;
     }
-    public  getCodePermanent(){
+    public getCodePermanent() {
         return this._code_permanent;
     }
     // public toJSON() {
@@ -40,7 +40,7 @@ export class Etudiant{
     //         prenom: super.getPrenom,
     //         email: super.geEmail,
     //         codePermanent: this._code_permanent
-	// 	};
+    // 	};
     // }
 
     public toJSON() {
@@ -50,6 +50,6 @@ export class Etudiant{
             prenom: this._prenom,
             email: this._email,
             codePermanent: this._code_permanent
-		};
+        };
     }
 }

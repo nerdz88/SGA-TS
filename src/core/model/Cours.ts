@@ -5,19 +5,19 @@ export class Cours {
     private _sigle: string;
     private _titre: string;
     private _nbMaxEtudiant: number;
-    private groupeCours : GroupeCours[]
+    private groupeCours: GroupeCours[]
     //private groupeCours: Map<number, GroupeCours>;
     constructor(sigle: string, titre: string, nbMaxEtudiant: number) {
         this._titre = titre;
         this._sigle = sigle;
         this._nbMaxEtudiant = nbMaxEtudiant;
         //this.groupeCours = new Map<number, GroupeCours>();
-        this.groupeCours =new Array()
+        this.groupeCours = new Array()
     }
 
     public ajoutGroupeCours(groupeCours: GroupeCours): void {
-        if(this.groupeCours.find(c=>c.getID() == groupeCours.getID()) != undefined){
-            throw new AlreadyExistsError("Le groupe " + groupeCours.getID() + "existe déjà");  
+        if (this.groupeCours.find(c => c.getID() == groupeCours.getID()) != undefined) {
+            throw new AlreadyExistsError("Le groupe " + groupeCours.getID() + "existe déjà");
         }
         this.groupeCours.push(groupeCours)
     }
@@ -34,20 +34,20 @@ export class Cours {
         return this._nbMaxEtudiant;
     }
 
-     public getGroupeCours(){
-         return this.groupeCours;
-     }
+    public getGroupeCours() {
+        return this.groupeCours;
+    }
 
-    public deleteGroupeById(id: number){
-        this.groupeCours.forEach((groupeCours,index)=>{
-            if(groupeCours.getID() == id){
-                this.groupeCours.splice(index,1);
+    public deleteGroupeById(id: number) {
+        this.groupeCours.forEach((groupeCours, index) => {
+            if (groupeCours.getID() == id) {
+                this.groupeCours.splice(index, 1);
                 //break;
             }
         });
     }
 
-    public getTailleCours(){
+    public getTailleCours() {
         return this.groupeCours.length
     }
 

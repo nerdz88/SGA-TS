@@ -13,21 +13,21 @@ export class EnseignantControlleur {
     private endPoint: string = "/api/v1/";
 
     private sga: SGA;
-    private operations : Map<String,Operation<any>>;
+    private operations: Map<String, Operation<any>>;
 
     constructor() {
-        this.operations = new Map<String,Operation<any>>();
-        this.operations.set(TYPES.COURS,new OperationCours());
+        this.operations = new Map<String, Operation<any>>();
+        this.operations.set(TYPES.COURS, new OperationCours());
         this.operations.set(TYPES.QUESTION, new OperationQuestion())
         // Rajouter les question,questionaires et devoirs à fur et à mesure
 
     }
 
-    public async ajouterElement(params : any){
+    public async ajouterElement(params: any) {
         let operation = this.getOperationParCle(params.type);
         operation.creerObjet(params);
-        
-        
+
+
 
         //TODO on peut use ça pour les tests...
 
@@ -43,35 +43,35 @@ export class EnseignantControlleur {
         console.log(operation.recupererObjet(null));*/
     }
 
-    public recupererElement(params : any){
+    public recupererElement(params: any) {
         let operation = this.getOperationParCle(params.type);
         return operation.recupererObjet(params);
     }
 
-    public recupererElementById(params : any){
-        let operation =this.getOperationParCle(params.type);
+    public recupererElementById(params: any) {
+        let operation = this.getOperationParCle(params.type);
         return operation.recupererObjetParId(params.id);
     }
 
-    public supprimerElement(params : any){
-        let operation =this.getOperationParCle(params.type);
+    public supprimerElement(params: any) {
+        let operation = this.getOperationParCle(params.type);
         return operation.supprimerObjet(params);
     }
 
-    public recupererElementSGB(params : any){
-        let operation= this.getOperationParCle(params.type);
+    public recupererElementSGB(params: any) {
+        let operation = this.getOperationParCle(params.type);
         return operation.recupererJsonSGB(params)
     }
 
-    public updateElement(params : any){
+    public updateElement(params: any) {
         let operation = this.getOperationParCle(params.type);
         operation.supprimerObjet(params);
         return operation.creerObjet(params);
     }
-    
 
-    private getOperationParCle(cle : string){
-        if(this.operations.has(cle)){
+
+    private getOperationParCle(cle: string) {
+        if (this.operations.has(cle)) {
             return this.operations.get(cle);
         }
         //throw new exception....
