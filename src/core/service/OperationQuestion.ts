@@ -33,13 +33,7 @@ export class OperationQuestion extends Operation<Question> {
         this.operationObject.push(questionObject);
     }
     private existeQuestion(nom: any): boolean {
-        let existe = false;
-        this.operationObject.forEach(element => {
-            if (element.getNom() == nom) {
-                existe = true;
-            }
-        });
-        return existe;
+        return this.operationObject.find(q => q.getNom() == nom) != undefined;
     }
 
     supprimerObjet(id: any): boolean {
