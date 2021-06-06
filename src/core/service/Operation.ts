@@ -13,7 +13,7 @@ export abstract class Operation<T> {
         this.operationObject = new Array()
     }
 
-    abstract creerObjet(params: any): void
+    abstract creerObjet(params: any)
 
     abstract supprimerObjet(params: any): void
 

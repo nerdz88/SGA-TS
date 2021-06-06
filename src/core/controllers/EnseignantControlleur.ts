@@ -25,7 +25,7 @@ export class EnseignantControlleur {
 
     public async ajouterElement(params: any) {
         let operation = this.getOperationParCle(params.type);
-        operation.creerObjet(params);
+        await operation.creerObjet(params);
 
 
 

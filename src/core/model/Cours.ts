@@ -17,7 +17,7 @@ export class Cours {
 
     public ajoutGroupeCours(groupeCours: GroupeCours): void {
         if (this.groupeCours.find(c => c.getID() == groupeCours.getID()) != undefined) {
-            throw new AlreadyExistsError("Le groupe " + groupeCours.getID() + "existe déjà");
+            throw new AlreadyExistsError("Le groupe " +  this.getSigle() + "-" + groupeCours.getID() + " existe déjà");
         }
         this.groupeCours.push(groupeCours)
     }
