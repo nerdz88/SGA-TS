@@ -1,6 +1,6 @@
 export class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
-    private _numeroGroupe: number
+    private _idGroupeCours: number
     private _tags: []
     private _nom: string
     private _descriptionQuestion: string
@@ -9,9 +9,9 @@ export class Question {
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
     private id: number;
-    constructor(numeroGroupe: number, tags: [], nom: string, descriptionQuestion: string,
+    constructor(idGroupeCours: number, tags: [], nom: string, descriptionQuestion: string,
         reponse: boolean, descriptionReponse: string, texteMauvaiseReponse: string) {
-        this._numeroGroupe = numeroGroupe;
+        this._idGroupeCours = idGroupeCours;
         this._tags = tags;
         this._nom = nom;
         this._descriptionQuestion = descriptionQuestion;
@@ -22,8 +22,8 @@ export class Question {
     }
 
 
-    public getNumeroGroupe() {
-        return this._numeroGroupe;
+    public getGroupeCoursID() {
+        return this._idGroupeCours;
     }
     public getId() {
         return this.id;
@@ -37,6 +37,7 @@ export class Question {
     public getTag() {
         return this._tags;
     }
+
     public getDescriptionReponse() {
         return this._descriptionReponse;
     }

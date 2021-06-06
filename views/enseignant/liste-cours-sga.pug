@@ -1,25 +1,25 @@
-html
-  head
-    title= title
-    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
-    <!-- link(rel='stylesheet' href='/css/style.css') -->
-  body
+extends ../commun/master-template.pug 
 
-    div.container
-      h1 Vos cours
-    
-      ul.entries
-        each unCours in cours
-          each groupe in unCours.getGroupeCours()
-            li         
-              strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
-              a(class="btn-detail-cours", href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
-          else
-            strong #{unCours.getSigle()} - #{unCours.getTitre()} 
-        else
-          li
-            em Vous n'avez pas de cours
+block content
+  //- Start bloc content
+  div.w3-container(style='padding:32px')
+    h1 Vos cours
+    ul.entries
+      each unCours in cours
+        each groupe in unCours.getGroupeCours()
+          li         
+            strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
+            a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + unCours.getSigle() + "/" + groupe.getID()) Détail 
+            //- TODO mettre de l'espace
+            a(class="btn btn-delete-cours" href="javascript:void(0)" 
+              data-id-groupe=groupe.getID() 
+              data-no-groupe=groupe.getNumero() 
+              data-sigle=unCours.getSigle()) Supprimer 
+      else
+        li
+          em Vous n'avez pas de cours
 
-<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/lib/enseignant/liste-cours.js"></script>
+  //- End bloc content
+
+block more-script
+  script(type="text/javascript" src="/lib/enseignant/cours.js")

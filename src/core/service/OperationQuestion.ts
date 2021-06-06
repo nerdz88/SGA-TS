@@ -19,35 +19,28 @@ export class OperationQuestion extends Operation<Question> {
 
     creerObjet(params: any): void {
         let questionJson = this.getJSON(params.question);
+        //TODO MORE VALIDATION
         if (this.existeQuestion(questionJson.nom)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
-        let questionObject = new Question(questionJson.numeroGroupe,
-            questionJson.tags, questionJson.nom,
-            questionJson.descriptionQuestion,
+        let questionObject = new Question(questionJson.idGroupeCours,
+            questionJson.tags.split(","),
+            questionJson.nom,
+            questionJson.description,
             questionJson.reponse,
             questionJson.descriptionReponse,
-            questionJson.texteMauvaiseReponse)
+            questionJson.descriptionMauvaiseReponse)
         this.operationObject.push(questionObject);
     }
     private existeQuestion(nom: any): boolean {
-        let existe = false;
-        this.operationObject.forEach(element => {
-            if (element.getNom() == nom) {
-                existe = true;
-            }
-        });
-        return existe;
+        return this.operationObject.find(q => q.getNom() == nom) != undefined;
     }
 
     supprimerObjet(id: any): boolean {
-        if (id != null) {
-            this.operationObject.forEach((question, index) => {
-                if (question.getId() == id) {
-                    this.operationObject.splice(index, 1);
-                    return true;
-                }
-            });
+        let index = this.operationObject.findIndex(q => q.getId() == id);        
+        if (id != -1) {
+            this.operationObject.splice(index, 1);
+            return true;
         }
         return false;
     }

@@ -1,0 +1,54 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content
+    div.w3-container(style='padding:32px')
+        h1 Ajouter une question   
+
+        if cours && cours.length > 0
+            form.form-ajouter-question(id="form-ajouter-question") 
+                //- Début Form 
+                h3 Cours:
+                each unCours in cours
+                    each groupe in unCours.getGroupeCours()
+                        div.element-cours         
+                            strong #{unCours.getSigle()} - #{unCours.getTitre()} - Gr: #{groupe.getNumero()}       
+                            input(class="rd-btn rd-cours" type="radio" name="idGroupeCours", value=groupe.getID())       
+                br
+                h3 Question: 
+                ul.entries 
+                    li Nom: 
+                        br
+                        input(type="text" name="nom")
+                    li Tag (Séparer par des ","): 
+                        br
+                        input(type="text" name="tags")
+                    li Description:
+                        br
+                        textarea(rows="4" cols="25" name="description")
+                    li Réponse:
+                        br 
+                        input(class="rd-reponse" type="radio" name="response" value="true") 
+                        |  Vrai
+                        input(class="rd-reponse" type="radio" name="response" value="false")
+                        |   Faux 
+                    li Description bonne réponse:
+                        br
+                        textarea(rows="4" cols="25" name="descriptionReponse")               
+                    li Description mauvaise réponse: 
+                        br
+                        textarea(rows="4" cols="25" name="descriptionMauvaiseReponse")
+
+                button.btn(type="submit") Ajouter
+            //- Fin form
+        else 
+            p Impossible d'ajouter des questions sans cours
+
+        //- TODO Mettre du css à la place du br pour l'espacement  
+        br
+        br
+        br
+        button.btn Terminer l'ajout
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/question/ajouter-question.js")

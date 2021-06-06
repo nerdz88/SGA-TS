@@ -1,11 +1,8 @@
-html
-  head
-    title= title
-    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')
-    <!-- link(rel='stylesheet' href='/css/style.css') -->
-  body
+extends ../commun/master-template.pug 
 
-    div.container
+block content
+  //- Start bloc content
+  div.w3-container(style='padding:32px')
       h1 Vos groupes-cours:
     
       ul.entries
@@ -15,11 +12,9 @@ html
             br
             form.form-ajouter-cours(id=unCours._id, action="/enseignant/cours/ajouter", method="POST") 
               input.coursData(name="data", type="hidden", value=unCours)
-              button.connect(type="submit") Ajouter
+              button.btn(type="submit") Ajouter
         else
           li
             em Vous n'avez pas de groupes-cours
 
-<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-<script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/lib/enseignant/liste-cours.js"></script>
+  //- End bloc content
