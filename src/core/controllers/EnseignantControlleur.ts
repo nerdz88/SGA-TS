@@ -53,9 +53,10 @@ export class EnseignantControlleur {
         return operation.recupererObjetParId(params.id);
     }
 
-    public supprimerElement(params: any) {
+    public supprimerElement(params: any) : boolean {
         let operation = this.getOperationParCle(params.type);
-        return operation.supprimerObjet(params);
+        console.log(params.id)
+        return operation.supprimerObjet(params.id);
     }
 
     public recupererElementSGB(params: any) {
@@ -65,8 +66,7 @@ export class EnseignantControlleur {
 
     public updateElement(params: any) {
         let operation = this.getOperationParCle(params.type);
-        operation.supprimerObjet(params);
-        return operation.creerObjet(params);
+        operation.updateObjet(params.id, params.values);
     }
 
 

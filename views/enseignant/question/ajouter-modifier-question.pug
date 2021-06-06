@@ -1,0 +1,43 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content
+    h1 #{estModifiable ? "Modifier une question" : "Ajouter une question"}  
+    if !estModifiable 
+        a(class="btn btn-terminer-ajout" href="/enseignant/question/groupe/" + idCoursGroupe) Terminer l'ajout
+
+    form.form-ajouter-question(id="form-ajouter-question") 
+        //- Début Form 
+        input(type="hidden"  name="idCoursGroupe", value=idCoursGroupe)   
+        input(type="hidden"  name="estModifiable", value=estModifiable.toString())   
+        input(type="hidden"  name="idQuestion", value=estModifiable ? question.getId() : "")  
+        h3 Question: 
+        ul.entries 
+            li Nom: 
+                br
+                input(type="text" name="nom" value=estModifiable ? question.getNom() : "")
+            li Tag (Séparer par des ","): 
+                br
+                input(type="text" name="tags" value=estModifiable ? question.getTag() : "")
+            li Description:
+                br
+                textarea(rows="4" cols="25" name="description") #{estModifiable ? question.getDescriptionQuestion() : ""}
+            li Réponse:
+                br 
+                input(class="rd-reponse" type="radio" name="response" value="true" checked=estModifiable && question.getReponse()) 
+                |  Vrai
+                input(class="rd-reponse" type="radio" name="response" value="false" checked=estModifiable && !question.getReponse())
+                |   Faux 
+            li Description bonne réponse:
+                br
+                textarea(rows="4" cols="25" name="descriptionReponse") #{estModifiable ? question.getDescriptionReponse() : ""}              
+            li Description mauvaise réponse: 
+                br
+                textarea(rows="4" cols="25" name="descriptionMauvaiseReponse") #{estModifiable ? question.getMauvaiseReponseDescription() : ""}
+
+        button.btn(type="submit") #{estModifiable ? "Modifier" : "Ajouter"} 
+        //- Fin form
+
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/question/ajouter-modifier-question.js")

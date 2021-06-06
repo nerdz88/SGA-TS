@@ -1,11 +1,11 @@
 //Fichier Javascript pour les pages de question
 
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
-window.addEventListener("load", function()
-{   
-    $(".btn-delete-question").on("click", function(){
+window.addEventListener("load", function () {
+    $(".btn-delete-question").on("click", function () {
         var nomQuestion = $(this).data("nom");
         var idQuestion = $(this).data("idQuestion");
+        var idCoursGroupe = $(this).data("idCoursgroupe");
         $.confirm({
             title: 'Confirmation',
             backgroundDismiss: true,
@@ -14,11 +14,12 @@ window.addEventListener("load", function()
                 confirm: function () {
                     $.ajax({
                         type: 'GET',
-                        url: '/enseignant/question/supprimer/' + idQuestion ,                     
-                        success: function () {                           
-                            window.location.href = "/enseignant/question";            
+                        url: '/enseignant/question/supprimer/' + idQuestion,
+                        success: function () {
+                            var endpoint = "/enseignant/question" + (idCoursGroupe ? "/groupe/" + idCoursGroupe : "");
+                            window.location.href = endpoint;
                         },
-                        error: function() {
+                        error: function () {
                             console.log("Supprimer Question - KO");
                             //TODO LIONE METTRE DANS UN FUNCTION PLUS GÉNÉRAL
                             $.toast({
@@ -40,6 +41,6 @@ window.addEventListener("load", function()
         });
     });
 
-   console.log("question.js => Page Load");
+    console.log("question.js => Page Load");
 });
 

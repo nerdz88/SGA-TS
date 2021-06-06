@@ -2,29 +2,28 @@ extends ../commun/master-template.pug
 
 block content
   //- Start bloc content
-  div.w3-container(style='padding:32px')
-    h1 #{cours.getSigle()} - #{cours.getTitre()} - Gr: #{groupe.getNumero()} 
-    ul.entries 
-      li Nb étudiant Max: #{cours.getNbMaxEtudiant()} 
-      li Date début: #{groupe.getDateDebut()}
-      li Date fin: #{groupe.getDateFin()}
+  h1 #{cours.getSigle()} - #{cours.getTitre()} - Gr: #{groupe.getNumero()} 
+  ul.entries 
+    li Nb étudiant Max: #{cours.getNbMaxEtudiant()} 
+    li Date début: #{groupe.getDateDebut()}
+    li Date fin: #{groupe.getDateFin()}
 
-    h1 Liste des étudiants  
-    ul.entries
-      each unEtudiant in groupe.getEtudiants()
-        li         
-          strong #{unEtudiant.getNom()} #{unEtudiant.getPrenom()} 
-          | : #{unEtudiant.getEmail()} - #{unEtudiant.getCodePermanent()}
-      else
-        li
-          em Pas d'étudiants dans le cours
+  h1 Liste des étudiants  
+  ul.entries
+    each unEtudiant in groupe.getEtudiants()
+      li         
+        strong #{unEtudiant.getNom()} #{unEtudiant.getPrenom()} 
+        | : #{unEtudiant.getEmail()} - #{unEtudiant.getCodePermanent()}
+    else
+      li
+        em Pas d'étudiants dans le cours
 
 
-   
-    a(class="btn btn-delete-cours" href="javascript:void(0)" 
-      data-id-groupe=groupe.getID() 
-      data-no-groupe=groupe.getNumero() 
-      data-sigle=cours.getSigle()) Supprimer 
+  
+  a(class="btn btn-delete-cours" href="javascript:void(0)" 
+    data-id-groupe=groupe.getID() 
+    data-no-groupe=groupe.getNumero() 
+    data-sigle=cours.getSigle()) Supprimer 
   //- End bloc content
 
 block more-script
