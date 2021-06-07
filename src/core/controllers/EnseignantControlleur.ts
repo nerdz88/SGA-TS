@@ -55,8 +55,7 @@ export class EnseignantControlleur {
 
     public supprimerElement(params: any) : boolean {
         let operation = this.getOperationParCle(params.type);
-        console.log(params.id)
-        return operation.supprimerObjet(params.id);
+        return operation.supprimerObjet(params);
     }
 
     public recupererElementSGB(params: any) {

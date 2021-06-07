@@ -3,6 +3,7 @@ extends ../commun/master-template.pug
 block content
   //- Start bloc content
   h1 Mes cours
+  a(class="btn btn-ajouter-cours" href='/enseignant/cours/ajouter') Ajouter
   ul.entries
     each unCours in cours
       each groupe in unCours.getGroupeCours()
