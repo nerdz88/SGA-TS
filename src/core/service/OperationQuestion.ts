@@ -20,7 +20,7 @@ export class OperationQuestion extends Operation<Question> {
     creerObjet(params: any): void {
         let questionJson = this.getJSON(params.question);
         //TODO MORE VALIDATION
-        if (this.existeQuestion(questionJson.nom)) {
+        if (this.existeQuestion(questionJson.nom, -1)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
         let questionObject = new Question(questionJson.idCoursGroupe,
@@ -32,24 +32,20 @@ export class OperationQuestion extends Operation<Question> {
             questionJson.descriptionMauvaiseReponse)
         this.operationObject.push(questionObject);
     }
-    private existeQuestion(nom: any): boolean {
-        return this.operationObject.find(q => q.getNom() == nom) != undefined;
+    private existeQuestion(nom: any, idQuestion: number): boolean {
+        return this.operationObject.find(q => q.getNom() == nom && q.getId() != idQuestion) != undefined;
     }
 
-
     public updateObjet(idQuestion: number, values: any) {
-        if (this.existeQuestion(values.nom)) {
+        if (this.existeQuestion(values.nom, idQuestion)) {
             throw new AlreadyExistsError("la question " + values.nom + " existe déjà")
         }
         this.recupererObjetParId(idQuestion).update(values);
     }
 
-    supprimerObjet(id: any): boolean {
-        let index = this.operationObject.findIndex(q => q.getId() == id); 
-        console.log("supprimerObjet");
-        console.log(id);       
-        console.log(index);       
-        if (id != -1) {
+    supprimerObjet(params: any): boolean {
+        let index = this.operationObject.findIndex(q => q.getId() == params.id); 
+        if (index != -1) {
             this.operationObject.splice(index, 1);
             return true;
         }
