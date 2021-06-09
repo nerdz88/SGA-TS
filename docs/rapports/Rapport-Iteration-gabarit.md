@@ -88,7 +88,9 @@ _PostCondition_
 
 _PostCondition_
 
-- Un nouveau cours est créé.
+- Un nouveau cours est créé s'il n'existe pas déjà
+- Un nouveau GroupeCours est créé
+- le GroupeCours est associé au Cours
 - L’enseignant est associé au cours
 - Les étudiants inscrits dans le groupe-cours(SGB) sont associés au cours
 
@@ -185,7 +187,7 @@ _PostCondition_
 
 _PostCondition_
 
-- Le cours n’existe plus dans le système SGA
+- Le cours n’existe plus dans operationQuestion
 
 **RDCU**
 
@@ -235,18 +237,19 @@ _PostCondition_
 
 ![recupererUnCoursSgaQuestion](../../out/docs/Ajouter%20question/RDCU_Ajouter_Question/recupererCoursSgaQuestion.svg)
 
-### `ajouterQuestion(numeroGroupe : int, tags : String[], nom : String, texteQuestion : String,reponse : boolean, texteBonneReponse : String, texteMauvaiseReponse : String)`
+### `ajouterQuestion(numeroGroupe : int, tags : String, nom : String, texteQuestion : String,reponse : boolean, texteBonneReponse : String, texteMauvaiseReponse : String)`
 
 **Contrat d'opération**
 
 _PostCondition_
 
-- Une nouvelle question a été créée dans la banque pour le cours.
+- Une nouvelle question a été créée
+- La nouvelle question a été associée à operationQuestion.
+- La question a été associé a un GroupeCours
 
 **RDCU**
 
 ![recupererUnCoursSgaQuestion](../../out/docs/Ajouter%20question/RDCU_Ajouter_Question/ajouterQuestionFinal.svg)
-
 
 ## CU02b - Récupérer question
 **Acteur principal:**  Enseignant
@@ -327,7 +330,7 @@ _PostCondition_
 
 _PostCondition_
 
-  - La question a été modifiée dans la banque pour le cours.
+  - La question a été modifiée dans operationQuestion
 
 **RDCU**
 
@@ -364,7 +367,7 @@ _PostCondition_
 
 _PostCondition_
 
-- Une question a été supprimée de la banque pour le cours.
+- Une question a été supprimée dans operationQuestion
 
 **RDCU**
 

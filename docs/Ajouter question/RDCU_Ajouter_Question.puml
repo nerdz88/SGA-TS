@@ -38,7 +38,7 @@ participant ":EnseignantControleur" as sga
 participant "operationCours : OperationCours" as opCours
 ->sga : questions = recupererCoursSgaQuestion(token, idCours, numeroGroupeCours)
 note left : Selon Contôleur,\nreçoit la première opération système
-sga->opCours: questions = recupererCours(token, idCours, numeroGroupeCourss)
+sga->opCours: questions = recupererCours(token, idCours, numeroGroupeCours)
 note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
 @enduml
 
@@ -61,6 +61,8 @@ loop [!terminerQuestion]
   opQuestion->opQuestion : ajouterQuestion(q)
   note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 end
+-> sga : terminerAjouterQuestion()
+note left : Ce n'est pas une opération système, \nmais nous aide à déterminer la fin de la boucle
 @enduml
 
 @startuml terminerAjouterQuestion
