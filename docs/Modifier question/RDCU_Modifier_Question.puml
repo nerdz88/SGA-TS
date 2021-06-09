@@ -5,7 +5,9 @@ title RDCU pour modifier une question d'un enseignant
 participant ":EnseignantControleur" as controleur
 participant "operationQuestion : OperationQuestion" as opQuestion
 ->controleur : q=recupereUneQuestion(idQuestion,token)
+note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
 controleur->opQuestion : q=recupererUneQuestion(idQuestion,token)
+note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
 ->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
 controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
 @enduml
@@ -17,5 +19,7 @@ title RDCU modifierUneQuestion
 participant ":EnseignantControleur" as controleur
 participant "operationQuestion : OperationQuestion" as opQuestion
 ->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+note right :  selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la seconde opération système)
 controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
 @enduml

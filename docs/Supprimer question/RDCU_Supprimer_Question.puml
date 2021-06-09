@@ -16,8 +16,9 @@ skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour supprimer une question créée d'un enseignant
 participant ":EnseignantControleur" as controleur
-participant "OperationQuestion : OperationQuestion" as opQuestion
+participant "operationQuestion : OperationQuestion" as opQuestion
 ->controleur : supprimerUneQuestionSga(idQuestion)
-note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la seconde opération système)
 controleur -> opQuestion : supprimerUneQuestion(idQuestion)
+note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter supprimerUneQuestion
 @enduml 

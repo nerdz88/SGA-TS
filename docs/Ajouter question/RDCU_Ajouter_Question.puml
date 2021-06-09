@@ -68,9 +68,9 @@ skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour ajouterQuestion
 participant ":EnseignantControleur" as sga
-participant "operationQuestion : OperationQuestion" as opQuestion
+participant "operationCours : OperationCours" as opCours
  -> sga : information = recupererCoursSga(idGroupeCours)
   note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
-  sga -> opQuestion : information = recupereCours(token)
+  sga -> opCours : information = recupereCours(token)
   note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 @enduml

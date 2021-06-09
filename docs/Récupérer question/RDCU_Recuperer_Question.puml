@@ -7,7 +7,8 @@ participant "operationQuestion : OperationQuestion" as mapCours
 
 ->controleur : questions = recupererToutesQuestionsSga(token)
 note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur -> mapCours : questions = recupererToutCours(token)
+controleur -> mapCours : questions = recupererToutesQuestionsSga(token)
+note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererToutesQuestionsSga
 @enduml
 
 @startuml recupererUneQuestion
@@ -15,8 +16,9 @@ skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer une question créée d'un enseignant
 participant ":coursControleur" as controleur
-participant "OperationCours : OperationCours" as mapCours
+participant "operationQuestion : OperationQuestion" as mapCours
 ->controleur : question = recupererUneQuestionSga(token, idQuestion)
-note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+note right : Selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
 controleur -> mapCours : question = recupererUneQuestion(token, idQuestion)
+note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
 @enduml
