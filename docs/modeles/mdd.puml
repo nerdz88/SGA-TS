@@ -1,14 +1,18 @@
 @startuml MDD
 skinparam defaultfontname Verdana
 skinparam RoundCorner 20
+skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
-class CoursService {
+class Opération {
 
 }
 
+class OpérationCours
+
 class Cours {
+    id : String
     nom : String
 }
 
@@ -17,10 +21,10 @@ class GroupeCours {
 }
 
 class Enseignant {
-    nom : String
+    token : String
 }
 
-class SGA {
+class EnseignantControleur {
 
 }
 
@@ -28,9 +32,30 @@ class Etudiant {
     nom : String
 }
 
-SGA "1" -- "1"CoursService : fais des opérations avec >
-Etudiant "1..*" --* "1"GroupeCours : sont-inscrit-dans >
-Cours "1" o-- "*"GroupeCours : contient >
-CoursService "1" *-- "*"Cours : contient >
-Enseignant "*" -- "1"SGA : utilise >
+class Tag{
+    nom : String
+}
+
+class Question{
+    nom : String
+    texteQuestion : String
+    reponse : boolean
+    texteBonneReponse : String
+    texteMauvaiseReponse : String
+}
+
+Enseignant "*"-- "1" EnseignantControleur : utilise >
+
+EnseignantControleur "1" -- "*" Opération : execute >
+OpérationQuestion --|> Opération
+OpérationCours --|> Opération
+
+OpérationCours "1"-- "1"Cours : opere sur >
+Cours "1"-- "*"GroupeCours : contient >
+GroupeCours"1" -- "*"Question : contient >
+
+OpérationQuestion "1"-- "1"Question : opere sur >
+GroupeCours "1"-- "*"Etudiant : contient >
+
+Question "1" -- "*"Tag : < categorise
 @enduml

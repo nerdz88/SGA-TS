@@ -1,0 +1,12 @@
+@startuml DSS_Recuperer_Question
+title DSS récupérer question
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererToutesQuestionsSga(token : String)
+professeur <-- systeme : liste de questions de l'enseignant
+professeur -> systeme : recupererUneQuestionSga(token : String, idQuestion : String)
+professeur <-- systeme : détails de la question
+
+@enduml

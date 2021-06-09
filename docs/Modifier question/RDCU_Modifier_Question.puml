@@ -1,0 +1,21 @@
+@startuml modifierQuestionOld
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour modifier une question d'un enseignant
+participant ":EnseignantControleur" as controleur
+participant "operationQuestion : OperationQuestion" as opQuestion
+->controleur : q=recupereUneQuestion(idQuestion,token)
+controleur->opQuestion : q=recupererUneQuestion(idQuestion,token)
+->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+@enduml
+
+@startuml modifierQuestionFinal
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU modifierUneQuestion
+participant ":EnseignantControleur" as controleur
+participant "operationQuestion : OperationQuestion" as opQuestion
+->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
+@enduml

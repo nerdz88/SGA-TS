@@ -1,0 +1,12 @@
+@startuml recupererCoursSgb
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU. pour créer un nouveau Cours
+participant ":EnseignantControlleur" as sga
+participant "<<Actor>> : Sgb" as sgb
+
+->sga : cours = recupererCoursSgb(token)
+note left : Selon Contôleur,\nreçoit la première opération système
+sga->sgb: cours = recupererCours(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
+@enduml

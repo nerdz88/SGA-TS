@@ -1,0 +1,23 @@
+@startuml supprimerUneQuestionOld
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour supprimer une question créée d'un enseignant
+participant ":EnseignantControleur" as controleur
+participant "OperationQuestion : OperationQuestion" as opQuestion
+->controleur : question = recupererUneQuestion(token,idQuestion)
+controleur -> opQuestion : recupererQuestion(token,idQuestion)
+->controleur : supprimerUneQuestionSga(idQuestion)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+controleur -> opQuestion : supprimerUneQuestion(idQuestion)
+@enduml 
+
+@startuml supprimerUneQuestionFinal
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour supprimer une question créée d'un enseignant
+participant ":EnseignantControleur" as controleur
+participant "OperationQuestion : OperationQuestion" as opQuestion
+->controleur : supprimerUneQuestionSga(idQuestion)
+note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+controleur -> opQuestion : supprimerUneQuestion(idQuestion)
+@enduml 

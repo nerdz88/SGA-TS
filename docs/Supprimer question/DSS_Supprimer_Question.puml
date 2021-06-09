@@ -1,0 +1,12 @@
+@startuml DSS_Supprimer_Question
+title DSS supprimer question
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : supprimerQuestion(idQuestion : String)
+professeur <-- systeme : valeurs actuelles de la question à supprimer
+professeur -> systeme : confirme()
+professeur <-- systeme : questions associées au cours
+
+@enduml
