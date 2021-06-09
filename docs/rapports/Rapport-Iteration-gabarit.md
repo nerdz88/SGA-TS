@@ -115,7 +115,7 @@ _PostCondition_
 
 ## DSS CU01b - Récupérer cours
 
-![DSS_recupererCours](../../out/docs/Récupérer%20cours/DSS_Récupérer_cours/DSS%20Récupérer%20cours.svg)
+![DSS_recupererCours](../../out/docs/Récupérer%20cours/DSS_Récupérer_cours/DSS_Récupérer_Cours.svg)
 
 ### `recupererTousCoursSga(token : String)` 
 
