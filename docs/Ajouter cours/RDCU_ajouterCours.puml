@@ -12,7 +12,7 @@ participant "c:GroupeCours" as cours
   sga->cours : c = create()
   note left : Selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
   sga->map : ajouterCours(tokenEnseignant, c)
-  note left : note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererToutesQuestionsSga
+  note left : Selon expert, operationCours contient\ntoutes les informations par rapport aux cours.
   -> sga : information = recupererCoursSga(token)
   note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
   sga -> map : information = recupereCours(token)

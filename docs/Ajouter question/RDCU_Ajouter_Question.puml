@@ -54,7 +54,7 @@ loop [!terminerQuestion]
 -> sga : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
  note left : Selon Contôleur,\nreçoit la deuxième opération système 
   sga->opQuestion : ajouterElement(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
-  note left : Selon fabrication pure : operationQuestion\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
+  note left :Selon expert, operationCours contient\ntoutes les informations par rapport aux cours.
   create question
   opQuestion->question : q = create()
   note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
