@@ -24,7 +24,7 @@ class Enseignant {
     token : String
 }
 
-class EnseignantControleur {
+class Sga {
 
 }
 
@@ -44,9 +44,9 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-Enseignant "*"-- "1" EnseignantControleur : utilise >
+Enseignant "*"-- "1" Sga : utilise >
 
-EnseignantControleur "1" -- "*" Opération : execute >
+Sga "1" -- "*" Opération : execute >
 OpérationQuestion --|> Opération
 OpérationCours --|> Opération
 
