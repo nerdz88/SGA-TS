@@ -5,7 +5,10 @@
 ### Coéquipiers
 
 - Bédard, Tommy, AQ13400
-- Nom, Prénom, Code universel
+- Abdelli, Pierre Amar, AQ48850
+- Bewa, Lionel, AQ22600
+- El-Safady, Sobhi, AP94320
+- Korchi, Zakaria , AQ25210
 
 ### Chargés de laboratoire
 
@@ -29,7 +32,7 @@ Le travail sera noté selon la [grille de correction des rapports](https://docs.
 
 # Introduction
 
-> Courte introduction pour expliquer à quoi correspond cette itération. Quels sont les objectifs à atteindre et comment les atteint-on?
+> Dans cette première itération, l'objectif était de concevoir la structure générale du Système de gestion des apprentisages. L'évaluation du modèle du domaine, établir les diagrames de séquences systèmes reliés au cas d'utilisation ainsi que leur diagramme de cas d'utilisation. Finalement, l'utilisation des analyse conceptuelles développer dans la première partie pour réaliser l'implémentation des cas d'utilisations CU01 et CU02. 
 
 # Modèle du domaine
 
