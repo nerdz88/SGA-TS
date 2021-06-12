@@ -19,7 +19,14 @@ export abstract class Operation<T> {
 
     abstract updateObjet(id : number, params: any) 
 
-    abstract recupererObjet(params: any): any
+    public recupererObjet(params?: any): string{
+        let value="[]";
+        if(this.operationObject==undefined || this.operationObject.length==0){
+            return value;
+        }
+        value=JSON.stringify(this.operationObject);
+        return value;
+    }
 
     abstract recupererObjetParId(id: any): any
 

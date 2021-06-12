@@ -54,6 +54,15 @@ export class Cours {
     public getGroupeCoursById(id: number) {
         return this.groupeCours.find(c => c.getID() == id);
     }
+
+    /*public toString(){
+        return "_sigle:"+this._sigle+",_titre:"+this._titre+
+        "_nbMaxEtudiant:"+this._nbMaxEtudiant+"groupeCours:"+this.groupeCours;
+        //         titre: this._titre,
+        //         dateDebut: this._dateDebut,
+        //         dateFin: this._dateFin,
+        //         groupeCours: this.groupeCours
+    }*/
     // public toJSON() {
     //     return {
     //         id: this._id,

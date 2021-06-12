@@ -51,9 +51,9 @@ export class OperationQuestion extends Operation<Question> {
         }
         return false;
     }
-    recupererObjet(params: any) {
-        return this.operationObject;
-    }
+    /*recupererObjet(params: any) :string{
+        return this.operationObject.toString();
+    }*/
     recupererObjetParId(id: any) {
         let question: Question = this.operationObject.find(c => c.getId() == id);
         if (question == undefined) {

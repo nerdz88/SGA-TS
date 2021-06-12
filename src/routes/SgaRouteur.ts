@@ -55,6 +55,7 @@ export class SgaRouteur {
         let email = req.body.email as string;
         let password = req.body.password as string;
 
+        //Doit modifier pour que le controlleur retourne une string 
         let reponse = this.controlleur.login(email, password);
         console.log("post login")
         reponse.then(response => {
@@ -151,12 +152,14 @@ export class SgaRouteur {
 
 
         //params du frontend normalement... X(
-        let params = {
+       /* let params = {
             type: TYPES.COURS,
-        }
+        }*/
         console.log("===>")
-        let value = this.controlleur.recupererElement(params);
-        res.render("enseignant/liste-cours-sga", { cours: value })
+        let value = this.controlleur.recupererElement(TYPES.COURS);
+        console.log(value);
+        let course = JSON.parse(value);
+        res.render("enseignant/liste-cours-sga", { cours: course })
     }
 
     /**
@@ -217,8 +220,8 @@ export class SgaRouteur {
             type: TYPES.QUESTION,
         }
 
-        let questions = this.controlleur.recupererElement(params);
-
+        let values = this.controlleur.recupererElement(TYPES.QUESTION);
+        let questions=JSON.parse(values);
         if (idCoursGroupe != undefined) {
             questions = questions.filter(q => q.getGroupeCoursID() == idCoursGroupe);
         }

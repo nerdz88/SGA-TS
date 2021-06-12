@@ -67,11 +67,19 @@ export class OperationCours extends Operation<Cours> {
     }
 
 
-    recupererObjet(params: any) {
-        if (this.operationObject == undefined)
-            return [];
-        return this.operationObject;
-    }
+   /* recupererObjet(params: any) :string{
+        //const myJSON = JSON.stringify(this.operationObject);
+        console.log("---------------------")
+        let value="[]";
+        if(this.operationObject==undefined || this.operationObject.length==0){
+            return value;
+        }
+        value=this.operationObject.toString();
+        console.log("shit")
+        console.log(value)
+        return value;
+
+    }*/
 
     async recupererJsonSGB(params: any) {
 
