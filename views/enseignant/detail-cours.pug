@@ -12,8 +12,8 @@ block content
   ul.entries
     each unEtudiant in groupe._etudiants
       li         
-        strong #{unEtudiant.nom} #{unEtudiant.prenom} 
-        | : #{unEtudiant.email} - #{unEtudiant.codePermanent}
+        strong #{unEtudiant._nom} #{unEtudiant._prenom} 
+        | : #{unEtudiant._email} - #{unEtudiant._codePermanent}
     else
       li
         em Pas d'étudiants dans le cours
