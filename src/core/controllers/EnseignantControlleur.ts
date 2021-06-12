@@ -37,12 +37,12 @@ export class EnseignantControlleur {
         console.log(operation.recupererObjet(null));*/
     }
 
-    public recupererElement(type: string) {
+    public recupererElement(type: string) : string{
         let operation = this.getOperationParCle(type);
         return operation.recupererObjet();
     }
 
-    public recupererElementById(type: string, id: any) {
+    public recupererElementById(type: string, id: any) :string{
         let operation = this.getOperationParCle(type);
         return operation.recupererObjetParId(id);
     }
