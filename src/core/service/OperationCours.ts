@@ -29,12 +29,12 @@ export class OperationCours extends Operation<Cours> {
     }
 
 
-    recupererObjetParId(id: any) {
+    recupererObjetParId(id: any) : string{
         let leCours: Cours = this.operationObject.find(c => c.getSigle() == id);
         if (leCours == undefined) {
             throw new NotFoundError("Le cours '" + id + "' n'existe pas.");
         }
-        return leCours;
+        return JSON.stringify(leCours);
     }
 
 

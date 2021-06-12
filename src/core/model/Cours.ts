@@ -51,10 +51,6 @@ export class Cours {
         return this.groupeCours.length
     }
 
-    public getGroupeCoursById(id: number) {
-        return this.groupeCours.find(c => c.getID() == id);
-    }
-
     /*public toString(){
         return "_sigle:"+this._sigle+",_titre:"+this._titre+
         "_nbMaxEtudiant:"+this._nbMaxEtudiant+"groupeCours:"+this.groupeCours;

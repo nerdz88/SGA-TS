@@ -6,6 +6,7 @@ import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur
 import { TYPES } from "../core/service/Operation"
 import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 import { NotFoundError } from '../core/errors/NotFoundError';
+import { Cours } from '../core/model/Cours';
 
 
 // TODO: rethink the name for this "router" function, since it's not really an Express router (no longer being "use()"ed inside Express)
@@ -176,13 +177,21 @@ export class SgaRouteur {
 
         let sigleCours = req.params.sigle;
         let idCoursGroupe = req.params.idCoursGroupe;
-        let params = {
+        /*let params = {
             type: TYPES.COURS,
             id: sigleCours
-        }
-        let cours = this.controlleur.recupererElementById(params);
-        res.render("enseignant/detail-cours", { cours: cours, groupe: cours.getGroupeCoursById(idCoursGroupe) });
+        }*/
+        let coursValue = this.controlleur.recupererElementById(TYPES.COURS,sigleCours);
+        let cours=JSON.parse(coursValue);
+        console.log("-----sldlds")
+        console.log(cours)
+        res.render("enseignant/detail-cours", { cours: cours, groupe: this.getGroupeCoursById(cours.groupeCours,idCoursGroupe) });
         //res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(this.token, sigleCours) });
+    }
+
+    private getGroupeCoursById(groupeCours:[any],id: any) {
+        console.log(groupeCours.find(c => c._id == id))
+        return groupeCours.find(c => c._id == id);
     }
 
     public supprimerCours(req: Request, res: Response, next: NextFunction) {
@@ -223,7 +232,7 @@ export class SgaRouteur {
         let values = this.controlleur.recupererElement(TYPES.QUESTION);
         let questions=JSON.parse(values);
         if (idCoursGroupe != undefined) {
-            questions = questions.filter(q => q.getGroupeCoursID() == idCoursGroupe);
+            questions = questions.filter(q => q._idGroupeCours == idCoursGroupe);
         }
 
         res.render("enseignant/question/liste-question", { questions: questions, idCoursGroupe: idCoursGroupe })
@@ -235,11 +244,12 @@ export class SgaRouteur {
         }
 
         let idQuestion = req.params.id;
-        let params = {
+        /*let params = {
             type: TYPES.QUESTION,
             id: idQuestion
-        }
-        let question = this.controlleur.recupererElementById(params);
+        }*/
+        let values = this.controlleur.recupererElementById(TYPES.QUESTION,idQuestion);
+        let question = JSON.parse(values);
         res.render("enseignant/question/detail-question", { question: question });
     }
 
@@ -312,8 +322,8 @@ export class SgaRouteur {
         }
 
         let idCoursGroupe = req.params.idCoursGroupe;
-        let question = this.controlleur.recupererElementById({ type: TYPES.QUESTION, id: req.params.idQuestion });
-
+        let values = this.controlleur.recupererElementById(TYPES.QUESTION,req.params.idQuestion);
+        let question = JSON.parse(values);
         res.render("enseignant/question/ajouter-modifier-question", { idCoursGroupe: idCoursGroupe, question: question, estModifiable: true });
     }
 

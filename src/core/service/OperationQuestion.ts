@@ -40,7 +40,7 @@ export class OperationQuestion extends Operation<Question> {
         if (this.existeQuestion(values.nom, idQuestion)) {
             throw new AlreadyExistsError("la question " + values.nom + " existe déjà")
         }
-        this.recupererObjetParId(idQuestion).update(values);
+        this.recupererQuestionParId(idQuestion).update(values);
     }
 
     supprimerObjet(params: any): boolean {
@@ -54,7 +54,11 @@ export class OperationQuestion extends Operation<Question> {
     /*recupererObjet(params: any) :string{
         return this.operationObject.toString();
     }*/
-    recupererObjetParId(id: any) {
+    recupererObjetParId(id: number) :string{
+        let question = this.recupererQuestionParId(id);
+        return JSON.stringify(question);
+    }
+    private recupererQuestionParId(id: number){
         let question: Question = this.operationObject.find(c => c.getId() == id);
         if (question == undefined) {
             throw new NotFoundError("La question '" + id + "' n'existe pas.");

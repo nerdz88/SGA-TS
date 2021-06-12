@@ -48,9 +48,9 @@ export class EnseignantControlleur {
         return operation.recupererObjet();
     }
 
-    public recupererElementById(params: any) {
-        let operation = this.getOperationParCle(params.type);
-        return operation.recupererObjetParId(params.id);
+    public recupererElementById(type : string, id : any) {
+        let operation = this.getOperationParCle(type);
+        return operation.recupererObjetParId(id);
     }
 
     public supprimerElement(params: any) : boolean {

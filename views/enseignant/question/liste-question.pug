@@ -10,10 +10,10 @@ block content
             li 
                 strong #{uneQuestion._nom} 
                 |- Tag: #{uneQuestion._tag}      
-                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion._id) Détail
-                a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + idCoursGroupe +"/modifier/" + uneQuestion._id) Modifier              
+                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.id) Détail
+                a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + idCoursGroupe +"/modifier/" + uneQuestion.id) Modifier              
                 a(class="btn btn-delete-question" href="javascript:void(0)"
-                    data-id-question=uneQuestion._id
+                    data-id-question=uneQuestion.id
                     data-nom=uneQuestion._nom
                     data-id-coursgroupe=idCoursGroupe) Supprimer 
         else

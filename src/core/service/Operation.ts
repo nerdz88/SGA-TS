@@ -28,7 +28,7 @@ export abstract class Operation<T> {
         return value;
     }
 
-    abstract recupererObjetParId(id: any): any
+    abstract recupererObjetParId(id: any): string
 
     abstract recupererJsonSGB(params: any): any
 
