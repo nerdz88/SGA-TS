@@ -2,18 +2,18 @@ extends ../commun/master-template.pug
 
 block content
   //- Start bloc content
-  h1 #{cours.getSigle()} - #{cours.getTitre()} - Gr: #{groupe.getNumero()} 
+  h1 #{cours._sigle} - #{cours._titre} - Gr: #{groupe._numero} 
   ul.entries 
-    li Nb étudiant Max: #{cours.getNbMaxEtudiant()} 
-    li Date début: #{groupe.getDateDebut()}
-    li Date fin: #{groupe.getDateFin()}
+    li Nb étudiant Max: #{cours._nbMaxEtudiant} 
+    li Date début: #{groupe._dateDebut}
+    li Date fin: #{groupe._dateFin}
 
   h1 Liste des étudiants  
   ul.entries
-    each unEtudiant in groupe.getEtudiants()
+    each unEtudiant in groupe._etudiants
       li         
-        strong #{unEtudiant.getNom()} #{unEtudiant.getPrenom()} 
-        | : #{unEtudiant.getEmail()} - #{unEtudiant.getCodePermanent()}
+        strong #{unEtudiant._nom} #{unEtudiant._prenom} 
+        | : #{unEtudiant._email} - #{unEtudiant._codePermanent}
     else
       li
         em Pas d'étudiants dans le cours
@@ -21,9 +21,9 @@ block content
 
   
   a(class="btn btn-delete-cours" href="javascript:void(0)" 
-    data-id-groupe=groupe.getID() 
-    data-no-groupe=groupe.getNumero() 
-    data-sigle=cours.getSigle()) Supprimer 
+    data-id-groupe=groupe._id
+    data-no-groupe=groupe._numero
+    data-sigle=cours._sigle) Supprimer 
   //- End bloc content
 
 block more-script

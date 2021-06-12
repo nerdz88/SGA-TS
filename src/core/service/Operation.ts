@@ -1,5 +1,3 @@
-import { InvalidParameterError } from '../errors/InvalidParameterError';
-
 export enum TYPES {
     COURS = "Cours",
     DEVOIR = "Devoir",
@@ -13,17 +11,25 @@ export abstract class Operation<T> {
         this.operationObject = new Array()
     }
 
-    abstract creerObjet(params: any)
+    abstract creerObjet(element: string, token?: string)
 
-    abstract supprimerObjet(params: any) : boolean
+    /**
+     * 
+     * @param id recoit id qu'on veut supprimer
+     * @param secondId optionnel 
+     */
+    abstract supprimerObjet(id: any, secondId?: any): boolean
 
-    abstract updateObjet(id : number, params: any) 
+    abstract updateObjet(id: number, newElement: any)
 
-    abstract recupererObjet(params: any): any
+    public recupererObjet(): string {
+        let value = "[]";
+        if (this.operationObject == undefined || this.operationObject.length == 0) {
+            return value;
+        }
+        value = JSON.stringify(this.operationObject);
+        return value;
+    }
 
-    abstract recupererObjetParId(id: any): any
-
-    abstract recupererJsonSGB(params: any): any
-
-    //abstract updateObjet(params : any) : void
+    abstract recupererObjetParId(id: any): string
 }

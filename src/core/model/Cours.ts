@@ -6,18 +6,16 @@ export class Cours {
     private _titre: string;
     private _nbMaxEtudiant: number;
     private groupeCours: GroupeCours[]
-    //private groupeCours: Map<number, GroupeCours>;
     constructor(sigle: string, titre: string, nbMaxEtudiant: number) {
         this._titre = titre;
         this._sigle = sigle;
         this._nbMaxEtudiant = nbMaxEtudiant;
-        //this.groupeCours = new Map<number, GroupeCours>();
         this.groupeCours = new Array()
     }
 
     public ajoutGroupeCours(groupeCours: GroupeCours): void {
         if (this.groupeCours.find(c => c.getID() == groupeCours.getID()) != undefined) {
-            throw new AlreadyExistsError("Le groupe " +  this.getSigle() + "-" + groupeCours.getID() + " existe déjà");
+            throw new AlreadyExistsError("Le groupe " + this.getSigle() + "-" + groupeCours.getID() + " existe déjà");
         }
         this.groupeCours.push(groupeCours)
     }
@@ -50,18 +48,4 @@ export class Cours {
     public getTailleCours() {
         return this.groupeCours.length
     }
-
-    public getGroupeCoursById(id: number) {
-        return this.groupeCours.find(c => c.getID() == id);
-    }
-    // public toJSON() {
-    //     return {
-    //         id: this._id,
-    //         sigle: this._sigle,
-    //         titre: this._titre,
-    //         dateDebut: this._dateDebut,
-    //         dateFin: this._dateFin,
-    //         groupeCours: this.groupeCours
-    //     };
-    // }
 }

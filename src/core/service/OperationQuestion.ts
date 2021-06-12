@@ -8,17 +8,8 @@ export class OperationQuestion extends Operation<Question> {
         super();
     }
 
-    private getJSON(object: any) {
-        try {
-            let json = JSON.parse(object);
-            return json;
-        } catch (exception) {
-            return object;
-        }
-    }
-
-    creerObjet(params: any): void {
-        let questionJson = this.getJSON(params.question);
+    creerObjet(element: string, token?: string): void {
+        let questionJson = JSON.parse(element);
         //TODO MORE VALIDATION
         if (this.existeQuestion(questionJson.nom, -1)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
@@ -37,36 +28,30 @@ export class OperationQuestion extends Operation<Question> {
     }
 
     public updateObjet(idQuestion: number, values: any) {
-        if (this.existeQuestion(values.nom, idQuestion)) {
-            throw new AlreadyExistsError("la question " + values.nom + " existe déjà")
+        let newElement = JSON.parse(values);
+        if (this.existeQuestion(newElement.nom, idQuestion)) {
+            throw new AlreadyExistsError("la question " + newElement.nom + " existe déjà")
         }
-        this.recupererObjetParId(idQuestion).update(values);
+        this.recupererQuestionParId(idQuestion).update(newElement);
     }
 
-    supprimerObjet(params: any): boolean {
-        let index = this.operationObject.findIndex(q => q.getId() == params.id); 
+    supprimerObjet(id: number, secondId?: any): boolean {
+        let index = this.operationObject.findIndex(q => q.getId() == id);
         if (index != -1) {
             this.operationObject.splice(index, 1);
             return true;
         }
         return false;
     }
-    recupererObjet(params: any) {
-        return this.operationObject;
+    recupererObjetParId(id: number): string {
+        let question = this.recupererQuestionParId(id);
+        return JSON.stringify(question);
     }
-    recupererObjetParId(id: any) {
+    private recupererQuestionParId(id: number) {
         let question: Question = this.operationObject.find(c => c.getId() == id);
         if (question == undefined) {
             throw new NotFoundError("La question '" + id + "' n'existe pas.");
         }
         return question;
     }
-    recupererJsonSGB(params: any) {
-
-    }
-
-    /*updateObjet(params: any): void {
-        throw new Error('Method not implemented.');
-    }*/
-
 }

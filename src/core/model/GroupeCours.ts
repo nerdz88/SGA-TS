@@ -1,5 +1,3 @@
-import { InvalidParameterError } from '../errors/InvalidParameterError';
-import { Cours } from './Cours';
 import { Etudiant } from "./Etudiant";
 export class GroupeCours {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -9,7 +7,6 @@ export class GroupeCours {
     private _etudiants: Etudiant[];
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
-    //  private _cours: Cours;
 
     constructor(id: number, numero: string, dateDebut: string, dateFin: string) {
         this._id = id;
@@ -17,7 +14,6 @@ export class GroupeCours {
 
         this._dateDebut = dateDebut;
         this._dateFin = dateFin;
-        //this._cours = cours;
         this._etudiants = [];
     }
 
@@ -45,16 +41,4 @@ export class GroupeCours {
     public getDateFin() {
         return this._dateFin;
     }
-
-    // public getCours() {
-    //     return this._cours;
-    // }
-
-    // public toJSON() {
-    //     return {
-    //         nb_max_student: this._nb_max_student,
-    //         numero: this._numero,
-    //         etudiants: this._etudiants
-    //     };
-    // }
 }

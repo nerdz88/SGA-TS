@@ -8,13 +8,13 @@ block content
     ul.entries
         each uneQuestion in questions
             li 
-                strong #{uneQuestion.getNom()} 
-                |- Tag: #{uneQuestion.getTag()}      
-                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.getId()) Détail
-                a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + idCoursGroupe +"/modifier/" + uneQuestion.getId()) Modifier              
+                strong #{uneQuestion._nom} 
+                |- Tag: #{uneQuestion._tag}      
+                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion.id) Détail
+                a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + idCoursGroupe +"/modifier/" + uneQuestion.id) Modifier              
                 a(class="btn btn-delete-question" href="javascript:void(0)"
-                    data-id-question=uneQuestion.getId() 
-                    data-nom=uneQuestion.getNom() 
+                    data-id-question=uneQuestion.id
+                    data-nom=uneQuestion._nom
                     data-id-coursgroupe=idCoursGroupe) Supprimer 
         else
             li
