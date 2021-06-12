@@ -1,12 +1,8 @@
 import { Router, Request, Response, NextFunction, response } from 'express';
-import { token } from 'morgan';
-import * as flash from 'node-twinkle';
-
 import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
 import { TYPES } from "../core/service/Operation"
-import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 import { NotFoundError } from '../core/errors/NotFoundError';
-import { Cours } from '../core/model/Cours';
+import { SGBService } from '../core/service/SGBService';
 
 
 // TODO: rethink the name for this "router" function, since it's not really an Express router (no longer being "use()"ed inside Express)
@@ -25,6 +21,9 @@ export class SgaRouteur {
 
     /**
      * Methode GET pour afficher la page d'accueil
+     * @param req 
+     * @param res 
+     * @param next 
      */
     public accueilPage(req: Request, res: Response, next: NextFunction) {
         //TODO - login - afficher le nom de l'utilisateur dans accueil.pug
@@ -39,6 +38,9 @@ export class SgaRouteur {
 
     /**
      * Methode GET pour afficher la page de login
+     * @param req 
+     * @param res 
+     * @param next 
      */
     public loginPage(req: Request, res: Response, next: NextFunction) {
         if (req.session.loggedIn) {
@@ -50,7 +52,10 @@ export class SgaRouteur {
     }
 
     /**
-     * Methode qui permet de login
+     * Methode du login qui redirige vers la bonne page
+     * @param req 
+     * @param res 
+     * @param next 
      */
     public login(req: Request, res: Response, next: NextFunction) {
         let email = req.body.email as string;
@@ -80,59 +85,40 @@ export class SgaRouteur {
         });
     }
 
-    public pageAccueil2(req: Request, res: Response, next: NextFunction) {
-        if (!req.session.loggedIn) {
-            res.sendStatus(401);
-            return
-        }
-        res.render("enseignant/accueil2")
-    }
-
-    public pageAjouterCours(req: Request, res: Response, next: NextFunction) {
+    /**
+     * Methode GET qui affiche la page pour ajouter le cours
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    public async pageAjouterCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
             return;
         }
-        let params = {
-            token: this.token,
-            type: TYPES.COURS,
-            typeJson: "cours"
+        let reponse = await SGBService.recupererJsonCours({ token: this.token });
+        if (reponse.message == "Success") {
+            res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
+        } else {
+            //throw erreur 
         }
-        let reponse = this.controlleur.recupererElementSGB(params);
-        reponse.then(function (reponse) {
-            //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
-            res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
-        });
-
-        /*let reponse = this.controlleur.recupererCoursSGB(tokenEnseignant);
-        reponse.then(function (reponse) {
-            //TODO - login - afficher le nom de l'utilisateur dans liste-cours.pug 
-            res.render("enseignant/liste-cours-sgb", { cours: reponse.data });
-        });*/
     }
 
     /**
-     * Methode POST pour creer cours
+     * Methode POST pour ajouter un cours dans le SGA
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
      */
     public ajouterCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
             return;
         }
-        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
-
-        let coursSGB = JSON.parse(req.body.data) as any;
-        console.log("=============");
-        console.log(coursSGB);
-
+        let coursSGB = JSON.parse(req.body.data);
         let self = this;
-        let params = {
-            type: TYPES.COURS,
-            cours: coursSGB,
-            token: this.token
-        }
-
-        self.controlleur.ajouterElement(params)
+        self.controlleur.ajouterElement(TYPES.COURS, req.body.data, this.token)
             .then(() => res.redirect("/enseignant/cours/detail/" + coursSGB._sigle + "/" + coursSGB._id))
             .catch(error => {
                 self._errorCode500(error, req, res);
@@ -140,74 +126,58 @@ export class SgaRouteur {
     }
 
     /**
-     * Methode creer cours
+     * Méthode GET qui retourne la liste des cours de l'enseignant
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
      */
-
     public recupererCours(req: Request, res: Response, next: NextFunction) {
         if (!req.session.loggedIn) {
             res.sendStatus(401);
             return;
         }
-        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
-        //res.render("enseignant/liste-cours-sga", { cours: this.controlleur.recupererTousCoursSGA(tokenEnseignant) });
-
-
-        //params du frontend normalement... X(
-       /* let params = {
-            type: TYPES.COURS,
-        }*/
-        console.log("===>")
         let value = this.controlleur.recupererElement(TYPES.COURS);
-        console.log(value);
         let course = JSON.parse(value);
         res.render("enseignant/liste-cours-sga", { cours: course })
     }
 
     /**
-     * Methode qui retourne les details d'un cours
+     * Methode GET qui retourne les details d'un cours
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
      */
     public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
-
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-
-        //TODO remove le token hardcodé apres le login
-        //let tokenEnseignant = (req.headers.token ? req.headers.token : req.session.token) as string
-
         let sigleCours = req.params.sigle;
         let idCoursGroupe = req.params.idCoursGroupe;
-        /*let params = {
-            type: TYPES.COURS,
-            id: sigleCours
-        }*/
-        let coursValue = this.controlleur.recupererElementById(TYPES.COURS,sigleCours);
-        let cours=JSON.parse(coursValue);
-        console.log("-----sldlds")
-        console.log(cours)
-        res.render("enseignant/detail-cours", { cours: cours, groupe: this.getGroupeCoursById(cours.groupeCours,idCoursGroupe) });
-        //res.render("enseignant/detail-cours", { cours: this.controlleur.recupererUnCoursSGA(this.token, sigleCours) });
+        let coursValue = this.controlleur.recupererElementById(TYPES.COURS, sigleCours);
+        let cours = JSON.parse(coursValue);
+        res.render("enseignant/detail-cours", { cours: cours, groupe: this.getGroupeCoursById(cours.groupeCours, idCoursGroupe) });
     }
 
-    private getGroupeCoursById(groupeCours:[any],id: any) {
-        console.log(groupeCours.find(c => c._id == id))
+    /**
+     * Méthode privée qui gère le JSON pour retourner seulement un groupe Cours en fonction de son id
+     * @param groupeCours 
+     * @param id 
+     * @returns 
+     */
+    private getGroupeCoursById(groupeCours: [any], id: any) {
         return groupeCours.find(c => c._id == id);
     }
+
 
     public supprimerCours(req: Request, res: Response, next: NextFunction) {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-
         let sigleCours = req.params.sigle;
         let idCoursGroupe = req.params.idCoursGroupe;
-        let params = {
-            type: TYPES.COURS,
-            sigle: sigleCours,
-            idGroupe: idCoursGroupe
-        }
-
-        if (this.controlleur.supprimerElement(params)) {
+        if (this.controlleur.supprimerElement(TYPES.COURS, sigleCours, idCoursGroupe)) {
             res.status(200)
                 .send({
                     message: 'Success',
@@ -222,19 +192,12 @@ export class SgaRouteur {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-
         let idCoursGroupe = req.params.idCoursGroupe;
-
-        let params = {
-            type: TYPES.QUESTION,
-        }
-
         let values = this.controlleur.recupererElement(TYPES.QUESTION);
-        let questions=JSON.parse(values);
+        let questions = JSON.parse(values);
         if (idCoursGroupe != undefined) {
             questions = questions.filter(q => q._idGroupeCours == idCoursGroupe);
         }
-
         res.render("enseignant/question/liste-question", { questions: questions, idCoursGroupe: idCoursGroupe })
     }
 
@@ -242,13 +205,8 @@ export class SgaRouteur {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-
         let idQuestion = req.params.id;
-        /*let params = {
-            type: TYPES.QUESTION,
-            id: idQuestion
-        }*/
-        let values = this.controlleur.recupererElementById(TYPES.QUESTION,idQuestion);
+        let values = this.controlleur.recupererElementById(TYPES.QUESTION, idQuestion);
         let question = JSON.parse(values);
         res.render("enseignant/question/detail-question", { question: question });
     }
@@ -261,11 +219,7 @@ export class SgaRouteur {
         if (!this.isLoggedIn) {
             return res.sendStatus(401);
         }
-        let params = {
-            type: TYPES.COURS,
-        }
         let idCoursGroupe = req.params.idCoursGroupe;
-
         res.render("enseignant/question/ajouter-modifier-question", { idCoursGroupe: idCoursGroupe, question: {}, estModifiable: false });
     }
 
@@ -275,11 +229,7 @@ export class SgaRouteur {
             return res.sendStatus(401);
         }
         let self = this;
-        let params = {
-            type: TYPES.QUESTION,
-            question: req.body
-        }
-        this.controlleur.ajouterElement(params)
+        this.controlleur.ajouterElement(TYPES.QUESTION, JSON.stringify(req.body), this.token)
             .then(() => {
                 res.status(200)
                     .send({
@@ -298,12 +248,7 @@ export class SgaRouteur {
         }
 
         let idQuestion = req.params.id;
-        let params = {
-            type: TYPES.QUESTION,
-            id: idQuestion
-        }
-
-        if (this.controlleur.supprimerElement(params)) {
+        if (this.controlleur.supprimerElement(TYPES.QUESTION, idQuestion)) {
             res.status(200)
                 .send({
                     message: 'Success',
@@ -322,7 +267,7 @@ export class SgaRouteur {
         }
 
         let idCoursGroupe = req.params.idCoursGroupe;
-        let values = this.controlleur.recupererElementById(TYPES.QUESTION,req.params.idQuestion);
+        let values = this.controlleur.recupererElementById(TYPES.QUESTION, req.params.idQuestion);
         let question = JSON.parse(values);
         res.render("enseignant/question/ajouter-modifier-question", { idCoursGroupe: idCoursGroupe, question: question, estModifiable: true });
     }
@@ -332,12 +277,7 @@ export class SgaRouteur {
             return res.sendStatus(401);
         }
         let idQuestion = req.params.id;
-        let params = {
-            type: TYPES.QUESTION,
-            id: idQuestion,
-            values: req.body
-        }
-        this.controlleur.updateElement(params);
+        this.controlleur.updateElement(TYPES.QUESTION, idQuestion, JSON.stringify(req.body));
         res.status(200)
             .send({
                 message: 'Success',

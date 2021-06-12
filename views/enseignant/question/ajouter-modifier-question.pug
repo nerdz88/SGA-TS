@@ -10,30 +10,30 @@ block content
         //- Début Form 
         input(type="hidden"  name="idCoursGroupe", value=idCoursGroupe)   
         input(type="hidden"  name="estModifiable", value=estModifiable.toString())   
-        input(type="hidden"  name="idQuestion", value=estModifiable ? question.getId() : "")  
+        input(type="hidden"  name="idQuestion", value=estModifiable ? question.id : "")  
         h3 Question: 
         ul.entries 
             li Nom: 
                 br
-                input(type="text" name="nom" value=estModifiable ? question.getNom() : "")
+                input(type="text" name="nom" value=estModifiable ? question._nom : "")
             li Tag (Séparer par des ","): 
                 br
-                input(type="text" name="tags" value=estModifiable ? question.getTag() : "")
+                input(type="text" name="tags" value=estModifiable ? question._tag : "")
             li Description:
                 br
-                textarea(rows="4" cols="25" name="description") #{estModifiable ? question.getDescriptionQuestion() : ""}
+                textarea(rows="4" cols="25" name="description") #{estModifiable ? question._descriptionQuestion : ""}
             li Réponse:
                 br 
-                input(class="rd-reponse" type="radio" name="response" value="true" checked=estModifiable && question.getReponse()) 
+                input(class="rd-reponse" type="radio" name="response" value="true" checked=estModifiable && question._reponse) 
                 |  Vrai
-                input(class="rd-reponse" type="radio" name="response" value="false" checked=estModifiable && !question.getReponse())
+                input(class="rd-reponse" type="radio" name="response" value="false" checked=estModifiable && !question._reponse)
                 |   Faux 
             li Description bonne réponse:
                 br
-                textarea(rows="4" cols="25" name="descriptionReponse") #{estModifiable ? question.getDescriptionReponse() : ""}              
+                textarea(rows="4" cols="25" name="descriptionReponse") #{estModifiable ? question._descriptionReponse : ""}              
             li Description mauvaise réponse: 
                 br
-                textarea(rows="4" cols="25" name="descriptionMauvaiseReponse") #{estModifiable ? question.getMauvaiseReponseDescription() : ""}
+                textarea(rows="4" cols="25" name="descriptionMauvaiseReponse") #{estModifiable ? question._mauvaiseReponseDescription : ""}
 
         button.btn(type="submit") #{estModifiable ? "Modifier" : "Ajouter"} 
         //- Fin form

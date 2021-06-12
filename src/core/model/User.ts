@@ -1,5 +1,3 @@
-import { InvalidParameterError } from '../errors/InvalidParameterError';
-
 import { GroupeCours } from "./GroupeCours"
 export abstract class User {
     // classe inspirée de la classe conceptuelle (du MDD) et SGB

@@ -1,9 +1,5 @@
 import fetch = require('node-fetch');
-import { AlreadyExistsError } from '../errors/AlreadyExistsError';
-import { Cours } from '../model/Cours';
-import { SGA } from "../model/SGA";
 import { Operation, TYPES } from '../service/Operation';
-import { Session } from "inspector";
 import { OperationCours } from '../service/OperationCours';
 import { OperationQuestion } from '../service/OperationQuestion';
 
@@ -11,8 +7,6 @@ export class EnseignantControlleur {
     // classe contrôleur GRASP
     private baseUrl: string = "http://127.0.0.1:3001";
     private endPoint: string = "/api/v1/";
-
-    private sga: SGA;
     private operations: Map<String, Operation<any>>;
 
     constructor() {
@@ -23,9 +17,9 @@ export class EnseignantControlleur {
 
     }
 
-    public async ajouterElement(params: any) {
-        let operation = this.getOperationParCle(params.type);
-        await operation.creerObjet(params);
+    public async ajouterElement(type: string, element: string, token?: string) {
+        let operation = this.getOperationParCle(type);
+        await operation.creerObjet(element, token);
 
 
 
@@ -48,24 +42,26 @@ export class EnseignantControlleur {
         return operation.recupererObjet();
     }
 
-    public recupererElementById(type : string, id : any) {
+    public recupererElementById(type: string, id: any) {
         let operation = this.getOperationParCle(type);
         return operation.recupererObjetParId(id);
     }
 
-    public supprimerElement(params: any) : boolean {
-        let operation = this.getOperationParCle(params.type);
-        return operation.supprimerObjet(params);
+    /**
+     * 
+     * @param type 
+     * @param id recoit soit une string soit un entier
+     * @param idGroupe recoit soit une string soit un entier
+     * @returns 
+     */
+    public supprimerElement(type: string, id: any, secondId?: any) {
+        let operation = this.getOperationParCle(type);
+        return operation.supprimerObjet(id, secondId);
     }
 
-    public recupererElementSGB(params: any) {
-        let operation = this.getOperationParCle(params.type);
-        return operation.recupererJsonSGB(params)
-    }
-
-    public updateElement(params: any) {
-        let operation = this.getOperationParCle(params.type);
-        operation.updateObjet(params.id, params.values);
+    public updateElement(type: string, idElement: any, newElement: string) {
+        let operation = this.getOperationParCle(type);
+        operation.updateObjet(idElement, newElement);
     }
 
 
