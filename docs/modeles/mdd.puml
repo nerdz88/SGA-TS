@@ -5,8 +5,8 @@ skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
-class GestionnaireCours
-class GestionnaireQuestion
+'class GestionnaireCours'
+'class GestionnaireQuestion'
 class Cours {
     id : String
     nom : String
@@ -40,13 +40,14 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-Enseignant "1"-- "1..*" GroupeCours : enseigne >
+Enseignant "1"--"1..*" GroupeCours : enseigne >
+Université "1"--"*" Enseignant : est-employé-de <
 Cours "1"-- "*"GroupeCours : contient >
-GroupeCours "1"-- "*"Etudiant : est_suivi_par >
+GroupeCours "1"-left- "*"Etudiant : est_suivi_par >
 Question "1" -- "*"Tag : < catégorise
-GestionnaireCours "1"--"1" Université : gère >
+'GestionnaireCours "1"--"1" Université : gère >'
 Université "1"--"*" Cours : contient >
-GestionnaireQuestion "1"--"1" Université : gère >
-Question "*"--"1" GroupeCours : contient >
-Université "1"--"*" Question : contient >
+Université "1"--"*" Etudiant : est-inscrit-à <
+'GestionnaireQuestion "1"--"1" Université : gère >'
+Question "*"-up-"1" GroupeCours : contient >
 @enduml

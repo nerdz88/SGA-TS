@@ -7,11 +7,11 @@ participant "Université" as sga
 participant "c:Cours" as cours
 
 -> controlleur : ajouterCours(numeroGroupe,tokenEnseignant)
-  controlleur->sga : ajouterCours(tokenEnseignant, c)
+  controlleur->sga : ajouterCours(numeroGroupe,tokenEnseignant)
   note right : Selon expert, Université a toute\nles informations requises\npour créer un cours
   create cours
-  sga->cours : c = create()
-  -> controlleur : information = recupererCours(token)
+  sga->cours : create()
+  -> controlleur : information = recupererCours(tokenEnseignant)
 note right : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
-  controlleur -> sga : information = recupereCours(token)
+  controlleur -> sga : information = recupereCours(tokenEnseignant)
   @enduml

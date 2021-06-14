@@ -2,23 +2,29 @@ import { Router, Request, Response, NextFunction, response } from 'express';
 import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
 import { TYPES } from "../core/service/Operation"
 import { NotFoundError } from '../core/errors/NotFoundError';
-import { SGBService } from '../core/service/SGBService';
-import { Cours } from '../core/model/Cours';
 import { User } from '../core/model/User';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import { UnauthorizedError } from '../core/errors/UnAuthorizedError';
+import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
+import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { Universite } from '../core/service/Universite';
 
 
 //Le routeur permettant de gérer notre API SGA (Retourne du JSON)
 export class SgaRouteur {
     router: Router;
-    controlleur: EnseignantControlleur;  // contrôleur GRASP
-   
+    //controlleur: EnseignantControlleur;  // contrôleur GRASP
+    private controlleurCours : GestionnaireCours;
+    private controlleurQuestion : GestionnaireQuestion;
+    private universite : Universite;
+
     /**
      * Initialize the Router
      */
     constructor(enseignantControleur :EnseignantControlleur) {
-        this.controlleur = enseignantControleur;  // init contrôleur GRASP
+        //this.controlleur = enseignantControleur;  // init contrôleur GRASP
+        this.universite = new Universite();
+        this.controlleurCours = new GestionnaireCours(this.universite);
         this.router = Router();
         this.init();
     }
