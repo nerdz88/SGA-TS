@@ -11,6 +11,7 @@ export class OperationCours extends Operation<Cours> {
     }
 
     async creerObjet(coursString: string, token?: string) {
+        console.log(coursString)
         let cours = JSON.parse(coursString)
         let index = this.operationObject.findIndex(c => c.getSigle() == cours._sigle);
         let etudiants = await SGBService.recupererEtudiant("etudiant", cours._id, token);
