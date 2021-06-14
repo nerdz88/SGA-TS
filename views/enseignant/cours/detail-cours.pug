@@ -1,4 +1,4 @@
-extends ../commun/master-template.pug 
+extends ../../commun/master-template.pug 
 
 block content
   //- Start bloc content
@@ -11,9 +11,9 @@ block content
   h1 Liste des étudiants  
   ul.entries
     each unEtudiant in groupe._etudiants
-      li         
+      li       
         strong #{unEtudiant._nom} #{unEtudiant._prenom} 
-        | : #{unEtudiant._email} - #{unEtudiant._codePermanent}
+        | : #{unEtudiant._email} - #{unEtudiant._code_permanent}
     else
       li
         em Pas d'étudiants dans le cours
@@ -27,4 +27,4 @@ block content
   //- End bloc content
 
 block more-script
-  script(type="text/javascript" src="/lib/enseignant/cours.js")
+  script(type="text/javascript" src="/lib/enseignant/cours/cours.js")
