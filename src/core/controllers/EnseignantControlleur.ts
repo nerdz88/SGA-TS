@@ -2,11 +2,10 @@ import fetch = require('node-fetch');
 import { Operation, TYPES } from '../service/Operation';
 import { OperationCours } from '../service/OperationCours';
 import { OperationQuestion } from '../service/OperationQuestion';
+import { SGBService } from '../service/SGBService';
 
 export class EnseignantControlleur {
     // classe contrôleur GRASP
-    private baseUrl: string = "http://127.0.0.1:3001";
-    private endPoint: string = "/api/v1/";
     private operations: Map<String, Operation<any>>;
 
     constructor() {
@@ -19,22 +18,7 @@ export class EnseignantControlleur {
 
     public async ajouterElement(type: string, element: string, token?: string) {
         let operation = this.getOperationParCle(type);
-        await operation.creerObjet(element, token);
-
-
-
-        //TODO on peut use ça pour les tests...
-
-        /*operation.creerObjet(params);
-        let value = JSON.parse(params.question);
-        value.nom="sldsdllsd";
-        operation.creerObjet({question:value});
-        console.log(operation.recupererObjet(null));
-        console.log(operation.recupererObjetParId(1));
-        console.log(operation.recupererObjetParId(2));
-        console.log("supprimer")
-        operation.supprimerObjet(1);
-        console.log(operation.recupererObjet(null));*/
+        return await operation.creerObjet(element, token);
     }
 
     public recupererElement(type: string) : string{
@@ -72,10 +56,9 @@ export class EnseignantControlleur {
         //throw new exception....
     }
 
+    //TODO On devrait déplacer le login dans un autre controleur
     public async login(username: string, password: string) {
-        const response = await fetch(this.baseUrl + this.endPoint +
-            'login?email=' + encodeURIComponent(username) + '&password=' + password);
-        return await response.json();
+        return await SGBService.login(username, password);
     }
 
 }

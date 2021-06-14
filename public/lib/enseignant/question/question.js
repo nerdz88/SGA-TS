@@ -14,7 +14,7 @@ window.addEventListener("load", function () {
                 confirm: function () {
                     $.ajax({
                         type: 'GET',
-                        url: '/enseignant/question/supprimer/' + idQuestion,
+                        url: '/api/v1/enseignant/question/supprimer/' + idQuestion,
                         success: function () {
                             var endpoint = "/enseignant/question" + (idCoursGroupe ? "/groupe/" + idCoursGroupe : "");
                             window.location.href = endpoint;

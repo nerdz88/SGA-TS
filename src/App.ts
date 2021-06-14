@@ -4,8 +4,11 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as flash from 'node-twinkle';
 import * as ExpressSession from 'express-session';
+import { EnseignantControlleur } from './core/controllers/EnseignantControlleur';
+import { SgaRouteur } from './routes/SgaRouteur';
+import { WebAppRouteur } from './routes/WebAppRouteur';
 
-import { SgaRoutes } from './routes/SgaRouteur';
+
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -39,19 +42,13 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    // let router = express.Router();
-    // router.get('/', (req, res, next) => {
-    //   if (req.session.loggedIn) {
-    //     res.redirect("/api/v1/sga/enseignant/accueil");
-    //   } 
-    //   else {
-    //     let messages = res.locals.has_flashed_messages() ? res.locals.get_flashed_messages() : [];
-    //     res.render('connection', { title: 'Service Gestion des Apprentissages', flashedMessages: messages });
-    //   }
-    // });
 
-    //this.expressApp.use('/', router);  // routage de base
-    this.expressApp.use('/', SgaRoutes.router);  // tous les URI pour le scénario jeu (DSS) commencent ainsi
+
+    let enseignantControleur : EnseignantControlleur = new EnseignantControlleur();
+    //Les routes d'API
+    this.expressApp.use('/api/v1', new SgaRouteur(enseignantControleur).router);  
+    //Les routes du WebApp
+    this.expressApp.use('/', new WebAppRouteur(enseignantControleur).router);
   }
 
 }

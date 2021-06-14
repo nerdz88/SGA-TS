@@ -32,6 +32,10 @@ export class Cours {
         return this._nbMaxEtudiant;
     }
 
+    public getGroupeCoursByID(idCoursGroupe: number): GroupeCours {
+        return this.groupeCours.find(c => c.getID() == idCoursGroupe);
+    }
+
     public getGroupeCours() {
         return this.groupeCours;
     }

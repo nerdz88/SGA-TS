@@ -9,14 +9,12 @@ window.addEventListener("load", function () {
         var estModifiable = $(form).find('input[name="estModifiable"]').val() == "true";
         var idCoursGroupe = $(form).find('input[name="idCoursGroupe"]').val();
         var idQuestion = $(form).find('input[name="idQuestion"]').val();
-        var endPoint = estModifiable ? "/enseignant/question/modifier/" + idQuestion
-            : "/enseignant/question/groupe/" + idCoursGroupe + "/ajouter"
+        var endPoint = estModifiable ? "/api/v1/enseignant/question/modifier/" + idQuestion
+            : "/api/v1/enseignant/question/groupe/" + idCoursGroupe + "/ajouter"
 
         console.log("Envoyer formulaire - Ajax - Ajouter/Modifier Question");
         envoyerFormulaireAjax(form, estModifiable, idCoursGroupe, endPoint);
-
     });
-
     console.log("ajouter-question.js => Page Load");
 });
 
@@ -31,8 +29,7 @@ function envoyerFormulaireAjax(form, estModifiable, idCoursGroupe, endPoint) {
                 window.location.href = "/enseignant/question/groupe/" + idCoursGroupe;
             }
             else {
-                $(form)[0].reset();
-                //https://kamranahmed.info/toast?utm_source=cdnjs&utm_medium=cdnjs_link&utm_campaign=cdnjs_library
+                $(form)[0].reset();                
                 showSuccessToast("Succès", estModifiable ? "La question a bien été modifier" : "La question a bien été ajouté");
             }
         },
