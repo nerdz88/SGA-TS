@@ -5,12 +5,8 @@ skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
-class Opération {
-
-}
-
-class OpérationCours
-
+class GestionnaireCours
+class GestionnaireQuestion
 class Cours {
     id : String
     nom : String
@@ -24,7 +20,7 @@ class Enseignant {
     token : String
 }
 
-class Sga {
+class Université {
 
 }
 
@@ -44,18 +40,13 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-Enseignant "*"-- "1" Sga : utilise >
-
-Sga "1" -- "*" Opération : execute >
-OpérationQuestion --|> Opération
-OpérationCours --|> Opération
-
-OpérationCours "1"-- "1"Cours : opere sur >
+Enseignant "1"-- "1..*" GroupeCours : enseigne >
 Cours "1"-- "*"GroupeCours : contient >
-GroupeCours"1" -- "*"Question : contient >
-
-OpérationQuestion "1"-- "1"Question : opere sur >
-GroupeCours "1"-- "*"Etudiant : contient >
-
-Question "1" -- "*"Tag : < categorise
+GroupeCours "1"-- "*"Etudiant : est_suivi_par >
+Question "1" -- "*"Tag : < catégorise
+GestionnaireCours "1"--"1" Université : gère >
+Université "1"--"*" Cours : contient >
+GestionnaireQuestion "1"--"1" Université : gère >
+Question "*"--"1" GroupeCours : contient >
+Université "1"--"*" Question : contient >
 @enduml
