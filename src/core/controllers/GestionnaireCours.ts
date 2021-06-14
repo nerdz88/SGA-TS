@@ -19,9 +19,6 @@ export class GestionnaireCours {
         //let operation = this.getOperationParCle(type);
         let cours = JSON.parse(element)
         let etudiants = await SGBService.recupererEtudiant("etudiant", cours._id, token);
-        if (etudiants.message != 'Success') {
-            throw new NotFoundError("erreur dans le sgb, etudiants introuvables")
-        }
         //return await operation.creerObjet(element, token);
         this.universite.ajouterCours(etudiants.data,cours._id,cours._groupe,cours._sigle,
             cours._titre,cours._nb_max_student,

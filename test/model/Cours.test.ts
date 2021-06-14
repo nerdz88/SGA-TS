@@ -21,6 +21,7 @@ describe('Test de la classe Cours', () => {
         expect(cours.getTitre()).toContain("Analyse et Conception de Logiciels")
         expect(cours.getNbMaxEtudiant()).toBe(5)
         expect(cours.getGroupeCours()).toBeArrayOfSize(1)
+        expect(cours.getGroupeCoursByID(1)).toBeObject
 
     })
 
@@ -42,9 +43,4 @@ describe('Test de la classe Cours', () => {
         expect(cours.getGroupeCours()).toBeEmpty
 
     })
-
-    
-
-    
-
 })

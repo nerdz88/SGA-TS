@@ -22,7 +22,7 @@ describe('GET /api/v1/sga/recupererCours', () => {
         const reponse = await request.get('/enseignant/cours', header)                                                                      
         expect(reponse.status).toBe(200); 
     });
-
+``
     /*
     it("repond par un appel avec succes de la page d'accueil", async() => {
         const reponse = await request.get('api/v1/sga/enseignant/accueil')

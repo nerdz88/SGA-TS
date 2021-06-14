@@ -26,15 +26,17 @@ describe('Test gestionnaire des cours', () => {
         expect(controlleur.recupererCours()).toContain(RECEIVEDSTRING)
     })
 
-    it("ajouter un cours devrait mettre à jour la liste des cours de l'université",async() =>{
-        try {
-            await controlleur.ajouterCours(COURSEVALUE,null)
-        } catch (error) {
-            expect(error.message).toContain("erreur dans le sgb, etudiants introuvables")
-        }
+    it("Recuperer un cours d'une liste vide vrai retourner un array vide",async() =>{
+        expect(controlleur.recupererCours()).toContain("[]")
     })
 
-    it("ajouter un cours devrait mettre à jour la liste des cours de l'université",async() =>{
+    it("Supprimer un cours devrais enlever l'element",async()=> {
+
+        await controlleur.ajouterCours(COURSEVALUE,TOKEN)
+        expect(controlleur.recupererCours()).toBeDefined
+
+        await controlleur.supprimerCours("LOG210",1)
         expect(controlleur.recupererCours()).toContain("[]")
+
     })
 });
