@@ -49,5 +49,5 @@ Question "1" -- "*"Tag : < catégorise
 Université "1"--"*" Cours : contient >
 Université "1"--"*" Etudiant : est-inscrit-à <
 'GestionnaireQuestion "1"--"1" Université : gère >'
-Question "*"-up-"1" GroupeCours : contient >
+Question "*"-up-"1" GroupeCours : contient <
 @enduml

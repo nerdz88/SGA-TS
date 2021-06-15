@@ -7,6 +7,9 @@ import * as ExpressSession from 'express-session';
 import { EnseignantControlleur } from './core/controllers/EnseignantControlleur';
 import { SgaRouteur } from './routes/SgaRouteur';
 import { WebAppRouteur } from './routes/WebAppRouteur';
+import { Universite } from './core/service/Universite';
+import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
+import { GestionnaireCours } from './core/controllers/GestionnaireCours';
 
 
 
@@ -42,13 +45,13 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-
-
-    let enseignantControleur : EnseignantControlleur = new EnseignantControlleur();
+    let universite =new Universite();
+    let gestionaireCours = new GestionnaireCours(universite);
+    let gestionnaireQuestion = new GestionnaireQuestion(universite);
     //Les routes d'API
-    this.expressApp.use('/api/v1', new SgaRouteur(enseignantControleur).router);  
+    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours,gestionnaireQuestion).router);  
     //Les routes du WebApp
-    this.expressApp.use('/', new WebAppRouteur(enseignantControleur).router);
+    this.expressApp.use('/', new WebAppRouteur(gestionaireCours,gestionnaireQuestion).router);
   }
 
 }

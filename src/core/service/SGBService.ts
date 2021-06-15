@@ -32,4 +32,6 @@ export class SGBService {
         }
         return await reponse.json();
     }
+
+    
 }

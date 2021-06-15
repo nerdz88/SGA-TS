@@ -1,10 +1,12 @@
 import { Etudiant } from "./Etudiant";
+import { Question } from "./Question";
 export class GroupeCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
     private _numero: string;
 
     private _etudiants: Etudiant[];
+    private _questions: Question[];
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
 
@@ -15,12 +17,17 @@ export class GroupeCours {
         this._dateDebut = dateDebut;
         this._dateFin = dateFin;
         this._etudiants = [];
+        this._questions = [];
     }
 
     ajouterEtudiants(etudiants: any) {
         etudiants.forEach((element) => {
             this._etudiants.push(new Etudiant(element._id, element._last_name, element._first_name, element._email, element._permanent_code));
         })
+    }
+    
+    ajouterQuestion(question : Question){
+        this._questions.push(question);
     }
 
     public getID() {
@@ -33,6 +40,10 @@ export class GroupeCours {
 
     public getEtudiants(): Etudiant[] {
         return this._etudiants;
+    }
+
+    public getQuestions(): Question[]{
+        return this._questions;
     }
 
     public getDateDebut() {
