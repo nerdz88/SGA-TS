@@ -1,3 +1,4 @@
+import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours"
 import { GroupeCours } from "../model/GroupeCours";
 import { Question } from "../model/Question"
@@ -26,19 +27,31 @@ export class Universite {
         }
     }
 
+    
+    recupererGroupeCoursParSigle(sigle: string): string {
+        let leCours: Cours = this.arrayCours.find(c => c.getSigle() == sigle);
+        if (leCours == undefined) {
+            throw new NotFoundError("Le cours " + sigle + " n'existe pas.");
+        }
+        return JSON.stringify(leCours);
+    }
+
     public supprimerCours(sigle: string, idGroupe: number): boolean {
         let indexCours = this.getIndexCoursBySigle(sigle);
-        if (indexCours == -1)
+        if (indexCours == -1){
             return false;
-        let cours = this.arrayCours[indexCours];
-        if (cours.getTailleCours() == 1 && cours.getGroupeCours()[0].getID() == idGroupe)
-            this.arrayCours.splice(indexCours, 1);
-        else {
-            let indexGroupe = cours.getGroupeCours().findIndex(g => g.getID() == idGroupe);
-            if (indexGroupe == -1)
-                return false;
-            cours.getGroupeCours().splice(indexGroupe, 1);
         }
+        let cours = this.arrayCours[indexCours];
+        if (cours.getTailleCours() == 1 && cours.getGroupeCours()[0].getID() == idGroupe){
+            this.arrayCours.splice(indexCours, 1);
+        }else {
+            let indexGroupe = cours.getGroupeCours().findIndex(g => g.getID() == idGroupe);
+            if (indexGroupe == -1){
+                return false;
+            }
+            cours.getGroupeCours().splice(indexGroupe, 1);
+        }        
+        return true;
     }
 
     private getIndexCoursBySigle(sigle : string){

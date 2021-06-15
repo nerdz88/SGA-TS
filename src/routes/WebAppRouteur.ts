@@ -5,21 +5,30 @@ import { NotFoundError } from '../core/errors/NotFoundError';
 import { SGBService } from '../core/service/SGBService';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import { Cours } from '../core/model/Cours';
+import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
+import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
 export class WebAppRouteur {
     router: Router
-    enseignantControleur: EnseignantControlleur;  // contrôleur GRASP
-
+    //enseignantControleur: EnseignantControlleur;  // contrôleur GRASP
+    private controlleurCours : GestionnaireCours;
+    private controlleurQuestion : GestionnaireQuestion;
     /**
      * Initialize the Router
      */
-    constructor(enseignantControleur: EnseignantControlleur) {
-        this.enseignantControleur = enseignantControleur;  // init contrôleur GRASP
+    constructor(controlleurCours : GestionnaireCours, controlleurQuestion : GestionnaireQuestion) {
+        this.controlleurCours=controlleurCours;
+        this.controlleurQuestion = controlleurQuestion;
+        /*this.enseignantControleur = enseignantControleur;  // init contrôleur GRASP
+        this.universite = new Universite();
+        this.controlleurCours = new GestionnaireCours(this.universite);*/
         this.router = Router();
         this.init();
     }
 
+
+    
     //#region Home and Loding
 
     /**
@@ -85,7 +94,7 @@ export class WebAppRouteur {
             return;
         }
         try {
-            let value = this.enseignantControleur.recupererElement(TYPES.COURS);
+            let value = this.controlleurCours.recupererCours();
             res.render("enseignant/cours/liste-cours-sga", { cours: JSON.parse(value) });
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -106,7 +115,7 @@ export class WebAppRouteur {
         try {
             let sigleCours = req.params.sigle;
             let idCoursGroupe: number = Number.parseInt(req.params.idCoursGroupe);
-            let coursValue = this.enseignantControleur.recupererElementById(TYPES.COURS, sigleCours);
+            let coursValue = this.controlleurCours.recupererGroupeCoursBySigle(sigleCours);
             let cours = JSON.parse(coursValue);
             res.render("enseignant/cours/detail-cours", { cours: cours, groupe: cours.groupeCours.find(cg => cg._id == idCoursGroupe) });
         } catch (error) { this._errorCode500(error, req, res); }
@@ -123,7 +132,7 @@ export class WebAppRouteur {
      * @param res 
      * @param next 
      */
-    public recupererQuestions(req: Request, res: Response, next: NextFunction) {
+    /*public recupererQuestions(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
@@ -141,9 +150,9 @@ export class WebAppRouteur {
             }
             res.render("enseignant/question/liste-question", { questions: questions, idCoursGroupe: idCoursGroupe });
         } catch (error) { this._errorCode500(error, req, res); }
-    }
+    }*/
 
-    public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
+    /*public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
@@ -152,7 +161,7 @@ export class WebAppRouteur {
             let values = this.enseignantControleur.recupererElementById(TYPES.QUESTION, req.params.id);
             res.render("enseignant/question/detail-question", { question: JSON.parse(values) });
         } catch (error) { this._errorCode500(error, req, res); }
-    }
+    }*/
 
 
     /**
@@ -178,7 +187,7 @@ export class WebAppRouteur {
     /**
      * Methode GET pour afficher la page de modification d'une question
      */
-    public recupererModifierQuestion(req: Request, res: Response, next: NextFunction) {
+    /*public recupererModifierQuestion(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
@@ -191,7 +200,7 @@ export class WebAppRouteur {
                 question: JSON.parse(values),
                 estModifiable: true
             });
-    }
+    }*/
 
 
 
@@ -232,11 +241,11 @@ export class WebAppRouteur {
 
 
         //Questions
-        this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
+        /*this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
         this.router.get('/enseignant/question/groupe/:idCoursGroupe', this.recupererQuestions.bind(this));
-        this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));
+        this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));*/
         this.router.get('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.recupererAjouterQuestion.bind(this));
-        this.router.get('/enseignant/question/groupe/:idCoursGroupe/modifier/:idQuestion', this.recupererModifierQuestion.bind(this));
+        //this.router.get('/enseignant/question/groupe/:idCoursGroupe/modifier/:idQuestion', this.recupererModifierQuestion.bind(this));
     }
     
 }

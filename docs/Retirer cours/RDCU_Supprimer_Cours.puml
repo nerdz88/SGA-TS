@@ -2,8 +2,8 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour supprimerUneQuestionSga
-participant ":EnseignantControleur" as controleur
-->controleur : confirmation = supprimerUneQuestionSga(sigleCours : String, idGroupeCours : int)
+participant ":GestionnaireCours" as controleur
+->controleur : confirmation = supprimerUnCours(sigleCours : String, idGroupeCours : int)
 note left : Selon Contôleur,\nreçoit la première opération système
 @enduml
 
@@ -11,12 +11,12 @@ note left : Selon Contôleur,\nreçoit la première opération système
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour confirmerSuppression
-participant ":EnseignantControleur" as controleur
-participant "operationQuestion : OperationQuestion" as opQuestion
+participant ":GestionnaireCours" as controleur
+participant ":Université" as universite
 -> controleur : confirmerSuppression(sigleCours : String, idGroupeCours : int)
 note left : Selon Contôleur,\nreçoit la deuxième opération système
-controleur -> opQuestion : setSuppression(true)
+controleur -> universite : setSuppression(true)
 note left : Changement valeur attribut comme quoi la\nsuppression a été confirmer par l'utilisateur
-controleur -> opQuestion : supprimerUneQuestionSga(question)
-note left : Selon fabrication pure : operationQuestion\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
+controleur -> universite : supprimerUneQuestion(question)
+note left : Selon fabrication pure : Université\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
 @enduml 

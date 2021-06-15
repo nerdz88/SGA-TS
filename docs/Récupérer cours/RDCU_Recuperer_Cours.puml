@@ -15,10 +15,9 @@ note left : selon expert, CoursService a toute\nles informations requises\npour 
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer un cours créé d'un enseignant
-participant ":EnseignantControleur" as controleur
-participant "coursService : coursService" as mapCours
-->controleur : cours = recupererUnCoursSga(token, idCours)
-note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur -> mapCours : cours = recupererUnCours(token, idCours)
-note left : selon expert, CoursService a toute\nles informations requises\npour exécuter recupererUnCours
+participant ":GestionnaireCours" as controleur
+participant ":Université" as modele
+->controleur : cours = recupererUnCours(token, idCours)
+controleur -> modele : cours = recupererUnCours(token, idCours)
+note left : selon expert, Université a toute\nles informations requises\npour exécuter recupererUnCours
 @enduml

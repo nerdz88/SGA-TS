@@ -3,9 +3,6 @@ import 'jest-extended';
 import app from '../src/App';
 import { GestionnaireCours } from "../src/core/controllers/GestionnaireCours";
 import { Universite } from "../src/core/service/Universite";
-import { AlreadyExistsError } from "../src/core/errors/AlreadyExistsError";
-import { exception } from "console";
-import { NotFoundError } from "../src/core/errors/NotFoundError";
 
 //const request = supertest(app);
 
@@ -38,5 +35,10 @@ describe('Test gestionnaire des cours', () => {
         await controlleur.supprimerCours("LOG210",1)
         expect(controlleur.recupererCours()).toContain("[]")
 
+    })
+    it("recuperer GroupeCours par Sigle",async()=> {
+        await controlleur.ajouterCours(COURSEVALUE,TOKEN)
+        expect(controlleur.recupererCours()).toBeDefined;
+        expect(controlleur.recupererGroupeCoursBySigle("LOG210")).toContain('"_sigle":"LOG210"')
     })
 });
