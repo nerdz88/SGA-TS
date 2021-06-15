@@ -1,18 +1,34 @@
 import * as supertest from "supertest";
 import 'jest-extended';
-import app from '../../src/App';
 import { SGBService } from "../../src/core/service/SGBService";
+import { SgbError } from "../../src/core/errors/SgbError";
 
-let token = "e44cd054a9b7f4edee4f1f0ede5ee704"
+describe('Test gestionnaire des cours', () => {
 
-describe('Testing SGB service endpoint calls', () => {
+    it("Devrais repondre avec succes a l'appel d'une requete de Login", async() => {
 
-    it("repond par un appel avec succes et l'information des cours de l'enseignant ", async () => {
+        const reponse = await SGBService.login("teacher+1@gmail.com","")
 
-        const reponse = await SGBService.recupererJsonCours(token);
+        expect(reponse.message).toContain("Success")
+        expect(reponse.token).toContain("e44cd054a9b7f4edee4f1f0ede5ee704")
+        expect(reponse.user.id).toBe(1)
+        expect(reponse.user.first_name).toContain("firstname1")
+        expect(reponse.user.last_name).toContain("last_name1")
+        expect(reponse.user.email).toContain("teacher+1@gmail.com")
 
-        console.log(reponse);
-        expect(reponse.message).toBe("Success");
+    })
+
+    it("Devrais lancer une erreur lors d'une erreur de login", async()=>{
+        
+        await expect(SGBService.login("wrongInfo@noInfo.com", "wrong")).rejects.toThrowError(SgbError)
+
+    })
+
+    it("Devrais repondre avec succes a l'appel de la recuperation d'un cours", async()=> {
+
+        const reponse = await SGBService.recupererJsonCours({ token: 'e44cd054a9b7f4edee4f1f0ede5ee704' })
+
+        expect(reponse.message).toContain("Success")
         expect(reponse.data[0]._id).toBe(1)
         expect(reponse.data[0]._sigle).toContain("LOG210")
         expect(reponse.data[0]._nb_max_student).toBe(5)
@@ -21,14 +37,19 @@ describe('Testing SGB service endpoint calls', () => {
         expect(reponse.data[0]._date_debut).toContain("2019-09-01")
         expect(reponse.data[0]._date_fin).toContain("2019-09-02")
 
-    });
+    })
 
-    it("repond par une appel avec succes et l'information des etudiants d'un cours", async() => {
+    it("Devrais lancer une erreur lors d'une erreur de la recuperation des cours en Json", async()=> {
 
-        const reponse = await SGBService.recupererEtudiant(null, 1, token);
+        await expect(SGBService.recupererJsonCours({token: "wrongToken!!"})).rejects.toThrowError(SgbError)
 
-        console.log(reponse)
-        expect(reponse.message).toBe("Success")
+    })
+
+    it("Devrais repondre avec succes a l'appel de la recuperation des etudiants d'un cour", async()=> {
+
+        const reponse = await SGBService.recupererEtudiant(null, 1, 'e44cd054a9b7f4edee4f1f0ede5ee704')
+
+        expect(reponse.message).toContain("Success")
         expect(reponse.data[0]._id).toBe(1)
         expect(reponse.data[0]._first_name).toContain("firstname1")
         expect(reponse.data[0]._last_name).toContain("last_name1")
@@ -37,5 +58,10 @@ describe('Testing SGB service endpoint calls', () => {
 
     })
 
+    it("Devrais lancer une erreur lors d'une erreur de la recuperation des Etudiants", async()=> {
 
-});
+        await expect(SGBService.recupererEtudiant(null, 99, "")).rejects.toThrowError(SgbError)
+
+    })
+
+})

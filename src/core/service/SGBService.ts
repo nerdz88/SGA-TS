@@ -18,6 +18,7 @@ export class SGBService {
 
     public static async recupererJsonCours(params: any) {
         const reponse = await fetch(this.baseUrlV1 + "courses", { headers: { token: params.token } })
+        console.log(reponse)
         if(reponse.status != 200) {
             throw new SgbError("Erreur lors du fetch courses")
         }
