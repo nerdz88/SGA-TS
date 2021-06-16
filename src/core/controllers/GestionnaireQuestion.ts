@@ -1,6 +1,5 @@
 import fetch = require('node-fetch');
 import { Operation, TYPES } from '../service/Operation';
-import { OperationCours } from '../service/OperationCours';
 import { OperationQuestion } from '../service/OperationQuestion';
 import { SGBService } from '../service/SGBService';
 import { Universite } from '../service/Universite';

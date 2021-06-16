@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction, response } from 'express';
-import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
 import { TYPES } from "../core/service/Operation"
 import { NotFoundError } from '../core/errors/NotFoundError';
 import { SGBService } from '../core/service/SGBService';
@@ -69,14 +68,14 @@ export class WebAppRouteur {
      * @param res 
      * @param next 
      */
-    public recupererAjouterCours(req: Request, res: Response, next: NextFunction) {
+    public recupererAjouterEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
         }
         let self = this;
         SGBService.recupererJsonCours({ token: AuthorizationHelper.getCurrentToken(req) })
-            .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse.data }))
+            .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse }))
             .catch(error => self._errorCode500(error, req, res));
     }
 
@@ -88,14 +87,14 @@ export class WebAppRouteur {
      * @param next 
      * @returns 
      */
-    public recupererCours(req: Request, res: Response, next: NextFunction) {
+    public recupererTousEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
         }
         try {
-            let value = this.controlleurCours.recupererCours();
-            res.render("enseignant/cours/liste-cours-sga", { cours: JSON.parse(value) });
+            let value = this.controlleurCours.recupererTousEspaceCours(null);
+            res.render("enseignant/cours/liste-cours-sga", { espaceCours: JSON.parse(value) });
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
@@ -107,17 +106,16 @@ export class WebAppRouteur {
      * @param next 
      * @returns 
      */
-    public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
+    public recupererUnEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             res.redirect("/login");
             return;
         }
         try {
-            let sigleCours = req.params.sigle;
-            let idCoursGroupe: number = Number.parseInt(req.params.idCoursGroupe);
-            let coursValue = this.controlleurCours.recupererGroupeCoursBySigle(sigleCours);
+            let id: number = parseInt(req.params.id);
+            let coursValue = this.controlleurCours.recupererUnEspaceCours(id);
             let cours = JSON.parse(coursValue);
-            res.render("enseignant/cours/detail-cours", { cours: cours, groupe: cours.groupeCours.find(cg => cg._id == idCoursGroupe) });
+            res.render("enseignant/cours/detail-cours", { espaceCours: cours});
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
@@ -235,16 +233,16 @@ export class WebAppRouteur {
         this.router.get('/login', this.recupererLogin.bind(this));
 
         //Cours
-        this.router.get('/enseignant/cours', this.recupererCours.bind(this));
-        this.router.get('/enseignant/cours/ajouter', this.recupererAjouterCours.bind(this)); 
-        this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); 
+        this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
+        this.router.get('/enseignant/cours/ajouter', this.recupererAjouterEspaceCours.bind(this)); 
+        this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this)); 
 
 
         //Questions
         /*this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
         this.router.get('/enseignant/question/groupe/:idCoursGroupe', this.recupererQuestions.bind(this));
         this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));*/
-        this.router.get('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.recupererAjouterQuestion.bind(this));
+       // this.router.get('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.recupererAjouterQuestion.bind(this));
         //this.router.get('/enseignant/question/groupe/:idCoursGroupe/modifier/:idQuestion', this.recupererModifierQuestion.bind(this));
     }
     

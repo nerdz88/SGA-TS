@@ -14,7 +14,7 @@ window.addEventListener("load", function () {
          data: $(form).serialize(),
          success: function (data) {
             console.log("Login - OK");            
-            window.location.href = "/enseignant/cours/detail/" + data.coursInfo.sigle + "/" +  data.coursInfo.idCoursGroupe;
+            window.location.href = "/enseignant/cours/detail/" + data.idEspaceCours;
          },
          error: function () {
             console.log("Login - KO");

@@ -22,7 +22,7 @@ export class SGBService {
         if(reponse.status != 200) {
             throw new SgbError("Erreur lors du fetch courses")
         }
-        return await reponse.json();;
+        return (await reponse.json()).data;
     }
 
     public static async recupererEtudiant(typeJson: string, id: number, token?: string) {
@@ -31,7 +31,7 @@ export class SGBService {
         if(reponse.status != 200) {
             throw new SgbError("Erreur lors du fetch etudiant")
         }
-        return await reponse.json();
+        return (await reponse.json()).data;
     }
 
     

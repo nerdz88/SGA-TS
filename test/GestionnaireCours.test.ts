@@ -16,7 +16,7 @@ beforeEach(async()=>{
     universite = new Universite();
     controlleur = new GestionnaireCours(universite)
 })
-
+/*
 describe('Test gestionnaire des cours', () => {
     it("ajouter un cours devrait mettre à jour la liste des cours de l'université",async() =>{
         await controlleur.ajouterCours(COURSEVALUE,TOKEN)
@@ -41,4 +41,4 @@ describe('Test gestionnaire des cours', () => {
         expect(controlleur.recupererCours()).toBeDefined;
         expect(controlleur.recupererGroupeCoursBySigle("LOG210")).toContain('"_sigle":"LOG210"')
     })
-});
+});*/
