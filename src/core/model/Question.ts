@@ -9,19 +9,20 @@ export class Question {
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
     private id: number;
-    constructor(idGroupeCours: number, tags: [], nom: string, descriptionQuestion: string,
-        reponse: boolean, descriptionReponse: string, texteMauvaiseReponse: string) {
-        this._idGroupeCours = idGroupeCours;
-        this._tags = tags;
-        this._nom = nom;
-        this._descriptionQuestion = descriptionQuestion;
-        this._reponse = reponse;
-        this._descriptionReponse = descriptionReponse
-        this._mauvaiseReponseDescription = texteMauvaiseReponse;
+    constructor(questionJson: string) {   
+        let question = JSON.parse(questionJson);         
+        this._idGroupeCours = question.idGroupeCours;
+        this._tags = question.tags.split(",");
+        this._nom = question.nom;
+        this._descriptionQuestion = question.descriptionQuestion;
+        this._reponse = question.reponse;
+        this._descriptionReponse = question.descriptionReponse
+        this._mauvaiseReponseDescription = question.texteMauvaiseReponse;
         this.id = ++Question.currentId;
     }
 
-    public update(values: any) {
+    public update(questionJson: string) {
+        let values = JSON.parse(questionJson);         
         this._tags = values.tags.split(",");
         this._nom = values.nom;
         this._descriptionQuestion = values.description;

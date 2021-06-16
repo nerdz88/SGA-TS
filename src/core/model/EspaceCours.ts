@@ -29,8 +29,12 @@ export class EspaceCours {
         })
     }
 
-    public ajouterQuestion(question: Question) {
-        this._questions.push(question);
+    // constructor(idGroupeCours: number, tags: [], nom: string, descriptionQuestion: string,
+    //     reponse: boolean, descriptionReponse: string, texteMauvaiseReponse: string) {            
+
+    public ajouterQuestion(questionJson: any) {
+        let q = new Question(questionJson)
+        this._questions.push(q);
     }
 
     public suprimerQuestion(idQuestion: number): boolean {
@@ -40,9 +44,11 @@ export class EspaceCours {
             return true;
         }
         return false
+    }    
+    public recupererToutesQuestions(): Question[] {
+        return this._questions;
     }
-
-    public recupererQuestion(idQuestion: number): Question {
+    public recupererUneQuestion(idQuestion: number): Question {
         let q = this._questions.find(c => c.getId() == idQuestion);
         if (q == undefined)
             throw new NotFoundError("La question " + idQuestion + " n'existe pas")
@@ -63,10 +69,6 @@ export class EspaceCours {
 
     public getEtudiants(): Etudiant[] {
         return this._etudiants;
-    }
-
-    public getQuestions(): Question[] {
-        return this._questions;
     }
 
     public getDateDebut() {

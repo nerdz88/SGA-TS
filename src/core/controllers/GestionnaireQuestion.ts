@@ -12,43 +12,40 @@ export class GestionnaireQuestion {
     constructor(universite : Universite) {
         this.universite = universite;
     }
+    public async ajouterQuestion(idEspaceCours, ) {
 
-    /*public async ajouterElement(type: string, element: string, token?: string) {
-        let operation = this.getOperationParCle(type);
-        return await operation.creerObjet(element, token);
-    }
-
-    public recupererElement(type: string) : string{
-        let operation = this.getOperationParCle(type);
-        return operation.recupererObjet();
-    }
-
-    public recupererElementById(type: string, id: any) :string{
-        let operation = this.getOperationParCle(type);
-        return operation.recupererObjetParId(id);
-    }
-
-    public supprimerElement(type: string, id: any, secondId?: any) {
-        let operation = this.getOperationParCle(type);
-        return operation.supprimerObjet(id, secondId);
-    }
-
-    public updateElement(type: string, idElement: any, newElement: string) {
-        let operation = this.getOperationParCle(type);
-        operation.updateObjet(idElement, newElement);
-    }
-
-
-    private getOperationParCle(cle: string) {
-        if (this.operations.has(cle)) {
-            return this.operations.get(cle);
+        /*let questionJson = JSON.parse(element);
+        //TODO MORE VALIDATION
+        if (this.existeQuestion(questionJson.nom, -1)) {
+            throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
-        //throw new exception....
+        let questionObject = new Question(questionJson.idCoursGroupe,
+            questionJson.tags.split(","),
+            questionJson.nom,
+            questionJson.description,
+            questionJson.reponse,
+            questionJson.descriptionReponse,
+            questionJson.descriptionMauvaiseReponse)
+        this.operationObject.push(questionObject);*/
+
+
     }
 
-    //TODO On devrait déplacer le login dans un autre controleur
-    public async login(username: string, password: string) {
-        return await SGBService.login(username, password);
+    public recupererToutesQuestions(token: string): string {
+        return JSON.stringify(this.universite.recupererTousEspaceCours(token));
+
+    }
+
+    public recupererUneQuestion(id: number) {
+        return JSON.stringify(this.universite.recupererUnEspaceCours(id));
+    }
+
+   /* public supprimerQuestion(idEspace: number,idQuestion : number): boolean {
+        return this.universite.supprimerEspaceCours(idEspace)
     }*/
+
+    public modifierQuestion(id: number): boolean {
+        return this.universite.supprimerEspaceCours(id)
+    }
 
 }

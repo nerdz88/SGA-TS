@@ -14,14 +14,14 @@ export class OperationQuestion extends Operation<Question> {
         if (this.existeQuestion(questionJson.nom, -1)) {
             throw new AlreadyExistsError("la question " + questionJson.nom + " existe déjà")
         }
-        let questionObject = new Question(questionJson.idCoursGroupe,
+        /*let questionObject = new Question(questionJson.idCoursGroupe,
             questionJson.tags.split(","),
             questionJson.nom,
             questionJson.description,
             questionJson.reponse,
             questionJson.descriptionReponse,
             questionJson.descriptionMauvaiseReponse)
-        this.operationObject.push(questionObject);
+        this.operationObject.push(questionObject);*/
     }
     private existeQuestion(nom: any, idQuestion: number): boolean {
         return this.operationObject.find(q => q.getNom() == nom && q.getId() != idQuestion) != undefined;
