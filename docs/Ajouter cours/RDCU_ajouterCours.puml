@@ -4,7 +4,7 @@ skinparam defaultfontname Verdana
 title RDCU. ajouter cours
 participant ":GestionnaireCours" as controlleur
 participant "Université" as sga
-participant "c:Cours" as cours
+participant "c:EspaceCours" as cours
 
 -> controlleur : ajouterCours(numeroGroupe,tokenEnseignant)
   controlleur->sga : ajouterCours(numeroGroupe,tokenEnseignant)

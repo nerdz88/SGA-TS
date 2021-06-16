@@ -18,5 +18,5 @@ note left : Selon Contôleur,\nreçoit la deuxième opération système
 controleur -> universite : setSuppression(true)
 note left : Changement valeur attribut comme quoi la\nsuppression a été confirmer par l'utilisateur
 controleur -> universite : supprimerUneQuestion(question)
-note left : Selon fabrication pure : Université\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
+note left : Selon expert, Université a toute\nles informations requises\npour exécuter supprimerUnCours
 @enduml 

@@ -2,13 +2,13 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer tous les cours créés d'un enseignant
-participant ":EnseignantControleur" as controleur
-participant "coursService : CoursService" as mapCours
+participant ":GestionnaireCours" as controleur
+participant "universite : Universite" as mapCours
 
-->controleur : cours = recupererTousCoursSga(token)
-note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
+->controleur : cours = recupererTousCours(token)
+note left : Selon fabrication pure : GestionnaireCours\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
 controleur -> mapCours : cours = recupererTousCours(token)
-note left : selon expert, CoursService a toute\nles informations requises\npour exécuter recupererTousCours
+note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousCours
 @enduml
 
 @startuml récupérer un cours
@@ -17,7 +17,7 @@ skinparam defaultfontname Verdana
 title RDCU pour récupérer un cours créé d'un enseignant
 participant ":GestionnaireCours" as controleur
 participant ":Université" as modele
-->controleur : cours = recupererUnCours(token, idCours)
-controleur -> modele : cours = recupererUnCours(token, idCours)
-note left : selon expert, Université a toute\nles informations requises\npour exécuter recupererUnCours
+->controleur : cours = recupererUnCours(idCours)
+controleur -> modele : cours = recupererUnCours(idCours)
+note left : Selon expert, Université a toute\nles informations requises\npour exécuter recupererUnCours
 @enduml
