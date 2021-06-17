@@ -12,15 +12,15 @@ import { SGBService } from '../core/service/SGBService';
 //Le routeur permettant de gérer notre API SGA (Retourne du JSON)
 export class SgaRouteur {
     router: Router;
-    private gestionnaireCours : GestionnaireCours;
-    private gestionnaireQuestion : GestionnaireQuestion;
+    private gestionnaireCours: GestionnaireCours;
+    private gestionnaireQuestion: GestionnaireQuestion;
 
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours : GestionnaireCours,gestionnaireQuestion : GestionnaireQuestion) {
-        this.gestionnaireCours=gestionnaireCours;  // init contrôleur GRASP
-        this.gestionnaireQuestion=gestionnaireQuestion;
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion) {
+        this.gestionnaireCours = gestionnaireCours;  // init contrôleur GRASP
+        this.gestionnaireQuestion = gestionnaireQuestion;
         this.router = Router();
         this.init();
     }
@@ -122,9 +122,9 @@ export class SgaRouteur {
             return;
         }
         try {
-            let id = parseInt(req.params.id);            
+            let id = parseInt(req.params.id);
             let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
-           
+
             res.status(200)
                 .send({
                     message: 'Success',
@@ -141,8 +141,8 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let id = parseInt(req.params.id);         
-        
+        let id = parseInt(req.params.id);
+
         if (this.gestionnaireCours.supprimerEspaceCours(id)) {
             res.status(200)
                 .send({
@@ -166,21 +166,19 @@ export class SgaRouteur {
   * @param res 
   * @param next 
   */
-    /*public recupererQuestions(req: Request, res: Response, next: NextFunction) {
+    public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let idCoursGroupe = req.params.idCoursGroupe;
-            //TODO lowkey ce n'est pas la job du routeur de faire le filtre, 
-            // mais à cause de notre du abstract Operation, il est diffile d'envoyer des paramns custom en primitif 
-            //Il faudrait que le controleur s'occupe du filtre
-            let values = this.controlleur.recupererElement(TYPES.QUESTION);
-            let questions = JSON.parse(values);
-            //On est pas tjrs obligé de faire le filtre
-            if (idCoursGroupe != undefined) {
-                questions = questions.filter((q: { _idGroupeCours: string; }) => q._idGroupeCours == idCoursGroupe);
+            let id = parseInt(req.params.id);
+            let arrayQuestion: string;
+
+            if (id != undefined) {
+                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getCurrentToken(req));
+            } else {
+                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
             }
 
             res.status(200)
@@ -188,13 +186,13 @@ export class SgaRouteur {
                     message: 'Success',
                     status: res.status,
                     data: {
-                        idCoursGroupe: idCoursGroupe,
-                        questions: questions
+                        idEspaceCours: id ?? "none",
+                        questions: JSON.parse(arrayQuestion)
                     }
                 });
 
         } catch (error) { this._errorCode500(error, req, res); }
-    }*/
+    }
 
     /**
     * Methode GET une question par ID
@@ -202,13 +200,15 @@ export class SgaRouteur {
     * @param res 
     * @param next 
     */
-    /*public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
+    public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let values = this.controlleur.recupererElementById(TYPES.QUESTION, req.params.id);
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idQuestion = parseInt(req.params.idQuestion);
+            let values = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
 
             res.status(200)
                 .send({
@@ -225,18 +225,17 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let self = this;
-        this.controlleur.ajouterElement(TYPES.QUESTION, JSON.stringify(req.body), AuthorizationHelper.getCurrentToken(req))
-            .then(() => {
-                res.status(201)
-                    .send({
-                        message: 'Success',
-                        status: res.status
-                    });
-            })
-            .catch(error => {
-                self._errorCode500(error, req, res);
-            });
+        try {
+            let id = parseInt(req.params.id);
+            this.gestionnaireQuestion.ajouterQuestion(id, JSON.stringify(req.body));
+
+            res.status(201)
+                .send({
+                    message: 'Success',
+                    status: res.status
+                });
+        } catch (error) { this._errorCode500(error, req, res); }
+
     }
 
     public supprimerQuestion(req: Request, res: Response, next: NextFunction) {
@@ -244,8 +243,10 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let idQuestion = req.params.id;
-        if (this.controlleur.supprimerElement(TYPES.QUESTION, idQuestion)) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestion = parseInt(req.params.idQuestion);
+
+        if (this.gestionnaireQuestion.supprimerQuestion(idEspaceCours, idQuestion)) {
             res.status(200)
                 .send({
                     message: 'Success',
@@ -262,16 +263,16 @@ export class SgaRouteur {
             return;
         }
         try {
-            let idQuestion = req.params.id;
-            this.controlleur.updateElement(TYPES.QUESTION, idQuestion, JSON.stringify(req.body));
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idQuestion = parseInt(req.params.idQuestion);
+            this.gestionnaireQuestion.modifierQuestion(idEspaceCours, idQuestion, JSON.stringify(req.body));
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status
                 });
         } catch (error) { this._errorCode500(error, req, res); }
-    }*/
-
+    }
 
     //#endregion Gestion Questions
 
@@ -295,16 +296,16 @@ export class SgaRouteur {
 
         //Cours
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
-        this.router.post('/enseignant/cours/ajouter', this.ajouterEspaceCours.bind(this)); 
-        this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this)); 
+        this.router.post('/enseignant/cours/ajouter', this.ajouterEspaceCours.bind(this));
+        this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
         this.router.delete('/enseignant/cours/supprimer/:id', this.supprimerCours.bind(this));
 
         //Question
-        /*this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
-        this.router.get('/enseignant/question/groupe/:idCoursGroupe', this.recupererQuestions.bind(this));
-        this.router.post('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.ajouterQuestion.bind(this));
-        this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));
-        this.router.post('/enseignant/question/modifier/:id', this.modifierQuestion.bind(this));
-        this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));*/
+        this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
+        this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
+        this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
+        this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererQuestionsParId.bind(this));
+        this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
+        this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
     }
 }

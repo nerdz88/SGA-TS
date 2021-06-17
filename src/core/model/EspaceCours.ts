@@ -29,12 +29,14 @@ export class EspaceCours {
         })
     }
 
-    // constructor(idGroupeCours: number, tags: [], nom: string, descriptionQuestion: string,
-    //     reponse: boolean, descriptionReponse: string, texteMauvaiseReponse: string) {            
-
-    public ajouterQuestion(questionJson: any) {
+    public ajouterQuestion(questionJson: string) {
         let q = new Question(questionJson)
         this._questions.push(q);
+    }
+
+    public modifierQuestion(idQuestion: number, questionJson: string) {
+        let q = this.recupererUneQuestion(idQuestion);
+        q.modifier(questionJson);
     }
 
     public suprimerQuestion(idQuestion: number): boolean {
@@ -44,7 +46,7 @@ export class EspaceCours {
             return true;
         }
         return false
-    }    
+    }
     public recupererToutesQuestions(): Question[] {
         return this._questions;
     }

@@ -13,17 +13,17 @@ note left : Selon contôlleur de session,\nreçoit la première opération syst�
 gestionnaireCours->universite: cours = recupererTousCours(token)
 note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
 loop [!terminerQuestion]
-->gestionnaireQuestion : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+->gestionnaireQuestion : ajouterQuestion(idEspaceCours,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
  note left : Selon contôlleur de session,\nreçoit la deuxième opération système 
-gestionnaireQuestion->universite : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
-universite -> universite: c = recupererUnCours(id)
-  note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
-universite-> cours : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
-  note left : Selon fabrication pure : GestionnaireQuestion\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
-  create question
+' gestionnaireQuestion->universite : ajouterQuestion(idEspaceCours,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+gestionnaireQuestion -> universite: c = recupererUnCours(id)
+  note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les EspaceCours
+gestionnaireQuestion-> cours : ajouterQuestion(tags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+  note left : Selon expert, espaceCours est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
+create question
   cours->question : q = create()
-  note left : selon Créateur\n(Universite \nutilise groupeCours)
-  cours->cours : ajouterQuestion(q)
+    note left : selon Créateur\n(EspaceCours \n contient Question)
+cours->cours : ajouterQuestion(q)
   note left : Selon expert, espaceCours est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 end
 -> gestionnaireQuestion : terminerAjouterQuestion()

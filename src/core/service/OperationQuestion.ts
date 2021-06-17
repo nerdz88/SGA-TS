@@ -32,7 +32,7 @@ export class OperationQuestion extends Operation<Question> {
         if (this.existeQuestion(newElement.nom, idQuestion)) {
             throw new AlreadyExistsError("la question " + newElement.nom + " existe déjà")
         }
-        this.recupererQuestionParId(idQuestion).update(newElement);
+       // this.recupererQuestionParId(idQuestion).update(newElement);
     }
 
     supprimerObjet(id: number, secondId?: any): boolean {

@@ -21,7 +21,7 @@ export class Question {
         this.id = ++Question.currentId;
     }
 
-    public update(questionJson: string) {
+    public modifier(questionJson: string) {
         let values = JSON.parse(questionJson);         
         this._tags = values.tags.split(",");
         this._nom = values.nom;
