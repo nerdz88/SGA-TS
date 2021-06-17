@@ -39,8 +39,8 @@ export class SgaRouteur {
                 let token = reponse.token;
                 let user: User = new User(Number.parseInt(reponse.user.id), reponse.user.last_name, reponse.user.first_name, reponse.user.email);
 
-                req.session.user = user;
-                req.session.token = token;
+                req.session["user"] = user;
+                req.session["token"] = token;
 
                 res.status(200)
                     .send({
