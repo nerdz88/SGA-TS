@@ -74,7 +74,7 @@ export class WebAppRouteur {
             return;
         }
         let self = this;
-        SGBService.recupererJsonCours({ token: AuthorizationHelper.getCurrentToken(req) })
+        SGBService.recupererJsonCours(AuthorizationHelper.getCurrentToken(req))
             .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse }))
             .catch(error => self._errorCode500(error, req, res));
     }

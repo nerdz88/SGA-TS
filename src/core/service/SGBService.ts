@@ -9,30 +9,55 @@ export class SGBService {
     private static baseUrlV2: string = "http://127.0.0.1:3001/api/v2/";
 
     public static async login(username: string, password: string) {
-        const reponse = await fetch(this.baseUrlV2 + "login?email=" + encodeURIComponent(username) + "&password=" + password,);
-        if(reponse.status != 200) {
-            throw new SgbError("Erreur lors du login")
-        }
-        return await reponse.json();
+        return fetch(this.baseUrlV2 + "login?email=" + encodeURIComponent(username) + "&password=" + password)
+            .then(reponse => {
+                if (!reponse.ok) {
+                    throw new SgbError("Erreur lors du login");
+                }
+                return reponse.json();
+            })
+            .then(data => {
+                return data;
+            })
+            .catch((error: Error) => {
+                //Si on est ici, le SGB est surement down
+                throw new SgbError("Erreur lors du login: " + error.message);
+            });
     }
 
-    public static async recupererJsonCours(params: any) {
-        const reponse = await fetch(this.baseUrlV1 + "courses", { headers: { token: params.token } })
-        console.log(reponse)
-        if(reponse.status != 200) {
-            throw new SgbError("Erreur lors du fetch courses")
-        }
-        return (await reponse.json()).data;
+    public static async recupererJsonCours(token: string) {
+        return fetch(this.baseUrlV1 + "courses", { headers: { token: token } })
+            .then(reponse => {
+                if (!reponse.ok) {
+                    throw new SgbError("Erreur lors du fetch courses");
+                }
+                return reponse.json();
+            })
+            .then(data => {
+                return data.data;
+            })
+            .catch((error: Error) => {
+                //Si on est ici, le SGB est surement down
+                throw new SgbError("Erreur lors du fetch courses " + error.message);
+            });
     }
 
-    public static async recupererEtudiant(typeJson: string, id: number, token?: string) {
-        const reponse = await fetch(this.baseUrlV1 + "course/" + id + "/students",
-            { headers: { token: token } });
-        if(reponse.status != 200) {
-            throw new SgbError("Erreur lors du fetch etudiant")
-        }
-        return (await reponse.json()).data;
+    public static async recupererEtudiant(token: string, idEspaceCours: number) {
+        return fetch(this.baseUrlV1 + "course/" + idEspaceCours + "/students", { headers: { token: token } })
+            .then(reponse => {
+                if (!reponse.ok) {
+                    throw new SgbError("Erreur lors du fetch etudiant")
+                }
+                return reponse.json();
+            })
+            .then(data => {
+                return data.data;
+            })
+            .catch((error: Error) => {
+                //Si on est ici, le SGB est surement down
+                throw new SgbError("Erreur lors du fetch etudiant " + error.message);
+            });
     }
 
-    
+
 }
