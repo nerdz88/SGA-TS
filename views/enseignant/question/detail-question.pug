@@ -1,31 +1,59 @@
 extends ../../commun/master-template.pug 
 
 block content
-    h1 #{question._nom}
-    ul.entries 
-        li 
-            <strong>Tag:</strong> #{question._tags}
-        li 
-            <strong>Description</strong>: 
-            br
-            |#{question._descriptionQuestion} 
-        li 
-            <strong>Réponse:</strong> #{question._reponse ? "Vrai" : "Faux"}
-        li 
-            <strong>Description bonne réponse:</strong> 
-            br
-            |#{question._descriptionReponse}
-        li 
-            <strong>Description mauvaise réponse:</strong>
-            br
-            |#{question._mauvaiseReponseDescription}
+    +btn-back("Détail Question",  "/enseignant/question/" + question._idEspaceCours)
+    div.row
+        div.col.s10.offset-s1   
+            div.row
+                div.col.s12
+                    a(class="waves-effect waves-light btn right btn-modifier-question blue accent-2" 
+                        href="/enseignant/question/modifier/" + question._idEspaceCours + "/" + question._id) Modifier  
+            div.section
+                div.row.no-margin
+                    div.input-field.col.s6
+                        input#nom(type="text" name="nom" value=question._nom : "" disabled)
+                        label(for="nom") Nom
+                    div.input-field.col.s6
+                        input#tags(type="text" name="tags" value=question._tags.join(",") disabled)
+                        label(for="tags") Tags (Séparer par des ",")
+                div.row.no-margin
+                    div.input-field.col.s12
+                        textarea#description(class="materialize-textarea" name="description" disabled)
+                            |#{question._descriptionQuestion}
+                        label(for="description") Description
 
-    a(class="btn btn-modifier-question" href="/enseignant/question/modifier/" + question._idEspaceCours + "/" + question._id) Modifier  
-    a(class="btn btn-delete-question" href="javascript:void(0)" 
-        data-id-question=question._id
-        data-nom=question._nom
-        data-id-espace-cours=question._idEspaceCours) Supprimer 
-    
+                    div.input-field.col.s6
+                        textarea#descriptionReponse(class="materialize-textarea" name="descriptionReponse" disabled)
+                            |#{question._descriptionReponse}
+                        label(for="descriptionReponse") Description bonne réponse
+
+                    div.input-field.col.s6
+                        textarea#descriptionMauvaiseReponse(class="materialize-textarea" name="descriptionMauvaiseReponse" disabled)
+                            |#{question._mauvaiseReponseDescription}
+                        label(for="descriptionMauvaiseReponse") Description mauvaise réponse
+                div.row.no-margin    
+                    div.input-field.col.s12
+                        div.row
+                            div.col.s12
+                                label Réponse
+                            div.col.s12
+                                div
+                                    label
+                                        input(class="with-gap rd-reponse" type="radio" name="response" value="true" checked=question._reponse disabled) 
+                                        span Vrai
+                                div
+                                    label
+                                        input(class=" with-gap rd-reponse" type="radio" name="response" value="false" checked=!question._reponse disabled) 
+                                        span Faux
+                div.row
+                    div.col.s12                          
+                        a(class="waves-effect waves-light btn red right btn-delete-question" href="javascript:void(0)" 
+                            data-id-question=question._id
+                            data-nom=question._nom
+                            data-id-espace-cours=question._idEspaceCours) Supprimer 
+
+
+
 
     //- End bloc content
 block more-script

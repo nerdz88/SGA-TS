@@ -3,10 +3,12 @@
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
 
-   $(".form-ajouter-cours").on("submit", function (e) {
-      //On veut envoyer le formulaire!
-      e.preventDefault();
-      var form = this;
+   $(".btn-submit-form").on("click", function(e) {
+      e.preventDefault();  
+      var btn = this;
+      var form = $(btn).parent("form");
+    
+         
       var endPoint = "/api/v1/enseignant/cours/ajouter";
       $.ajax({
          type: "POST",
@@ -22,6 +24,7 @@ window.addEventListener("load", function () {
          }
       });
    });
+
 
 
 

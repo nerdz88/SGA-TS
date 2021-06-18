@@ -2,23 +2,35 @@ extends ../../commun/master-template.pug
 
 block content
     //- Start bloc content  
-    h1 Questions
-    if idEspaceCours
-        a(class="btn btn-ajouter-question" href="/enseignant/question/ajouter/" + idEspaceCours) Ajouter
-    ul.entries
-        each uneQuestion in questions
-            li 
-                strong #{uneQuestion._nom} 
-                |- Tag: #{uneQuestion._tags}      
-                a(class="btn btn-detail-question" href="/enseignant/question/detail/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Détail
-                a(class="btn btn-modifier-question" href="/enseignant/question/modifier/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Modifier              
-                a(class="btn btn-delete-question" href="javascript:void(0)"
-                    data-id-question=uneQuestion._id
-                    data-nom=uneQuestion._nom
-                    data-id-espace-cours=uneQuestion._idEspaceCours) Supprimer 
-        else
-            li
-                em Vous n'avez pas de questions
+    +btn-back(!espaceCours._id ? "Vos Questions" : "Questions pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, 
+        !espaceCours._id ? "/" : "/enseignant/cours")  
+    div.row
+        div.col.s10.offset-s1   
+            if espaceCours._id 
+                div.row
+                    div.col.s12
+                        a(class="waves-effect waves-light btn btn-ajouter-question" href="/enseignant/question/ajouter/" + espaceCours._id) Ajouter          
+            div.row
+                if questions.length > 0
+                    div.section
+                        div.row
+                            each uneQuestion in questions
+                                div.col.s12.l5
+                                    div.card
+                                        div.card-content
+                                            div.card-title
+                                                div.text-bolder #{uneQuestion._nom}                                                          
+                                            div #{uneQuestion._descriptionQuestion}                                                  
+                                        div.card-action
+                                            a(class="btn-detail-question" href="/enseignant/question/detail/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Détail
+                                            a(class="btn-modifier-question" href="/enseignant/question/modifier/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Modifier              
+                                            a(class="btn-delete-question" href="javascript:void(0)"
+                                                data-id-question=uneQuestion._id
+                                                data-nom=uneQuestion._nom
+                                                data-id-espace-cours=uneQuestion._idEspaceCours) Supprimer 
+                else
+                    div.col.s12
+                        em Vous n'avez pas de questions
 
     //- End bloc content
 block more-script

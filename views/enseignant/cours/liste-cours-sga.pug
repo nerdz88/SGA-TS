@@ -2,22 +2,33 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-  h1 Mes cours
-  a(class="btn btn-ajouter-cours" href='/enseignant/cours/ajouter') Ajouter
-  ul.entries
-    each espace in espaceCours    
-      li         
-        strong #{espace._cours._sigle} - #{espace._cours._titre} - Gr: #{espace._numero}       
-        a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
-        a(class="btn btn-question-cours" href="/enseignant/question/" + espace._id) Questions 
-        a(class="btn btn-delete-cours" href="javascript:void(0)" 
-            data-id-espace-cours=espace._id
-            data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero
-          ) Supprimer 
+  +btn-back("Vos Espaces Cours", "/")  
+  div.row
+    div.col.s10.offset-s1   
+      div.row
+          div.col.s12
+            a(class="waves-effect waves-light btn btn-ajouter-cours" href='/enseignant/cours/ajouter') Ajouter
 
-    else
-      li
-        em Vous n'avez pas de cours
+      div.section
+        div.row
+          each espace in espaceCours     
+            div.col.s12.l5
+              div.card
+                div.card-content
+                  div.card-title
+                    div.text-bold #{espace._cours._sigle}       
+                  div #{espace._cours._titre}                
+                  div Gr: #{espace._numero}            
+                div.card-action
+                  a(class="btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
+                  a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions 
+                  a(class="btn-delete-cours" href="javascript:void(0)" 
+                    data-id-espace-cours=espace._id
+                    data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero
+                    ) Supprimer 
+          else
+            div.col.s12
+              em Vous n'avez pas de cours
 
   //- End bloc content
 
