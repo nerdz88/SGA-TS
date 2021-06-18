@@ -15,6 +15,12 @@ footer {
   text-align: center;
 }
 
+.padding-right {
+  padding-right: 5px;
+}
+.padding-left {
+  padding-left: 5px;
+}
 .no-margin {
   margin: 0;
 }
@@ -23,6 +29,34 @@ footer {
   display: inline-flex;
   vertical-align: top;
 }
+.material-icons.padding-left {
+  padding-left: 5px;
+}
+
+.with-icon {
+  display: flex;
+  align-items: center;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.17em; }
+h4 { font-size: 1.12em; }
+h5 { font-size: .83em; }
+h6 { font-size: .75em; }
+
+body {
+  font-family: 'Roboto';
+  font-size: 16px;
+}
+
+.link-card {
+  color: black;
+}
+.link-card:hover{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
 
 /* 
 #main {

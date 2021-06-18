@@ -2,22 +2,29 @@ extends ../commun/master-template.pug
 
 block content
   //- Start bloc content  
-  h3 Bonjour TODO
-
-  //- div.row
-  //-   div.col.l6
-  //-     div.card
-  //-       div.card-content
-  //-         div.card-title Mes Cours              
-  //-         p Page de gestion de vos espaces cours
-  //-   div.col.l6
-  //-     div.card
-  //-       div.card-content
-  //-         div.card-title.valign-wrapper
-  //-           i.material-icons question_answer
-  //-           |Mes Questions
-            
-  //-         p Page de gestion de vos questions
+  div.row
+    div.col.s12
+        h2 Bonjour #{user._prenom} #{user._nom} !
+                   
+  div.row 
+    div.col.s12
+      div.row
+        div.col.s4
+          a.link-card(href="/enseignant/cours")
+            div.card
+              div.card-content
+                div.card-title 
+                  i.material-icons.inline.padding-right book
+                  |Mes Cours                         
+                p Page de gestion de vos espaces cours
+        div.col.s4
+          a.link-card(href="/enseignant/question")
+            div.card
+              div.card-content
+                div.card-title
+                  i.material-icons.inline.padding-right question_answer
+                  |Mes Questions                
+                p Page de gestion de vos questions
     
 
   //- End bloc content
