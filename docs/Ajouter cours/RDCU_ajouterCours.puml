@@ -2,19 +2,16 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU. ajouter cours
-participant ":EnseignantControlleur" as sga
-participant "operationCours : OperationCours" as map
-participant "c:GroupeCours" as cours
+participant ":GestionnaireCours" as controlleur
+participant "Université" as sga
+participant "c:EspaceCours" as cours
 
--> sga : ajouterCours(numeroGroupe)
- note left : Selon Contôleur,\nreçoit la deuxième opération système
+-> controlleur : ajouterCours(numeroGroupe,tokenEnseignant)
+  controlleur->sga : ajouterCours(numeroGroupe,tokenEnseignant)
+  note right : Selon expert, Université a toute\nles informations requises\npour créer un cours
   create cours
-  sga->cours : c = create()
-  note left : Selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
-  sga->map : ajouterCours(tokenEnseignant, c)
-  note left : Selon expert, operationCours contient\ntoutes les informations par rapport aux cours.
-  -> sga : information = recupererCoursSga(token)
-  note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
-  sga -> map : information = recupereCours(token)
-  note left : Selon expert, operationCours a toute\nles informations requises\npour exécuter recupererCours
+  sga->cours : create()
+  -> controlleur : information = recupererCours(tokenEnseignant)
+note right : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
+  controlleur -> sga : information = recupereCours(tokenEnseignant)
   @enduml

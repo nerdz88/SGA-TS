@@ -2,43 +2,47 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour ajouter question
-participant ":EnseignantControleur" as sga
-participant "operationCours : OperationCours" as opCours
-participant "operationQuestion : OperationQuestion" as opQuestion
+participant ":GestionnaireCours" as gestionnaireCours
+participant ": GestionnaireQuestion" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "c:EspaceCours" as cours
 participant "q:Question" as question
 
-->sga : cours = recupererCoursSga(token)
-note left : Selon Contôleur,\nreçoit la première opération système
-sga->opCours: cours = recupererCours(token)
-note left : Selon expert, operationCours est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
+->gestionnaireCours : cours = recupererTousCours(token)
+note left : Selon contôlleur de session,\nreçoit la première opération système
+gestionnaireCours->universite: cours = recupererTousCours(token)
+note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
 loop [!terminerQuestion]
--> sga : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
- note left : Selon Contôleur,\nreçoit la deuxième opération système 
-  sga->opQuestion : ajouterElement(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
-  note left : Selon fabrication pure : operationQuestion\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
-  create question
-  opQuestion->question : q = create()
-  note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
-  opQuestion->opQuestion : ajouterQuestion(q)
-  note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
+->gestionnaireQuestion : ajouterQuestion(idEspaceCours,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+ note left : Selon contôlleur de session,\nreçoit la deuxième opération système 
+' gestionnaireQuestion->universite : ajouterQuestion(idEspaceCours,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+gestionnaireQuestion -> universite: c = recupererUnCours(id)
+  note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les EspaceCours
+gestionnaireQuestion-> cours : ajouterQuestion(tags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+  note left : Selon expert, espaceCours est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
+create question
+  cours->question : q = create()
+    note left : selon Créateur\n(EspaceCours \n contient Question)
+cours->cours : ajouterQuestion(q)
+  note left : Selon expert, espaceCours est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 end
--> sga : terminerAjouterQuestion()
+-> gestionnaireQuestion : terminerAjouterQuestion()
 note left : Ce n'est pas une opération système, \nmais nous aide à déterminer la fin de la boucle
-  -> sga : information = recupererCoursSga(idGroupeCours)
-  note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
-  sga -> opQuestion : information = recupereCours(token)
-  note left :   note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
+  -> gestionnaireQuestion : information = recupererToutesQuestions(idCours)
+  note left : Selon fabrication pure : GestionnaireQuestion\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
+  gestionnaireQuestion ->universite : information = recupererToutesQuestions(idCours)
+  note left : Selon expert, universite est l'expert,\ncar il contient toutes les informations\nutiles pour les cours qui contiennent les questions
 @enduml
 
-@startuml recupererCoursSgaQuestion
+@startuml recupererCoursgestionnaireCoursQuestion
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU recupererCoursSgaquestion
-participant ":EnseignantControleur" as sga
-participant "operationCours : OperationCours" as opCours
-->sga : questions = recupererCoursSgaQuestion(token, idCours, numeroGroupeCours)
+title RDCU recupererCoursgestionnaireCoursquestion
+participant ":EnseignantControleur" as gestionnaireCours
+participant "operationCours : OperationCours" as universite
+->gestionnaireCours : questions = recupererCoursgestionnaireCoursQuestion(token, idCours, numeroGroupeCours)
 note left : Selon Contôleur,\nreçoit la première opération système
-sga->opCours: questions = recupererCours(token, idCours, numeroGroupeCours)
+gestionnaireCours->universite: questions = recupererCours(token, idCours, numeroGroupeCours)
 note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les cours
 @enduml
 
@@ -46,22 +50,22 @@ note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toute
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour ajouterQuestion
-participant ":EnseignantControleur" as sga
-participant "operationCours : OperationCours" as opCours
-participant "operationQuestion : OperationQuestion" as opQuestion
+participant ":EnseignantControleur" as gestionnaireCours
+participant "operationCours : OperationCours" as universite
+participant "operationQuestion : OperationQuestion" asgestionnaire
 participant "q:Question" as question
 loop [!terminerQuestion]
--> sga : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+-> gestionnaireCours : ajouterQuestion(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
  note left : Selon Contôleur,\nreçoit la deuxième opération système 
-  sga->opQuestion : ajouterElement(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
+  gestionnaireCours-gestionnaire : ajouterElement(numeroGroupe,\ntags,nom,texteQuestion,\nreponse,texteBonneReponse,\ntexteMauvaiseReponse)
   note left :Selon expert, operationCours contient\ntoutes les informations par rapport aux cours.
   create question
-  opQuestion->question : q = create()
+gestionnaire->question : q = create()
   note left : selon Créateur\n(EnseignantControlleur\nutilise groupeCours)
-  opQuestion->opQuestion : ajouterQuestion(q)
+gestionnaire-gestionnaire : ajouterQuestion(q)
   note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 end
--> sga : terminerAjouterQuestion()
+-> gestionnaireCours : terminerAjouterQuestion()
 note left : Ce n'est pas une opération système, \nmais nous aide à déterminer la fin de la boucle
 @enduml
 
@@ -69,10 +73,10 @@ note left : Ce n'est pas une opération système, \nmais nous aide à détermine
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour ajouterQuestion
-participant ":EnseignantControleur" as sga
-participant "operationCours : OperationCours" as opCours
- -> sga : information = recupererCoursSga(idGroupeCours)
+participant ":EnseignantControleur" as gestionnaireCours
+participant "operationCours : OperationCours" as universite
+ -> gestionnaireCours : information = recupererCoursgestionnaireCours(idGroupeCours)
   note left : EnseignantControlleur est l'objet racine.\nContrôleur ne s'applique pas ici,\ncar il ne s'agit pas d'une opération système
-  sga -> opCours : information = recupereCours(token)
+  gestionnaireCours -> universite : information = recupereCours(token)
   note left : Selon expert, operationQuestion est l'expert,\ncar il contient toutes les informations\nutiles pour les questions
 @enduml

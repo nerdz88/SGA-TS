@@ -4,18 +4,18 @@
 window.addEventListener("load", function () {
 
     $(".btn-delete-cours").on("click", function () {
-        var noGroupe = $(this).data("noGroupe");
-        var idGroupe = $(this).data("idGroupe");
-        var sigle = $(this).data("sigle");
+        var titreEspace = $(this).data("titreEspaceCours");
+        var idEspaceCours = $(this).data("idEspaceCours");
+
         $.confirm({
             title: 'Confirmation',
             backgroundDismiss: true,
-            content: 'Voulez-vous vraiment supprimer ce cours: ' + sigle + " - gr:" + noGroupe,
+            content: 'Voulez-vous vraiment supprimer ce cours: ' + titreEspace,
             buttons: {
                 confirm: function () {
                     $.ajax({
-                        type: 'GET',
-                        url: '/api/v1/enseignant/cours/supprimer/' + sigle + "/" + idGroupe,
+                        type: 'DELETE',
+                        url: '/api/v1/enseignant/cours/supprimer/' + idEspaceCours,
                         success: function () {
                             window.location.href = "/enseignant/cours";
                         },

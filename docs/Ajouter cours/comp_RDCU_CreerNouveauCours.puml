@@ -5,7 +5,7 @@ title RDCU pour créer un nouveau Cours
 participant ":EnseignantControleur" as sga
 participant "<<Actor>> : Sgb" as sgb
 participant "OperationCours : OperationCours" as map
-participant "c:GroupeCours" as cours
+participant "c:EspaceCours" as cours
 
 ->sga : cours = recupererCoursSgb(token)
 note left : Selon Contôleur,\nreçoit la première opération système

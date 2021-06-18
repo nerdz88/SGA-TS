@@ -4,7 +4,7 @@ block content
     h1 #{question._nom}
     ul.entries 
         li 
-            <strong>Tag:</strong> #{question._tag}
+            <strong>Tag:</strong> #{question._tags}
         li 
             <strong>Description</strong>: 
             br
@@ -20,11 +20,11 @@ block content
             br
             |#{question._mauvaiseReponseDescription}
 
-    a(class="btn btn-modifier-question" href="/enseignant/question/groupe/" + question._idGroupeCours + "/modifier/" + question.id) Modifier  
+    a(class="btn btn-modifier-question" href="/enseignant/question/modifier/" + question._idEspaceCours + "/" + question._id) Modifier  
     a(class="btn btn-delete-question" href="javascript:void(0)" 
-        data-id-question=question.id
+        data-id-question=question._id
         data-nom=question._nom
-        data-id-coursgroupe=question._idGroupeCours) Supprimer 
+        data-id-espace-cours=question._idEspaceCours) Supprimer 
     
 
     //- End bloc content

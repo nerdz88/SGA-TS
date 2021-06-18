@@ -2,15 +2,15 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-  h1 #{cours._sigle} - #{cours._titre} - Gr: #{groupe._numero} 
+  h1 #{espaceCours._cours._sigle} - #{espaceCours._cours._titre} - Gr: #{espaceCours._numero} 
   ul.entries 
-    li Nb étudiant Max: #{cours._nbMaxEtudiant} 
-    li Date début: #{groupe._dateDebut}
-    li Date fin: #{groupe._dateFin}
+    li Nb étudiant Max: #{espaceCours._cours._nbMaxEtudiant} 
+    li Date début: #{espaceCours._dateDebut}
+    li Date fin: #{espaceCours._dateFin}
 
   h1 Liste des étudiants  
   ul.entries
-    each unEtudiant in groupe._etudiants
+    each unEtudiant in espaceCours._etudiants
       li       
         strong #{unEtudiant._nom} #{unEtudiant._prenom} 
         | : #{unEtudiant._email} - #{unEtudiant._code_permanent}
@@ -21,9 +21,9 @@ block content
 
   
   a(class="btn btn-delete-cours" href="javascript:void(0)" 
-    data-id-groupe=groupe._id
-    data-no-groupe=groupe._numero
-    data-sigle=cours._sigle) Supprimer 
+    data-id-espace-cours=espaceCours._id
+    data-titre-espace-cours=espaceCours._cours._sigle + "-" + espaceCours._cours._titre + "- Gr :" + espaceCours._numero
+    ) Supprimer 
   //- End bloc content
 
 block more-script

@@ -1,4 +1,4 @@
-import { GroupeCours } from "./GroupeCours"
+import { EspaceCours } from "./EspaceCours"
 export class User {
     // classe inspirée de la classe conceptuelle (du MDD) et SGB
     private _id: number;

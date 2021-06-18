@@ -1,6 +1,5 @@
 import fetch = require('node-fetch');
 import { Operation, TYPES } from '../service/Operation';
-import { OperationCours } from '../service/OperationCours';
 import { OperationQuestion } from '../service/OperationQuestion';
 import { SGBService } from '../service/SGBService';
 
@@ -10,7 +9,7 @@ export class EnseignantControlleur {
 
     constructor() {
         this.operations = new Map<String, Operation<any>>();
-        this.operations.set(TYPES.COURS, new OperationCours());
+       // this.operations.set(TYPES.COURS, new OperationCours());
         this.operations.set(TYPES.QUESTION, new OperationQuestion())
         // Rajouter les question,questionaires et devoirs à fur et à mesure
 

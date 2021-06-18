@@ -1,24 +1,26 @@
 import { Router, Request, Response, NextFunction, response } from 'express';
-import { EnseignantControlleur } from '../core/controllers/EnseignantControlleur';
-import { TYPES } from "../core/service/Operation"
 import { NotFoundError } from '../core/errors/NotFoundError';
-import { SGBService } from '../core/service/SGBService';
-import { Cours } from '../core/model/Cours';
 import { User } from '../core/model/User';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import { UnauthorizedError } from '../core/errors/UnAuthorizedError';
+import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
+import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { Universite } from '../core/service/Universite';
+import { SGBService } from '../core/service/SGBService';
 
 
 //Le routeur permettant de gérer notre API SGA (Retourne du JSON)
 export class SgaRouteur {
     router: Router;
-    controlleur: EnseignantControlleur;  // contrôleur GRASP
-   
+    private gestionnaireCours: GestionnaireCours;
+    private gestionnaireQuestion: GestionnaireQuestion;
+
     /**
      * Initialize the Router
      */
-    constructor(enseignantControleur :EnseignantControlleur) {
-        this.controlleur = enseignantControleur;  // init contrôleur GRASP
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion) {
+        this.gestionnaireCours = gestionnaireCours;  // init contrôleur GRASP
+        this.gestionnaireQuestion = gestionnaireQuestion;
         this.router = Router();
         this.init();
     }
@@ -32,13 +34,13 @@ export class SgaRouteur {
      */
     public login(req: Request, res: Response, next: NextFunction) {
         let self = this;
-        this.controlleur.login(req.body.email, req.body.password)
+        SGBService.login(req.body.email, req.body.password)
             .then(reponse => {
                 let token = reponse.token;
                 let user: User = new User(Number.parseInt(reponse.user.id), reponse.user.last_name, reponse.user.first_name, reponse.user.email);
 
-                req.session.user = user;
-                req.session.token = token;
+                req.session["user"] = user;
+                req.session["token"] = token;
 
                 res.status(200)
                     .send({
@@ -63,23 +65,20 @@ export class SgaRouteur {
      * @param next 
      * @returns 
      */
-    public ajouterCours(req: Request, res: Response, next: NextFunction) {
+    public ajouterEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         let self = this;
         let coursSGB = JSON.parse(req.body.data);
-        self.controlleur.ajouterElement(TYPES.COURS, req.body.data, AuthorizationHelper.getCurrentToken(req))
+        self.gestionnaireCours.ajouterEspaceCours(req.body.data, AuthorizationHelper.getCurrentToken(req))
             .then(() => {
                 res.status(201)
                     .send({
                         message: 'Success',
                         status: res.status,
-                        coursInfo: {
-                            sigle: coursSGB._sigle,
-                            idCoursGroupe: coursSGB._id
-                        }
+                        idEspaceCours: coursSGB._id
                     });
             })
             .catch(error => {
@@ -94,18 +93,18 @@ export class SgaRouteur {
      * @param next 
      * @returns 
      */
-    public recupererCours(req: Request, res: Response, next: NextFunction) {
+    public recupererTousEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let value = this.controlleur.recupererElement(TYPES.COURS);
+            let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getCurrentToken(req));
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status,
-                    cours: JSON.parse(value)
+                    espaceCours: JSON.parse(value)
                 });
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -117,24 +116,20 @@ export class SgaRouteur {
      * @param next 
      * @returns 
      */
-    public recupererDetailCours(req: Request, res: Response, next: NextFunction) {
+    public recupererUnEspaceCours(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let sigleCours = req.params.sigle;
-            let idCoursGroupe: number = Number.parseInt(req.params.idCoursGroupe);
-            let coursValue = this.controlleur.recupererElementById(TYPES.COURS, sigleCours);
-            let cours = JSON.parse(coursValue);
-            //TODO Faire en sorte qu'on ne retourne pas tous le groupes dans l'objet cours 
-            //Il faudrait créer un obj dans le controlleur qui contient cours et groupe: cours juste les infos de base du cours et groupe pour le groupe courant avec les étudiants
-            //On peut ajouter un recupererElementByIdDetail 
+            let id = parseInt(req.params.id);
+            let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status,
-                    cours: { cours: cours, groupe: cours.groupeCours.find(cg => cg._id == idCoursGroupe) }
+                    espaceCours: JSON.parse(espaceCours)
                 });
         } catch (error) { this._errorCode500(error, req, res); }
 
@@ -146,9 +141,9 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let sigleCours = req.params.sigle;
-        let idCoursGroupe = req.params.idCoursGroupe;
-        if (this.controlleur.supprimerElement(TYPES.COURS, sigleCours, idCoursGroupe)) {
+        let id = parseInt(req.params.id);
+
+        if (this.gestionnaireCours.supprimerEspaceCours(id)) {
             res.status(200)
                 .send({
                     message: 'Success',
@@ -171,21 +166,19 @@ export class SgaRouteur {
   * @param res 
   * @param next 
   */
-    public recupererQuestions(req: Request, res: Response, next: NextFunction) {
+    public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let idCoursGroupe = req.params.idCoursGroupe;
-            //TODO lowkey ce n'est pas la job du routeur de faire le filtre, 
-            // mais à cause de notre du abstract Operation, il est diffile d'envoyer des paramns custom en primitif 
-            //Il faudrait que le controleur s'occupe du filtre
-            let values = this.controlleur.recupererElement(TYPES.QUESTION);
-            let questions = JSON.parse(values);
-            //On est pas tjrs obligé de faire le filtre
-            if (idCoursGroupe != undefined) {
-                questions = questions.filter((q: { _idGroupeCours: string; }) => q._idGroupeCours == idCoursGroupe);
+            let id = parseInt(req.params.id);
+            let arrayQuestion: string;
+
+            if (id != undefined) {
+                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getCurrentToken(req));
+            } else {
+                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
             }
 
             res.status(200)
@@ -193,8 +186,8 @@ export class SgaRouteur {
                     message: 'Success',
                     status: res.status,
                     data: {
-                        idCoursGroupe: idCoursGroupe,
-                        questions: questions
+                        idEspaceCours: id ?? "none",
+                        questions: JSON.parse(arrayQuestion)
                     }
                 });
 
@@ -207,19 +200,21 @@ export class SgaRouteur {
     * @param res 
     * @param next 
     */
-    public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
+    public recupererUneQuestion(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
         try {
-            let values = this.controlleur.recupererElementById(TYPES.QUESTION, req.params.id);
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idQuestion = parseInt(req.params.idQuestion);
+            let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
 
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status,
-                    question: JSON.parse(values)
+                    question: JSON.parse(question)
                 });
 
         } catch (error) { this._errorCode500(error, req, res); }
@@ -230,18 +225,17 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let self = this;
-        this.controlleur.ajouterElement(TYPES.QUESTION, JSON.stringify(req.body), AuthorizationHelper.getCurrentToken(req))
-            .then(() => {
-                res.status(201)
-                    .send({
-                        message: 'Success',
-                        status: res.status
-                    });
-            })
-            .catch(error => {
-                self._errorCode500(error, req, res);
-            });
+        try {
+            let id = parseInt(req.params.id);
+            this.gestionnaireQuestion.ajouterQuestion(id, JSON.stringify(req.body));
+
+            res.status(201)
+                .send({
+                    message: 'Success',
+                    status: res.status
+                });
+        } catch (error) { this._errorCode500(error, req, res); }
+
     }
 
     public supprimerQuestion(req: Request, res: Response, next: NextFunction) {
@@ -249,8 +243,10 @@ export class SgaRouteur {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
         }
-        let idQuestion = req.params.id;
-        if (this.controlleur.supprimerElement(TYPES.QUESTION, idQuestion)) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestion = parseInt(req.params.idQuestion);
+
+        if (this.gestionnaireQuestion.supprimerQuestion(idEspaceCours, idQuestion)) {
             res.status(200)
                 .send({
                     message: 'Success',
@@ -267,8 +263,9 @@ export class SgaRouteur {
             return;
         }
         try {
-            let idQuestion = req.params.id;
-            this.controlleur.updateElement(TYPES.QUESTION, idQuestion, JSON.stringify(req.body));
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idQuestion = parseInt(req.params.idQuestion);
+            this.gestionnaireQuestion.modifierQuestion(idEspaceCours, idQuestion, JSON.stringify(req.body));
             res.status(200)
                 .send({
                     message: 'Success',
@@ -276,7 +273,6 @@ export class SgaRouteur {
                 });
         } catch (error) { this._errorCode500(error, req, res); }
     }
-
 
     //#endregion Gestion Questions
 
@@ -299,18 +295,17 @@ export class SgaRouteur {
         this.router.post('/login', this.login.bind(this));
 
         //Cours
-        this.router.get('/enseignant/cours', this.recupererCours.bind(this));
-        this.router.post('/enseignant/cours/ajouter', this.ajouterCours.bind(this)); 
-        this.router.get('/enseignant/cours/detail/:sigle/:idCoursGroupe', this.recupererDetailCours.bind(this)); 
-        this.router.get('/enseignant/cours/supprimer/:sigle/:idCoursGroupe', this.supprimerCours.bind(this));
+        this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
+        this.router.post('/enseignant/cours/ajouter', this.ajouterEspaceCours.bind(this));
+        this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
+        this.router.delete('/enseignant/cours/supprimer/:id', this.supprimerCours.bind(this));
 
         //Question
-        this.router.get('/enseignant/question/', this.recupererQuestions.bind(this));
-        this.router.get('/enseignant/question/groupe/:idCoursGroupe', this.recupererQuestions.bind(this));
-        this.router.post('/enseignant/question/groupe/:idCoursGroupe/ajouter', this.ajouterQuestion.bind(this));
-        this.router.get('/enseignant/question/detail/:id', this.recupererQuestionsParId.bind(this));
-        this.router.post('/enseignant/question/modifier/:id', this.modifierQuestion.bind(this));
-        this.router.get('/enseignant/question/supprimer/:id', this.supprimerQuestion.bind(this));
-
+        this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
+        this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
+        this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
+        this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
+        this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
+        this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
     }
 }

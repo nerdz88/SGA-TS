@@ -5,18 +5,14 @@ skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
-class Opération {
-
-}
-
-class OpérationCours
-
+'class GestionnaireCours'
+'class GestionnaireQuestion'
 class Cours {
-    id : String
     nom : String
 }
 
-class GroupeCours {
+class EspaceCours {
+    id : int
     numeroGroupe : int
 }
 
@@ -24,7 +20,7 @@ class Enseignant {
     token : String
 }
 
-class Sga {
+class Université {
 
 }
 
@@ -44,18 +40,15 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-Enseignant "*"-- "1" Sga : utilise >
-
-Sga "1" -- "*" Opération : execute >
-OpérationQuestion --|> Opération
-OpérationCours --|> Opération
-
-OpérationCours "1"-- "1"Cours : opere sur >
-Cours "1"-- "*"GroupeCours : contient >
-GroupeCours"1" -- "*"Question : contient >
-
-OpérationQuestion "1"-- "1"Question : opere sur >
-GroupeCours "1"-- "*"Etudiant : contient >
-
-Question "1" -- "*"Tag : < categorise
+Enseignant "1"--"1..*" EspaceCours : enseigne >
+Université "1"--"*" Enseignant : est-employé-de <
+Cours "1"-- "1" EspaceCours : décrit >
+Université "1"-up-"*" Cours : contient >
+EspaceCours "1"-- "*"Etudiant : est_suivi_par >
+Question "1" -- "*"Tag : < catégorise
+'GestionnaireCours "1"--"1" Université : gère >'
+Université "1"--"*" EspaceCours : contient >
+Université "1"--"*" Etudiant : est-inscrit-à <
+'GestionnaireQuestion "1"--"1" Université : gère >'
+Question "*"-up-"1" EspaceCours : contient <
 @enduml

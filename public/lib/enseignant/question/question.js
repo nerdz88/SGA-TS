@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
     $(".btn-delete-question").on("click", function () {
         var nomQuestion = $(this).data("nom");
         var idQuestion = $(this).data("idQuestion");
-        var idCoursGroupe = $(this).data("idCoursgroupe");
+        var idEspaceCours = $(this).data("idEspaceCours");
         $.confirm({
             title: 'Confirmation',
             backgroundDismiss: true,
@@ -13,10 +13,10 @@ window.addEventListener("load", function () {
             buttons: {
                 confirm: function () {
                     $.ajax({
-                        type: 'GET',
-                        url: '/api/v1/enseignant/question/supprimer/' + idQuestion,
+                        type: "DELETE",
+                        url: "/api/v1/enseignant/question/supprimer/" + idEspaceCours  + "/" + idQuestion,
                         success: function () {
-                            var endpoint = "/enseignant/question" + (idCoursGroupe ? "/groupe/" + idCoursGroupe : "");
+                            var endpoint = "/enseignant/question" + (idEspaceCours ? "/" + idEspaceCours : "");
                             window.location.href = endpoint;
                         },
                         error: function () {

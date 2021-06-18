@@ -4,8 +4,8 @@ hide footbox
 actor ":Enseignant" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererTousCoursSga(token : String)
+professeur ->  systeme : recupererTousCours(token : String)
 professeur <-- systeme : liste de cours de l'enseignant
-professeur -> systeme : recupererUnCoursSga(token : String, idCours : String)
+professeur -> systeme : recupererUnCours(token : String, idCours : String)
 professeur <-- systeme : information du cours et affiche la liste des étudiants inscrits.
 @enduml

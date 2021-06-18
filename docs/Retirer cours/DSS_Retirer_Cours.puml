@@ -4,9 +4,9 @@ hide footbox
 actor ":Enseignant" as prof
 participant ":Systeme" as sys
 
-prof->  sys : recupererTousCoursSga(token : String)
+prof->  sys : recupererTousCours(token : String)
 sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
-prof -> sys : recupererUnCoursSga(token : String, idCours : String)
+prof -> sys : recupererUnCours(token : String, idCours : String)
 sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant
 prof -> sys : retirerCours(token : String, sigleCours : String, idGroupeCours : int)
 sys --> prof : demande de confirmation

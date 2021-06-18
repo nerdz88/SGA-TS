@@ -1,6 +1,8 @@
 export class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
-    private _idGroupeCours: number
+ 
+    private _id: number;
+    private _idEspaceCours: number
     private _tags: []
     private _nom: string
     private _descriptionQuestion: string
@@ -8,20 +10,22 @@ export class Question {
     private _descriptionReponse: string
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
-    private id: number;
-    constructor(idGroupeCours: number, tags: [], nom: string, descriptionQuestion: string,
-        reponse: boolean, descriptionReponse: string, texteMauvaiseReponse: string) {
-        this._idGroupeCours = idGroupeCours;
-        this._tags = tags;
-        this._nom = nom;
-        this._descriptionQuestion = descriptionQuestion;
-        this._reponse = reponse;
-        this._descriptionReponse = descriptionReponse
-        this._mauvaiseReponseDescription = texteMauvaiseReponse;
-        this.id = ++Question.currentId;
+   
+
+    constructor(questionJson: string) {   
+        let values = JSON.parse(questionJson);         
+        this._idEspaceCours = values.idEspaceCours;
+        this._tags = values.tags.split(",");
+        this._nom = values.nom;
+        this._descriptionQuestion = values.description;
+        this._reponse = values.reponse;
+        this._descriptionReponse = values.descriptionReponse
+        this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
+        this._id = ++Question.currentId;
     }
 
-    public update(values: any) {
+    public modifier(questionJson: string) {
+        let values = JSON.parse(questionJson);         
         this._tags = values.tags.split(",");
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
@@ -30,11 +34,11 @@ export class Question {
         this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
     }
 
-    public getGroupeCoursID() {
-        return this._idGroupeCours;
+    public getIdEspaceCours() {
+        return this._idEspaceCours;
     }
     public getId() {
-        return this.id;
+        return this._id;
     }
     public getNom() {
         return this._nom;
