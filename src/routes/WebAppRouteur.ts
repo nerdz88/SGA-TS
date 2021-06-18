@@ -132,15 +132,17 @@ export class WebAppRouteur {
             return;
         }
         try {
-            let id = parseInt(req.params.id);
+            let espaceCours = "{}";
             let arrayQuestion: string;
 
-            if (id != undefined) {
+            if (req.params.id == undefined) {
                 arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getCurrentToken(req));
             } else {
+                let id = parseInt(req.params.id);
                 arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
+                espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
             }
-            res.render("enseignant/question/liste-question", { questions: JSON.parse(arrayQuestion), idEspaceCours: id });
+            res.render("enseignant/question/liste-question", { questions: JSON.parse(arrayQuestion), espaceCours: JSON.parse(espaceCours) });
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
@@ -152,7 +154,7 @@ export class WebAppRouteur {
         try {
             let idEspaceCours = parseInt(req.params.idEspaceCours);
             let idQuestion = parseInt(req.params.idQuestion);
-            let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);          
+            let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
             res.render("enseignant/question/detail-question", { question: JSON.parse(question) });
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -188,7 +190,7 @@ export class WebAppRouteur {
         }
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
-        let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);   
+        let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
         res.render("enseignant/question/ajouter-modifier-question",
             {
                 idEspaceCours: idEspaceCours,
@@ -230,7 +232,7 @@ export class WebAppRouteur {
 
         //Questions
         this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
-        this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));        
+        this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
         this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
         this.router.get('/enseignant/question/ajouter/:id', this.recupererAjouterQuestion.bind(this));
         this.router.get('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.recupererModifierQuestion.bind(this));

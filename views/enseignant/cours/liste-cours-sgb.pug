@@ -11,10 +11,9 @@ block content
             div.card
               div.card-content
                 div.card-title
-                  div
-                    strong #{unCours._sigle}          
-                  div #{unCours._titre}                
-                  div Gr: #{unCours._groupe}            
+                  div.text-bold #{unCours._sigle}                     
+                div #{unCours._titre}                
+                div Gr: #{unCours._groupe}            
               div.card-action
                 form.center-align.form-ajouter-cours.no-margin(id=unCours._id) 
                   input.coursData(name="data", type="hidden", value=unCours)

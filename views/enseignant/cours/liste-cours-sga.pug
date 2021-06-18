@@ -5,7 +5,9 @@ block content
   +btn-back("Vos Espaces Cours", "/")  
   div.row
     div.col.s10.offset-s1   
-      a(class="waves-effect waves-light btn btn-ajouter-cours" href='/enseignant/cours/ajouter') Ajouter
+      div.row
+          div.col.s12
+            a(class="waves-effect waves-light btn btn-ajouter-cours" href='/enseignant/cours/ajouter') Ajouter
 
       div.section
         div.row
@@ -14,10 +16,9 @@ block content
               div.card
                 div.card-content
                   div.card-title
-                    div
-                      strong #{espace._cours._sigle}          
-                    div #{espace._cours._titre}                
-                    div Gr: #{espace._numero}            
+                    div.text-bold #{espace._cours._sigle}       
+                  div #{espace._cours._titre}                
+                  div Gr: #{espace._numero}            
                 div.card-action
                   a(class="btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
                   a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions 
@@ -26,7 +27,7 @@ block content
                     data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero
                     ) Supprimer 
           else
-            div.col.l12
+            div.col.s12
               em Vous n'avez pas de cours
 
   //- End bloc content
