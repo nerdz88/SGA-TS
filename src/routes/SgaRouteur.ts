@@ -27,7 +27,7 @@ export class SgaRouteur {
 
 
     /**
-     * Methode du login qui redirige vers la bonne page
+     * Methode du login 
      * @param req 
      * @param res 
      * @param next 
@@ -54,6 +54,30 @@ export class SgaRouteur {
             })
             .catch(error => self._errorCode500(error, req, res));
     }
+
+
+    /**
+     * Methode du logout 
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    public logout(req: Request, res: Response, next: NextFunction) {
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            this._errorCode500(new UnauthorizedError(), req, res);
+            return;
+        }
+        var codeStatus = 200;
+        req.session.destroy(() => {
+            codeStatus = 400;
+        });
+        
+        res.status(codeStatus)
+        .send({           
+            status: res.status,
+        });
+    }
+
 
 
     //#region Gestion Cours
@@ -293,6 +317,7 @@ export class SgaRouteur {
     init() {
         //Login
         this.router.post('/login', this.login.bind(this));
+        this.router.get('/logout', this.logout.bind(this));
 
         //Cours
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));

@@ -15,6 +15,15 @@ footer {
   text-align: center;
 }
 
+.no-margin {
+  margin: 0;
+}
+
+.material-icons.inline {
+  display: inline-flex;
+  vertical-align: top;
+}
+
 /* 
 #main {
   display: flex;

@@ -1,106 +1,78 @@
-doctype html
-title SGA
-meta(name='viewport' content='width=device-width, initial-scale=1')
-link(rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css')
-link(rel='stylesheet' href='https://www.w3schools.com/lib/w3-theme-teal.css')
-link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto')
-link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
-link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" 
-    integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" 
-    crossorigin="anonymous" 
-    referrerpolicy="no-referrer")
-link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css")
-link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", integrity="undefined", crossorigin="anonymous")
-link(rel='stylesheet' href='/css/style.css')
-style.
-  body {font-family: "Roboto", sans-serif}
-  .w3-bar-block .w3-bar-item {
-  padding: 16px;
-  font-weight: bold;
-  }
-nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-animate-left.w3-card(style='z-index:3;width:250px;')
-  a.w3-bar-item.w3-button.w3-border-bottom.w3-large(href='/')
-    img(src='https://cdn.discordapp.com/attachments/844661456452190243/847303809558773851/unknown.png' style='width:100%;')
-  a.w3-bar-item.w3-button.w3-hide-large.w3-large(href='javascript:void(0)' onclick='w3_close()')
-    | Close 
-    i.fa.fa-remove
-  //- L'image est déjà un lien vers home
-  //- a.w3-bar-item.w3-button.w3-teal(type="button" id="accueil") Accueil
-  a.w3-bar-item.w3-button(href='/enseignant/cours') Mes Cours
-  //- a.w3-bar-item.w3-button(href='/enseignant/cours/ajouter') Ajouter Cours
-  a.w3-bar-item.w3-button(href='/enseignant/question') Mes Questions
-  //- a.w3-bar-item.w3-button(href='/enseignant/question/ajouter') Ajouter Questions
-  //- div
-  //-   a.w3-bar-item.w3-button(onclick="myAccordion('demo')" href='javascript:void(0)')
-  //-     | Dropdown 
-  //-     i.fa.fa-caret-down
-  //-   #demo.w3-hide
-  //-     a.w3-bar-item.w3-button(href='#') Link
-  //-     a.w3-bar-item.w3-button(href='#') Link
-  //-     a.w3-bar-item.w3-button(href='#') Link
-#myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick='w3_close()' style='cursor:pointer')
-.w3-main(style='margin-left:250px;')
-  #myTop.w3-container.w3-top.w3-theme.w3-large
-    p
-      i.fa.fa-bars.w3-button.w3-teal.w3-hide-large.w3-xlarge(onclick='w3_open()')
-      span#myIntro.w3-hide SGA : Premiere iteration
-  header.w3-container.w3-theme(style='padding:64px 32px')
-    h1.w3-xxxlarge Systeme de Gestion des Apprentissages
 
-  //- Début du contenu
-  div.container
-    div.row
-      div.col-md
-        block content
-          //- Placeholder si la page n'est pas de contenu
-          h1 Pas encore de contenu 
+html
+  head
+    title SGA
+    meta(name='viewport' content='width=device-width, initial-scale=1')
 
-  footer.w3-container.w3-theme(style='padding:32px')
-    p Tous droits réservés, équipe 3, les champions !
-script.
-  // Open and close the sidebar on medium and small screens
-  function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-  }
-  function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-  }
-  // Change style of top container on scroll
-  window.onscroll = function() {myFunction()};
-  function myFunction() {
-  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-  document.getElementById("myTop").classList.add("w3-card-4", "w3-animate-opacity");
-  document.getElementById("myIntro").classList.add("w3-show-inline-block");
-  } else {
-  document.getElementById("myIntro").classList.remove("w3-show-inline-block");
-  document.getElementById("myTop").classList.remove("w3-card-4", "w3-animate-opacity");
-  }
-  }
-  // Accordions
-  function myAccordion(id) {
-  var x = document.getElementById(id);
-  if (x.className.indexOf("w3-show") == -1) {
-  x.className += " w3-show";
-  x.previousElementSibling.className += " w3-theme";
-  } else {
-  x.className = x.className.replace("w3-show", "");
-  x.previousElementSibling.className =
-  x.previousElementSibling.className.replace(" w3-theme", "");
-  }
-  }
+    link(rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" )
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css" 
+        integrity="sha512-8D+M+7Y6jVsEa7RD6Kv/Z7EImSpNpQllgaEIQAtqHcI0H6F4iZknRj0Nx1DCdB+TwBaS+702BGWYC0Ze2hpExQ==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" 
+        integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer")
+    link(rel='stylesheet' href='/css/style.css')
 
-script(src="https://code.jquery.com/jquery-3.6.0.min.js" 
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
-  crossorigin="anonymous")
-//- https://kamranahmed.info/toast?utm_source=cdnjs&utm_medium=cdnjs_link&utm_campaign=cdnjs_library
-script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" 
-  integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" 
-  crossorigin="anonymous" 
-  referrerpolicy="no-referrer")
-link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css", integrity="undefined", crossorigin="anonymous")
-script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js")
-script(type="text/javascript" src="/lib/main.js")
+  //- Début body 
+  body.grey.lighten-5
+    //- Début navbar
+    header      
+      nav.grey.darken-2
+        div.nav-wrapper
+          div.container
+            div.row
+              div.col.s12 
+               a(href="/" class="brand-logo center") SGA
+                ul#nav-mobile(class="left hide-on-med-and-down")
+                  //- li
+                  //-   a(href="/") Home
+                      //-img(src='https://cdn.discordapp.com/attachments/844661456452190243/847303809558773851/unknown.png' style='width:7%;')
+                  li
+                    a(href="/enseignant/cours") Cours
+                  li
+                    a(href="/enseignant/question") Questions 
 
-block more-script
+                ul#nav-mobile(class="right hide-on-med-and-down")
+                  li
+                    a.btn-logout Logout
+
+    //- Fin navbar
+
+    include util
+    //- Début du contenu
+    main
+      div.container
+        div.row
+          div.col.s12
+            block content
+              //- Placeholder si la page n'est pas de contenu
+              h1 Pas encore de contenu 
+    
+
+    //- Début footer
+    footer.page-footer.grey.darken-2
+        div.footer-copyright.grey.darken-3
+          div.container
+            |© 2021 - E2021 - LOG210-01 - Lab1 Équipe 03
+
+
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js" 
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+          crossorigin="anonymous")
+    //- https://kamranahmed.info/toast?utm_source=cdnjs&utm_medium=cdnjs_link&utm_campaign=cdnjs_library
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" 
+          integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" 
+          integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer")
+    script(type="text/javascript" src="/lib/main.js")
+
+    block more-script
+  //- Fin body

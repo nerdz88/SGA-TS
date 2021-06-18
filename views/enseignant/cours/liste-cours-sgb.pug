@@ -2,17 +2,25 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-  h1 Groupes-cours   
-  ul.entries
-    each unCours in cours
-      li         
-        form.form-ajouter-cours(id=unCours._id) 
-          strong #{unCours._sigle} - #{unCours._titre} - Gr: #{unCours._groupe} 
-          input.coursData(name="data", type="hidden", value=unCours)
-          button.btn(type="submit") Ajouter
-    else
-      li
-        em Vous n'avez pas de groupes-cours
+  +btn-back("Groupes-cours", "/enseignant/cours")   
+  div.row
+    div.col.s10.offset-s1   
+      div.row
+        each unCours in cours   
+          div.col.s12.l5
+            div.card
+              div.card-content
+                div.card-title
+                  div
+                    strong #{unCours._sigle}          
+                  div #{unCours._titre}                
+                  div Gr: #{unCours._groupe}            
+              div.card-action
+                form.center-align.form-ajouter-cours.no-margin(id=unCours._id) 
+                  input.coursData(name="data", type="hidden", value=unCours)
+                  a(class="btn-submit-form" href="javascript:void(0)") Ajouter
+        else      
+          em Vous n'avez pas de groupes-cours
 
   //- End bloc content
 

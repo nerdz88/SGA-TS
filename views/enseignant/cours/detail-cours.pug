@@ -2,28 +2,45 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-  h1 #{espaceCours._cours._sigle} - #{espaceCours._cours._titre} - Gr: #{espaceCours._numero} 
-  ul.entries 
-    li Nb étudiant Max: #{espaceCours._cours._nbMaxEtudiant} 
-    li Date début: #{espaceCours._dateDebut}
-    li Date fin: #{espaceCours._dateFin}
+  +btn-back("Espace Cours", "/enseignant/cours")
+  div.row
+    div.col.s10.offset-s1     
+      h4 #{espaceCours._cours._sigle} - #{espaceCours._cours._titre} - Gr: #{espaceCours._numero} 
+      div.row.no-margin
+        div.col.s12
+          ul.entries 
+            li Nb étudiant Max: #{espaceCours._cours._nbMaxEtudiant} 
+            li Date début: #{espaceCours._dateDebut}
+            li Date fin: #{espaceCours._dateFin}
 
-  h1 Liste des étudiants  
-  ul.entries
-    each unEtudiant in espaceCours._etudiants
-      li       
-        strong #{unEtudiant._nom} #{unEtudiant._prenom} 
-        | : #{unEtudiant._email} - #{unEtudiant._code_permanent}
-    else
-      li
-        em Pas d'étudiants dans le cours
+      h5 Étudiants
+      div.row
+        div.col.s12.l6
+          if espaceCours._etudiants.length > 0
+            table.bordered.highlight
+              thead 
+                tr  
+                  th.data-field Nom 
+                  th.data-field Prénom 
+                  th.data-field Email 
+                  th.data-field Code permanent 
+              tbody 
+                each unEtudiant in espaceCours._etudiants        
+                  tr 
+                    td #{unEtudiant._nom}
+                    td #{unEtudiant._prenom} 
+                    td #{unEtudiant._email} 
+                    td #{unEtudiant._code_permanent}
+          else
+            em Pas d'étudiants dans le cours
 
-
-  
-  a(class="btn btn-delete-cours" href="javascript:void(0)" 
-    data-id-espace-cours=espaceCours._id
-    data-titre-espace-cours=espaceCours._cours._sigle + "-" + espaceCours._cours._titre + "- Gr :" + espaceCours._numero
-    ) Supprimer 
+      div.section
+        div.row
+          div.col.l12
+            a(class="waves-effect waves-light btn red btn-delete-cours" href="javascript:void(0)" 
+              data-id-espace-cours=espaceCours._id
+              data-titre-espace-cours=espaceCours._cours._sigle + "-" + espaceCours._cours._titre + "- Gr :" + espaceCours._numero
+              ) Supprimer 
   //- End bloc content
 
 block more-script
