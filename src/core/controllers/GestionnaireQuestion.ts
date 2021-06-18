@@ -13,14 +13,17 @@ export class GestionnaireQuestion {
         espaceCours.ajouterQuestion(jsonString);
     }
 
-    public modifierQuestion(idEspaceCours: number,IdQuestion: number, jsonString: string) {
+    public modifierQuestion(idEspaceCours: number, IdQuestion: number, jsonString: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         espaceCours.modifierQuestion(IdQuestion, jsonString);
     }
 
     public recupererToutesQuestions(token: string): string {
-        let arrayEspaceCours = this.universite.recupererTousEspaceCours(token);
-        return JSON.stringify(arrayEspaceCours.map(ec => ec.recupererToutesQuestions()));
+        let arrayEspaceCours = this.universite.recupererTousEspaceCours(token)
+        return JSON.stringify(arrayEspaceCours.flatMap(ec => {
+            let questions = ec.recupererToutesQuestions();
+            return questions.length > 0 ? questions : []
+        }));
     }
 
     public recupererToutesQuestionsEspaceCours(idEspaceCours: number): string {

@@ -2,40 +2,40 @@ extends ../../commun/master-template.pug
 
 block content
     //- Start bloc content
-    h1 #{estModifiable ? "Modifier une question" : "Ajouter une question"}  
-    if !estModifiable 
-        a(class="btn btn-terminer-ajout" href="/enseignant/question/groupe/" + idCoursGroupe) Terminer l'ajout
+    h1 #{estModification ? "Modifier une question" : "Ajouter une question"}  
+    if !estModification 
+        a(class="btn btn-terminer-ajout" href="/enseignant/question/" + idEspaceCours) Terminer l'ajout
 
     form.form-ajouter-question(id="form-ajouter-question") 
         //- Début Form 
-        input(type="hidden"  name="idCoursGroupe", value=idCoursGroupe)   
-        input(type="hidden"  name="estModifiable", value=estModifiable.toString())   
-        input(type="hidden"  name="idQuestion", value=estModifiable ? question.id : "")  
+        input(type="hidden"  name="idEspaceCours", value=idEspaceCours)   
+        input(type="hidden"  name="estModification", value=estModification.toString())   
+        input(type="hidden"  name="idQuestion", value=estModification ? question._id : "")  
         h3 Question: 
         ul.entries 
             li Nom: 
                 br
-                input(type="text" name="nom" value=estModifiable ? question._nom : "")
+                input(type="text" name="nom" value=estModification ? question._nom : "")
             li Tag (Séparer par des ","): 
                 br
-                input(type="text" name="tags" value=estModifiable ? question._tag : "")
+                input(type="text" name="tags" value=estModification ? question._tags.join(",") : "")
             li Description:
                 br
-                textarea(rows="4" cols="25" name="description") #{estModifiable ? question._descriptionQuestion : ""}
+                textarea(rows="4" cols="25" name="description") #{estModification ? question._descriptionQuestion : ""}
             li Réponse:
                 br 
-                input(class="rd-reponse" type="radio" name="response" value="true" checked=estModifiable && question._reponse) 
+                input(class="rd-reponse" type="radio" name="response" value="true" checked=estModification && question._reponse) 
                 |  Vrai
-                input(class="rd-reponse" type="radio" name="response" value="false" checked=estModifiable && !question._reponse)
+                input(class="rd-reponse" type="radio" name="response" value="false" checked=estModification && !question._reponse)
                 |   Faux 
             li Description bonne réponse:
                 br
-                textarea(rows="4" cols="25" name="descriptionReponse") #{estModifiable ? question._descriptionReponse : ""}              
+                textarea(rows="4" cols="25" name="descriptionReponse") #{estModification ? question._descriptionReponse : ""}              
             li Description mauvaise réponse: 
                 br
-                textarea(rows="4" cols="25" name="descriptionMauvaiseReponse") #{estModifiable ? question._mauvaiseReponseDescription : ""}
+                textarea(rows="4" cols="25" name="descriptionMauvaiseReponse") #{estModification ? question._mauvaiseReponseDescription : ""}
 
-        button.btn(type="submit") #{estModifiable ? "Modifier" : "Ajouter"} 
+        button.btn(type="submit") #{estModification ? "Modifier" : "Ajouter"} 
         //- Fin form
 
     //- End bloc content

@@ -200,7 +200,7 @@ export class SgaRouteur {
     * @param res 
     * @param next 
     */
-    public recupererQuestionsParId(req: Request, res: Response, next: NextFunction) {
+    public recupererUneQuestion(req: Request, res: Response, next: NextFunction) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -208,13 +208,13 @@ export class SgaRouteur {
         try {
             let idEspaceCours = parseInt(req.params.idEspaceCours);
             let idQuestion = parseInt(req.params.idQuestion);
-            let values = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
+            let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
 
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status,
-                    question: JSON.parse(values)
+                    question: JSON.parse(question)
                 });
 
         } catch (error) { this._errorCode500(error, req, res); }
@@ -303,8 +303,8 @@ export class SgaRouteur {
         //Question
         this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
         this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
+        this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
         this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
-        this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererQuestionsParId.bind(this));
         this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
         this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
     }

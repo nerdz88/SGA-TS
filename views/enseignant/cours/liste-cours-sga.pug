@@ -9,7 +9,7 @@ block content
       li         
         strong #{espace._cours._sigle} - #{espace._cours._titre} - Gr: #{espace._numero}       
         a(class="btn btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
-        a(class="btn btn-question-cours" href="/enseignant/question/groupe/" + espace._id) Questions 
+        a(class="btn btn-question-cours" href="/enseignant/question/" + espace._id) Questions 
         a(class="btn btn-delete-cours" href="javascript:void(0)" 
             data-id-espace-cours=espace._id
             data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero

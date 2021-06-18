@@ -1,3 +1,4 @@
+import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "./Cours";
 import { Etudiant } from "./Etudiant";
@@ -29,9 +30,11 @@ export class EspaceCours {
         })
     }
 
-    public ajouterQuestion(questionJson: string) {
-        let q = new Question(questionJson)
-        this._questions.push(q);
+    public ajouterQuestion(questionJson: string) {       
+        let newQuestion = new Question(questionJson)
+        if(this._questions.find(q => q.getNom() == newQuestion.getNom()))
+            throw new AlreadyExistsError("la question " + newQuestion.getNom() + " existe déjà")
+        this._questions.push(newQuestion);
     }
 
     public modifierQuestion(idQuestion: number, questionJson: string) {

@@ -21,7 +21,9 @@ export class Universite {
     //     cours._date_debut, cours._date_fin, token);
 
     public async ajouterEspaceCours(coursSGB: any, token: string) {
-        //get étudiant
+        if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
+            throw new NotFoundError("L'espace cours " + coursSGB._id + " existe déjà");
+        }
 
         let cours = this.getCoursBySigle(coursSGB._sigle);
         if (cours == undefined) {
@@ -29,10 +31,7 @@ export class Universite {
             cours = this.getCoursBySigle(coursSGB._sigle);
         }
 
-        if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
-            throw new NotFoundError("L'espace cours " + coursSGB._id + " existe déjà");
-        }
-        let etudiants = await SGBService.recupererEtudiant("etudiant", coursSGB._id, token);
+        let etudiants = await SGBService.recupererEtudiant(token, coursSGB._id);
         let espaceCours = new EspaceCours(coursSGB._id,
             coursSGB._groupe,
             coursSGB._date_debut,
@@ -40,10 +39,9 @@ export class Universite {
             cours);
         espaceCours.ajouterEtudiants(etudiants);
         this.arrayEspaceCours.push(espaceCours);
-
     }
 
-    
+
 
     // public ajouterCours(etudiants: any, idGroupeCours: number, numeroGroupe: string, sigle: string, titre: string, nbMaxEtudiant: number, dateDebut: string, dateFin: string, token?: string) {
     //     let index = this.getIndexCoursBySigle(sigle);
@@ -69,11 +67,11 @@ export class Universite {
 
     public recupererTousEspaceCours(token: string): EspaceCours[] {
         //TODO filtrer selon le token
-        return this.arrayEspaceCours;        
+        return this.arrayEspaceCours;
     }
 
 
-    public supprimerEspaceCours(id: number) : boolean{
+    public supprimerEspaceCours(id: number): boolean {
         let index = this.getIndexEspaceCoursById(id);
         if (index == -1) {
             return false;

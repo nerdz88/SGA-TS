@@ -1,6 +1,8 @@
 export class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
-    private _idGroupeCours: number
+ 
+    private _id: number;
+    private _idEspaceCours: number
     private _tags: []
     private _nom: string
     private _descriptionQuestion: string
@@ -8,17 +10,18 @@ export class Question {
     private _descriptionReponse: string
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
-    private id: number;
+   
+
     constructor(questionJson: string) {   
-        let question = JSON.parse(questionJson);         
-        this._idGroupeCours = question.idGroupeCours;
-        this._tags = question.tags.split(",");
-        this._nom = question.nom;
-        this._descriptionQuestion = question.descriptionQuestion;
-        this._reponse = question.reponse;
-        this._descriptionReponse = question.descriptionReponse
-        this._mauvaiseReponseDescription = question.texteMauvaiseReponse;
-        this.id = ++Question.currentId;
+        let values = JSON.parse(questionJson);         
+        this._idEspaceCours = values.idEspaceCours;
+        this._tags = values.tags.split(",");
+        this._nom = values.nom;
+        this._descriptionQuestion = values.description;
+        this._reponse = values.reponse;
+        this._descriptionReponse = values.descriptionReponse
+        this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
+        this._id = ++Question.currentId;
     }
 
     public modifier(questionJson: string) {
@@ -31,11 +34,11 @@ export class Question {
         this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
     }
 
-    public getGroupeCoursID() {
-        return this._idGroupeCours;
+    public getIdEspaceCours() {
+        return this._idEspaceCours;
     }
     public getId() {
-        return this.id;
+        return this._id;
     }
     public getNom() {
         return this._nom;

@@ -6,36 +6,36 @@ window.addEventListener("load", function () {
         //On veut envoyer le formulaire!
         e.preventDefault();
         var form = this;
-        var estModifiable = $(form).find('input[name="estModifiable"]').val() == "true";
-        var idCoursGroupe = $(form).find('input[name="idCoursGroupe"]').val();
+        var estModification = $(form).find('input[name="estModification"]').val() == "true";
         var idQuestion = $(form).find('input[name="idQuestion"]').val();
-        var endPoint = estModifiable ? "/api/v1/enseignant/question/modifier/" + idQuestion
-            : "/api/v1/enseignant/question/groupe/" + idCoursGroupe + "/ajouter"
+        var idEspaceCours = $(form).find('input[name="idEspaceCours"]').val();
+        var endPoint = estModification ? "/api/v1/enseignant/question/modifier/" + idEspaceCours + "/" + idQuestion
+            : "/api/v1/enseignant/question/ajouter/" + idEspaceCours 
 
         console.log("Envoyer formulaire - Ajax - Ajouter/Modifier Question");
-        envoyerFormulaireAjax(form, estModifiable, idCoursGroupe, endPoint);
+        envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint);
     });
     console.log("ajouter-question.js => Page Load");
 });
 
-function envoyerFormulaireAjax(form, estModifiable, idCoursGroupe, endPoint) {
+function envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint) {
     $.ajax({
         type: "POST",
         url: endPoint,
         data: $(form).serialize(),
         success: function () {
             console.log("Ajouter-Modifier Question - OK");
-            if (estModifiable) {
-                window.location.href = "/enseignant/question/groupe/" + idCoursGroupe;
+            if (estModification) {
+                window.location.href = "/enseignant/question/" + idEspaceCours;
             }
             else {
-                $(form)[0].reset();                
-                showSuccessToast("Succès", estModifiable ? "La question a bien été modifier" : "La question a bien été ajouté");
+                $(form)[0].reset();
+                showSuccessToast("Succès", estModification ? "La question a bien été modifier" : "La question a bien été ajouté");
             }
         },
         error: function () {
             console.log("Ajouter Question - KO");
-            showErrorToast("Erreur", estModifiable ? "La question n'a pas bien été modifier" : "La question n'a pas été ajouté");
+            showErrorToast("Erreur", estModification ? "La question n'a pas bien été modifier" : "La question n'a pas été ajouté");
         }
     });
 }
