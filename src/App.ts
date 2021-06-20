@@ -12,6 +12,7 @@ import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
 import { GestionnaireCours } from './core/controllers/GestionnaireCours';
 
 
+export const universite: Universite = new Universite();
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -44,8 +45,7 @@ class App {
   }
 
   // Configure API endpoints.
-  private routes(): void {
-    let universite =new Universite();
+  private routes(): void {   
     let gestionaireCours = new GestionnaireCours(universite);
     let gestionnaireQuestion = new GestionnaireQuestion(universite);
     //Les routes d'API

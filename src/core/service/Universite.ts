@@ -16,13 +16,16 @@ export class Universite {
         this.arrayCours = new Array();
     }
 
-    // this.universite.ajouterCours(etudiants.data, cours._id, cours._groupe, cours._sigle,
-    //     cours._titre, cours._nb_max_student,
-    //     cours._date_debut, cours._date_fin, token);
+    //Reset pour les tests
+    public reset(){
+        this.arrayEspaceCours = new Array();
+        this.arrayCours = new Array();
+    }
+
 
     public async ajouterEspaceCours(coursSGB: any, token: string) {
         if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
-            throw new NotFoundError("L'espace cours " + coursSGB._id + " existe déjà");
+            throw new AlreadyExistsError("L'espace cours " + coursSGB._id + " existe déjà");
         }
 
         let cours = this.getCoursBySigle(coursSGB._sigle);
