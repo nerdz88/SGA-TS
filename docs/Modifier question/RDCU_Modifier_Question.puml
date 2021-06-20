@@ -1,25 +1,14 @@
-@startuml modifierQuestionOld
-skinparam style strictuml
-skinparam defaultfontname Verdana
-title RDCU pour modifier une question d'un enseignant
-participant ":EnseignantControleur" as controleur
-participant "operationQuestion : OperationQuestion" as opQuestion
-->controleur : q=recupereUneQuestion(idQuestion,token)
-note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur->opQuestion : q=recupererUneQuestion(idQuestion,token)
-note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
-->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
-controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
-@enduml
-
 @startuml modifierQuestionFinal
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU modifierUneQuestion
-participant ":EnseignantControleur" as controleur
-participant "operationQuestion : OperationQuestion" as opQuestion
-->controleur : detailQuestion = modifierUneQuestion(\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
-note right :  selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la seconde opération système)
-controleur -> opQuestion : detailQuestion = modifierQuestion(idQuestion,\ntags,\nnom,\ntexteQuestion,\nreponse,\ntexteBonneReponse,\ntexteMauvaiseReponse)
-note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
+participant ":GestionnaireQuestion" as gestionQ
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+-> gestionQ : modifierQuestion(idEspaceCours,\nIdQuestion, tags,\nnom, texteQuestion,\nreponse, texteBonneReponse,\ntexteMauvaiseReponse)
+note left : Selon controlleur, reçoit\nl'opération système
+gestionQ -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionQ -> cours : modifierQuestion(IdQuestion,\ntags, nom, texteQuestion,\nreponse, texteBonneReponse,\ntexteMauvaiseReponse)
+note left : Selon expert, espaceCours a toutes les\ninformations pour recupererToutesQuestions
 @enduml

@@ -1,23 +1,24 @@
 @startuml récupérer tous les cours créés
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour récupérer tous les cours créés d'un enseignant
+title RDCU pour récupérer tous les espaceCours créés d'un enseignant
 participant ":GestionnaireCours" as controleur
 participant "universite : Universite" as mapCours
 
-->controleur : cours = recupererTousCours(token)
-note left : Selon fabrication pure : GestionnaireCours\nne represente pas un problème du domaine,\nmais permet de réduire le couplage et d'augmenter la cohésion
-controleur -> mapCours : cours = recupererTousCours(token)
-note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousCours
+->controleur : espacesCours = recupererTousEspaceCours(token)
+note right : Selon Contôleur,\nreçoit l'opération système
+controleur -> mapCours : espacesCours = recupererTousEspaceCours(token)
+note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousEspaceCours
 @enduml
 
 @startuml récupérer un cours
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour récupérer un cours créé d'un enseignant
+title RDCU pour récupérer un espaceCours créé d'un enseignant
 participant ":GestionnaireCours" as controleur
 participant ":Université" as modele
-->controleur : cours = recupererUnCours(idCours)
-controleur -> modele : cours = recupererUnCours(idCours)
+->controleur : espaceCours = recupererUnEspaceCours(idCours)
+note right : Selon Contôleur,\nreçoit l'opération système
+controleur -> modele : espaceCours = recupererUnEspaceCours(idCours)
 note left : Selon expert, Université a toute\nles informations requises\npour exécuter recupererUnCours
 @enduml

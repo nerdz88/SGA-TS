@@ -2,23 +2,32 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer toutes les questions créées d'un enseignant
-participant ":EnseignantControleur" as controleur
-participant "operationQuestion : OperationQuestion" as mapCours
+participant "operationCours : OperationCours" as opCours
+participant "universite : Universite" as universite
+participant "espacesCours[i] : EspaceCours" as cours
 
-->controleur : questions = recupererToutesQuestionsSga(token)
-note right : selon Contrôleur\n(enseignantControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur -> mapCours : questions = recupererToutesQuestionsSga(token)
-note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererToutesQuestionsSga
+->opCours : questions = recupererToutesQuestions(token)
+note left : Selon Contôleur,\nreçoit la première opération système
+opCours -> universite : espacesCours = recupererTousEspaceCours(token)
+note left : Selon expert, universite a toutes les\ninformations pour recupererTousEspaceCours
+loop espacesCours.length
+opCours -> cours : questions += recupererToutesQuestions()
+note left : Selon expert, chaque espaceCours a toutes les\ninformations pour\nrecupererToutesQuestions de l'espaceCours en cours
+end
 @enduml
 
 @startuml recupererUneQuestion
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer une question créée d'un enseignant
-participant ":coursControleur" as controleur
-participant "operationQuestion : OperationQuestion" as mapCours
-->controleur : question = recupererUneQuestionSga(token, idQuestion)
-note right : Selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la première opération système)
-controleur -> mapCours : question = recupererUneQuestion(token, idQuestion)
-note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter recupererUneQuestion
+participant "operationCours : OperationCours" as opCours
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+
+->opCours : questions = recupererUneQuestion(idEspaceCours, idQuestion)
+note left : Selon Contôleur,\nreçoit l'opération système
+opCours -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+opCours -> cours : questions = recupererUneQuestion(IdQuestion)
+note left : Selon expert, espaceCours a toutes les\ninformations pour recupererUneQuestion
 @enduml

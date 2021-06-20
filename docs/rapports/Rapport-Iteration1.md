@@ -5,10 +5,7 @@
 ### Coéquipiers
 
 - Bédard, Tommy, AQ13400
-- Abdelli, Pierre Amar, AQ48850
-- Bewa, Lionel, AQ22600
-- El-Safady, Sobhi, AP94320
-- Korchi, Zakaria , AQ25210
+- Nom, Prénom, Code universel
 
 ### Chargés de laboratoire
 
@@ -16,7 +13,7 @@
 
 # Grille de correction
 
-<details><summary>Cliquez ici pour lire les consignes obligatoires</summary>
+<details><summary>CPliquez ici pour lire les consignes obligatoires</summary>
 <p>
 
 - Tous vos diagrammes doivent être faits avec <https://plantuml.com/fr/>
@@ -32,7 +29,7 @@ Le travail sera noté selon la [grille de correction des rapports](https://docs.
 
 # Introduction
 
-> Dans cette première itération, l'objectif était de concevoir la structure générale du Système de gestion des apprentisages. L'évaluation du modèle du domaine, établir les diagrames de séquences systèmes reliés au cas d'utilisation ainsi que leur diagramme de cas d'utilisation. Finalement, l'utilisation des analyse conceptuelles développer dans la première partie pour réaliser l'implémentation des cas d'utilisations CU01 et CU02. 
+> Courte introduction pour expliquer à quoi correspond cette itération. Quels sont les objectifs à atteindre et comment les atteint-on?
 
 # Modèle du domaine
 
@@ -64,11 +61,11 @@ Le travail sera noté selon la [grille de correction des rapports](https://docs.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Le système signale l'erreur et rejette la saisie.
 
 
-## DSS CU01a - Ajouter cours
+## DSS CU01a - Ajouter espaceCours
 
 ![DSS_ajouter_cours](../../out/docs/Ajouter%20cours/DSS_Ajouter_Cours/DSS_Ajouter_Cours_Succes.svg)
 
-### `recupererCoursSgb(token : String)`
+### `recupererEspacesCoursSgb(token : String)`
 
 > Si une opération a déjà été documentée dans un autre DSS, ajoutez un hyperlien vers le contrat précédent.
 
@@ -82,15 +79,13 @@ _PostCondition_
 
 ![RDCU_recupererCoursSgb](../../out/docs/Ajouter%20cours/RDCU_recupererCoursSgb/recupererCoursSgb.svg)
 
-### `ajouterCours(tokenEnseignant : String, idCours : String, numeroGroupe : String)`
+### `ajouterEspaceCours(tokenEnseignant : String, idEspaceCours : String)`
 
 **Contrat d'opération**
 
 _PostCondition_
 
-- Un nouveau cours est créé s'il n'existe pas déjà
-- Un nouveau GroupeCours est créé
-- le GroupeCours est associé au Cours
+- Un nouvel espaceCours est créé s'il n'existe pas déjà
 - L’enseignant est associé au cours
 - Les étudiants inscrits dans le groupe-cours(SGB) sont associés au cours
 
@@ -113,11 +108,11 @@ _PostCondition_
 1. L’enseignant demande les détails d’un cours.
 1. Le système affiche l’information du cours et affiche la liste des étudiants inscrits.
 
-## DSS CU01b - Récupérer cours
+## DSS CU01b - Récupérer espaceCours
 
 ![DSS_recupererCours](../../out/docs/Récupérer%20cours/DSS_Récupérer_cours/DSS_Récupérer_Cours.svg)
 
-### `recupererTousCoursSga(token : String)` 
+### `recupererTousEspaceCours(token : String)` 
 
 **Contrat d'opération**
 
@@ -129,7 +124,7 @@ _PostCondition_
 
 ![RDCU_RecupererTousCoursSga](../../out/docs/Récupérer%20cours/RDCU_Recuperer_Cours/récupérer%20tous%20les%20cours%20créés.svg)
 
-### `recupererUnCoursSga(token : String, idCours : String)` ###
+### `recupererUnEspaceCours(token : String, idCours : String)` ###
 
 **Contrat d'opération**
 
@@ -163,35 +158,25 @@ _PostCondition_
 ## DSS CU01c - Retirer cours
 ![Dss_retirer_Cours](../../out/docs/Retirer%20cours/DSS_Retirer_Cours/DSS_Retirer_Cours.svg)
 
-### `recupererTousCoursSga(token : String)`
-[recupererTousCoursSga](#recuperertouscourssgatoken--string)
+### `recupererTousEspaceCours(token : String)`
+[recupererTousEspaceCours](#recuperertouscourssgatoken--string)
 
-### `recupererUnCoursSga(token : String, idCours : String)`
-[recupererUnCoursSga](#recupereruncourssgatoken--string-idcours--string)
+### `recupererUnEspaceCours(token : String, idEspaceCours : String)`
+[recupererUnEspaceCours](#recupereruncourssgatoken--string-idcours--string)
 
-### `retirerCours(token : String, idCours : String)`
-
-**Contrat d'opération**
-
-_PostCondition_
-
-- Aucun
-
-**RDCU**
-
-![supprimerUneQuestionSga](../../out/docs/Retirer%20cours/RDCU_Supprimer_Cours/supprimerUneQuestionSga.svg)
-
-### `confirmerSuppression(sigleCours : String, idGroupeCours : int)`
+### `supprimerEspaceCours(sigleCours : String, idEsapceCours: String)`
 
 **Contrat d'opération**
 
 _PostCondition_
 
-- Le cours n’existe plus dans operationQuestion
+- Le cours n’existe plus dans le système SGA
 
 **RDCU**
 
-![confirmerSuppression](../../out/docs/Retirer%20cours/RDCU_Supprimer_Cours/confirmerSuppression.svg)
+Dans cette opération la partie de confirmation n'est pas illustrée, car celle-ci est gérée par le front end, dont les classes ne font pas partie du MDD.
+
+![confirmerSuppression](../../out/docs/Retirer%20cours/RDCU_Supprimer_Cours/supprimerEspaceCours.svg)
 
 ## CU02a - Ajouter question
 **Acteur principal:**  Enseignant
@@ -222,10 +207,10 @@ _PostCondition_
 
 ![Dss_ajouterQuestion](../../out/docs/Ajouter%20question/DSS_Ajouter_Question/DSS_Ajouter_Question.svg)
 
-### `recupererTousCoursSga(token : String)`
-[recupererTousCoursSga](#recuperertouscourssgatoken--string)
+### `recupererTousEspaceCours(token : String)`
+[recupererTousEspaceCours](#recuperertouscourssgatoken--string)
 
-### `recupererUnCoursSgaQuestion(token : String, idCours : String)`
+### `recupererToutesQuestionsEspaceCours(idEspaceCours : int)`
 
 **Contrat d'opération**
 
@@ -237,19 +222,18 @@ _PostCondition_
 
 ![recupererUnCoursSgaQuestion](../../out/docs/Ajouter%20question/RDCU_Ajouter_Question/recupererCoursSgaQuestion.svg)
 
-### `ajouterQuestion(numeroGroupe : int, tags : String, nom : String, texteQuestion : String,reponse : boolean, texteBonneReponse : String, texteMauvaiseReponse : String)`
+### `ajouterQuestion(tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)`
 
 **Contrat d'opération**
 
 _PostCondition_
 
-- Une nouvelle question a été créée
-- La nouvelle question a été associée à operationQuestion.
-- La question a été associé a un GroupeCours
+- Une nouvelle question a été créée dans la banque pour le cours.
 
 **RDCU**
 
 ![recupererUnCoursSgaQuestion](../../out/docs/Ajouter%20question/RDCU_Ajouter_Question/ajouterQuestionFinal.svg)
+
 
 ## CU02b - Récupérer question
 **Acteur principal:**  Enseignant
@@ -321,7 +305,7 @@ _PostCondition_
 
 ![DSS_ModifierQuestion](../../out/docs/Modifier%20question/DSS_Modifier_Question/DSS_Modifier_Question.svg)
 
-### `recupererUneQuestion(token : String, idQuestion : String)`
+### `recupererUneQuestion(idEspaceCours : int, idQuestion : int)`
 [recupererUneQuestion](#recupererunequestiontoken--string-idquestion--string)
 
 ### `modifierQuestion(tags : String[], nom : String, texteQuestion : String, reponse : boolean,texteBonneReponse : String, texteMauvaiseReponse : String)`
@@ -330,7 +314,7 @@ _PostCondition_
 
 _PostCondition_
 
-  - La question a été modifiée dans operationQuestion
+  - La question a été modifiée dans la banque pour le cours.
 
 **RDCU**
 
@@ -354,11 +338,11 @@ _PostCondition_
 
 &nbsp;&nbsp;&nbsp;2a. Le système affiche la liste des questionnaires utilisant cette question et désactive la possibilité de suppression tant que la question est utilisée dans un questionnaire.
 
-## DSS CU02d - Modifier question
+## DSS CU02d - Supprimer question
 
 ![DSS_Supprimerquestion](../../out/docs/Supprimer%20question/DSS_Supprimer_Question/DSS_Supprimer_Question.svg)
 
-### `recupererUneQuestion(token : String, idQuestion : String)`
+### `recupererUneQuestion(idEspaceCours : int, idQuestion : int)`
 [recupererUneQuestion](#recupererunequestiontoken--string-idquestion--string)
 
 ### `supprimerUneQuestion(idQuestion : String)`
@@ -367,7 +351,7 @@ _PostCondition_
 
 _PostCondition_
 
-- Une question a été supprimée dans operationQuestion
+- Une question a été supprimée de la banque pour le cours.
 
 **RDCU**
 

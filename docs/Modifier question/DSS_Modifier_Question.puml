@@ -4,8 +4,8 @@ hide footbox
 actor ":Enseignant" as prof
 participant ":Systeme" as sys
 
-prof -> sys : recupererUneQuestion(token : String, idQuestion : String)
+prof -> sys : recupererUneQuestion(idEspaceCours : int, idQuestion : int)
 sys --> prof : valeurs actuelles de la question à modifier
-prof -> sys : modifierQuestion(tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
+prof -> sys : modifierQuestion(idQuestion : int, tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
 sys --> prof : question modifiée
 @enduml

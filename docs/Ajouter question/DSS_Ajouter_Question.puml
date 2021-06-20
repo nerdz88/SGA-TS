@@ -4,13 +4,13 @@ hide footbox
 actor ":Enseignant" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererTousCours(token : String)
-professeur <-- systeme : liste de cours de l'enseignant
-professeur -> systeme : recupererUnCoursQuestion(token : String, idCours : String)
-professeur <-- systeme : questions associées au cours
+professeur ->  systeme : recupererTousEspaceCours(token : String)
+professeur <-- systeme : liste des espaceCours de l'enseignant
+professeur -> systeme : recupererToutesQuestionsEspaceCours(idEspaceCours : int)
+professeur <-- systeme : questions associées à l'espaceCours
 
 loop !terminerQuestion
-professeur -> systeme : ajouterQuestion(tags : String, nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
+professeur -> systeme : ajouterQuestion(tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
 systeme --> professeur : liste de questions mise à jour
 end
 professeur -> systeme : terminerAjouterQuestion()

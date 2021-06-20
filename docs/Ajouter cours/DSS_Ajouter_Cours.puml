@@ -1,11 +1,11 @@
 @startuml DSS_Ajouter_Cours_Succes
-title DSS Ajouter Cours
+title DSS Ajouter espaceCours
 hide footbox
 actor ":Enseignant" as prof
 participant ":Systeme" as sys
 
-prof -> sys : recupererCoursSgb(token : String)
+prof -> sys : recupererEspacesCoursSgb(token : String)
 sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
-prof -> sys : ajouterCours(tokenEnseignant : String, idCours : String, numeroGroupe : String)
+prof -> sys : ajouterEspaceCours(tokenEnseignant : String, idEspaceCours : String)
 sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant
 @enduml

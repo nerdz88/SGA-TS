@@ -14,11 +14,16 @@ controleur -> opQuestion : supprimerUneQuestion(idQuestion)
 @startuml supprimerUneQuestionFinal
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour supprimer une question créée d'un enseignant
-participant ":EnseignantControleur" as controleur
-participant "operationQuestion : OperationQuestion" as opQuestion
-->controleur : supprimerUneQuestionSga(idQuestion)
-note right : selon Contrôleur\n(coursControleur est\nl'objet racine des cours\n recoit la seconde opération système)
-controleur -> opQuestion : supprimerUneQuestion(idQuestion)
-note left : Selon expert, operationQuestion a toutes\nles informations requises\npour exécuter supprimerUneQuestion
-@enduml 
+title RDCU pour supprimer une question d'un enseignant
+participant ":GestionnaireQuestion" as gestionQ
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+-> gestionQ : questions = supprimerQuestion(idEspaceCours, IdQuestion)
+note left : Selon controlleur, reçoit\nl'opération système
+gestionQ -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionQ -> cours : supprimerQuestion(IdQuestion)
+note left : Selon expert, espaceCours a toutes les\ninformations pour supprimerQuestion
+gestionQ -> cours : questions = recupererToutesQuestionsEspaceCours(idEspaceCours)
+note left : Selon expert, espaceCours a toutes les\ninformations pour recupererToutesQuestionsEspacesCours
+@enduml

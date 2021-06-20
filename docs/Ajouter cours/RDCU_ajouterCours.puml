@@ -1,17 +1,27 @@
 @startuml creerNouveauCours
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. ajouter cours
+title RDCU. ajouterEspaceCours
 participant ":GestionnaireCours" as controlleur
-participant "Université" as sga
+participant ":Université" as sga
 participant "c:EspaceCours" as cours
+participant ":SGBService" as service
+participant ":Sgb" as sgb
 
--> controlleur : ajouterCours(numeroGroupe,tokenEnseignant)
-  controlleur->sga : ajouterCours(numeroGroupe,tokenEnseignant)
-  note right : Selon expert, Université a toute\nles informations requises\npour créer un cours
-  create cours
-  sga->cours : create()
+-> controlleur : ajouterEspaceCours(token, idEspaceCours)
+note right : Selon Contôleur,\nreçoit l'opération système
+  controlleur->sga : ajouterEspaceCours(token, idEspaceCours)
+  note left : Selon expert, universite doit stocker\ntoutes les EspaceCours pour qu'elle puisse\ndevenir expert pour les prochains appels
+  sga ->  service : etudiants = recupererEtudiants(token, idEspaceCours)
+  note left : Selon indirection, évite le couplage\nentre universite et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+  service -> sgb : etudiants = fetch(token, idEspaceCours)
+  note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les espaces cours
+  sga-->cours** : create()
+  note left : Selon créateur, Université\nagrège plusieurs EspaceCours
+  sga -> cours : ajouterEtudiants(etudiants)
+  note right : Selon expert, EspaceCours doit stocker\ntous les étudiants pour qu'il puisse\ndevenir expert pour les prochains appels
   -> controlleur : information = recupererCours(tokenEnseignant)
-note right : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
+  note right : Selon indirection, évite le couplage entre\nle routeurqui fait l'appel initial et Université.
   controlleur -> sga : information = recupereCours(tokenEnseignant)
+  note left : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
   @enduml

@@ -1,11 +1,11 @@
 @startuml DSS_Récupérer_Cours
-title DSS récupérer cours
+title DSS récupérer espaceCours
 hide footbox
 actor ":Enseignant" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererTousCours(token : String)
-professeur <-- systeme : liste de cours de l'enseignant
-professeur -> systeme : recupererUnCours(token : String, idCours : String)
+professeur ->  systeme : recupererTousEspaceCours(token : String)
+professeur <-- systeme : liste des espaceCours de l'enseignant
+professeur -> systeme : recupererUnEspaceCours(token : String, idCours : String)
 professeur <-- systeme : information du cours et affiche la liste des étudiants inscrits.
 @enduml

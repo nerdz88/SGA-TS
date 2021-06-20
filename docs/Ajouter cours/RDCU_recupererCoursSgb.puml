@@ -1,11 +1,19 @@
 @startuml recupererCoursSgb
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. recupererCoursSgb
-participant ":GestionnaireCours" as sga
-participant "<<Actor>> : Sgb" as sgb
+title RDCU. recupererEspacesCoursSgb
+participant ":GestionnaireCours" as gesCours
+participant "universite : Universite" as uni
+participant ":SGBService" as service
+participant ":SGB" as sgb
 
-->sga : cours = recupererCoursSgb(token)
-note left : Selon Contôleur,\nreçoit la première opération système
-sga->sgb: cours = recupererCours(token)
+
+->gesCours : espacesCours = recupererEspacesCoursSgb(token)
+note left : Selon Contôleur,\nreçoit l'opération système
+gesCours -> uni  : espacesCours = recupererEspacesCoursSgb(token)
+note left : Selon expert, universite doit stocker\ntoutes les informations pour qu'elle puisse\ndevenir expert pour les prochains appels
+uni->service: cours = recupererEspaceCoursSgb(token)
+note right : Selon indirection, évite le couplage\nentre universite et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+service -> sgb : cours = recupererEspaceCoursSgb(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les espaces cours
 @enduml
