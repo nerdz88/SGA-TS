@@ -7,14 +7,14 @@ export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
     private _numero: string;
-
+    private _enseignantId : number;
     private _etudiants: Etudiant[];
     private _questions: Question[];
     private _cours: Cours;
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
 
-    constructor(id: number, numero: string, dateDebut: string, dateFin: string, cours: Cours) {
+    constructor(id: number, numero: string, dateDebut: string, dateFin: string, cours: Cours,_enseignantId : number) {
         this._id = id;
         this._numero = numero;
         this._cours = cours;
@@ -22,6 +22,7 @@ export class EspaceCours {
         this._dateFin = dateFin;
         this._etudiants = [];
         this._questions = [];
+        this._enseignantId = _enseignantId;
     }
 
     ajouterEtudiants(etudiants: any) {
@@ -75,6 +76,12 @@ export class EspaceCours {
     public getEtudiants(): Etudiant[] {
         return this._etudiants;
     }
+
+    
+    public getIdEnseignant() : number{
+        return this._enseignantId;
+    }
+
 
     public getDateDebut() {
         return this._dateDebut;

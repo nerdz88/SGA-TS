@@ -18,8 +18,8 @@ export class GestionnaireQuestion {
         espaceCours.modifierQuestion(IdQuestion, jsonString);
     }
 
-    public recupererToutesQuestions(token: string): string {
-        let arrayEspaceCours = this.universite.recupererTousEspaceCours(token)
+    public recupererToutesQuestions(idEnseignant: number): string {
+        let arrayEspaceCours = this.universite.recupererTousEspaceCours(idEnseignant)
         return JSON.stringify(arrayEspaceCours.flatMap(ec => {
             let questions = ec.recupererToutesQuestions();
             return questions.length > 0 ? questions : []

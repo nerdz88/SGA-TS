@@ -89,11 +89,19 @@ export class WebAppRouteur {
             return;
         }
         try {
-            let value = this.gestionnaireCours.recupererTousEspaceCours(null);
+            let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getIdUser(req));
             res.render("enseignant/cours/liste-cours-sga", { espaceCours: JSON.parse(value) });
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
+    /*public verifierSGBCoursDisponibilite(req: Request, res: Response, next: NextFunction) {
+        let idSGB = parseInt(req.params.id);
+        let value = this.gestionnaireCours.recupererUnEspaceCours(idSGB);
+        console.log(value);
+        if(value==null || value == undefined){
+
+        }
+    }*/
 
     /**
      * Methode GET qui affiche les details d'un cours
@@ -111,6 +119,10 @@ export class WebAppRouteur {
             let id: number = parseInt(req.params.id);
             let coursValue = this.gestionnaireCours.recupererUnEspaceCours(id);
             let cours = JSON.parse(coursValue);
+            if(parseInt(cours._enseignantId)!=AuthorizationHelper.getIdUser(req)){
+                res.redirect("/")
+                return
+            }
             res.render("enseignant/cours/detail-cours", { espaceCours: cours });
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -136,7 +148,7 @@ export class WebAppRouteur {
             let arrayQuestion: string;
 
             if (req.params.id == undefined) {
-                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getCurrentToken(req));
+                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
             } else {
                 let id = parseInt(req.params.id);
                 arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);

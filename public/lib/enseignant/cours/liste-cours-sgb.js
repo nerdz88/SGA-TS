@@ -18,9 +18,8 @@ window.addEventListener("load", function () {
             console.log("Login - OK");            
             window.location.href = "/enseignant/cours/detail/" + data.idEspaceCours;
          },
-         error: function () {
-            console.log("Login - KO");
-            showErrorToast("Erreur", "La cours n'a pas été ajouté");
+         error: function (e) {
+            showErrorToast(e.responseJSON.error);
          }
       });
    });

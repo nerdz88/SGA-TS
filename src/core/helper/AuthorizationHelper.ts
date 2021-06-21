@@ -14,4 +14,8 @@ export class AuthorizationHelper {
     public static getCurrentUserInfo(req: Request): User {
         return req.session["user"];
     }
+
+    public static getIdUser(req : Request): number{
+        return parseInt(req.session["user"]._id);
+    }
 }

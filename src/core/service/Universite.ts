@@ -6,11 +6,8 @@ import { Question } from "../model/Question"
 import { SGBService } from "./SGBService";
 
 export class Universite {
-
-    //private arrayQuestion: Question[] 
     private arrayEspaceCours: EspaceCours[]
     private arrayCours: Cours[]
-
     constructor() {
         this.arrayEspaceCours = new Array();
         this.arrayCours = new Array();
@@ -23,9 +20,9 @@ export class Universite {
     }
 
 
-    public async ajouterEspaceCours(coursSGB: any, token: string) {
+    public async ajouterEspaceCours(coursSGB: any, token: string, idEnseignant : number) {
         if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
-            throw new AlreadyExistsError("L'espace cours " + coursSGB._id + " existe déjà");
+            throw new AlreadyExistsError(coursSGB._titre + " ,gr: "+coursSGB._id+" a déjà été choisi par un autre enseignant");
         }
 
         let cours = this.getCoursBySigle(coursSGB._sigle);
@@ -39,7 +36,7 @@ export class Universite {
             coursSGB._groupe,
             coursSGB._date_debut,
             coursSGB._date_fin,
-            cours);
+            cours,idEnseignant);
         espaceCours.ajouterEtudiants(etudiants);
         this.arrayEspaceCours.push(espaceCours);
     }
@@ -68,9 +65,15 @@ export class Universite {
         return this.arrayEspaceCours[index];
     }
 
-    public recupererTousEspaceCours(token: string): EspaceCours[] {
+    public recupererTousEspaceCours(idEnseignant: number): EspaceCours[] {
         //TODO filtrer selon le token
-        return this.arrayEspaceCours;
+        let arrayEspaceCoursDeEnseignant=[];
+        this.arrayEspaceCours.forEach(element =>{
+            if(element.getIdEnseignant()==idEnseignant){
+                arrayEspaceCoursDeEnseignant.push(element);
+            }
+        });
+        return arrayEspaceCoursDeEnseignant;
     }
 
 

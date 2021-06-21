@@ -4,7 +4,6 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as flash from 'node-twinkle';
 import * as ExpressSession from 'express-session';
-import { EnseignantControlleur } from './core/controllers/EnseignantControlleur';
 import { SgaRouteur } from './routes/SgaRouteur';
 import { WebAppRouteur } from './routes/WebAppRouteur';
 import { Universite } from './core/service/Universite';

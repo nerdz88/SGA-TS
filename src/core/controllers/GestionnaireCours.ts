@@ -9,17 +9,17 @@ export class GestionnaireCours {
         this.universite = universite;
     }
 
-    public async ajouterEspaceCours(element: string, token: string) {
+    public async ajouterEspaceCours(element: string, token: string, idEnseignant : number) {
         let cours = JSON.parse(element)
-        await this.universite.ajouterEspaceCours(cours, token);
+        await this.universite.ajouterEspaceCours(cours, token,idEnseignant);
         // let etudiants = await SGBService.recupererEtudiant("etudiant", cours._id, token);
         // this.universite.ajouterCours(etudiants.data, cours._id, cours._groupe, cours._sigle,
         //     cours._titre, cours._nb_max_student,
         //     cours._date_debut, cours._date_fin, token);
     }
 
-    public recupererTousEspaceCours(token: string): string {
-        return JSON.stringify(this.universite.recupererTousEspaceCours(token));
+    public recupererTousEspaceCours(idEnseignant: number): string {
+        return JSON.stringify(this.universite.recupererTousEspaceCours(idEnseignant));
         /*let cours = this.universite.recupererCours();
         if (cours == undefined || cours.length == 0) {
             return "[]";
