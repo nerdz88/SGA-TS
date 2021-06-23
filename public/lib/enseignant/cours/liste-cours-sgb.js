@@ -1,5 +1,4 @@
 //Fichier Javascript pour la page de liste de cours d'un enseignant
-//console.log(document.getElementsByClassName("badgeDisponible")[0].getAttribute("name"));
 let badges = document.getElementsByClassName("badgeDisponible");
 setInterval(async ()=>{
    for(var i=0;i<badges.length;i++){
@@ -10,13 +9,8 @@ setInterval(async ()=>{
          type: "GET",
          url: endPoint,
          success: function (data) {
-            if(data.estDisponible){
-               currentObject.style.backgroundColor="green"
-               currentObject.innerHTML="Disponible"
-            }else{
-               currentObject.style.backgroundColor="red"
-               currentObject.innerHTML="Indisponible"
-            }
+            currentObject.style.backgroundColor = data.estDisponible ? "green" : "red";
+            currentObject.innerHTML=data.estDisponible ?"Disponible":"Indisponible";
          },
          error: function (e) {
             showErrorToast("erreur dans le sgb");

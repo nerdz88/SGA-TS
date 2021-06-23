@@ -1,8 +1,6 @@
 import { Router, Request, Response, NextFunction, response } from 'express';
-import { NotFoundError } from '../core/errors/NotFoundError';
 import { SGBService } from '../core/service/SGBService';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
-import { Cours } from '../core/model/Cours';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 
