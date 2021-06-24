@@ -64,7 +64,7 @@ Université "1"--"*" Cours : contient >
 EspaceCours "1"-- "*"Etudiant : est_suivi_par >
 Question "1" -- "*"Tag : < catégorise
 Questionnaire "1"--"1..*" Question : contient >
-Questionnaire"1"--"1" Remise : possède >
+Questionnaire"1"--"*" Remise : possède >
 Université "1"--"*" EspaceCours : contient >
 Université "1"--"*" Etudiant : est-inscrit-à <
 Question "*"--"1" EspaceCours : contient <

@@ -1,0 +1,63 @@
+import { Question } from "./Question";
+import { Remise } from "./Remise";
+
+export class Questionnaire {
+    private _id: number;
+    static currentId: number = 0;
+    private _description : string;
+    private _nom : string;
+    private _idEspaceCours: number
+    private _status: boolean
+    private _questions : Question[]
+    private _remiseArray : Remise[]
+    
+    constructor(questionnaireJson: string) {
+        let values = JSON.parse(questionnaireJson);
+        this._idEspaceCours = values.idEspaceCours;
+        this._nom = values.nom;
+        this._description = values.description;
+        this._status = values.status;
+        this._questions = [];
+        this._remiseArray =[];
+        this._id = ++Question.currentId;
+    }
+
+
+
+    public modifier(questionJson: string) {
+        let values = JSON.parse(questionJson);
+        this._nom = values.nom;
+        this._description = values.description;
+        this._status = values.status;
+    }
+
+    public getIdEspaceCours() {
+        return this._idEspaceCours;
+    }
+    public getId() {
+        return this._id;
+    }
+    public getNom() {
+        return this._nom;
+    }
+    public getDescription() {
+        return this._description;
+    }
+    public getRemise() {
+        return this._remiseArray;
+    }
+    public getStatus() {
+        return this._status;
+    }
+    public getQuestions(){
+        return this._questions;
+    }
+
+    public setQuestion(arrayQuestion : []){
+        this._questions=arrayQuestion;
+    }
+
+    public setRemise(arrayRemise : []){
+        this._remiseArray = arrayRemise;
+    }
+}

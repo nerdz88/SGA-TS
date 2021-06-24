@@ -22,6 +22,10 @@ export class GestionnaireQuestionnaire {
         return;
     }
 
+    public recupererQuestionnaireParEspaceCours(idEspaceCours : number){
+        
+    }
+
     public recupererToutesQuestionsParTag(idEspaceCours: number,tag: string){
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         //avoir une méthode qui recupereToutesQuestionsParTag dans espaceCours
