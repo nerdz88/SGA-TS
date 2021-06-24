@@ -11,7 +11,7 @@ export class Devoir {
     private _dateDebut: Date;
     private _dateFin: Date;
     private _visible: boolean;
-    private _listeRemise: Remise[];
+    private _remises: Remise[];
     static currentId: number = 0;
 
     constructor(devoirJson: string) {
