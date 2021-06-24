@@ -17,6 +17,7 @@ export class Devoir {
     constructor(devoirJson: string) {
         let values = JSON.parse(devoirJson);
         this._nom = values.nom;
+        this._idEspaceCours = values.idEspaceCours
         this._description = values.description;
         this._noteMaximale = values.noteMaximale;
         this._dateDebut = values.dateDebut;
@@ -72,5 +73,41 @@ export class Devoir {
 
     set visible(value: boolean) {
         this._visible = value;
+    }
+
+    get id(): number {
+        return this._id;
+    }
+
+    set id(value: number) {
+        this._id = value;
+    }
+
+    get idEspaceCours(): number {
+        return this._idEspaceCours;
+    }
+
+    set idEspaceCours(value: number) {
+        this._idEspaceCours = value;
+    }
+
+    get remises(): Remise[] {
+        return this._remises;
+    }
+
+    set remises(value: Remise[]) {
+        this._remises = value;
+    }
+
+    public modifier(jsonString: string) {
+        let values = JSON.parse(jsonString);
+        this._nom = values.nom;
+        this._idEspaceCours = values.idEspaceCours
+        this._description = values.description;
+        this._noteMaximale = values.noteMaximale;
+        this._dateDebut = values.dateDebut;
+        this._dateFin = values.dateFin;
+        this._visible = values.visible;
+        //TODO INIT LA LISTE DE REMISE
     }
 }

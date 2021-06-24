@@ -4,6 +4,7 @@ import { Cours } from "./Cours";
 import { Etudiant } from "./Etudiant";
 import { Question } from "./Question";
 import {Devoir} from "./Devoir";
+import {InvalidParameterError} from "../errors/InvalidParameterError";
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
@@ -63,8 +64,40 @@ export class EspaceCours {
         return q;
     }
 
-    public ajouterDevoir(devoirJson: String){
+    public ajouterDevoir(devoirJson: string){
         //TODO
+        let newDevoir = new Devoir(devoirJson);
+        // La date de début est après la date de fin, on retourne une erreur
+        if (newDevoir.dateDebut > newDevoir.dateFin){
+            throw new InvalidParameterError("le devoirs " + newDevoir.nom + " ne dois pas avoir une date de debut qui est après la date de fin")
+        }
+        this._devoirs.push(newDevoir);
+    }
+
+    modifierDevoir(idDevoir: number, jsonString: string) {
+        let devoir = this.recupererUnDevoir(idDevoir);
+        devoir.modifier(jsonString);
+    }
+
+
+    recupererTousDevoirs(): Devoir[] {
+        return this._devoirs;
+    }
+
+    recupererUnDevoir(idDevoir: number): Devoir {
+        let devoir = this._devoirs.find(d => d.id == idDevoir);
+        if (devoir == undefined)
+            throw new NotFoundError("Le Devoir " + idDevoir + " n'existe pas")
+        return devoir;
+    }
+
+    suprimerDevoir(idDevoir: number) {
+        let index = this._devoirs.findIndex(d => d.id == idDevoir);
+        if (index != -1) {
+            this._devoirs.splice(index, 1);
+            return true;
+        }
+        return false;
     }
 
     public getID() {
