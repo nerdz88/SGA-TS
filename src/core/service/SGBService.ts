@@ -1,7 +1,7 @@
 import fetch = require('node-fetch');
 import { SgbError } from '../errors/SgbError';
 /**
- * Peut-être lui trouver un nom plus significatif que SGBService
+ * TODO Peut-être lui trouver un nom plus significatif que SGBService
  * C'est juste des call aux antpoint du SGB peut-être SGBUtil ou qqchose du genre...
  */
 export class SGBService {
@@ -25,7 +25,7 @@ export class SGBService {
             });
     }
 
-    public static async recupererJsonCours(token: string) {
+    public static async recupererGroupesCours(token: string) {
         return fetch(this.baseUrlV1 + "courses", { headers: { token: token } })
             .then(reponse => {
                 if (!reponse.ok) {

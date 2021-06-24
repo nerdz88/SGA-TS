@@ -8,7 +8,7 @@ export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
     private _numero: string;
-    private _enseignantId : number;
+    private _enseignantId: number;
     private _etudiants: Etudiant[];
     private _questions: Question[];
     private _devoirs: Devoir[];
@@ -16,7 +16,7 @@ export class EspaceCours {
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
 
-    constructor(id: number, numero: string, dateDebut: string, dateFin: string, cours: Cours,_enseignantId : number) {
+    constructor(id: number, numero: string, dateDebut: string, dateFin: string, cours: Cours, _enseignantId: number) {
         this._id = id;
         this._numero = numero;
         this._cours = cours;
@@ -33,9 +33,9 @@ export class EspaceCours {
         })
     }
 
-    public ajouterQuestion(questionJson: string) {       
+    public ajouterQuestion(questionJson: string) {
         let newQuestion = new Question(questionJson)
-        if(this._questions.find(q => q.getNom() == newQuestion.getNom()))
+        if (this._questions.find(q => q.getNom() == newQuestion.getNom()))
             throw new AlreadyExistsError("la question " + newQuestion.getNom() + " existe déjà")
         this._questions.push(newQuestion);
     }
@@ -83,11 +83,10 @@ export class EspaceCours {
         return this._etudiants;
     }
 
-    
-    public getIdEnseignant() : number{
+
+    public getIdEnseignant(): number {
         return this._enseignantId;
     }
-
 
     public getDateDebut() {
         return this._dateDebut;

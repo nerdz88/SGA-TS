@@ -1,10 +1,7 @@
-import { Router, Request, Response, NextFunction, response } from 'express';
-import { NotFoundError } from '../core/errors/NotFoundError';
-import { SGBService } from '../core/service/SGBService';
-import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
-import { Cours } from '../core/model/Cours';
+import { NextFunction, Request, Response, Router } from 'express';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
 export class WebAppRouteur {
@@ -70,7 +67,7 @@ export class WebAppRouteur {
             return;
         }
         let self = this;
-        SGBService.recupererJsonCours(AuthorizationHelper.getCurrentToken(req))
+        this.gestionnaireCours.recupererGroupesCours(AuthorizationHelper.getCurrentToken(req))
             .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse }))
             .catch(error => self._errorCode500(error, req, res));
     }
@@ -94,14 +91,23 @@ export class WebAppRouteur {
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
-    /*public verifierSGBCoursDisponibilite(req: Request, res: Response, next: NextFunction) {
+    public verifierSGBCoursDisponibilite(req: Request, res: Response, next: NextFunction) {
         let idSGB = parseInt(req.params.id);
-        let value = this.gestionnaireCours.recupererUnEspaceCours(idSGB);
-        console.log(value);
-        if(value==null || value == undefined){
-
+        let disponible;
+        try {
+            disponible = this.gestionnaireCours.recupererUnEspaceCours(idSGB)==undefined;
+        } catch (error) {
+            disponible=true;
+        }finally{
+            res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+                estDisponible: disponible
+            });
         }
-    }*/
+        return true;
+    }
 
     /**
      * Methode GET qui affiche les details d'un cours
@@ -119,7 +125,7 @@ export class WebAppRouteur {
             let id: number = parseInt(req.params.id);
             let coursValue = this.gestionnaireCours.recupererUnEspaceCours(id);
             let cours = JSON.parse(coursValue);
-            if(parseInt(cours._enseignantId)!=AuthorizationHelper.getIdUser(req)){
+            if (parseInt(cours._enseignantId) != AuthorizationHelper.getIdUser(req)) {
                 res.redirect("/")
                 return
             }
@@ -240,7 +246,7 @@ export class WebAppRouteur {
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
         this.router.get('/enseignant/cours/ajouter', this.recupererAjouterEspaceCours.bind(this));
         this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
-
+        this.router.get('/enseignant/cours/verifierDispo/:id',this.verifierSGBCoursDisponibilite.bind(this))
 
         //Questions
         this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));

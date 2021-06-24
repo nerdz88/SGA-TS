@@ -1,6 +1,6 @@
 export class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
- 
+
     private _id: number;
     private _idEspaceCours: number
     private _tags: []
@@ -10,10 +10,9 @@ export class Question {
     private _descriptionReponse: string
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
-   
-
-    constructor(questionJson: string) {   
-        let values = JSON.parse(questionJson);         
+    
+    constructor(questionJson: string) {
+        let values = JSON.parse(questionJson);
         this._idEspaceCours = values.idEspaceCours;
         this._tags = values.tags.split(",");
         this._nom = values.nom;
@@ -25,7 +24,7 @@ export class Question {
     }
 
     public modifier(questionJson: string) {
-        let values = JSON.parse(questionJson);         
+        let values = JSON.parse(questionJson);
         this._tags = values.tags.split(",");
         this._nom = values.nom;
         this._descriptionQuestion = values.description;

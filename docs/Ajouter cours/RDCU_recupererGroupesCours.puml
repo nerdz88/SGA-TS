@@ -1,19 +1,21 @@
 @startuml recupererCoursSgb
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU. recupererEspacesCoursSgb
+title RDCU. recupererGroupesCours
 participant ":GestionnaireCours" as gesCours
 participant "universite : Universite" as uni
 participant ":SGBService" as service
 participant ":SGB" as sgb
 
-
-->gesCours : espacesCours = recupererEspacesCoursSgb(token)
+' Lionel: Dans le SGB c'est juste des cours/groupes cours
+' Alors: recupererEspacesCoursSgb => recupererGroupesCours
+' Pas besoin de spécifier SGB pcq on n'a pas de GroupesCours dans le SGA
+->gesCours : espacesCours = recupererGroupesCours(token)
 note left : Selon Contôleur,\nreçoit l'opération système
-gesCours -> uni  : espacesCours = recupererEspacesCoursSgb(token)
+gesCours -> uni  : espacesCours = recupererGroupesCours(token)
 note left : Selon expert, universite doit stocker\ntoutes les informations pour qu'elle puisse\ndevenir expert pour les prochains appels
-uni->service: cours = recupererEspaceCoursSgb(token)
+uni->service: cours = recupererGroupesCours(token)
 note right : Selon indirection, évite le couplage\nentre universite et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
-service -> sgb : cours = recupererEspaceCoursSgb(token)
+service -> sgb : cours = recupererGroupesCours(token)
 note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les espaces cours
 @enduml
