@@ -323,15 +323,15 @@ export class SgaRouteur {
         }
         try {
             let id = parseInt(req.params.id);
-            let arrayQuestion: string;
-            arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+            let arrayDevoirs: string;
+            arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
             res.status(200)
                 .send({
                     message: 'Success',
                     status: res.status,
                     data: {
                         idEspaceCours: id ?? "none",
-                        questions: JSON.parse(arrayQuestion)
+                        questions: JSON.parse(arrayDevoirs)
                     }
                 });
 
