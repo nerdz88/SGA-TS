@@ -1,0 +1,36 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content  
+    //- +btn-back("Devoir pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, 
+    //-     "/enseignant/cours/")  
+    div.row
+        div.col.s10.offset-s1     
+            div.row
+                div.col.s12
+                    a(class="waves-effect waves-light btn btn-ajouter-devoir" href="/enseignant/devoir/ajouter/" + espaceCours._id) Ajouter          
+            div.row
+                if devoirs.length > 0
+                    div.section
+                        div.row
+                            each unDevoir in devoirs
+                                div.col.s12.l5
+                                    div.card
+                                        div.card-content
+                                            div.card-title
+                                                div.text-bolder #{unDevoir._nom}                                                          
+                                            div #{unDevoir._description}                                                  
+                                        div.card-action
+                                            a(class="btn-detail-devoir" href="/enseignant/devoir/detail/" + unDevoir._idEspaceCours + "/" + unDevoir._id) Détail
+                                            a(class="btn-modifier-devoir" href="/enseignant/devoir/modifier/" + unDevoir._idEspaceCours + "/" + unDevoir._id) Modifier              
+                                            a(class="btn-delete-devoir" href="javascript:void(0)" 
+                                                data-id-devoir=unDevoir._id
+                                                data-nom=unDevoir._nom
+                                                data-id-espace-cours=unDevoir._idEspaceCours) Supprimer 
+                else
+                    div.col.s12
+                        em Vous n'avez pas de devoirs
+
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/devoir/devoir.js")
