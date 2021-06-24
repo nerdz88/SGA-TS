@@ -325,16 +325,14 @@ export class SgaRouteur {
             let id = parseInt(req.params.id);
             let arrayDevoirs: string;
             arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
-            res.status(200)
-                .send({
+            res.status(200).send({
                     message: 'Success',
                     status: res.status,
                     data: {
                         idEspaceCours: id ?? "none",
                         questions: JSON.parse(arrayDevoirs)
                     }
-                });
-
+            });
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
