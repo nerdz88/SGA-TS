@@ -1,0 +1,25 @@
+@startuml ajouterQuestionnaireGenerale
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouterQuestionnaire
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "q:Question" as question
+
+->gestionnaireQuestion : questionnaire = creerQuestionnaire(idEnseignant,idEspaceCours,\nnom,description,etat)
+note left : Selon contôlleur,\nreçoit l'opération système 
+gestionnaireQuestion -> universite : tags = recupererCategorieQuestionParEnseignant(idEnseignant,idEspaceCours)
+'TODO manque détail de université à espaceCours à question'
+note left : Selon expert, universite a toutes les\ninformations pour les 'tags' des questions
+loop [!terminerQuestionnaire]
+->gestionnaireQuestion :selectionneCategorieQuestion(nomTag)
+gestionnaireQuestion->universite : recupererQuestionsParTag(idCours,nomTag)
+'TODO manque détail de université à espaceCours à question'
+->gestionnaireQuestion :ajouterQuestion(tableauQuestions,idQuestionnaire)
+'TODO manque détail de université à espaceCours à question'
+gestionnaireQuestion->universite : ajouterQuestionAuQuestionnaire(idQuestionnaire,tableauQuestions)
+end
+-> gestionnaireQuestion : terminerAjouterQuestion()
+note left : selon controleur, permet de sortir de la boucle
+@enduml
