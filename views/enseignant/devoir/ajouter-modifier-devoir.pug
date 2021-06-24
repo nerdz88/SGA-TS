@@ -25,18 +25,18 @@ block content
                         input#noteMaximale(type="number" name="noteMaximale" value=estModification ? devoir._noteMaximale : "" required)
                         label(for="noteMaximale") Note maximale
                 div.row.no-margin
-                    div.input-field.col.s3
+                    div.input-field.col.s6
                         input#dateDebut.datepicker(type="text" name="dateDebut" value=estModification ? devoir._dateDebut : "" required)
                         label(for="dateDebut") Date début
-                    div.input-field.col.s3
-                        input#heureDebut.timepicker(type="text" name="heureDebut" value=estModification ? devoir._dateDebut.getTime() : "" required)                    
-                        label(for="heureDebut") Heure début
-                    div.input-field.col.s3
+                    //- div.input-field.col.s3
+                    //-     input#heureDebut.timepicker(type="text" name="heureDebut" value=estModification ? devoir._dateDebut.getTime() : "" required)                    
+                    //-     label(for="heureDebut") Heure début
+                    div.input-field.col.s6
                         input#dateFin.datepicker(type="text" name="dateFin" value=estModification ? devoir._dateFin : "" required)
                         label(for="dateFin") Date fin
-                    div.input-field.col.s3
-                        input#heureFin.timepicker(type="text" name="heureFin" value=estModification ? devoir._dateFin.getTime() : "" required)                    
-                        label(for="heureFin") Heure fin
+                    //- div.input-field.col.s3
+                    //-     input#heureFin.timepicker(type="text" name="heureFin" value=estModification ? devoir._dateFin.getTime() : "" required)                    
+                    //-     label(for="heureFin") Heure fin
 
                 div.row.no-margin
                     div.input-field.col.s12
@@ -52,7 +52,7 @@ block content
                             div.col.s12
                                 div.switch
                                     label Non 
-                                        input(type="checkbox" checked=estModification && devoir._visible)
+                                        input#visible(type="checkbox" name="visible" checked=estModification && devoir._visible)
                                         span.lever 
                                         |Oui
                 div.row

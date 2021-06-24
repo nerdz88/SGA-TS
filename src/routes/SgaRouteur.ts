@@ -342,9 +342,10 @@ export class SgaRouteur {
             return;
         }
         try {
+            let ordreTri: number = parseInt(req.query.ordreTri?.toString());
             let idEspaceCours = parseInt(req.params.idEspaceCours);
             let idDevoir = parseInt(req.params.idDevoir);
-            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir);
+            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
 
             res.status(200)
                 .send({
@@ -382,7 +383,7 @@ export class SgaRouteur {
         try {
             let id = parseInt(req.params.id);
             this.gestionnaireDevoir.ajouterDevoir(id, JSON.stringify(req.body));
-            res.status(200)
+            res.status(201)
                 .send({
                     message: 'Success',
                     status: res.status
@@ -427,9 +428,10 @@ export class SgaRouteur {
         this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
         this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
         this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
+
         // Devoirs
-        this.router.get('/enseignant/devoir/ajouter/:id', this.ajouterDevoir.bind(this));
         this.router.get('/enseignant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
+        this.router.post('/enseignant/devoir/ajouter/:id', this.ajouterDevoir.bind(this));        
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
         this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));

@@ -231,9 +231,11 @@ export class WebAppRouteur {
             return;
         }
         try {
+            let id = parseInt(req.params.id);
+            let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+            let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
 
-
-            res.render("enseignant/devoir/liste-devoir", { devoirs: listeDevoir, espaceCours: {} });
+            res.render("enseignant/devoir/liste-devoir", { devoirs: JSON.parse(arrayDevoirs), espaceCours: JSON.parse(espaceCours) });
 
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -244,54 +246,50 @@ export class WebAppRouteur {
             return;
         }
         try {
-
+            let ordreTri: number = parseInt(req.query.ordreTri?.toString());
             let idEspaceCours = parseInt(req.params.idEspaceCours);
             let idDevoir = parseInt(req.params.idDevoir);
-            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir);
-            res.render("enseignant/devoir/detail-devoir", { devoir: devoir });
+            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
+            res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir) });
 
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
 
     public recupererAjouterDevoir(req: Request, res: Response, next: NextFunction) {
-        // if (!AuthorizationHelper.isLoggedIn(req)) {
-        //     res.redirect("/login");
-        //     return;
-        // }
-
-
-        res.render("enseignant/devoir/ajouter-modifier-devoir",
-            {
-                idEspaceCours: 1,
-                devoir: {},
-                estModification: false
-            });
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            res.redirect("/login");
+            return;
+        }
+        try {
+            let id = parseInt(req.params.id);
+            res.render("enseignant/devoir/ajouter-modifier-devoir",
+                {
+                    idEspaceCours: id,
+                    devoir: {},
+                    estModification: false
+                });
+        } catch (error) { this._errorCode500(error, req, res); }
     }
 
 
     public recupererModifierDevoir(req: Request, res: Response, next: NextFunction) {
-        // if (!AuthorizationHelper.isLoggedIn(req)) {
-        //     res.redirect("/login");
-        //     return;
-        // }
-        let devoir1 = {
-            _id: 1,
-            _idEspaceCours: 1,
-            _nom: "Devoir 1",
-            _description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut tortor at ex ullamcorper posuere eget id ligula",
-            _noteMaximale: 20,
-            _dateDebut: new Date(2021, 6, 24, 10, 0, 0),
-            _dateFin: new Date(2021, 7, 10, 10, 0, 0),
-            _visible: true,
-        };
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            res.redirect("/login");
+            return;
+        }
+        try {
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idDevoir = parseInt(req.params.idDevoir);
+            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, 0);
 
-        res.render("enseignant/devoir/ajouter-modifier-devoir",
-            {
-                idEspaceCours: devoir1._idEspaceCours,
-                devoir: devoir1,
-                estModification: true
-            });
+            res.render("enseignant/devoir/ajouter-modifier-devoir",
+                {
+                    idEspaceCours: idEspaceCours,
+                    devoir: JSON.parse(devoir),
+                    estModification: true
+                });
+        } catch (error) { this._errorCode500(error, req, res); }
     }
 
 

@@ -1,6 +1,7 @@
 import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { EspaceCours } from "./EspaceCours"
-import {Remise} from "./Remise";
+import { Remise } from "./Remise";
+import { Etudiant } from './Etudiant';
 
 export class Devoir {
     private _id: number;
@@ -14,7 +15,7 @@ export class Devoir {
     private _remises: Remise[];
     static currentId: number = 0;
 
-    constructor(devoirJson: string) {
+    constructor(devoirJson: string, etudiants: Etudiant[]) {
         let values = JSON.parse(devoirJson);
         this._nom = values.nom;
         this._idEspaceCours = values.idEspaceCours
@@ -23,8 +24,14 @@ export class Devoir {
         this._dateDebut = values.dateDebut;
         this._dateFin = values.dateFin;
         this._visible = values.visible;
-        //TODO INIT LA LISTE DE REMISE
+        this._remises = this.initRemises(etudiants);
         this._id = ++Devoir.currentId;
+    }
+
+    private initRemises(etudiants: Etudiant[]): Remise[] {
+        var listRemise = [];
+        etudiants.forEach(etudiant => listRemise.push(new Remise(etudiant)));
+        return listRemise;
     }
 
     get nom(): string {
@@ -110,4 +117,8 @@ export class Devoir {
         this._visible = values.visible;
         //TODO INIT LA LISTE DE REMISE
     }
+
+
 }
+
+

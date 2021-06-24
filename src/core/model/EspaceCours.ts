@@ -67,7 +67,7 @@ export class EspaceCours {
 
     public ajouterDevoir(devoirJson: string){
         //TODO
-        let newDevoir = new Devoir(devoirJson);
+        let newDevoir = new Devoir(devoirJson, this._etudiants);
         // La date de début est après la date de fin, on retourne une erreur
         if (newDevoir.dateDebut > newDevoir.dateFin){
             throw new InvalidParameterError("le devoirs " + newDevoir.nom + " ne dois pas avoir une date de debut qui est après la date de fin")

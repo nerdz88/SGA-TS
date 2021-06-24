@@ -1,26 +1,25 @@
+import { Etudiant } from "./Etudiant";
+
 enum Etat {
-    NonRemis,
-    Remis,
-    RemisCorriger
+    NonRemis = "Non Remis",
+    Remis = "Remis",
+    RemisCorrige = "Remis et Corrigé"
 }
 
-export class Remise{
+export class Remise {
 
-    private _id : number;
-    private _idEtudiant : number;
-    private _dateRemise : Date;
-    private _note : number;
-    private _etat :  Etat;
-    private _dateDeCorrection : Date;
+    private _id: number;
+    private _etudiant: Etudiant;
+    private _dateRemise: Date;
+    private _note: number;
+    private _etat: Etat;
+    private _dateDeCorrection: Date;
+    static currentId: number = 0;
 
-
-    constructor(id: number, idEtudiant: number, dateRemise: Date, note: number, etat: Etat, dateDeCorrection: Date) {
-        this._id = id;
-        this._idEtudiant = idEtudiant;
-        this._dateRemise = dateRemise;
-        this._note = note;
-        this._etat = etat;
-        this._dateDeCorrection = dateDeCorrection;
+    constructor(etudiant: Etudiant) {
+        this._id = ++Remise.currentId;
+        this._etudiant = etudiant;
+        this._etat = Etat.NonRemis;
     }
 
     get id(): number {
@@ -31,12 +30,12 @@ export class Remise{
         this._id = value;
     }
 
-    get idEtudiant(): number {
-        return this._idEtudiant;
+    get etudiant(): Etudiant {
+        return this._etudiant;
     }
 
-    set idEtudiant(value: number) {
-        this._idEtudiant = value;
+    set etudiant(value: Etudiant) {
+        this._etudiant = value;
     }
 
     get dateRemise(): Date {

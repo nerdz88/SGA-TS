@@ -21,9 +21,7 @@ block content
                     table.bordered.highlight
                         thead 
                             tr  
-                                th.data-field Nom 
-                                th.data-field Prénom 
-                                th.data-field Email 
+                                th.data-field Étudiant 
                                 th.data-field Code permanent 
                                 th.data-field Etat
                                 th.data-field Date de remise
@@ -32,15 +30,8 @@ block content
                         tbody 
                             each remise in devoir._remises        
                                 tr 
-                                    td #{remise._idEtudiant}
-                                    td TODO
-                                    td TODO
-                                    td TODO
-                                    //- TODO Mettre info étudiant
-                                    //- td #{remise._etudiant._nom}
-                                    //- td #{remise._etudiant._prenom} 
-                                    //- td #{remise._etudiant._email} 
-                                    //- td #{remise._etudiant._code_permanent}
+                                    td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
+                                    td #{remise._etudiant._code_permanent}
                                     td #{remise._etat}
                                     td #{remise._dateRemise || "-"}
                                     td #{remise._dateCorrection || "-"}
