@@ -25,6 +25,7 @@ export class EspaceCours {
         this._dateFin = dateFin;
         this._etudiants = [];
         this._questions = [];
+        this._devoirs = [];
         this._enseignantId = _enseignantId;
     }
 
