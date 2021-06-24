@@ -1,0 +1,17 @@
+@startuml DSS_Ajouter_Question
+title DSS ajouter questionnaire
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : creerQuestionnaire(idEnseignant : int)
+professeur <-- systeme : liste des espaceCours de l'enseignant
+professeur -> systeme : selectionneCours(idEspaceCours : int)
+professeur <-- systeme : questionnaires associés à l'espaceCours
+
+loop !terminerQuestionnaire
+professeur -> systeme : selectionneCategorieQuestion(nomCategorie : String)
+systeme --> professeur : liste de questions par catégorie
+end
+professeur -> systeme : terminerAjouterQuestionnaire()
+@enduml
