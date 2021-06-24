@@ -297,11 +297,7 @@ export class SgaRouteur {
     }
 
     //#endregion Gestion Questions
-
-
-    //#region Gestion Devoirs
-
-    supprimerDevoirs(req, res, next) {
+    supprimerDevoir(req, res, next){
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -320,35 +316,29 @@ export class SgaRouteur {
         }
     }
 
-    /*    recupererTousDevoirs(req, res, next){
-            if (!AuthorizationHelper.isLoggedIn(req)) {
-                this._errorCode500(new UnauthorizedError(), req, res);
-                return;
-            }
-            try {
-                let id = parseInt(req.params.id);
-                let arrayQuestion: string;
-    
-                if (id != undefined) {
-                    arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirs(AuthorizationHelper.getIdUser(req));
-                } else {
-                    arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
-                }
-    
-                res.status(200)
-                    .send({
-                        message: 'Success',
-                        status: res.status,
-                        data: {
-                            idEspaceCours: id ?? "none",
-                            questions: JSON.parse(arrayQuestion)
-                        }
-                    });
-    
-            } catch (error) { this._errorCode500(error, req, res); }
-        }*/
+    recupererTousDevoirsEspaceCours(req, res, next){
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            this._errorCode500(new UnauthorizedError(), req, res);
+            return;
+        }
+        try {
+            let id = parseInt(req.params.id);
+            let arrayQuestion: string;
+            arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status,
+                    data: {
+                        idEspaceCours: id ?? "none",
+                        questions: JSON.parse(arrayQuestion)
+                    }
+                });
 
-    recupererDevoirs(req, res, next) {
+        } catch (error) { this._errorCode500(error, req, res); }
+    }
+
+    recupererUnDevoir(req, res, next){
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -368,7 +358,7 @@ export class SgaRouteur {
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
-    modifierDevoirs(req, res, next) {
+    modifierDevoir(req, res, next){
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -386,7 +376,7 @@ export class SgaRouteur {
 
     }
 
-    ajouterDevoirs(req, res, next) {
+    ajouterDevoir(req, res, next){
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -440,11 +430,10 @@ export class SgaRouteur {
         this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
         this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
         // Devoirs
-        this.router.get('/enseignant/devoir/ajouter/:id', this.ajouterDevoirs.bind(this));
-        this.router.get('/enseignant/devoir/', this.recupererToutesQuestions.bind(this));
-        this.router.get('/enseignant/devoir/:id', this.recupererToutesQuestions.bind(this));
-        this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUneQuestion.bind(this));
-        this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierQuestion.bind(this));
-        this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerQuestion.bind(this));
+        this.router.get('/enseignant/devoir/ajouter/:id', this.ajouterDevoir.bind(this));
+        this.router.get('/enseignant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
+        this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
+        this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
+        this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
     }
 }
