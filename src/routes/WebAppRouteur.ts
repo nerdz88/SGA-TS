@@ -219,6 +219,20 @@ export class WebAppRouteur {
 
     //#endregion Gestion Questions
 
+    //#region Gestion Questionnaires
+    public recupererTousQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            res.redirect("/login");
+            return;
+        }
+        try {
+        //TODO recupererTousQuestionnaires
+        let questionnaires = [];
+        res.render("enseignant/questionnaires/liste-questionnaires", { questionnaires: JSON.parse(questionnaires)})
+        } catch (error) { this._errorCode500(error, req, res); }
+    }
+
+    //#endregion Gestion Questionnaires
 
     private _errorCode500(error: any, req, res: Response<any>) {
         var code = 500;
@@ -254,6 +268,9 @@ export class WebAppRouteur {
         this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
         this.router.get('/enseignant/question/ajouter/:id', this.recupererAjouterQuestion.bind(this));
         this.router.get('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.recupererModifierQuestion.bind(this));
+
+        //Questionnaire
+        this.router.get('/enseignant/questionnaires/', this.recupererTousQuestionnaires.bind(this));
     }
 
 }
