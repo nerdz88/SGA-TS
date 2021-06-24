@@ -2,9 +2,6 @@
 skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour ajouter devoir
-participant ":EnseignantControleur" as sga
-participant "operationCours : OperationCours" as opCours
-participant "operationDevoir : OperationDevoir" as opDevoir
 participant "d:Devoir" as devoir
 
 

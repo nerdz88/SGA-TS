@@ -1,5 +1,6 @@
 import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { EspaceCours } from "./EspaceCours"
+import {Remise} from "./Remise";
 
 export class Devoir {
     private _id: number;
@@ -10,6 +11,7 @@ export class Devoir {
     private _dateDebut: Date;
     private _dateFin: Date;
     private _visible: boolean;
+    private _listeRemise: Remise[];
     static currentId: number = 0;
 
     constructor(devoirJson: string) {
@@ -20,6 +22,7 @@ export class Devoir {
         this._dateDebut = values.dateDebut;
         this._dateFin = values.dateFin;
         this._visible = values.visible;
+        //TODO INIT LA LISTE DE REMISE
         this._id = ++Devoir.currentId;
     }
 
