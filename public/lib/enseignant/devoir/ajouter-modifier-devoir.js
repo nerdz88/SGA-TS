@@ -3,8 +3,13 @@
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
 
-    $('.datepicker').datepicker();
-    $('.timepicker').timepicker();
+    $('.datepicker').datepicker({
+        defaultDate: new Date(),
+        format: "dd-mm-yyyy"
+    });
+    $('.timepicker').timepicker({
+        twelveHour: false
+    });
 
     $("#form-ajouter-devoir").on("submit", function (e) {
         //On veut envoyer le formulaire!
