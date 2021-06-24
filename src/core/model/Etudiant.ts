@@ -17,6 +17,10 @@ export class Etudiant {
         return this._id;
     }
 
+    public getNomComplet() {
+        return this.getNom() + ", " + this.getPrenom();
+    }
+
     public getNom() {
         return this._nom;
     }

@@ -9,6 +9,7 @@ import { WebAppRouteur } from './routes/WebAppRouteur';
 import { Universite } from './core/service/Universite';
 import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
 import { GestionnaireCours } from './core/controllers/GestionnaireCours';
+import { GestionnaireDevoir } from "./core/controllers/GestionnaireDevoir";
 
 
 export const universite: Universite = new Universite();
@@ -44,13 +45,14 @@ class App {
   }
 
   // Configure API endpoints.
-  private routes(): void {   
+  private routes(): void {
     let gestionaireCours = new GestionnaireCours(universite);
     let gestionnaireQuestion = new GestionnaireQuestion(universite);
+    let gestionnaireDevoir = new GestionnaireDevoir(universite);
     //Les routes d'API
-    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours,gestionnaireQuestion).router);  
+    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours, gestionnaireQuestion, gestionnaireDevoir).router);
     //Les routes du WebApp
-    this.expressApp.use('/', new WebAppRouteur(gestionaireCours,gestionnaireQuestion).router);
+    this.expressApp.use('/', new WebAppRouteur(gestionaireCours, gestionnaireQuestion, gestionnaireDevoir).router);
   }
 
 }
