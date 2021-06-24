@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { getDefaultSettings } from 'http2';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
+import { GestionnaireDevoir } from '../core/controllers/GestionnaireDevoir';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 
@@ -10,13 +11,14 @@ export class WebAppRouteur {
     // contrôleur GRASP
     private gestionnaireCours: GestionnaireCours;
     private gestionnaireQuestion: GestionnaireQuestion;
+    private gestionnaireDevoir: GestionnaireDevoir;
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion) {
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion, gestionnaireDevoir: GestionnaireDevoir) {
         this.gestionnaireCours = gestionnaireCours;
         this.gestionnaireQuestion = gestionnaireQuestion;
-
+        this.gestionnaireDevoir = gestionnaireDevoir;
         this.router = Router();
         this.init();
     }
@@ -224,89 +226,29 @@ export class WebAppRouteur {
     //#region Gestion Devoirs
 
     public recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
-        // if (!AuthorizationHelper.isLoggedIn(req)) {
-        //     res.redirect("/login");
-        //     return;
-        // }
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            res.redirect("/login");
+            return;
+        }
         try {
 
-            let listeDevoir = [
-                {
-                    _id: 1,
-                    _idEspaceCours: 1,
-                    _nom: "Devoir 1",
-                    _description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut tortor at ex ullamcorper posuere eget id ligula",
-                    _noteMaximale: 20,
-                    _dateDebut: new Date(2021, 6, 24, 10, 0, 0),
-                    _dateFin: new Date(2021, 7, 10, 10, 0, 0),
-                    _visible: true
-                },
-                {
-                    _id: 2,
-                    _idEspaceCours: 1,
-                    _nom: "Devoir 2",
-                    _description: "Consectetur adipiscing elit. Morbi ut tortor at ex ullamcorper posuere eget id ligula.Lorem ipsum dolor sit amet. ",
-                    _noteMaximale: 15,
-                    _dateDebut: new Date(2021, 6, 25, 11, 0, 0),
-                    _dateFin: new Date(2021, 7, 15, 12, 40, 0),
-                    _visible: false
-                },
-                {
-                    _id: 3,
-                    _idEspaceCours: 1,
-                    _nom: "Devoir 3",
-                    _description: "Consectetur adipiscing elit. Morbi ut tortor at ex ullamcorper posuere eget id ligula.Lorem ipsum dolor sit amet. ",
-                    _noteMaximale: 45,
-                    _dateDebut: new Date(2021, 6, 10, 9, 0, 0),
-                    _dateFin: new Date(2021, 6, 25, 12, 40, 0),
-                    _visible: true
-                },
-            ]
+
             res.render("enseignant/devoir/liste-devoir", { devoirs: listeDevoir, espaceCours: {} });
 
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
-    public recupererUnDevoirs(req: Request, res: Response, next: NextFunction) {
-        // if (!AuthorizationHelper.isLoggedIn(req)) {
-        //     res.redirect("/login");
-        //     return;
-        // }
+    public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            res.redirect("/login");
+            return;
+        }
         try {
 
-            let devoir1 = {
-                _id: 1,
-                _idEspaceCours: 1,
-                _nom: "Devoir 1",
-                _description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut tortor at ex ullamcorper posuere eget id ligula",
-                _noteMaximale: 20,
-                _dateDebut: new Date(2021, 6, 24, 10, 0, 0),
-                _dateFin: new Date(2021, 7, 10, 10, 0, 0),
-                _visible: true,
-                _remises: [
-                    {
-                        _id: 1,
-                        _idEtudiant: 1,
-                        _etat: "NonRemis"
-                    },
-                    {
-                        _id: 1,
-                        _idEtudiant: 2,
-                        _dateRemise: new Date(2021, 6, 24, 12, 0, 0),
-                        _etat: "Remis"
-                    },
-                    {
-                        _id: 2,
-                        _idEtudiant: 3,
-                        _dateRemise: new Date(2021, 6, 24, 12, 0, 0),
-                        _dateCorrection: new Date(2021, 6, 24, 13, 0, 0),
-                        _note: 18,
-                        _etat: "RemisCorriger"
-                    }
-                ]
-            };
-
-            res.render("enseignant/devoir/detail-devoir", { devoir: devoir1 });
+            let idEspaceCours = parseInt(req.params.idEspaceCours);
+            let idDevoir = parseInt(req.params.idDevoir);
+            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir);
+            res.render("enseignant/devoir/detail-devoir", { devoir: devoir });
 
         } catch (error) { this._errorCode500(error, req, res); }
     }
@@ -393,7 +335,7 @@ export class WebAppRouteur {
 
         //Devoirs
         this.router.get('/enseignant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
-        this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirs.bind(this));
+        this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
 
         this.router.get('/enseignant/devoir/ajouter/:id', this.recupererAjouterDevoir.bind(this));
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));

@@ -6,7 +6,7 @@ import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import { User } from '../core/model/User';
 import { SGBService } from '../core/service/SGBService';
-import {GestionnaireDevoir} from "../core/controllers/GestionnaireDevoir";
+import { GestionnaireDevoir } from "../core/controllers/GestionnaireDevoir";
 
 
 //Le routeur permettant de gérer notre API SGA (Retourne du JSON)
@@ -19,7 +19,7 @@ export class SgaRouteur {
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion, gestionnaireDevoir : GestionnaireDevoir) {
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion, gestionnaireDevoir: GestionnaireDevoir) {
         this.gestionnaireCours = gestionnaireCours;  // init contrôleur GRASP
         this.gestionnaireQuestion = gestionnaireQuestion;
         this.gestionnaireDevoir = gestionnaireDevoir;
@@ -116,21 +116,21 @@ export class SgaRouteur {
      * @param next 
      * @returns 
      */
-     public recupererTousEspaceCours(req: Request, res: Response, next: NextFunction) {
-         if (!AuthorizationHelper.isLoggedIn(req)) {
-             this._errorCode500(new UnauthorizedError(), req, res);
-             return;
-         }
-         try {
-             let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getIdUser(req));
-             res.status(200)
-                 .send({
-                     message: 'Success',
-                     status: res.status,
-                     espaceCours: JSON.parse(value)
-                 });
-         } catch (error) { this._errorCode500(error, req, res); }
-     }
+    public recupererTousEspaceCours(req: Request, res: Response, next: NextFunction) {
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            this._errorCode500(new UnauthorizedError(), req, res);
+            return;
+        }
+        try {
+            let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getIdUser(req));
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status,
+                    espaceCours: JSON.parse(value)
+                });
+        } catch (error) { this._errorCode500(error, req, res); }
+    }
 
     /**
      * Methode GET qui retourne les details d'un cours
@@ -297,7 +297,11 @@ export class SgaRouteur {
     }
 
     //#endregion Gestion Questions
-    supprimerDevoirs(req, res, next){
+
+
+    //#region Gestion Devoirs
+
+    supprimerDevoirs(req, res, next) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -316,35 +320,35 @@ export class SgaRouteur {
         }
     }
 
-/*    recupererTousDevoirs(req, res, next){
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            this._errorCode500(new UnauthorizedError(), req, res);
-            return;
-        }
-        try {
-            let id = parseInt(req.params.id);
-            let arrayQuestion: string;
-
-            if (id != undefined) {
-                arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirs(AuthorizationHelper.getIdUser(req));
-            } else {
-                arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+    /*    recupererTousDevoirs(req, res, next){
+            if (!AuthorizationHelper.isLoggedIn(req)) {
+                this._errorCode500(new UnauthorizedError(), req, res);
+                return;
             }
+            try {
+                let id = parseInt(req.params.id);
+                let arrayQuestion: string;
+    
+                if (id != undefined) {
+                    arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirs(AuthorizationHelper.getIdUser(req));
+                } else {
+                    arrayQuestion = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+                }
+    
+                res.status(200)
+                    .send({
+                        message: 'Success',
+                        status: res.status,
+                        data: {
+                            idEspaceCours: id ?? "none",
+                            questions: JSON.parse(arrayQuestion)
+                        }
+                    });
+    
+            } catch (error) { this._errorCode500(error, req, res); }
+        }*/
 
-            res.status(200)
-                .send({
-                    message: 'Success',
-                    status: res.status,
-                    data: {
-                        idEspaceCours: id ?? "none",
-                        questions: JSON.parse(arrayQuestion)
-                    }
-                });
-
-        } catch (error) { this._errorCode500(error, req, res); }
-    }*/
-
-    recupererDevoirs(req, res, next){
+    recupererDevoirs(req, res, next) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -364,7 +368,7 @@ export class SgaRouteur {
         } catch (error) { this._errorCode500(error, req, res); }
     }
 
-    modifierDevoirs(req, res, next){
+    modifierDevoirs(req, res, next) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -382,7 +386,7 @@ export class SgaRouteur {
 
     }
 
-    ajouterDevoirs(req, res, next){
+    ajouterDevoirs(req, res, next) {
         if (!AuthorizationHelper.isLoggedIn(req)) {
             this._errorCode500(new UnauthorizedError(), req, res);
             return;
@@ -401,6 +405,8 @@ export class SgaRouteur {
         }
 
     }
+
+    //#endregion Gestion Devoirs
 
     private _errorCode500(error: any, req, res: Response<any>) {
         var code = 500;
