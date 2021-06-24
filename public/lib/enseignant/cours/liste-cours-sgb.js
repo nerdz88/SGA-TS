@@ -1,5 +1,23 @@
 //Fichier Javascript pour la page de liste de cours d'un enseignant
-
+let badges = document.getElementsByClassName("badgeDisponible");
+setInterval(async ()=>{
+   for(var i=0;i<badges.length;i++){
+      let currentObject= badges[i];
+      let attribut = currentObject.getAttribute("name");
+      var endPoint = "/enseignant/cours/verifierDispo/"+attribut;
+      $.ajax({
+         type: "GET",
+         url: endPoint,
+         success: function (data) {
+            currentObject.style.backgroundColor = data.estDisponible ? "green" : "red";
+            currentObject.innerHTML=data.estDisponible ?"Disponible":"Indisponible";
+         },
+         error: function (e) {
+            showErrorToast("erreur dans le sgb");
+         }
+      });
+   }
+},2000)
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
 

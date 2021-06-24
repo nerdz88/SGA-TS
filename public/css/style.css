@@ -56,7 +56,17 @@ body {
 .text-bolder{
   font-weight: 700;
 }
-
+.badgeDisponible {
+  background-color: green;
+    color: #fff;
+    font-size: 75%;
+    font-weight: 700;
+    text-align: center;
+    border-radius: .25rem;
+    line-height: 22px;
+    padding: 0 6px;
+    float: right;
+}
 
 
 /* 
