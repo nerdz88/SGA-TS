@@ -1,0 +1,18 @@
+@startuml DSS_Ajouter_Devoir
+title DSS Ajouter Devoir
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererTousEspaceCours(token : String)
+professeur <-- systeme : liste des espaceCours de l'enseignant
+professeur -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours : int)
+professeur <-- systeme : devoir associées à l'espaceCours
+
+loop !terminerDevoir
+professeur -> systeme : ajouterDevoir(nom: string, \ndescription: string, \nnoteMaximale: number, \ndateDebut: Date, \ndateFin: Date, \nvisible: boolean)
+systeme --> professeur : liste de devoirs mise à jour
+end
+professeur -> systeme : terminerAjouterDevoir()
+
+@enduml
