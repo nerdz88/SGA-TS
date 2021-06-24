@@ -22,6 +22,21 @@ class Etudiant {
 class Tag{
     nom : String
 }
+class Devoir{
+    id: int
+    nom: String
+}
+
+class Remise{
+    id: int
+    idEtudiant:int
+}
+
+enum Etat{
+    NonRemis
+    Remis
+    RemisCorrige
+}
 
 class Question{
     id : int
@@ -32,16 +47,26 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-class EspaceCours{
+class Questionnaire{
+    id: int
+    description: String
 }
 
+class EspaceCours{
+}
+Devoir "1"--"*" Remise : contient >
+Remise"1"--"1" Etat : possède >
+EspaceCours "1"--"1..*" Devoir: contient >
 Enseignant "1"--"1..*" EspaceCours : enseigne >
 Université "1"--"*" Enseignant : emploie >
 Cours "1"-- "1" EspaceCours : décrit >
-Université "1"-up-"*" Cours : contient >
+Université "1"--"*" Cours : contient >
 EspaceCours "1"-- "*"Etudiant : est_suivi_par >
 Question "1" -- "*"Tag : < catégorise
+Questionnaire "1"--"1..*" Question : contient >
+Questionnaire"1"--"1" Etat : possède >
 Université "1"--"*" EspaceCours : contient >
-Université "1"-right-"*" Etudiant : est-inscrit-à <
-Question "*"-up-"1" EspaceCours : contient <
+Université "1"--"*" Etudiant : est-inscrit-à <
+Question "*"--"1" EspaceCours : contient <
+Questionnaire "*"--"1" EspaceCours : contient >
 @enduml
