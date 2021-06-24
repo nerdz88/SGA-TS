@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
@@ -9,12 +10,14 @@ export class WebAppRouteur {
     // contrôleur GRASP
     private gestionnaireCours: GestionnaireCours;
     private gestionnaireQuestion: GestionnaireQuestion;
+    private gestionnaireQuestionnaire : GestionnaireQuestionnaire;
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion) {
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion,gestionnaireQuestionnaire: GestionnaireQuestionnaire) {
         this.gestionnaireCours = gestionnaireCours;
         this.gestionnaireQuestion = gestionnaireQuestion;
+        this.gestionnaireQuestionnaire=gestionnaireQuestionnaire;
 
         this.router = Router();
         this.init();

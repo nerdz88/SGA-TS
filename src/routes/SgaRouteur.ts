@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
 import { NotFoundError } from '../core/errors/NotFoundError';
 import { UnauthorizedError } from '../core/errors/UnAuthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
@@ -13,13 +14,15 @@ export class SgaRouteur {
     router: Router;
     private gestionnaireCours: GestionnaireCours;
     private gestionnaireQuestion: GestionnaireQuestion;
+    private gestionnaireQuestionnaire : GestionnaireQuestionnaire;
 
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion) {
-        this.gestionnaireCours = gestionnaireCours;  // init contrôleur GRASP
+     constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion,gestionnaireQuestionnaire: GestionnaireQuestionnaire) {
+        this.gestionnaireCours = gestionnaireCours;
         this.gestionnaireQuestion = gestionnaireQuestion;
+        this.gestionnaireQuestionnaire=gestionnaireQuestionnaire;
         this.router = Router();
         this.init();
     }
@@ -305,6 +308,34 @@ export class SgaRouteur {
         res.status(code).json({ error: error.toString() });
     }
 
+    public recupererToutesQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        if (!AuthorizationHelper.isLoggedIn(req)) {
+            this._errorCode500(new UnauthorizedError(), req, res);
+            return;
+        }
+        try {
+            let id = parseInt(req.params.id);
+            let arrayQuestionnaire: string;
+            
+            if (id != undefined) {
+                arrayQuestionnaire = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
+            } else {
+                arrayQuestionnaire = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
+            }
+
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status,
+                    data: {
+                        idEspaceCours: id ?? "none",
+                        questionnaire: JSON.parse(arrayQuestionnaire)
+                    }
+                });
+
+        } catch (error) { this._errorCode500(error, req, res); }
+    }
+
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
@@ -327,5 +358,8 @@ export class SgaRouteur {
         this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
         this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
         this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
+    
+        //Questionnaire
+        this.router.get('/ensegnant/questionnaire/',this.recupererToutesQuestionnaires.bind(this));
     }
 }
