@@ -2,21 +2,25 @@ import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { EspaceCours } from "./EspaceCours"
 
 export class Devoir {
+    private _id: number;
+    private _idEspaceCours: number
     private _nom: string;
     private _description: string;
     private _noteMaximale: number;
     private _dateDebut: Date;
     private _dateFin: Date;
     private _visible: boolean;
+    static currentId: number = 0;
 
-
-    constructor(nom: string, description: string, noteMaximale: number, dateDebut: Date, dateFin: Date, visible: boolean) {
-        this._nom = nom;
-        this._description = description;
-        this._noteMaximale = noteMaximale;
-        this._dateDebut = dateDebut;
-        this._dateFin = dateFin;
-        this._visible = visible;
+    constructor(devoirJson: string) {
+        let values = JSON.parse(devoirJson);
+        this._nom = values.nom;
+        this._description = values.description;
+        this._noteMaximale = values.noteMaximale;
+        this._dateDebut = values.dateDebut;
+        this._dateFin = values.dateFin;
+        this._visible = values.visible;
+        this._id = ++Devoir.currentId;
     }
 
     get nom(): string {
