@@ -3,6 +3,7 @@ import { getDefaultSettings } from 'http2';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from '../core/controllers/GestionnaireDevoir';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
@@ -12,11 +13,13 @@ export class WebAppRouteur {
     private gestionnaireCours: GestionnaireCours;
     private gestionnaireQuestion: GestionnaireQuestion;
     private gestionnaireDevoir: GestionnaireDevoir;
+    private gestionnaireQuestionnaire : GestionnaireQuestionnaire
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireQuestion: GestionnaireQuestion, gestionnaireDevoir: GestionnaireDevoir) {
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireDevoir: GestionnaireDevoir,gestionnaireQuestion: GestionnaireQuestion,gestionnaireQuestionnaire: GestionnaireQuestionnaire) {
         this.gestionnaireCours = gestionnaireCours;
+        this.gestionnaireQuestionnaire = gestionnaireQuestionnaire;
         this.gestionnaireQuestion = gestionnaireQuestion;
         this.gestionnaireDevoir = gestionnaireDevoir;
         this.router = Router();

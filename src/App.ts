@@ -10,6 +10,7 @@ import { Universite } from './core/service/Universite';
 import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
 import { GestionnaireCours } from './core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from "./core/controllers/GestionnaireDevoir";
+import { GestionnaireQuestionnaire } from './core/controllers/GestionnaireQuestionnaire';
 
 
 export const universite: Universite = new Universite();
@@ -48,11 +49,13 @@ class App {
   private routes(): void {
     let gestionaireCours = new GestionnaireCours(universite);
     let gestionnaireQuestion = new GestionnaireQuestion(universite);
+    let gestionnaireQuestionnaire = new GestionnaireQuestionnaire(universite)
     let gestionnaireDevoir = new GestionnaireDevoir(universite);
-    //Les routes d'API
-    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours, gestionnaireQuestion, gestionnaireDevoir).router);
+
+   //Les routes d'API
+    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours,gestionnaireDevoir, gestionnaireQuestion, gestionnaireQuestionnaire).router);
     //Les routes du WebApp
-    this.expressApp.use('/', new WebAppRouteur(gestionaireCours, gestionnaireQuestion, gestionnaireDevoir).router);
+    this.expressApp.use('/', new WebAppRouteur(gestionaireCours,gestionnaireDevoir, gestionnaireQuestion, gestionnaireQuestionnaire).router);
   }
 
 }
