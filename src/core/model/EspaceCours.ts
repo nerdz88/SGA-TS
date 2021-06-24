@@ -3,6 +3,7 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "./Cours";
 import { Etudiant } from "./Etudiant";
 import { Question } from "./Question";
+import {Devoir} from "./Devoir";
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
@@ -10,6 +11,7 @@ export class EspaceCours {
     private _enseignantId: number;
     private _etudiants: Etudiant[];
     private _questions: Question[];
+    private _devoirs: Devoir[];
     private _cours: Cours;
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
@@ -59,6 +61,10 @@ export class EspaceCours {
         if (q == undefined)
             throw new NotFoundError("La question " + idQuestion + " n'existe pas")
         return q;
+    }
+
+    public ajouterDevoir(devoirJson: String){
+        //TODO
     }
 
     public getID() {
