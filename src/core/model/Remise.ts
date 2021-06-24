@@ -11,14 +11,16 @@ export class Remise{
     private _dateRemise : Date;
     private _note : number;
     private _etat :  Etat;
+    private _dateDeCorrection : Date;
 
 
-    constructor(id: number, idEtudiant: number, dateRemise: Date, note: number, etat: Etat) {
+    constructor(id: number, idEtudiant: number, dateRemise: Date, note: number, etat: Etat, dateDeCorrection: Date) {
         this._id = id;
         this._idEtudiant = idEtudiant;
         this._dateRemise = dateRemise;
         this._note = note;
         this._etat = etat;
+        this._dateDeCorrection = dateDeCorrection;
     }
 
     get id(): number {
@@ -61,5 +63,12 @@ export class Remise{
         this._etat = value;
     }
 
+    get dateDeCorrection(): Date {
+        return this._dateDeCorrection;
+    }
+
+    set dateDeCorrection(value: Date) {
+        this._dateDeCorrection = value;
+    }
 }
 
