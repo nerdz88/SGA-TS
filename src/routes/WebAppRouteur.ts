@@ -1,10 +1,7 @@
-import { Router, Request, Response, NextFunction, response } from 'express';
-import { NotFoundError } from '../core/errors/NotFoundError';
-import { SGBService } from '../core/service/SGBService';
-import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
-import { Cours } from '../core/model/Cours';
+import { NextFunction, Request, Response, Router } from 'express';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
+import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
 export class WebAppRouteur {
@@ -70,7 +67,7 @@ export class WebAppRouteur {
             return;
         }
         let self = this;
-        SGBService.recupererJsonCours(AuthorizationHelper.getCurrentToken(req))
+        this.gestionnaireCours.recupererGroupesCours(AuthorizationHelper.getCurrentToken(req))
             .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse }))
             .catch(error => self._errorCode500(error, req, res));
     }
@@ -119,7 +116,7 @@ export class WebAppRouteur {
             let id: number = parseInt(req.params.id);
             let coursValue = this.gestionnaireCours.recupererUnEspaceCours(id);
             let cours = JSON.parse(coursValue);
-            if(parseInt(cours._enseignantId)!=AuthorizationHelper.getIdUser(req)){
+            if (parseInt(cours._enseignantId) != AuthorizationHelper.getIdUser(req)) {
                 res.redirect("/")
                 return
             }

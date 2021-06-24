@@ -4,7 +4,10 @@ hide footbox
 actor ":Enseignant" as prof
 participant ":Systeme" as sys
 
-prof -> sys : recupererEspacesCoursSgb(token : String)
+' Lionel: Dans le SGB c'est juste des cours/groupes cours
+' Alors: recupererEspacesCoursSgb => recupererGroupesCours
+' Pas besoin de spécifier SGB pcq on n'a pas de GroupesCours dans le SGA 
+prof -> sys : recupererGroupesCours(token : String)
 sys --> prof : liste des groupes-cours qu’enseigne l’enseignant
 prof -> sys : ajouterEspaceCours(tokenEnseignant : String, idEspaceCours : String)
 sys --> prof : information du cours et liste des etudiants\ninscrits dans le groupe-cours correspondant

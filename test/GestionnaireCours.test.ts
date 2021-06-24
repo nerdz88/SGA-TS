@@ -48,7 +48,7 @@ describe('Test gestionnaire des cours - Ajouter', () => {
 
         expect(response.status).toBe(400);
         expect(response.type).toBe("application/json");
-        expect(response.body.error).toContain("existe déjà");
+        expect(response.body.error).toContain("a déjà été choisi par un autre enseignant");
         done();
     });
 });

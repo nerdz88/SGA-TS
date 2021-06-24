@@ -1,8 +1,7 @@
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
-import { Cours } from "../model/Cours"
+import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
-import { Question } from "../model/Question"
 import { SGBService } from "./SGBService";
 
 export class Universite {
@@ -14,15 +13,14 @@ export class Universite {
     }
 
     //Reset pour les tests
-    public reset(){
+    public reset() {
         this.arrayEspaceCours = new Array();
         this.arrayCours = new Array();
     }
 
-
-    public async ajouterEspaceCours(coursSGB: any, token: string, idEnseignant : number) {
+    public async ajouterEspaceCours(coursSGB: any, token: string, idEnseignant: number) {
         if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
-            throw new AlreadyExistsError(coursSGB._titre + " ,gr: "+coursSGB._id+" a déjà été choisi par un autre enseignant");
+            throw new AlreadyExistsError(coursSGB._titre + " ,gr: " + coursSGB._id + " a déjà été choisi par un autre enseignant");
         }
 
         let cours = this.getCoursBySigle(coursSGB._sigle);
@@ -36,27 +34,10 @@ export class Universite {
             coursSGB._groupe,
             coursSGB._date_debut,
             coursSGB._date_fin,
-            cours,idEnseignant);
+            cours, idEnseignant);
         espaceCours.ajouterEtudiants(etudiants);
         this.arrayEspaceCours.push(espaceCours);
     }
-
-
-
-    // public ajouterCours(etudiants: any, idGroupeCours: number, numeroGroupe: string, sigle: string, titre: string, nbMaxEtudiant: number, dateDebut: string, dateFin: string, token?: string) {
-    //     let index = this.getIndexCoursBySigle(sigle);
-    //     if (index != -1) {
-    //         let groupe = new EspaceCours(idGroupeCours, numeroGroupe, dateDebut, dateFin);
-    //         groupe.ajouterEtudiants(etudiants);
-    //         this.arrayEspaceCours[index].ajoutGroupeCours(groupe);
-    //     } else if (sigle != null) {
-    //         let cours = new Cours(sigle, titre, nbMaxEtudiant);
-    //         let groupe = new EspaceCours(idGroupeCours, numeroGroupe, dateDebut, dateFin);
-    //         groupe.ajouterEtudiants(etudiants);
-    //         cours.ajoutGroupeCours(groupe);
-    //         this.arrayEspaceCours.push(cours);
-    //     }
-    // }
 
     public recupererUnEspaceCours(id: number): EspaceCours {
         let index = this.getIndexEspaceCoursById(id);
@@ -67,15 +48,14 @@ export class Universite {
 
     public recupererTousEspaceCours(idEnseignant: number): EspaceCours[] {
         //TODO filtrer selon le token
-        let arrayEspaceCoursDeEnseignant=[];
-        this.arrayEspaceCours.forEach(element =>{
-            if(element.getIdEnseignant()==idEnseignant){
+        let arrayEspaceCoursDeEnseignant = [];
+        this.arrayEspaceCours.forEach(element => {
+            if (element.getIdEnseignant() == idEnseignant) {
                 arrayEspaceCoursDeEnseignant.push(element);
             }
         });
         return arrayEspaceCoursDeEnseignant;
     }
-
 
     public supprimerEspaceCours(id: number): boolean {
         let index = this.getIndexEspaceCoursById(id);
@@ -86,27 +66,6 @@ export class Universite {
         return true;
     }
 
-    // public supprimerCours(sigle: string, idGroupe: number): boolean {
-    //     let indexCours = this.getIndexCoursBySigle(sigle);
-    //     if (indexCours == -1) {
-    //         return false;
-    //     }
-    //     let cours = this.arrayEspaceCours[indexCours];
-    //     if (cours.getTailleCours() == 1 && cours.getGroupeCours()[0].getID() == idGroupe) {
-    //         this.arrayEspaceCours.splice(indexCours, 1);
-    //     } else {
-    //         let indexGroupe = cours.getGroupeCours().findIndex(g => g.getID() == idGroupe);
-    //         if (indexGroupe == -1) {
-    //             return false;
-    //         }
-    //         cours.getGroupeCours().splice(indexGroupe, 1);
-    //     }
-    //     return true;
-    // }
-
-    /*private getIndexCoursBySigle(sigle: string) {
-        return this.arrayCours.findIndex(c => c.getSigle() == sigle);
-    }*/
     private getCoursBySigle(sigle: string) {
         return this.arrayCours.find(c => c.getSigle() == sigle);
     }
@@ -115,7 +74,4 @@ export class Universite {
         return this.arrayEspaceCours.findIndex(c => c.getID() == id);
     }
 
-    /*public recupererTousEspaceCours() {
-        return this.arrayEspaceCours;
-    }*/
 }

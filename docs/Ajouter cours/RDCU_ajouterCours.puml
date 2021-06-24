@@ -20,8 +20,8 @@ note right : Selon Contôleur,\nreçoit l'opération système
   note left : Selon créateur, Université\nagrège plusieurs EspaceCours
   sga -> cours : ajouterEtudiants(etudiants)
   note right : Selon expert, EspaceCours doit stocker\ntous les étudiants pour qu'il puisse\ndevenir expert pour les prochains appels
-  -> controlleur : information = recupererCours(tokenEnseignant)
+  -> controlleur : information = recupererEspaceCours(tokenEnseignant)
   note right : Selon indirection, évite le couplage entre\nle routeurqui fait l'appel initial et Université.
-  controlleur -> sga : information = recupereCours(tokenEnseignant)
+  controlleur -> sga : information = recupererEspaceCours(tokenEnseignant)
   note left : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
   @enduml
