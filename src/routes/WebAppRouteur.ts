@@ -210,11 +210,11 @@ export class WebAppRouteur {
     }
 
     public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
-        let ordreTri: number = parseInt(req.query.ordreTri?.toString());
+        let ordreTri: number = parseInt(req.query.o?.toString());
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
         let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
-        res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir) });
+        res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir), currentOrdre: ordreTri });
 
     }
 
