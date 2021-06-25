@@ -1,11 +1,7 @@
-export class SgbError extends Error {
-    private _code: number = 414;
+import { HttpError } from "./HttpError";
 
-    constructor(message :string) {
+export class SgbError extends HttpError {
+    constructor(message: string) {
         super(message);
-    }
-
-    get code() {
-        return this._code;
-    }
+    } 
 }

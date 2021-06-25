@@ -48,7 +48,7 @@ describe('Test gestionnaire des cours - Ajouter', () => {
 
         expect(response.status).toBe(400);
         expect(response.type).toBe("application/json");
-        expect(response.body.error).toContain("a déjà été choisi par un autre enseignant");
+        expect(response.body.error.message).toContain("a déjà été choisi par un autre enseignant");
         done();
     });
 });
@@ -101,7 +101,7 @@ describe('Test gestionnaire des cours - Récupérer 1 espaces cours', () => {
             .end(function (err, res) {
                 expect(res.status).toBe(404);
                 expect(res.type).toBe("application/json");
-                expect(res.body.error).toContain("n'existe pas");
+                expect(res.body.error.message).toContain("n'existe pas");
                 done();
             });
     });
@@ -141,7 +141,7 @@ describe('Test gestionnaire des cours - Supprimer 1 espaces cours', () => {
             .end(function (err, res) {
                 expect(res.status).toBe(404);
                 expect(res.type).toBe("application/json");
-                expect(res.body.error).toContain("Le cours n'a pas été supprimé");
+                expect(res.body.error.message).toContain("Le cours n'a pas été supprimé");
                 done();
             });
     });
@@ -164,7 +164,7 @@ describe('Test gestionnaire des cours - Supprimer 1 espaces cours', () => {
             .end(function (err, res) {
                 expect(res.status).toBe(404);
                 expect(res.type).toBe("application/json");
-                expect(res.body.error).toContain("n'existe pas");
+                expect(res.body.error.message).toContain("n'existe pas");
                 done();
             });
     });

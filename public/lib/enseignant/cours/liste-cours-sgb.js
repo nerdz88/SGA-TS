@@ -13,11 +13,11 @@ setInterval(async ()=>{
             currentObject.innerHTML=data.estDisponible ?"Disponible":"Indisponible";
          },
          error: function (e) {
-            showErrorToast("erreur dans le sgb");
-         }
+            showErrorToast(e.responseJSON.error.message);
+        }
       });
    }
-},2000)
+},100000) //TODO ecq on a beosin de mettre ça dans un interval?
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
 
@@ -37,13 +37,10 @@ window.addEventListener("load", function () {
             window.location.href = "/enseignant/cours/detail/" + data.idEspaceCours;
          },
          error: function (e) {
-            showErrorToast(e.responseJSON.error);
+             showErrorToast(e.responseJSON.error.message);
          }
       });
    });
-
-
-
 
    console.log("liste-cours.js => Page Load");
 });

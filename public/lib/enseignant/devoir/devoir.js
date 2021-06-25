@@ -14,14 +14,13 @@ window.addEventListener("load", function () {
                 confirm: function () {
                     $.ajax({
                         type: "DELETE",
-                        url: "/api/v1/enseignant/devoir/supprimer/" + idEspaceCours  + "/" + idDevoir,
+                        url: "/api/v1/enseignant/devoir/supprimer/" + idEspaceCours + "/" + idDevoir,
                         success: function () {
                             var endpoint = "/enseignant/devoir" + (idEspaceCours ? "/" + idEspaceCours : "");
                             window.location.href = endpoint;
                         },
-                        error: function () {
-                            console.log("Supprimer Question - KO");
-                            showErrorToast("Erreur", "La question n'a pas été supprimé");                         
+                        error: function (e) {
+                            showErrorToast(e.responseJSON.error.message);
                         }
                     });
                 }

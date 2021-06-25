@@ -19,9 +19,8 @@ window.addEventListener("load", function () {
                         success: function () {
                             window.location.href = "/enseignant/cours";
                         },
-                        error: function () {
-                            console.log("Supprimer Cours - KO");
-                            showErrorToast("Erreur", "Le cours n'a pas été supprimé");
+                        error: function (e) {
+                            showErrorToast(e.responseJSON.error.message);
                         }
                     });
                 }
