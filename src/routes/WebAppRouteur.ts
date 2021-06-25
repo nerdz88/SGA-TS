@@ -228,7 +228,7 @@ export class WebAppRouteur {
         try {
         //TODO recupererTousQuestionnaires
         let questionnaires = [];
-        res.render("enseignant/questionnaires/liste-questionnaires", { questionnaires: JSON.parse(questionnaires)})
+        res.render("enseignant/questionnaire/liste-questionnaires", { questionnaire: JSON.parse(JSON.stringify(questionnaires)), espaceCours: JSON.parse("{}") })
         } catch (error) { this._errorCode500(error, req, res); }
     }
 

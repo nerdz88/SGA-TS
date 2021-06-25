@@ -25,7 +25,8 @@ block content
                   a(class="btn-delete-cours" href="javascript:void(0)" 
                     data-id-espace-cours=espace._id
                     data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero
-                    ) Supprimer 
+                    ) Supprimer
+                  a(class="btn-questionnaire-cours" href="/temporaire" + espace._id) Questionnaires 
           else
             div.col.s12
               em Vous n'avez pas de cours

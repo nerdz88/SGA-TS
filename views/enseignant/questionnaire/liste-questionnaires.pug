@@ -11,7 +11,7 @@ block content
                     div.col.s12
                         a(class="waves-effect waves-light btn btn-ajouter-question" href="/enseignant/questionnaires/ajouter/" + espaceCours._id) Ajouter          
             div.row
-                if questionnaires.length > 0
+                if questionnaires != undefined && questionnaires.length > 0 
                     div.section
                         div.row
                             each questionnaire in questionnaires
@@ -22,9 +22,9 @@ block content
                                                 div.text-bolder #{questionnaire._nom}                                                          
                                             div #{questionnaire._descriptionQuestionnaire}                                                  
                                         div.card-action
-                                            a(class="btn-detail-question" href="/enseignant/question/detail/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Détail
-                                            a(class="btn-modifier-question" href="/enseignant/question/modifier/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Modifier              
-                                            a(class="btn-delete-question" href="javascript:void(0)"
+                                            a(class="btn-detail-questionnaire" href="/enseignant/question/detail/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Détail
+                                            a(class="btn-modifier-questionnaire" href="/enseignant/question/modifier/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Modifier              
+                                            a(class="btn-delete-questionnaire" href="javascript:void(0)"
                                                 data-id-question=uneQuestion._id
                                                 data-nom=uneQuestion._nom
                                                 data-id-espace-cours=uneQuestion._idEspaceCours) Supprimer 
