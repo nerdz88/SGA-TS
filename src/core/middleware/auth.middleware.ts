@@ -5,15 +5,12 @@ import { AuthorizationHelper } from '../helper/AuthorizationHelper';
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
     //On skip les fichiers de ressources 
 
-    if (!isPublicFile(req.originalUrl) && !AuthorizationHelper.isLoggedIn(req)) {
-        if(req.baseUrl.startsWith("/api/v"))
+    if (!isPublicFile(req.url) && !AuthorizationHelper.isLoggedIn(req)) {
+        if(req.url.startsWith("/api/v"))
         {
             throw new UnauthorizedError();
         }
-        else
-        {  
-            res.redirect("/login");
-        }                   
+        res.redirect("/login");                
     }
 
     next();    
