@@ -66,6 +66,8 @@ export class EspaceCours {
     public recupererToutesQuestions(): Question[] {
         return this._questions;
     }
+
+
     public recupererUneQuestion(idQuestion: number): Question {
         let q = this._questions.find(c => c.getId() == idQuestion);
         if (q == undefined)
@@ -135,5 +137,13 @@ export class EspaceCours {
     }
     public getDateFin() {
         return this._dateFin;
+    }
+
+    public recupererToutQuestionnaires():Questionnaire[]{
+        return this._questionnaires;
+    }
+    public recupererUnQuestionnaire(idQuestionnaire: number): Questionnaire {
+        let q = this._questionnaires.find(c => c.getId() == idQuestionnaire);
+        return q;
     }
 }

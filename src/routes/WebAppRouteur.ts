@@ -105,6 +105,36 @@ export class WebAppRouteur {
         res.render("enseignant/cours/detail-cours", { espaceCours: cours });
     }
 
+    public recupererToutQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let questionnaires = "{}";
+        let arrayQuestionnaire: string;
+        //let idEspaceCours = parseInt(req.params.id);
+        let idEspaceCours = 3;
+        if (req.params.idQuestionnaire != undefined) {
+            console.log("entree")
+            let id = parseInt(req.params.idQuestionnaire);
+            //let id=
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours,id);
+        } else {
+            console.log("tout questionnaire")
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererToutQuestionnaires(idEspaceCours);
+            console.log(arrayQuestionnaire)
+        }
+        //côté front ***
+        //res.render("enseignant/questionnaire/liste-questionnaire", { questionnaire: JSON.parse(arrayQuestionnaire)});
+    }
+
+    public creerQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let id = req.params.id;
+        //côté front
+        /*res.render("enseignant/question/ajouter-modifier-questionnaire",
+            {
+                idEspaceCours: id,
+                question: {},
+                estModification: false
+            });*/
+    }
+
     //#endregion Gestion Cours
 
     //#region Gestion Questions
@@ -119,7 +149,6 @@ export class WebAppRouteur {
     public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
         let espaceCours = "{}";
         let arrayQuestion: string;
-
         if (req.params.id == undefined) {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
         } else {
@@ -249,6 +278,9 @@ export class WebAppRouteur {
         this.router.get('/enseignant/devoir/ajouter/:id', this.recupererAjouterDevoir.bind(this));
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));
 
+        //Questionnaire
+        this.router.get('/enseignant/questionnaire/',this.recupererToutQuestionnaires.bind(this))
+        this.router.get('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaires.bind(this));
     }
 
 }
