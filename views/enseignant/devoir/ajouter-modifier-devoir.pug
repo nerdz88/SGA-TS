@@ -22,7 +22,10 @@ block content
                         input#nom(type="text" name="nom" value=estModification ? devoir._nom : "" required)
                         label(for="nom") Nom
                     div.input-field.col.s6
-                        input#noteMaximale(type="number" name="noteMaximale" value=estModification ? devoir._noteMaximale : "" required)
+                        input#noteMaximale(type="number" name="noteMaximale" 
+                            value=estModification ? devoir._noteMaximale : "" 
+                            onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                            required)
                         label(for="noteMaximale") Note maximale
                 div.row.no-margin
                     div.input-field.col.s6

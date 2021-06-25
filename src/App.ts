@@ -1,4 +1,3 @@
-import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as ExpressSession from 'express-session';
 import * as logger from 'morgan';
@@ -12,7 +11,6 @@ import { Universite } from './core/service/Universite';
 import { SgaRouteur } from './routes/SgaRouteur';
 import { UtilisateurRouteur } from './routes/UtilisateurRouteur';
 import { WebAppRouteur } from './routes/WebAppRouteur';
-
 
 export const universite: Universite = new Universite();
 
@@ -36,15 +34,15 @@ class App {
   // Configure Express middleware.
   private middleware(): void {
     this.expressApp.use(logger('dev'));
-    this.expressApp.use(bodyParser.json());
-    this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+    this.expressApp.use(express.json());
+    this.expressApp.use(express.urlencoded({ extended: false }));
     this.expressApp.use(ExpressSession(
       {
         secret: 'My Secret Key',
         resave: false,
         saveUninitialized: true
       }));
-    
+
     //this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
   }
 

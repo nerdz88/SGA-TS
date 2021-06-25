@@ -21,7 +21,7 @@ export class SGBService {
             })
             .catch((error: Error) => {
                 //Si on est ici, le SGB est surement down
-                throw new SgbError("Erreur lors du login: " + error.message);
+                throw new SgbError("Erreur lors du login SGB: " + error.message);
             });
     }
 

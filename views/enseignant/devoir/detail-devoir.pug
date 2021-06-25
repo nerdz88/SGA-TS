@@ -21,12 +21,21 @@ block content
                     table.bordered.highlight
                         thead 
                             tr  
-                                th.data-field Étudiant 
+                                - var baseURL = "/enseignant/devoir/detail/" + devoir._idEspaceCours + "/" + devoir._id 
+                                th.data-field 
+                                    - var valueOrdreEtudiant = currentOrdre == 1 ? 2 : 1 
+                                    a.sort-header.with-icon(href=baseURL + "?o=" +  valueOrdreEtudiant) Étudiant
+                                        if currentOrdre == 1 || currentOrdre == 2
+                                            i.material-icons #{currentOrdre == 1 ? "arrow_drop_up" : "arrow_drop_down"} 
                                 th.data-field Code permanent 
                                 th.data-field Etat
                                 th.data-field Date de remise
                                 th.data-field Date de correction
-                                th.data-field Note
+                                th.data-field
+                                    - var valueOrdreNote = currentOrdre == 3 ? 4 : 3 
+                                    a.sort-header.with-icon(href=baseURL + "?o=" + valueOrdreNote) Note 
+                                        if currentOrdre == 3 || currentOrdre == 4
+                                            i.material-icons #{currentOrdre == 3 ? "arrow_drop_up" : "arrow_drop_down"} 
                         tbody 
                             each remise in devoir._remises        
                                 tr 
