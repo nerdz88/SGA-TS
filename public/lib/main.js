@@ -7,9 +7,13 @@ window.addEventListener("load", function () {
             success: function () {
                 window.location.href = "/";
             },
-            error: function () {
+            error: function (error) {
                 console.log("Logout - KO");
-                showErrorToast("Erreur", "Impossible de vous déconnecter");
+                console.log(error)
+                var message = "Impossible de vous déconnecter";
+                if (error.error)
+                    message += " - " + error.error;
+                showErrorToast("Erreur", message);
             }
         });
     });
@@ -20,11 +24,11 @@ window.addEventListener("load", function () {
 
 });
 
-function showSuccessToast(titre, description) {
-    showToast(titre, description, "success");
+function showSuccessToast(description) {
+    showToast("Succès", description, "success");
 }
-function showErrorToast(titre, description) {
-    showToast(titre, description, "error");
+function showErrorToast(description) {
+    showToast("Erreur", description, "error");
 }
 
 function showToast(titre, description, state) {
@@ -35,7 +39,7 @@ function showToast(titre, description, state) {
         icon: state,
         showHideTransition: 'fade',
         allowToastClose: true,
-        hideAfter: 2500,
+        hideAfter: 5000,
         stack: 5,
         position: 'top-right',
         textAlign: 'left',

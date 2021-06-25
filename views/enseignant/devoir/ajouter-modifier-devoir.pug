@@ -1,0 +1,65 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content
+    +btn-back(estModification ? "Modifier un devoir" : "Ajouter un devoir", 
+     "/enseignant/devoir/" + idEspaceCours)  
+    div.row
+        div.col.s10.offset-s1   
+            if !estModification 
+                div.row
+                    div.col.s12
+                        a(class="waves-effect waves-light btn right btn-terminer-ajout blue accent-2" href="/enseignant/devoir/" + idEspaceCours) Terminer l'ajout
+
+            form.form-ajouter-devoir.section(id="form-ajouter-devoir") 
+                //- Début Form 
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="estModification", value=estModification.toString())   
+                input(type="hidden" name="idDevoir", value=estModification ? devoir._id : "")  
+
+                div.row.no-margin
+                    div.input-field.col.s6
+                        input#nom(type="text" name="nom" value=estModification ? devoir._nom : "" required)
+                        label(for="nom") Nom
+                    div.input-field.col.s6
+                        input#noteMaximale(type="number" name="noteMaximale" value=estModification ? devoir._noteMaximale : "" required)
+                        label(for="noteMaximale") Note maximale
+                div.row.no-margin
+                    div.input-field.col.s6
+                        input#dateDebut.datepicker(type="text" name="dateDebut" value=estModification ? devoir._dateDebut : "" required)
+                        label(for="dateDebut") Date début
+                    //- div.input-field.col.s3
+                    //-     input#heureDebut.timepicker(type="text" name="heureDebut" value=estModification ? devoir._dateDebut.getTime() : "" required)                    
+                    //-     label(for="heureDebut") Heure début
+                    div.input-field.col.s6
+                        input#dateFin.datepicker(type="text" name="dateFin" value=estModification ? devoir._dateFin : "" required)
+                        label(for="dateFin") Date fin
+                    //- div.input-field.col.s3
+                    //-     input#heureFin.timepicker(type="text" name="heureFin" value=estModification ? devoir._dateFin.getTime() : "" required)                    
+                    //-     label(for="heureFin") Heure fin
+
+                div.row.no-margin
+                    div.input-field.col.s12
+                        textarea#description(class="materialize-textarea" name="description" required)
+                            |#{estModification ? devoir._description : ""}
+                        label(for="description") Description
+
+                div.row
+                    div.input-field.col.s6
+                        div.row
+                            div.col.s12
+                                label Visibilité
+                            div.col.s12
+                                div.switch
+                                    label Non 
+                                        input#visible(type="checkbox" name="visible" checked=estModification && devoir._visible)
+                                        span.lever 
+                                        |Oui
+                div.row
+                  div.col.s12  
+                    button(class="waves-effect waves-light btn" type="submit") #{estModification ? "Modifier" : "Ajouter"} 
+                //- Fin form
+
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/devoir/ajouter-modifier-devoir.js")

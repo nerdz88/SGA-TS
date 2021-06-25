@@ -12,7 +12,7 @@ block content
       div.section
         div.row
           each espace in espaceCours     
-            div.col.s12.l5
+            div.col.s12.l6
               div.card
                 div.card-content
                   div.card-title
@@ -21,7 +21,8 @@ block content
                   div Gr: #{espace._numero}            
                 div.card-action
                   a(class="btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
-                  a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions 
+                  a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions (#{espace._questions.length})
+                  a(class="btn-devoir-cours" href="/enseignant/devoir/" + espace._id) Devoirs (#{espace._devoirs.length})
                   a(class="btn-delete-cours" href="javascript:void(0)" 
                     data-id-espace-cours=espace._id
                     data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero

@@ -1,14 +1,17 @@
-import * as path from 'path';
-import * as express from 'express';
-import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import * as flash from 'node-twinkle';
+import * as express from 'express';
 import * as ExpressSession from 'express-session';
-import { SgaRouteur } from './routes/SgaRouteur';
-import { WebAppRouteur } from './routes/WebAppRouteur';
-import { Universite } from './core/service/Universite';
-import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
+import * as logger from 'morgan';
 import { GestionnaireCours } from './core/controllers/GestionnaireCours';
+import { GestionnaireDevoir } from './core/controllers/GestionnaireDevoir';
+import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
+import { GestionnaireQuestionnaire } from './core/controllers/GestionnaireQuestionnaire';
+import { GestionnaireUtilisateur } from './core/controllers/GestionnaireUtilisateur';
+import errorMiddleware from './core/middleware/error.middleware';
+import { Universite } from './core/service/Universite';
+import { SgaRouteur } from './routes/SgaRouteur';
+import { UtilisateurRouteur } from './routes/UtilisateurRouteur';
+import { WebAppRouteur } from './routes/WebAppRouteur';
 
 
 export const universite: Universite = new Universite();
@@ -26,7 +29,8 @@ class App {
     this.routes();
     this.expressApp.set('view engine', 'pug');
     this.expressApp.use(express.static(__dirname + '/public')); // https://expressjs.com/en/starter/static-files.html
-
+    //errorMiddleware doit être à la fin
+    this.expressApp.use(errorMiddleware);
   }
 
   // Configure Express middleware.
@@ -40,17 +44,24 @@ class App {
         resave: false,
         saveUninitialized: true
       }));
-    this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
+    
+    //this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
   }
 
   // Configure API endpoints.
-  private routes(): void {   
+  private routes(): void {
     let gestionaireCours = new GestionnaireCours(universite);
     let gestionnaireQuestion = new GestionnaireQuestion(universite);
+    let gestionnaireQuestionnaire = new GestionnaireQuestionnaire(universite)
+    let gestionnaireDevoir = new GestionnaireDevoir(universite);
+    let gestionnaireUtilisateur = new GestionnaireUtilisateur();
+
+    //Les routes pour gérer nos utiisateurs;
+    this.expressApp.use('/', new UtilisateurRouteur(gestionnaireUtilisateur).router);
     //Les routes d'API
-    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours,gestionnaireQuestion).router);  
+    this.expressApp.use('/api/v1', new SgaRouteur(gestionaireCours, gestionnaireDevoir, gestionnaireQuestion, gestionnaireQuestionnaire).router);
     //Les routes du WebApp
-    this.expressApp.use('/', new WebAppRouteur(gestionaireCours,gestionnaireQuestion).router);
+    this.expressApp.use('/', new WebAppRouteur(gestionaireCours, gestionnaireDevoir, gestionnaireQuestion, gestionnaireQuestionnaire).router);
   }
 
 }

@@ -9,12 +9,12 @@ participant "q:Question" as question
 
 ->gestionnaireQuestion : questionnaire = creerQuestionnaire(idEnseignant,idEspaceCours,\nnom,description,etat)
 note left : Selon contôlleur,\nreçoit l'opération système 
-gestionnaireQuestion -> universite : tags = recupererCategorieQuestionParEnseignant(idEnseignant,idEspaceCours)
+gestionnaireQuestion -> universite : tags = recupererCategorieQuestionParEspaceCours(idEspaceCours)
 'TODO manque détail de université à espaceCours à question'
 note left : Selon expert, universite a toutes les\ninformations pour les 'tags' des questions
 loop [!terminerQuestionnaire]
 ->gestionnaireQuestion :selectionneCategorieQuestion(nomTag)
-gestionnaireQuestion->universite : recupererQuestionsParTag(idCours,nomTag)
+gestionnaireQuestion->universite : recupererQuestionsParTag(idEspaceCours,nomTag)
 'TODO manque détail de université à espaceCours à question'
 ->gestionnaireQuestion :ajouterQuestion(tableauQuestions,idQuestionnaire)
 'TODO manque détail de université à espaceCours à question'

@@ -1,0 +1,21 @@
+@startuml ajouterQuestionOld
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouter devoir
+participant "d:Devoir" as devoir
+
+
+loop [!terminerDevoir]
+  ->gestionnaireDevoir : devoir = ajouterDevoir(idEspaceCours, id, \nnom, description, noteMaximale,\ndateDebut, dateFin, visible)
+  note left : Selon contôlleur,\nreçoit l'opération système 
+  gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+  note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+  gestionnaireDevoir -> cours : ajouterDevoir(id, nom, description, noteMaximale, \ndateDebut, dateFin,visible)
+  note left : Selon forte cohésion, espaceCours a la reponsabilité\nde gérer l'ajout des devoirs.
+  cours-->devoir** : create(id, nom, description, noteMaximale, \ndateDebut, dateFin,visible)
+  cours->cours : ajouterDevoir(d)
+  gestionnaireDevoir -> cours : devoir = recupererTousDevoirs()
+end
+-> gestionnaireDevoir : terminerAjouterDevoir()
+
+@enduml
