@@ -25,7 +25,7 @@ describe('Test gestionnaire des cours', () => {
 
     it("Devrais repondre avec succes a l'appel de la recuperation d'un cours", async () => {
 
-        const reponse = await SGBService.recupererJsonCours('e44cd054a9b7f4edee4f1f0ede5ee704')
+        const reponse = await SGBService.recupererGroupesCours('e44cd054a9b7f4edee4f1f0ede5ee704')
 
         expect(reponse[0]._id).toBe(1)
         expect(reponse[0]._sigle).toContain("LOG210")
@@ -39,7 +39,7 @@ describe('Test gestionnaire des cours', () => {
 
     it("Devrais lancer une erreur lors d'une erreur de la recuperation des cours en Json", async () => {
 
-        await expect(SGBService.recupererJsonCours("wrongToken!!")).rejects.toThrowError(SgbError)
+        await expect(SGBService.recupererGroupesCours("wrongToken!!")).rejects.toThrowError(SgbError)
 
     })
 

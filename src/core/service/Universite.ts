@@ -30,6 +30,7 @@ export class Universite {
         }
 
         let etudiants = await SGBService.recupererEtudiant(token, coursSGB._id);
+
         let espaceCours = new EspaceCours(coursSGB._id,
             coursSGB._groupe,
             coursSGB._date_debut,
@@ -38,6 +39,7 @@ export class Universite {
         espaceCours.ajouterEtudiants(etudiants);
         this.arrayEspaceCours.push(espaceCours);
     }
+
 
     public recupererUnEspaceCours(id: number): EspaceCours {
         let index = this.getIndexEspaceCoursById(id);

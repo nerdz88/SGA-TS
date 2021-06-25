@@ -1,14 +1,10 @@
+import { HttpError } from "./HttpError";
+
 /**
  * @see Applying UML and Patterns, Chapter A35/F30
  */
-export class InvalidParameterError extends Error {
-    private _code: number = 400;
-
+export class InvalidParameterError extends HttpError {
     constructor(message: string) {
-        super(message);
-    }
-
-    get code() {
-        return this._code;
-    }
+        super(message, 400);
+    } 
 }

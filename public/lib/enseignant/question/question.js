@@ -19,9 +19,8 @@ window.addEventListener("load", function () {
                             var endpoint = "/enseignant/question" + (idEspaceCours ? "/" + idEspaceCours : "");
                             window.location.href = endpoint;
                         },
-                        error: function () {
-                            console.log("Supprimer Question - KO");
-                            showErrorToast("Erreur", "La question n'a pas été supprimé");                         
+                        error: function (e) {
+                            showErrorToast(e.responseJSON.error.message);
                         }
                     });
                 }
