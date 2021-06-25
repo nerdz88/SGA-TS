@@ -6,14 +6,12 @@ export class Questionnaire {
     static currentId: number = 0;
     private _description : string;
     private _nom : string;
-    private _idEspaceCours: number
     private _status: boolean
     private _questions : Question[]
     private _remiseArray : Remise[]
     
     constructor(questionnaireJson: string) {
         let values = JSON.parse(questionnaireJson);
-        this._idEspaceCours = values.idEspaceCours;
         this._nom = values.nom;
         this._description = values.description;
         this._status = values.status;
@@ -29,10 +27,6 @@ export class Questionnaire {
         this._nom = values.nom;
         this._description = values.description;
         this._status = values.status;
-    }
-
-    public getIdEspaceCours() {
-        return this._idEspaceCours;
     }
     public getId() {
         return this._id;

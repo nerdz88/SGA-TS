@@ -2,16 +2,16 @@ import { SGBService } from '../service/SGBService';
 import { Universite } from '../service/Universite';
 
 export class GestionnaireCours {
-   
+
     private universite: Universite;
 
     constructor(universite: Universite) {
         this.universite = universite;
     }
 
-    public async ajouterEspaceCours(element: string, token: string, idEnseignant : number) {
+    public async ajouterEspaceCours(element: string, token: string, idEnseignant: number) {
         let cours = JSON.parse(element)
-        await this.universite.ajouterEspaceCours(cours, token,idEnseignant);
+        return await this.universite.ajouterEspaceCours(cours, token, idEnseignant);
     }
 
     public recupererTousEspaceCours(idEnseignant: number): string {
@@ -27,7 +27,7 @@ export class GestionnaireCours {
     }
 
     public async recupererGroupesCours(token: string) {
-      return await SGBService.recupererGroupesCours(token);    
+        return await SGBService.recupererGroupesCours(token);
     }
 
 }

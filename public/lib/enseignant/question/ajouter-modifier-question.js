@@ -10,7 +10,7 @@ window.addEventListener("load", function () {
         var idQuestion = $(form).find('input[name="idQuestion"]').val();
         var idEspaceCours = $(form).find('input[name="idEspaceCours"]').val();
         var endPoint = estModification ? "/api/v1/enseignant/question/modifier/" + idEspaceCours + "/" + idQuestion
-            : "/api/v1/enseignant/question/ajouter/" + idEspaceCours 
+            : "/api/v1/enseignant/question/ajouter/" + idEspaceCours
 
         console.log("Envoyer formulaire - Ajax - Ajouter/Modifier Question");
         envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint);
@@ -30,12 +30,11 @@ function envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint) {
             }
             else {
                 $(form)[0].reset();
-                showSuccessToast("Succès", estModification ? "La question a bien été modifier" : "La question a bien été ajouté");
+                showSuccessToast(estModification ? "La question a bien été modifier" : "La question a bien été ajouté");
             }
         },
-        error: function () {
-            console.log("Ajouter Question - KO");
-            showErrorToast("Erreur", estModification ? "La question n'a pas bien été modifier" : "La question n'a pas été ajouté");
+        error: function (e) {
+            showErrorToast(e.responseJSON.error.message);
         }
     });
 }

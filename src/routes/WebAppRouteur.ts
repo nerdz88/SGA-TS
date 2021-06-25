@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { getDefaultSettings } from 'http2';
 import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from '../core/controllers/GestionnaireDevoir';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
+import { HttpError } from '../core/errors/HttpError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
+import authMiddleware from '../core/middleware/auth.middleware';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
 export class WebAppRouteur {
@@ -13,11 +14,11 @@ export class WebAppRouteur {
     private gestionnaireCours: GestionnaireCours;
     private gestionnaireQuestion: GestionnaireQuestion;
     private gestionnaireDevoir: GestionnaireDevoir;
-    private gestionnaireQuestionnaire : GestionnaireQuestionnaire
+    private gestionnaireQuestionnaire: GestionnaireQuestionnaire
     /**
      * Initialize the Router
      */
-    constructor(gestionnaireCours: GestionnaireCours, gestionnaireDevoir: GestionnaireDevoir,gestionnaireQuestion: GestionnaireQuestion,gestionnaireQuestionnaire: GestionnaireQuestionnaire) {
+    constructor(gestionnaireCours: GestionnaireCours, gestionnaireDevoir: GestionnaireDevoir, gestionnaireQuestion: GestionnaireQuestion, gestionnaireQuestionnaire: GestionnaireQuestionnaire) {
         this.gestionnaireCours = gestionnaireCours;
         this.gestionnaireQuestionnaire = gestionnaireQuestionnaire;
         this.gestionnaireQuestion = gestionnaireQuestion;
@@ -36,26 +37,9 @@ export class WebAppRouteur {
      * @param next 
      */
     public recupererAccueil(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
         res.render("enseignant/accueil", { user: AuthorizationHelper.getCurrentUserInfo(req) });
     }
 
-    /**
-     * Methode GET pour afficher la page de login: "/login"
-     * @param req 
-     * @param res 
-     * @param next 
-     */
-    public recupererLogin(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.render("login");
-            return;
-        }
-        res.redirect("/");
-    }
 
     //#endregion Home and Login
 
@@ -68,14 +52,9 @@ export class WebAppRouteur {
      * @param next 
      */
     public recupererAjouterEspaceCours(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        let self = this;
         this.gestionnaireCours.recupererGroupesCours(AuthorizationHelper.getCurrentToken(req))
             .then(reponse => res.render("enseignant/cours/liste-cours-sgb", { cours: reponse }))
-            .catch(error => self._errorCode500(error, req, res));
+            .catch(next);
     }
 
 
@@ -87,14 +66,8 @@ export class WebAppRouteur {
      * @returns 
      */
     public recupererTousEspaceCours(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getIdUser(req));
-            res.render("enseignant/cours/liste-cours-sga", { espaceCours: JSON.parse(value) });
-        } catch (error) { this._errorCode500(error, req, res); }
+        let value = this.gestionnaireCours.recupererTousEspaceCours(AuthorizationHelper.getIdUser(req));
+        res.render("enseignant/cours/liste-cours-sga", { espaceCours: JSON.parse(value) });
     }
 
     public verifierSGBCoursDisponibilite(req: Request, res: Response, next: NextFunction) {
@@ -112,7 +85,6 @@ export class WebAppRouteur {
                     estDisponible: disponible
                 });
         }
-        return true;
     }
 
     /**
@@ -123,20 +95,44 @@ export class WebAppRouteur {
      * @returns 
      */
     public recupererUnEspaceCours(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
+        let id: number = parseInt(req.params.id);
+        let coursValue = this.gestionnaireCours.recupererUnEspaceCours(id);
+        let cours = JSON.parse(coursValue);
+        if (parseInt(cours._enseignantId) != AuthorizationHelper.getIdUser(req)) {
+            res.redirect("/")
+            return
         }
-        try {
-            let id: number = parseInt(req.params.id);
-            let coursValue = this.gestionnaireCours.recupererUnEspaceCours(id);
-            let cours = JSON.parse(coursValue);
-            if (parseInt(cours._enseignantId) != AuthorizationHelper.getIdUser(req)) {
-                res.redirect("/")
-                return
-            }
-            res.render("enseignant/cours/detail-cours", { espaceCours: cours });
-        } catch (error) { this._errorCode500(error, req, res); }
+        res.render("enseignant/cours/detail-cours", { espaceCours: cours });
+    }
+
+    public recupererToutQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let questionnaires = "{}";
+        let arrayQuestionnaire: string;
+        //let idEspaceCours = parseInt(req.params.id);
+        let idEspaceCours = 3;
+        if (req.params.idQuestionnaire != undefined) {
+            console.log("entree")
+            let id = parseInt(req.params.idQuestionnaire);
+            //let id=
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours,id);
+        } else {
+            console.log("tout questionnaire")
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererToutQuestionnaires(idEspaceCours);
+            console.log(arrayQuestionnaire)
+        }
+        //côté front ***
+        //res.render("enseignant/questionnaire/liste-questionnaire", { questionnaire: JSON.parse(arrayQuestionnaire)});
+    }
+
+    public creerQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let id = req.params.id;
+        //côté front
+        /*res.render("enseignant/question/ajouter-modifier-questionnaire",
+            {
+                idEspaceCours: id,
+                question: {},
+                estModification: false
+            });*/
     }
 
     //#endregion Gestion Cours
@@ -151,36 +147,23 @@ export class WebAppRouteur {
      * @param next 
      */
     public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
+        let espaceCours = "{}";
+        let arrayQuestion: string;
+        if (req.params.id == undefined) {
+            arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
+        } else {
+            let id = parseInt(req.params.id);
+            arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
+            espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
         }
-        try {
-            let espaceCours = "{}";
-            let arrayQuestion: string;
-
-            if (req.params.id == undefined) {
-                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
-            } else {
-                let id = parseInt(req.params.id);
-                arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
-                espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
-            }
-            res.render("enseignant/question/liste-question", { questions: JSON.parse(arrayQuestion), espaceCours: JSON.parse(espaceCours) });
-        } catch (error) { this._errorCode500(error, req, res); }
+        res.render("enseignant/question/liste-question", { questions: JSON.parse(arrayQuestion), espaceCours: JSON.parse(espaceCours) });
     }
 
     public recupererUneQuestion(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let idEspaceCours = parseInt(req.params.idEspaceCours);
-            let idQuestion = parseInt(req.params.idQuestion);
-            let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-            res.render("enseignant/question/detail-question", { question: JSON.parse(question) });
-        } catch (error) { this._errorCode500(error, req, res); }
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestion = parseInt(req.params.idQuestion);
+        let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
+        res.render("enseignant/question/detail-question", { question: JSON.parse(question) });
     }
 
 
@@ -188,19 +171,13 @@ export class WebAppRouteur {
      * Methode GET pour afficher la page d'ajout d'une question
      */
     public recupererAjouterQuestion(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let id = req.params.id;
-            res.render("enseignant/question/ajouter-modifier-question",
-                {
-                    idEspaceCours: id,
-                    question: {},
-                    estModification: false
-                });
-        } catch (error) { this._errorCode500(error, req, res); }
+        let id = req.params.id;
+        res.render("enseignant/question/ajouter-modifier-question",
+            {
+                idEspaceCours: id,
+                question: {},
+                estModification: false
+            });
     }
 
 
@@ -208,10 +185,6 @@ export class WebAppRouteur {
      * Methode GET pour afficher la page de modification d'une question
      */
     public recupererModifierQuestion(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
@@ -229,85 +202,50 @@ export class WebAppRouteur {
     //#region Gestion Devoirs
 
     public recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let id = parseInt(req.params.id);
-            let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
-            let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+        let id = parseInt(req.params.id);
+        let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+        let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
+        res.render("enseignant/devoir/liste-devoir", { devoirs: JSON.parse(arrayDevoirs), espaceCours: JSON.parse(espaceCours) });
 
-            res.render("enseignant/devoir/liste-devoir", { devoirs: JSON.parse(arrayDevoirs), espaceCours: JSON.parse(espaceCours) });
-
-        } catch (error) { this._errorCode500(error, req, res); }
     }
 
     public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let ordreTri: number = parseInt(req.query.ordreTri?.toString());
-            let idEspaceCours = parseInt(req.params.idEspaceCours);
-            let idDevoir = parseInt(req.params.idDevoir);
-            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
-            res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir) });
+        let ordreTri: number = parseInt(req.query.ordreTri?.toString());
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idDevoir = parseInt(req.params.idDevoir);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
+        res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir) });
 
-        } catch (error) { this._errorCode500(error, req, res); }
     }
 
 
     public recupererAjouterDevoir(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let id = parseInt(req.params.id);
-            res.render("enseignant/devoir/ajouter-modifier-devoir",
-                {
-                    idEspaceCours: id,
-                    devoir: {},
-                    estModification: false
-                });
-        } catch (error) { this._errorCode500(error, req, res); }
+        let id = parseInt(req.params.id);
+        res.render("enseignant/devoir/ajouter-modifier-devoir",
+            {
+                idEspaceCours: id,
+                devoir: {},
+                estModification: false
+            });
     }
 
 
     public recupererModifierDevoir(req: Request, res: Response, next: NextFunction) {
-        if (!AuthorizationHelper.isLoggedIn(req)) {
-            res.redirect("/login");
-            return;
-        }
-        try {
-            let idEspaceCours = parseInt(req.params.idEspaceCours);
-            let idDevoir = parseInt(req.params.idDevoir);
-            let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, 0);
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idDevoir = parseInt(req.params.idDevoir);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, 0);
 
-            res.render("enseignant/devoir/ajouter-modifier-devoir",
-                {
-                    idEspaceCours: idEspaceCours,
-                    devoir: JSON.parse(devoir),
-                    estModification: true
-                });
-        } catch (error) { this._errorCode500(error, req, res); }
+        res.render("enseignant/devoir/ajouter-modifier-devoir",
+            {
+                idEspaceCours: idEspaceCours,
+                devoir: JSON.parse(devoir),
+                estModification: true
+            });
     }
 
 
     //#endregion Gestion Devoirs
 
-
-    private _errorCode500(error: any, req, res: Response<any>) {
-        var code = 500;
-        if (error.code) {
-            (req as any).flash(error.message);
-            code = error.code;
-        }
-        //TODO faire une page d'erreur rapid
-        res.status(code).json({ error: error.toString() });
-    }
 
 
     /**
@@ -315,11 +253,11 @@ export class WebAppRouteur {
      * endpoints.
      */
     init() {
+        //Indique qu'on veut être login
+        this.router.use(authMiddleware);
+
         //Accueil
         this.router.get('/', this.recupererAccueil.bind(this));
-
-        //Login
-        this.router.get('/login', this.recupererLogin.bind(this));
 
         //Cours
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
@@ -337,10 +275,12 @@ export class WebAppRouteur {
         //Devoirs
         this.router.get('/enseignant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
-
         this.router.get('/enseignant/devoir/ajouter/:id', this.recupererAjouterDevoir.bind(this));
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));
 
+        //Questionnaire
+        this.router.get('/enseignant/questionnaire/',this.recupererToutQuestionnaires.bind(this))
+        this.router.get('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaires.bind(this));
     }
 
 }
