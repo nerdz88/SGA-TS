@@ -2,16 +2,16 @@ extends ../../commun/master-template.pug
 
 block content
     //- Start bloc content  
-    +btn-back(!espaceCours._id ? "Vos Questionnaires" : "Questionaires pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, 
-        !espaceCours._id ? "/" : "/enseignant/questionnaires")  
+    +btn-back(!espaceCours._id ? "Vos Questionnaires" : "Questionnaires pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, 
+        !espaceCours._id ? "/" : "/enseignant/cours/")  
     div.row
         div.col.s10.offset-s1   
-            if espaceCours._id 
+            if espaceCours._id  
                 div.row
                     div.col.s12
-                        a(class="waves-effect waves-light btn btn-ajouter-question" href="/enseignant/questionnaires/ajouter/" + espaceCours._id) Ajouter          
+                        a(class="waves-effect waves-light btn btn-ajouter-devoir" href="/enseignant/questionnaire/ajouter/" + espaceCours._id) Creer          
             div.row
-                if questionnaires != undefined && questionnaires.length > 0 
+                if questionnaires.length > 0 
                     div.section
                         div.row
                             each questionnaire in questionnaires
@@ -22,16 +22,16 @@ block content
                                                 div.text-bolder #{questionnaire._nom}                                                          
                                             div #{questionnaire._descriptionQuestionnaire}                                                  
                                         div.card-action
-                                            a(class="btn-detail-questionnaire" href="/enseignant/question/detail/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Détail
-                                            a(class="btn-modifier-questionnaire" href="/enseignant/question/modifier/" + uneQuestion._idEspaceCours + "/" + uneQuestion._id) Modifier              
+                                            a(class="btn-detail-questionnaire" href="/enseignant/question/detail/" + questionnaire._idEspaceCours + "/" + questionnaire._id) Détail
+                                            a(class="btn-modifier-questionnaire" href="/enseignant/question/modifier/" + questionnaire._idEspaceCours + "/" + questionnaire._id) Modifier              
                                             a(class="btn-delete-questionnaire" href="javascript:void(0)"
-                                                data-id-question=uneQuestion._id
-                                                data-nom=uneQuestion._nom
-                                                data-id-espace-cours=uneQuestion._idEspaceCours) Supprimer 
+                                                data-id-question=questionnaire._id
+                                                data-nom=questionnaire._nom
+                                                data-id-espace-cours=questionnaire._idEspaceCours) Supprimer 
                 else
                     div.col.s12
                         em Vous n'avez pas de questionnaires
 
     //- End bloc content
 block more-script
-    script(type="text/javascript" src="/lib/enseignant/question/question.js")
+    script(type="text/javascript" src="/lib/enseignant/questionnaire/questionnaires.js")

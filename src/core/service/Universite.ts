@@ -2,6 +2,7 @@ import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
+import { Questionnaire } from "../model/Questionnaire";
 import { SGBService } from "./SGBService";
 
 export class Universite {
@@ -30,6 +31,16 @@ export class Universite {
         })
         console.log(arrayTag)
         return arrayTag;
+    }
+
+    public recupererTousQuestionnaires(idEnseignant: number) {
+        let arrayQuestionnaire = [];
+        this.arrayEspaceCours.forEach(function(ec) {
+            console.log(ec.getIdEnseignant)
+                arrayQuestionnaire.push(ec.recupererToutQuestionnaires())
+            
+        })
+        return arrayQuestionnaire;
     }
 
     public recupererQuestionnaireParEspaceCours(idEspaceCours : number){

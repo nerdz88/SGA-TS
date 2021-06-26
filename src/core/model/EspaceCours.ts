@@ -38,9 +38,10 @@ export class EspaceCours {
         })
     }
 
-    ajouterQuestionnaire(questionnaireJson : string){
+    ajouterQuestionnaire(questionnaireJson : string) : number {
         let newQuestionnaire =  new Questionnaire(questionnaireJson);
         this._questionnaires.push(newQuestionnaire);
+        return newQuestionnaire.getId();
     }
 
     public ajouterQuestion(questionJson: string) {

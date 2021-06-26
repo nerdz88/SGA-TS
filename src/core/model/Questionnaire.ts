@@ -17,7 +17,7 @@ export class Questionnaire {
         this._status = values.status;
         this._questions = [];
         this._remiseArray =[];
-        this._id = ++Question.currentId;
+        this._id = ++Questionnaire.currentId;
     }
 
 
