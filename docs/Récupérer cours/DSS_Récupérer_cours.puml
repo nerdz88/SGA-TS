@@ -6,6 +6,6 @@ participant ":Systeme" as systeme
 
 professeur ->  systeme : recupererTousEspaceCours(token : String)
 professeur <-- systeme : liste des espaceCours de l'enseignant
-professeur -> systeme : recupererUnEspaceCours(token : String, idCours : String)
+professeur -> systeme : recupererUnEspaceCours(idEspaceCours : String)
 professeur <-- systeme : information du cours et affiche la liste des étudiants inscrits.
 @enduml

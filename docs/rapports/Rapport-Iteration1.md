@@ -29,7 +29,7 @@ Le travail sera noté selon la [grille de correction des rapports](https://docs.
 
 # Introduction
 
-> Courte introduction pour expliquer à quoi correspond cette itération. Quels sont les objectifs à atteindre et comment les atteint-on?
+Dans cette première itération, l'objectif est de concevoir la structure générale d'un système de gestion des apprentissages, un modèle du domaine, des diagrammes de séquences systèmes reliés au cas d'utilisation ainsi que leur diagramme de cas d'utilisation. De plus, un objectif de cette itération est de réaliser l'implémentation des cas d'utilisations CU01 et CU02.
 
 # Modèle du domaine
 
@@ -357,5 +357,61 @@ _PostCondition_
 
 ![supprimerUneQuestion](../../out/docs/Supprimer%20question/RDCU_Supprimer_Question/supprimerUneQuestionFinal.svg)
 
+## CU04a - Ajouter devoir
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Un nouveau devoir est créé et associé à un cours
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la création d’un devoir
+1. Le système affiche les cours de l’enseignant ainsi que le nombre de devoirs associés à chaque cours
+1. L’enseignant sélectionne un cours
+1. Le système affiche tous les devoirs associés au cours.
+1. L’enseignant crée un nouveau devoir avec une description et un nom, une note maximale, une date de début, une date de fin et un état visible ou non.  
+1. Le système confirme l’ajout du devoir et affiche tous les devoirs associés au cours.
+
+On répète les étapes 5-6 tant qu’il y a un devoir à ajouter
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;5a. La date de début est après la date de fin.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Le Système signale l'erreur et rejette la saisie.
+
+## DSS CU04a - Ajouter devoir
+
+![DSS_ajouterDevoir](../../out/docs/Ajouter%20devoir/DSS_Ajouter_Devoir/DSS_Ajouter_Devoir.svg)
+
+### `recupererTousEspaceCours(token : String)`
+[recupererTousEspaceCours](#recuperertousespacecourstoken--string)
+
+### `recupererTousDevoirsEspaceCours(idEspaceCours : int)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Aucune.
+
+**RDCU**
+
+![recupererTousDevoirsEspaceCours](../../out/docs/Ajouter%20devoir/RDCU_Ajouter_Devoir/recupererTousDevoirsEspaceCours.svg)
 
 
+### `ajouterDevoir(nom: string, description: string, noteMaximale: number, dateDebut: String, dateFin: String, visible: boolean)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Un nouveau devoir est créé
+- Les attributs du devoir ont été initialisés
+- Le nouveau devoir est associé à un espaceCours sur la base de idEspaceCours
+
+**RDCU**
+
+![ajouterDevoir](../../out/docs/Ajouter%20devoir/RDCU_Ajouter_Devoir/ajouterDevoir.svg)

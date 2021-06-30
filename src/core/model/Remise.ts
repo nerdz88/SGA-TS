@@ -70,4 +70,3 @@ export class Remise {
         this._dateDeCorrection = value;
     }
 }
-

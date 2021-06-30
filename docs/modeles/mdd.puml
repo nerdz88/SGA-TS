@@ -1,7 +1,7 @@
 @startuml MDD
 skinparam defaultfontname Verdana
 skinparam RoundCorner 20
-skinparam linetype ortho
+' skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
 
@@ -19,9 +19,6 @@ class Etudiant {
     nom : String
 }
 
-class Tag{
-    nom : String
-}
 class Devoir{
     id: int
     nom: String
@@ -41,6 +38,7 @@ enum Etat{
 class Question{
     id : int
     nom : String
+    tags : String []
     texteQuestion : String
     reponse : boolean
     texteBonneReponse : String
@@ -62,7 +60,6 @@ Université "1"--"*" Enseignant : emploie >
 Cours "1"-- "1" EspaceCours : décrit >
 Université "1"--"*" Cours : contient >
 EspaceCours "1"-- "*"Etudiant : est_suivi_par >
-Question "1" -- "*"Tag : < catégorise
 Questionnaire "1"--"1..*" Question : contient >
 Questionnaire"1"--"*" Remise : possède >
 Université "1"--"*" EspaceCours : contient >
