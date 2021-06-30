@@ -143,11 +143,11 @@ export class WebAppRouteur {
         let questions = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(idEspaceCours);
         let tags = this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(idEspaceCours);
         
-        res.render("enseignant/questionnaire/ajouter-questions", {
+        res.render("enseignant/questionnaire/gerer-question-questionnaire", {
             idEspaceCours: idEspaceCours,
             idQuestionnaire: idQuestionnaire,
-            questions: questions,
-            tags: tags
+            questions: JSON.parse(questions),
+            tags: JSON.parse(tags)
         })
 
     }

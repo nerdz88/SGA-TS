@@ -42,13 +42,11 @@ export class GestionnaireQuestionnaire {
   }
 
   recupererTagQuestionParEspaceCours(id: number) {
-    return this.universite.recupererTagQuestionParEspaceCours(id);
+    return JSON.stringify(this.universite.recupererTagQuestionParEspaceCours(id));
   }
 
   recupererQuestionParTag(id: number, tag: string) {
-    return JSON.stringify(
-      this.universite.recupererToutesQuestionsParTag(id, tag)
-    );
+    return JSON.stringify(this.universite.recupererToutesQuestionsParTag(id, tag));
   }
 
   public recupererQuestionnaireParId(

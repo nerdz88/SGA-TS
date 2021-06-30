@@ -30,9 +30,7 @@ function envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint) {
                 window.location.href = "/enseignant/questionnaire/" + idEspaceCours;
             }
             else {
-                $(form)[0].reset();
-                showSuccessToast(estModification ? "Le questionnaire a bien été modifier" : "La questionnaire a bien été ajouté");
-                window.location.href = "/enseignant/questionnaire/ajouterQuestions/" + data.idQuestionnaire;
+                window.location.href = "/enseignant/questionnaire/ajouterQuestion/" +idEspaceCours + "/" + data.idQuestionnaire;
             }
         },
         error: function (e) {

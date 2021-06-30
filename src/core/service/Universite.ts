@@ -29,7 +29,6 @@ export class Universite {
                 }
             })
         })
-        console.log(arrayTag)
         return arrayTag;
     }
 

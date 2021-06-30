@@ -1,0 +1,37 @@
+extends ../../commun/master-template.pug 
+
+block content
+  //- Start bloc content
+  +btn-back("Ajouter une question au questionnaire", "/enseignant/questionnaire/ajouter-modifier-questionnaire")
+
+  div.row
+    div.col.s10.offset-s1  
+        div.row
+            each tag in tags
+                div.col.s2
+                    div
+                        label
+                            input(class="with-gap ckb-tags" type="checkbox" name=tag checked="checked") 
+                            span #{tag}                                             
+        div.row
+            ul.collection.with-header
+                li.collection-header
+                    h2.center Questions
+                each question in questions   
+                    li.collection-item.question-item(data-tags=question._tags data-id=question._id)
+                        div
+                            div.text-bold #{question._nom}                                 
+                            div Tags: #{question._tags.join(",")}
+                else      
+                    em Vous n'avez pas de Questions
+        div.row 
+            form#form-sauvegarder-questions
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="idQuestionnaire", value=idQuestionnaire)   
+                button(class="btn-submit-form" type="sumbit") Sauvegarder
+
+  //- End bloc content
+
+
+block more-script
+  script(type="text/javascript" src="/lib/enseignant/questionnaire/gerer-question-questionnaire.js")

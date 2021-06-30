@@ -321,6 +321,16 @@ export class SgaRouteur {
             });
     }
 
+    public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
+
+        this.gestionnaireQuestionnaire.ajouterQuestion(req.params.idQuestionnaire, parseInt(req.params.idEspaceCours), JSON.stringify(req.body.data))
+       
+        res.status(200).send({
+            message: 'Succes',
+            status: res.status
+        })
+
+    }
     
 
 
@@ -361,5 +371,6 @@ export class SgaRouteur {
         this.router.post('/enseignant/questionnaire/ajouter/:id',this.creerQuestionnaire.bind(this));
         this.router.get('/enseignant/questionnaire/tags/',this.recupererToutTags.bind(this));
         this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
+        this.router.post('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
     }
 }
