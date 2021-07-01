@@ -25,7 +25,7 @@ export class User {
         return this._prenom;
     }
 
-    public geEmail() {
+    public getEmail() {
         return this._email;
     }
 }

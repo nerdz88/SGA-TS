@@ -3,9 +3,12 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
 import { SGBService } from "./SGBService";
+import { Type , plainToClass } from 'class-transformer';
 
 export class Universite {
+    @Type(() => EspaceCours)
     private arrayEspaceCours: EspaceCours[]
+    @Type(() => Cours)
     private arrayCours: Cours[]
     constructor() {
         this.arrayEspaceCours = new Array();
@@ -16,6 +19,11 @@ export class Universite {
     public reset() {
         this.arrayEspaceCours = new Array();
         this.arrayCours = new Array();
+    }
+
+    public setUniversite(universite: Universite) {     
+        this.arrayCours = universite.arrayCours;
+        this.arrayEspaceCours = universite.arrayEspaceCours;
     }
 
     public recupererTagQuestionParEspaceCours(idEspaceCours : number): string[] {

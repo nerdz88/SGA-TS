@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { GestionnaireUtilisateur } from '../core/controllers/GestionnaireUtilisateur';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
+import { DevHelper } from '../core/helper/DevHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
 import { User } from '../core/model/User';
 
@@ -42,7 +43,10 @@ export class UtilisateurRouteur {
      * @param next 
      */
     public login(req: Request, res: Response, next: NextFunction) {
-        this.gestionnaireUtilisateur.login(req.body.email, req.body.password)
+
+        var email = DevHelper.login(req);
+
+        this.gestionnaireUtilisateur.login(email, req.body.password)
             .then(reponse => {
                 let token = reponse.token;
                 let user: User = new User(Number.parseInt(reponse.user.id), reponse.user.last_name, reponse.user.first_name, reponse.user.email);
@@ -71,10 +75,13 @@ export class UtilisateurRouteur {
      * @param next 
      */
     public logout(req: Request, res: Response, next: NextFunction) {
+        //Sauvegarde l'état du l'université
+        //DevHelper.saveData(req);
+
         var codeStatus = 200;
         req.session.destroy(() => {
             codeStatus = 400;
-        });
+        });      
 
         res.status(codeStatus)
             .send({

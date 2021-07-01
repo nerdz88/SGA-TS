@@ -1,4 +1,5 @@
 import { Etudiant } from "./Etudiant";
+import { Type } from 'class-transformer';
 
 enum Etat {
     NonRemis = "Non Remis",
@@ -7,8 +8,9 @@ enum Etat {
 }
 
 export class Remise {
-
     private _id: number;
+
+    @Type(() => Etudiant)
     private _etudiant: Etudiant;
     private _dateRemise: Date;
     private _note: number;
