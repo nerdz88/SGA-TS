@@ -1,5 +1,6 @@
 import { Question } from "./Question";
 import { Remise } from "./Remise";
+import { Type } from 'class-transformer';
 
 export class Questionnaire {
     private _id: number;
@@ -7,11 +8,16 @@ export class Questionnaire {
     private _description : string;
     private _nom : string;
     private _status: boolean
+    @Type(() => Question)
     private _questions : Question[]
+    @Type(() => Remise)
     private _remiseArray : Remise[]
     
     constructor(questionnaireJson: string) {
-        let values = JSON.parse(questionnaireJson);
+        if(questionnaireJson == undefined)
+            return;
+
+        let values = JSON.parse(questionnaireJson ?? "{}");
         this._nom = values.nom;
         this._description = values.description;
         this._status = values.status;

@@ -12,6 +12,9 @@ export class Question {
     static currentId: number = 0;
     
     constructor(questionJson: string) {
+        if(questionJson == undefined)
+            return;
+
         let values = JSON.parse(questionJson);
         this._idEspaceCours = values.idEspaceCours;
         this._tags = values.tags.split(",");

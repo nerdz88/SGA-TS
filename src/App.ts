@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+import 'es6-shim';
 import * as express from 'express';
 import * as ExpressSession from 'express-session';
 import * as logger from 'morgan';

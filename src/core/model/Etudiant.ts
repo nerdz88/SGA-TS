@@ -6,6 +6,7 @@ export class Etudiant {
     private _email: string;
     private _code_permanent: string
     //array de cours dans un futur proche
+
     constructor(id: number, nom: string, prenom: string, email: string, codePermanent: string) {
         this._id = id;
         this._nom = nom;
