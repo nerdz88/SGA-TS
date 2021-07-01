@@ -12,7 +12,6 @@ export class DevHelper {
     private static DEV_IMPERSONALISATION: string = "teacher+3@gmail.com"
     private static PATH_DATA = "./src/data/universite.json";
 
-
     public static login(req: Request): string {
         var email = req.body.email;
 
@@ -27,13 +26,16 @@ export class DevHelper {
     public static loadData() {
         fs.readFile(this.PATH_DATA, (err, data) => {
             if (!err) {
-                let universiteLoaded = deserialize(Universite, data.toString());
-                universite.setUniversite(universiteLoaded);
-                console.log("DevHelper - Universite loaded");
+                try {
+                    let universiteLoaded = deserialize(Universite, data.toString());
+                    universite.setUniversite(universiteLoaded);
+                    console.log("DevHelper - Universite loaded");
+                } catch (e) {
+                    console.error(e);
+                }
             }
         });
     }
-
 
     public static saveData(req: Request) {
         if (!AuthorizationHelper.isDevLoggedIn(req))

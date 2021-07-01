@@ -5,24 +5,24 @@ import { Type } from 'class-transformer';
 export class Questionnaire {
     private _id: number;
     static currentId: number = 0;
-    private _description : string;
-    private _nom : string;
+    private _description: string;
+    private _nom: string;
     private _status: boolean
     @Type(() => Question)
-    private _questions : Question[]
+    private _questions: Question[]
     @Type(() => Remise)
-    private _remiseArray : Remise[]
-    
+    private _remiseArray: Remise[]
+
     constructor(questionnaireJson: string) {
-        if(questionnaireJson == undefined)
+        if (questionnaireJson == undefined)
             return;
 
-        let values = JSON.parse(questionnaireJson ?? "{}");
+        let values = JSON.parse(questionnaireJson);
         this._nom = values.nom;
         this._description = values.description;
         this._status = values.status;
         this._questions = [];
-        this._remiseArray =[];
+        this._remiseArray = [];
         this._id = ++Question.currentId;
     }
 
@@ -49,15 +49,15 @@ export class Questionnaire {
     public getStatus() {
         return this._status;
     }
-    public getQuestions(){
+    public getQuestions() {
         return this._questions;
     }
 
-    public setQuestion(arrayQuestion : []){
-        this._questions=arrayQuestion;
+    public setQuestion(arrayQuestion: []) {
+        this._questions = arrayQuestion;
     }
 
-    public setRemise(arrayRemise : []){
+    public setRemise(arrayRemise: []) {
         this._remiseArray = arrayRemise;
     }
 }
