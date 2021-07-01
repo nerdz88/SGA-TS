@@ -4,11 +4,27 @@ skinparam defaultfontname Verdana
 title RDCU pour récupérer tous les espaceCours créés d'un enseignant
 participant ":GestionnaireCours" as controleur
 participant ": Universite" as mapCours
+participant "espaceCours : EspaceCours[]" as cours 
+participant "espaceCoursCourant : EspaceCours" as courant 
+participant "espaceCoursResultant : EspaceCours[]" as resultat
 
 ->controleur : espacesCours = recupererTousEspaceCours(token)
 note right : Selon Contôleur,\nreçoit l'opération système
-controleur -> mapCours : espacesCours = recupererTousEspaceCours(token)
+controleur -> mapCours : espacesCoursResultant = recupererTousEspaceCours(token)
 note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousEspaceCours
+mapCours --> resultat** : create()
+note left : Selon créateur, universite utilise\nétroitement espaceCoursResultant.\nUtilisé pour stocker les espaceCours\nà retourner.
+loop espaceCours.length
+mapCours -> cours : espaceCoursCourant = espaceCours[i]
+note left : EspaceCours correspond à l'attribut\nd'universite qui enregistre tous\nles espaceCours. EspaceCoursCourant\ncorrespond à l'espaceCours qui est\nen train d'être analysé
+mapCours -> courant : id = getIdEnseignant()
+note left : Selon expert
+alt id == token
+mapCours -> resultat : push(espaceCoursCourant)
+note left : Selon expert
+end
+end
+
 @enduml
 
 @startuml récupérer un cours

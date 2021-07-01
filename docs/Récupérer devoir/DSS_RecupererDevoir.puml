@@ -1,0 +1,20 @@
+@startuml DSS_RecupererDevoir
+title DSS recupererDevoir
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererTousEspaceCours(token : String)
+professeur <-- systeme : liste des espaceCours de l'enseignant\net le nombre de devoirs associés à chacun
+loop !termineRecupererDevoirsEspaceCours
+professeur -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours : number)
+professeur <-- systeme : devoir associées à l'espaceCours
+loop !termineRecupererUnDevoir
+professeur -> systeme : recupererUnDevoir(idEspaceCours: number,\nIdDevoir: number)
+professeur <-- systeme : détail du devoir
+professeur <-- systeme : liste des étudiants ayant fait le devoir ainsi que\nla note leur étant associée.
+professeur -> systeme : terminerRecupererUnDevoir()
+end
+professeur -> systeme : terminerRecupererDevoirsEspaceCours()
+end
+@enduml

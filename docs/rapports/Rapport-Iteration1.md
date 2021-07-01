@@ -1,6 +1,6 @@
-# Rapport itération 1 - équipe 3
+# Rapport itération 2 - équipe 3
 
-## LOG210-année-session-groupe (ex. LOG210-2020-été-g01)
+## LOG210-2021-été-g01
 
 ### Coéquipiers
 
@@ -13,7 +13,7 @@
 
 # Grille de correction
 
-<details><summary>CPliquez ici pour lire les consignes obligatoires</summary>
+<details><summary>Cliquez ici pour lire les consignes obligatoires</summary>
 <p>
 
 - Tous vos diagrammes doivent être faits avec <https://plantuml.com/fr/>
@@ -415,3 +415,31 @@ _PostCondition_
 **RDCU**
 
 ![ajouterDevoir](../../out/docs/Ajouter%20devoir/RDCU_Ajouter_Devoir/ajouterDevoir.svg)
+
+## CU04b - Récupérer devoir
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Aucune
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la récupération d’un devoir
+1. Le système affiche les cours de l’enseignant ainsi que le nombre de devoirs associés à chaque cours
+1. L’enseignant sélectionne un cours
+1. Le système affiche tous les devoirs associés au cours.
+1. L’enseignant sélectionne un devoir
+1. Le système affiche le détail du devoir
+1. Le système affiche la liste des étudiants ayant fait le devoir ainsi que la note leur étant associée. 
+
+On répète les étapes 5 à 7 tant que l’enseignant n’a pas terminé.
+
+On répète les étapes 3 à 7 tant que l’enseignant n’a pas terminé.
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;7a. Le système affiche les étudiants par ordre alphabétique.
+
+&nbsp;&nbsp;&nbsp;7b. Le système affiche les étudiants par ordre croissant de la note.

@@ -1,42 +1,37 @@
 @startuml MDD
+
 skinparam defaultfontname Verdana
 skinparam RoundCorner 20
 ' skinparam linetype ortho
 
 title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
-
-class Cours {
-    id : int
+class Cours << (1,blue) >> {
+    id : number
     nom : String
 }
 
 
-class Enseignant {
+class Enseignant << (1,blue) >>{
     token : String
 }
 
-class Etudiant {
+class Etudiant << (1,blue) >>{
     nom : String
 }
 
-class Devoir{
-    id: int
+class Devoir << (2,red) >>{
+    id: number
     nom: String
 }
 
-class Remise{
-    id: int
-    idEtudiant:int
+class Remise << (2,red) >>{
+    id : number
+    etat : String
+    idEtudiant : number
 }
 
-enum Etat{
-    NonRemis
-    Remis
-    RemisCorrige
-}
-
-class Question{
-    id : int
+class Question << 1,yellow) >>{
+    id : number
     nom : String
     tags : String []
     texteQuestion : String
@@ -45,15 +40,19 @@ class Question{
     texteMauvaiseReponse : String
 }
 
-class Questionnaire{
-    id: int
+class Questionnaire << (2,red) >>{
+    id: number
     description: String
 }
 
-class EspaceCours{
+class EspaceCours << (2,red) >>{
+    idEspaceCours : number
+}
+
+class Université << (2,red) >>{
+
 }
 Devoir "1"--"*" Remise : contient >
-Remise"1"--"1" Etat : possède >
 EspaceCours "1"--"1..*" Devoir: contient >
 Enseignant "1"--"1..*" EspaceCours : enseigne >
 Université "1"--"*" Enseignant : emploie >
@@ -66,4 +65,11 @@ Université "1"--"*" EspaceCours : contient >
 Université "1"--"*" Etudiant : est-inscrit-à <
 Question "*"--"1" EspaceCours : contient <
 Questionnaire "*"--"1" EspaceCours : contient >
+
+legend
+|= |= Type |
+|<back:blue>_1_</back>| Classe non modifiée première itération |
+|<back:yellow>_1_</back>| Classe modifiée première itération |
+|<back:red>_2_</back>| Nouvelle classe deuxième itération |
+endlegend
 @enduml
