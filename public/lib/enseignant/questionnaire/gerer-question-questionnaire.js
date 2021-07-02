@@ -34,15 +34,13 @@ window.addEventListener("load", function () {
         
         $(".question-item.selected").each(function() {
                 var question = $(this);
-                console.log({question});
-                var idQuestion = $(question).data("id");
                 lstIdquestion.push($(question).data("id"));
         })
         console.log(lstIdquestion);
         $.ajax({
             type: "POST",
             url: endPoint,
-            data: JSON.stringify({liste: lstIdquestion}),
+            data: { data: lstIdquestion.join(",") },
             success: function (data) {
                 console.log("Ajouter-Modifier Question Questionnaire - OK");
                 window.location.href = "/enseignant/questionnaire/" + idEspaceCours;       

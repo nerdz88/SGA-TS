@@ -4,7 +4,7 @@ import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
 import { Questionnaire } from "../model/Questionnaire";
 import { SGBService } from "./SGBService";
-import { Type , plainToClass } from 'class-transformer';
+import { Type, plainToClass } from 'class-transformer';
 
 export class Universite {
     @Type(() => EspaceCours)
@@ -22,51 +22,37 @@ export class Universite {
         this.arrayCours = new Array();
     }
 
-    public setUniversite(universite: Universite) {     
+    public setUniversite(universite: Universite) {
         this.arrayCours = universite.arrayCours;
         this.arrayEspaceCours = universite.arrayEspaceCours;
     }
 
-    public recupererTagQuestionParEspaceCours(idEspaceCours : number): string[] {
-        let arrayTag=[];
-        let espace = this.recupererUnEspaceCours(idEspaceCours);
-        espace.recupererToutesQuestions().forEach((question)=>{
-            question.getTag().forEach((value)=>{
-                if(arrayTag.findIndex(t => t == value)==-1){
-                    arrayTag.push(value)
-                }
-            })
-        })
-        return arrayTag;
-    }
-
     public recupererTousQuestionnaires(idEnseignant: number) {
         let arrayQuestionnaire = [];
-        this.arrayEspaceCours.forEach(function(ec) {
+        this.arrayEspaceCours.forEach(function (ec) {
             console.log(ec.getIdEnseignant)
-                arrayQuestionnaire.push(ec.recupererToutQuestionnaires())
-            
+            arrayQuestionnaire.push(ec.recupererToutQuestionnaires())
         })
         return arrayQuestionnaire;
     }
 
-    public recupererQuestionnaireParEspaceCours(idEspaceCours : number){
+    public recupererQuestionnaireParEspaceCours(idEspaceCours: number) {
         let espace = this.recupererUnEspaceCours(idEspaceCours);
         /*let array=this.arrayEspaceCours.map((espaceCours)=>{
             return espaceCours.getID()==idEspaceCours ? espaceCours.recupererToutQuestionnaires(): undefined
         }).filter(function( element ) {return element !== undefined;});*/
-        console.log(espace.recupererToutQuestionnaires())
+        //console.log(espace.recupererToutQuestionnaires())
         return espace.recupererToutQuestionnaires();
     }
-    
 
-    public recupererToutesQuestionsParTag(idEspaceCours: number,tag: string){
-        let espaceCours=this.recupererUnEspaceCours(idEspaceCours);
-        let questions=espaceCours.recupererToutesQuestions().filter((question)=>{
-            let index=question.getTag().findIndex(t => t==tag)
-            return index!=-1;
+
+    public recupererToutesQuestionsParTag(idEspaceCours: number, tag: string) {
+        let espaceCours = this.recupererUnEspaceCours(idEspaceCours);
+        let questions = espaceCours.recupererToutesQuestions().filter((question) => {
+            let index = question.getTag().findIndex(t => t == tag)
+            return index != -1;
         })
-        console.log(questions)
+        //console.log(questions)
         return questions;
     }
 

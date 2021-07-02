@@ -93,30 +93,37 @@ export class EspaceCours {
         this._devoirs.push(newDevoir);
     }
 
-    modifierDevoir(idDevoir: number, jsonString: string) {
+    public modifierDevoir(idDevoir: number, jsonString: string) {
         let devoir = this.recupererUnDevoir(idDevoir);
         devoir.modifier(jsonString);
     }
 
 
-    recupererTousDevoirs(): Devoir[] {
+    public recupererTousDevoirs(): Devoir[] {
         return this._devoirs;
     }
 
-    recupererUnDevoir(idDevoir: number): Devoir {
+    public recupererUnDevoir(idDevoir: number): Devoir {
         let devoir = this._devoirs.find(d => d.id == idDevoir);
         if (devoir == undefined)
             throw new NotFoundError("Le Devoir " + idDevoir + " n'existe pas")
         return devoir;
     }
 
-    suprimerDevoir(idDevoir: number) {
+    public suprimerDevoir(idDevoir: number) {
         let index = this._devoirs.findIndex(d => d.id == idDevoir);
         if (index != -1) {
             this._devoirs.splice(index, 1);
             return true;
         }
         return false;
+    }
+
+    public recupererTagQuestions(): string[] {
+        return this.recupererToutesQuestions().flatMap(q => {
+            let tags = q.getTag();
+            return tags.length > 0 ? tags : [];
+        }).filter((tag, index, list) => list.indexOf(tag) === index);
     }
 
     public getID() {

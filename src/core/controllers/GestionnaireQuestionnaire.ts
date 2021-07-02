@@ -7,25 +7,16 @@ export class GestionnaireQuestionnaire {
   constructor(universite: Universite) {
     this.universite = universite;
   }
-  public ajouterQuestion(
-    idQuestionnaire,
-    idEspaceCours: number,
-    arrayIdQuestionsAjouter: string
-  ) {
+  public ajouterQuestion(idQuestionnaire, idEspaceCours: number, arrayIdQuestionsAjouter: string) {
+
     let arrayIdQuestion = JSON.parse(arrayIdQuestionsAjouter);
     let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-    arrayIdQuestion.forEach(question => {
-        espaceCours.recupererUnQuestionnaire(idQuestionnaire).ajouterQuestion(espaceCours.recupererUneQuestion(question))
+    let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
+
+    questionnaire.setQuestion([]);
+    arrayIdQuestion.forEach(idQuestion => {
+      questionnaire.ajouterQuestion(espaceCours.recupererUneQuestion(idQuestion));
     });
-    console.log("succesAjouterQuestion!!")
-    // let questions = arrayIdQuestion
-    //   .map((id) => {
-    //     return espaceCours.recupererUneQuestion(id);
-    //   })
-    //   .filter((element) => element !== undefined);
-    // espaceCours
-    //   .recupererUnQuestionnaire(idQuestionnaire)
-    //   .setQuestion(questions);
   }
 
   public recupererTousQuestionnaires(idEnseignant: number): string {
@@ -45,13 +36,14 @@ export class GestionnaireQuestionnaire {
     return JSON.stringify(espaceCours.recupererToutQuestionnaires());
   }
 
-  recupererTagQuestionParEspaceCours(id: number) {
-    return JSON.stringify(this.universite.recupererTagQuestionParEspaceCours(id));
+  recupererTagQuestionParEspaceCours(idEspaceCours: number) {
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    return JSON.stringify(espaceCours.recupererTagQuestions());
   }
 
-  recupererQuestionParTag(id: number, tag: string) {
-    return JSON.stringify(this.universite.recupererToutesQuestionsParTag(id, tag));
-  }
+  // recupererQuestionParTag(id: number, tag: string) {
+  //   return JSON.stringify(this.universite.recupererToutesQuestionsParTag(id, tag));
+  // }
 
   public recupererQuestionnaireParId(
     idEspaceCours: number,
@@ -67,7 +59,7 @@ export class GestionnaireQuestionnaire {
 
   public creerQuestionnaire(idEspaceCours: number, questionnaireValue: string): number {
     let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-    let idQuestionnaire = espaceCours.ajouterQuestionnaire(questionnaireValue);    
+    let idQuestionnaire = espaceCours.ajouterQuestionnaire(questionnaireValue);
     return idQuestionnaire;
   }
 

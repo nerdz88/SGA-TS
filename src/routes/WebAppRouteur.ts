@@ -228,7 +228,7 @@ export class WebAppRouteur {
             arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(id);   
             espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);            
         }
-        console.log(espaceCours)
+        //console.log(espaceCours)
         //côté front ***
         res.render("enseignant/questionnaire/liste-questionnaires", { questionnaires: JSON.parse(arrayQuestionnaire), espaceCours: JSON.parse(espaceCours)});
     }
