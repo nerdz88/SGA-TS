@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="374px" preserveAspectRatio="none" style="width:1244px;height:374px;background:#FFFFFF;" version="1.1" viewBox="0 0 1244 374" width="1244px" zoomAndPan="magnify"><defs/><g><text fill="#000000" font-family="Verdana" font-size="18" lengthAdjust="spacing" textLength="292" x="475.75" y="28.708">RDCU. recupererGroupesCours</text><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="330.5" x2="330.5" y1="71.25" y2="367.9766"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="662" x2="662" y1="71.25" y2="367.9766"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="938" x2="938" y1="71.25" y2="367.9766"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="1213.5" x2="1213.5" y1="71.25" y2="367.9766"/><rect fill="#FEFECE" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="151" x="255.5" y="39.9531"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="137" x="262.5" y="59.9482">:GestionnaireCours</text><rect fill="#FEFECE" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="170" x="577" y="39.9531"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="156" x="584" y="59.9482">universite : Universite</text><rect fill="#FEFECE" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="102" x="887" y="39.9531"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="88" x="894" y="59.9482">:SGBService</text><rect fill="#FEFECE" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="49" x="1189.5" y="39.9531"/><text fill="#000000" font-family="Verdana" font-size="14" lengthAdjust="spacing" textLength="35" x="1196.5" y="59.9482">:SGB</text><polygon fill="#A80036" points="319,116.5156,329,120.5156,319,124.5156" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="0" x2="325" y1="120.5156" y2="120.5156"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="307" x="7" y="115.4497">espacesCours = recupererGroupesCours(token)</text><path d="M336,86.25 L336,141.25 L683,141.25 L683,96.25 L673,86.25 L336,86.25 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><path d="M673,86.25 L673,96.25 L683,96.25 L673,86.25 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="257" x="342" y="103.3169">Selon Contôleur, représente un scénario</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="268" x="342" y="118.4497">de cas d’utilisation dans lequel l’opération</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="326" x="342" y="133.5825">système se produit (contrôleur de cas d’utilisation)</text><polygon fill="#A80036" points="650,181.9141,660,185.9141,650,189.9141" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="331" x2="656" y1="185.9141" y2="185.9141"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="307" x="338" y="180.8481">espacesCours = recupererGroupesCours(token)</text><path d="M34,151.6484 L34,206.6484 L326,206.6484 L326,161.6484 L316,151.6484 L34,151.6484 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><path d="M316,151.6484 L316,161.6484 L326,161.6484 L316,151.6484 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="231" x="40" y="168.7153">Selon expert, universite doit stocker</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="271" x="40" y="183.8481">toutes les informations pour qu'elle puisse</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="261" x="40" y="198.981">devenir expert pour les prochains appels</text><polygon fill="#A80036" points="926,254.8789,936,258.8789,926,262.8789" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="662" x2="932" y1="258.8789" y2="258.8789"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="252" x="669" y="253.813">cours = recupererGroupesCours(token)</text><path d="M943,217.0469 L943,287.0469 L1186,287.0469 L1186,227.0469 L1176,217.0469 L943,217.0469 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><path d="M1176,217.0469 L1176,227.0469 L1186,227.0469 L1176,217.0469 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="222" x="949" y="234.1138">Selon indirection, évite le couplage</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="202" x="949" y="249.2466">entre universite et le SGB. Tous</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="183" x="949" y="264.3794">les appels vers SGB sont fait</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="98" x="949" y="279.5122">par SGBService</text><polygon fill="#A80036" points="1202,327.8438,1212,331.8438,1202,335.8438" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="938" x2="1208" y1="331.8438" y2="331.8438"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="252" x="945" y="326.7778">cours = recupererGroupesCours(token)</text><path d="M635,297.5781 L635,352.5781 L933,352.5781 L933,307.5781 L923,297.5781 L635,297.5781 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><path d="M923,297.5781 L923,307.5781 L933,307.5781 L923,297.5781 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="277" x="641" y="314.645">Selon expert, l'information Sgb est l'expert,</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="238" x="641" y="329.7778">car il contient toutes les informations</text><text fill="#000000" font-family="Verdana" font-size="13" lengthAdjust="spacing" textLength="185" x="641" y="344.9106">utiles pour les espaces cours</text><!--MD5=[c817f20428ad1b265eb71c54b3754483]
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU. recupererGroupesCours
+participant ":GestionnaireCours" as gesCours
+participant "universite : Universite" as uni
+participant ":SGBService" as service
+participant ":SGB" as sgb
+
+' Lionel: Dans le SGB c'est juste des cours/groupes cours
+' Alors: recupererEspacesCoursSgb => recupererGroupesCours
+' Pas besoin de spécifier SGB pcq on n'a pas de GroupesCours dans le SGA
+->gesCours : espacesCours = recupererGroupesCours(token)
+note left : Selon Contôleur, représente un scénario\nde cas d’utilisation dans lequel l’opération\nsystème se produit (contrôleur de cas d’utilisation)
+gesCours -> uni  : espacesCours = recupererGroupesCours(token)
+note left : Selon expert, universite doit stocker\ntoutes les informations pour qu'elle puisse\ndevenir expert pour les prochains appels
+uni->service: cours = recupererGroupesCours(token)
+note right : Selon indirection, évite le couplage\nentre universite et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+service -> sgb : cours = recupererGroupesCours(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les espaces cours
+@enduml
+
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU. recupererGroupesCours
+participant ":GestionnaireCours" as gesCours
+participant "universite : Universite" as uni
+participant ":SGBService" as service
+participant ":SGB" as sgb
+
+->gesCours : espacesCours = recupererGroupesCours(token)
+note left : Selon Contôleur, représente un scénario\nde cas d’utilisation dans lequel l’opération\nsystème se produit (contrôleur de cas d’utilisation)
+gesCours -> uni  : espacesCours = recupererGroupesCours(token)
+note left : Selon expert, universite doit stocker\ntoutes les informations pour qu'elle puisse\ndevenir expert pour les prochains appels
+uni->service: cours = recupererGroupesCours(token)
+note right : Selon indirection, évite le couplage\nentre universite et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+service -> sgb : cours = recupererGroupesCours(token)
+note left : Selon expert, l'information Sgb est l'expert,\ncar il contient toutes les informations\nutiles pour les espaces cours
+@enduml
+
+PlantUML version 1.2021.8beta3(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

@@ -3,7 +3,7 @@ skinparam style strictuml
 skinparam defaultfontname Verdana
 title RDCU pour récupérer tous les espaceCours créés d'un enseignant
 participant ":GestionnaireCours" as controleur
-participant "universite : Universite" as mapCours
+participant ": Universite" as mapCours
 
 ->controleur : espacesCours = recupererTousEspaceCours(token)
 note right : Selon Contôleur,\nreçoit l'opération système

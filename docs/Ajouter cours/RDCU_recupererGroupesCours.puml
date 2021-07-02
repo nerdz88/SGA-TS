@@ -11,7 +11,7 @@ participant ":SGB" as sgb
 ' Alors: recupererEspacesCoursSgb => recupererGroupesCours
 ' Pas besoin de spécifier SGB pcq on n'a pas de GroupesCours dans le SGA
 ->gesCours : espacesCours = recupererGroupesCours(token)
-note left : Selon Contôleur,\nreçoit l'opération système
+note left : Selon Contôleur, représente un scénario\nde cas d’utilisation dans lequel l’opération\nsystème se produit (contrôleur de cas d’utilisation)
 gesCours -> uni  : espacesCours = recupererGroupesCours(token)
 note left : Selon expert, universite doit stocker\ntoutes les informations pour qu'elle puisse\ndevenir expert pour les prochains appels
 uni->service: cours = recupererGroupesCours(token)

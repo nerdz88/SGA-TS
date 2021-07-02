@@ -2,6 +2,7 @@ import { AlreadyExistsError } from '../errors/AlreadyExistsError';
 import { EspaceCours } from "./EspaceCours"
 import { Remise } from "./Remise";
 import { Etudiant } from './Etudiant';
+import { Type } from 'class-transformer';
 
 export class Devoir {
     private _id: number;
@@ -12,10 +13,15 @@ export class Devoir {
     private _dateDebut: Date;
     private _dateFin: Date;
     private _visible: boolean;
+    @Type(() => Remise)
     private _remises: Remise[];
+    
     static currentId: number = 0;
 
     constructor(devoirJson: string, etudiants: Etudiant[]) {
+        if(devoirJson == undefined)
+            return;
+
         let values = JSON.parse(devoirJson);
         this._nom = values.nom;
         this._idEspaceCours = values.idEspaceCours

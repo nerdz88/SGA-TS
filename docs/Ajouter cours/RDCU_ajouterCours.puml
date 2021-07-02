@@ -8,8 +8,8 @@ participant "c:EspaceCours" as cours
 participant ":SGBService" as service
 participant ":Sgb" as sgb
 
--> controlleur : ajouterEspaceCours(token, idEspaceCours)
-note right : Selon Contôleur,\nreçoit l'opération système
+-> controlleur : information = ajouterEspaceCours(token, idEspaceCours)
+note right : Selon Contôleur,\ngarde même pour\ntoutes opérations systèmes
   controlleur->sga : ajouterEspaceCours(token, idEspaceCours)
   note left : Selon expert, universite doit stocker\ntoutes les EspaceCours pour qu'elle puisse\ndevenir expert pour les prochains appels
   sga ->  service : etudiants = recupererEtudiants(token, idEspaceCours)
@@ -20,8 +20,6 @@ note right : Selon Contôleur,\nreçoit l'opération système
   note left : Selon créateur, Université\nagrège plusieurs EspaceCours
   sga -> cours : ajouterEtudiants(etudiants)
   note right : Selon expert, EspaceCours doit stocker\ntous les étudiants pour qu'il puisse\ndevenir expert pour les prochains appels
-  -> controlleur : information = recupererEspaceCours(tokenEnseignant)
-  note right : Selon indirection, évite le couplage entre\nle routeurqui fait l'appel initial et Université.
   controlleur -> sga : information = recupererEspaceCours(tokenEnseignant)
   note left : Selon expert, Université a toute\nles informations requises\npour récupérer un cours
   @enduml

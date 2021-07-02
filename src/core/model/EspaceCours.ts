@@ -4,20 +4,27 @@ import { Cours } from "./Cours";
 import { Etudiant } from "./Etudiant";
 import { Question } from "./Question";
 import { Questionnaire } from "./Questionnaire";
-import {Devoir} from "./Devoir";
-import {InvalidParameterError} from "../errors/InvalidParameterError";
+import { Devoir } from "./Devoir";
+import { InvalidParameterError } from "../errors/InvalidParameterError";
+import { Type } from 'class-transformer';
+
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
     private _id: number;
     private _numero: string;
     private _enseignantId: number;
+    @Type(() => Etudiant)
     private _etudiants: Etudiant[];
+    @Type(() => Question)
     private _questions: Question[];
+    @Type(() => Devoir)
     private _devoirs: Devoir[];
+    @Type(() => Cours)
     private _cours: Cours;
     private _dateDebut: string;// string pour l'instant, possibilité de Date
     private _dateFin: string; // string pour l'instant, possibilité de Date
-    private _questionnaires : Questionnaire[];
+    @Type(() => Questionnaire)
+    private _questionnaires: Questionnaire[];
 
     constructor(id: number, numero: string, dateDebut: string, dateFin: string, cours: Cours, _enseignantId: number) {
         this._id = id;
@@ -38,8 +45,8 @@ export class EspaceCours {
         })
     }
 
-    ajouterQuestionnaire(questionnaireJson : string) : number {
-        let newQuestionnaire =  new Questionnaire(questionnaireJson);
+    ajouterQuestionnaire(questionnaireJson: string) {
+        let newQuestionnaire = new Questionnaire(questionnaireJson);
         this._questionnaires.push(newQuestionnaire);
         return newQuestionnaire.getId();
     }
@@ -76,11 +83,11 @@ export class EspaceCours {
         return q;
     }
 
-    public ajouterDevoir(devoirJson: string){
+    public ajouterDevoir(devoirJson: string) {
         //TODO
         let newDevoir = new Devoir(devoirJson, this._etudiants);
         // La date de début est après la date de fin, on retourne une erreur
-        if (newDevoir.dateDebut > newDevoir.dateFin){
+        if (newDevoir.dateDebut > newDevoir.dateFin) {
             throw new InvalidParameterError("le devoirs " + newDevoir.nom + " ne dois pas avoir une date de debut qui est après la date de fin")
         }
         this._devoirs.push(newDevoir);
@@ -140,7 +147,7 @@ export class EspaceCours {
         return this._dateFin;
     }
 
-    public recupererToutQuestionnaires():Questionnaire[]{
+    public recupererToutQuestionnaires(): Questionnaire[] {
         return this._questionnaires;
     }
     public recupererUnQuestionnaire(idQuestionnaire: number): Questionnaire {

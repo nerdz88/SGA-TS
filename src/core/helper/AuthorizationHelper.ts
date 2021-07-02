@@ -7,11 +7,15 @@ export class AuthorizationHelper {
         return req.session["token"] != undefined;
     }
 
+    public static isDevLoggedIn(req: Request): boolean {
+        return req.session["isDevLoggedIn"];
+    }
+
     public static getCurrentToken(req: Request): string {
         return req.session["token"];
     }
 
-    public static getCurrentUserInfo(req: Request): User {
+    public static getCurrentUserInfo(req: Request) {
         return req.session["user"];
     }
 
