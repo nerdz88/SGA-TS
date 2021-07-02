@@ -22,23 +22,6 @@ afterEach(function () {
 
 describe('Test SgaRouteur', ()=> {
 
-    it("Devrais ajouter avec succes le nouveau cours", async()=> {
-        const reponse = await authenticatedSession.post("/api/v1/enseignant/cours/ajouter")
-                                .send({data: COURSEVALUE1 })
-        expect(reponse.status).toBe(201)
-    })
-
-    it("Devrais retourner la liste des cours de l'enseignant", async()=> {
-
-        const add = await authenticatedSession.post("/api/v1/enseignant/cours/ajouter")
-                                .send({data: COURSEVALUE1 })
-
-        const reponse = await authenticatedSession.get("/api/v1/enseignant/cours")
-
-        expect(reponse.status).toBe(200)
-        expect(reponse.body.message).toContain("Success")
-        expect(reponse.body.espaceCours[0]._cours._sigle).toContain("LOG210")
-
-    })
+   
 
 })
