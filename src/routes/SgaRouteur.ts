@@ -115,8 +115,12 @@ export class SgaRouteur {
      * @param next 
      */
     public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
+        let idParam = req.params.id
+        let id;
         let arrayQuestion: string;
+        if(idParam === "") {
+            id = undefined;
+        }
         if (id == undefined) {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
         } else {
