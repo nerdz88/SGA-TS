@@ -1,0 +1,21 @@
+@startuml supprimerDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour supprimerDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "devoirs : Devoirs[]" as devoirs
+
+-> gestionnaireDevoir : supprimerDevoir(idEspaceCours, IdDevoir)
+note left : Selon Contôleur,\nreçoit l'opération système
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : supprimerDevoir(idDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+cours -> cours : devoir = recupererUnDevoir(IdDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+cours -> devoirs : splice(devoir)
+note left : Selon expert, devoirs est l'attribut\nd'espaceCours qui stocke les devoirs
+@enduml
+

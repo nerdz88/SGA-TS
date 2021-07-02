@@ -1,0 +1,11 @@
+@startuml DSS_ModifierDevoir
+title DSS modifierDevoir
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur -> systeme : recupererUnDevoir(idEspaceCours: number,\nIdDevoir: number)
+professeur <-- systeme : détails du devoir
+professeur -> systeme : modifierDevoir(\nidEspaceCours: number,\nIdDevoir: number,\nnom: String\ndescription : String,\nnote maximale : number,\ndateDeDebut : String,\ndateDeFin : String,\nvisible : boolean)
+systeme --> professeur : détails du devoir modifié
+@enduml

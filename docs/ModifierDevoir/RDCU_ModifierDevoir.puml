@@ -1,0 +1,24 @@
+@startuml ModifierDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour modifierDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "devoirs : Devoirs[]" as devoirs
+participant "devoir : Devoir" as devoir
+
+-> gestionnaireDevoir : devoirModifie = modifierDevoir(\nidEspaceCours,\nIdDevoir,\nnom,\ndescription,\nnote maximale,\ndate de début,\ndate de fin,\nvisible)
+note left : Selon Contôleur,\nreçoit l'opération système
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : devoirModifie = modifierDevoir(\nIdDevoir,\nnom,\ndescription,\nnote maximale,\ndate de début,\ndate de fin,\nvisible)
+note left : Selon expert, espaceCours\ncontient les devoirs
+cours -> cours : devoir = recupererUnDevoir(IdDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+cours -> devoirs : devoir = find(idDevoir)
+note left : Selon expert, devoirs est l'attribut\nd'espaceCours qui stocke les devoirs
+cours -> devoir : devoirModifie = modifier(\nnom,\ndescription,\nnote maximale,\ndate de début,\ndate de fin,\nvisible)
+note left : Selon faire soi-même et expert,\ndevoir gère lui même\nça modification, car\nil en est l'expert.
+@enduml
+

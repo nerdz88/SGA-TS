@@ -1,0 +1,10 @@
+@startuml DSS_supprimerDevoir
+title DSS supprimerDevoir
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur -> systeme : recupererUnDevoir(idEspaceCours: number,\nIdDevoir: number)
+professeur <-- systeme : détails du devoir
+professeur -> systeme : supprimerDevoir(idEspaceCours: number, IdDevoir: number)
+@enduml

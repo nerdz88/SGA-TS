@@ -22,6 +22,11 @@ class Etudiant << (1,blue) >>{
 class Devoir << (2,red) >>{
     id: number
     nom: String
+    description : String
+    note maximale : number
+    date de début : String
+    date de fin : String
+    visible : boolean
 }
 
 class Remise << (2,red) >>{

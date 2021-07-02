@@ -89,9 +89,9 @@ _PostCondition_
 
 _PostCondition_
 
-- Un nouveau devoir est créé
-- Les attributs du devoir ont été initialisés
-- Le nouveau devoir est associé à un espaceCours sur la base de idEspaceCours
+- Un nouveau devoir d a été créé
+- Les attributs de d ont été initialisés
+- d a été associé à un espaceCours sur la base de idEspaceCours
 
 **RDCU**
 
@@ -147,3 +147,79 @@ _PostCondition_
 
 ![recupererUnDevoir](../../out/docs/Récupérer%20devoir/RDCU_RecupererDevoir/recupererUnDevoir.svg)
 
+## CU04c - Modifier devoir
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Un devoir est modifié
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la modification d’un devoir
+1. Le système affiche les valeurs actuelles du devoir à modifier.
+1. L’enseignant effectue les modifications du devoir et les sauvegarde.
+1. Le système affiche tout le devoir modifié
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;1a. Un devoir ne peut pas être modifié si des étudiants ont déjà commencé à réaliser celui-ci.
+
+## DSS CU04b - Modifier devoir
+
+![DSS_ModifierDevoir](../../out/docs/ModifierDevoir/DSS_ModifierDevoir/DSS_ModifierDevoir.svg)
+
+### `recupererUnDevoir(idEspaceCours: number, IdDevoir: number)`
+[RécupérerUnDevoir](#recupererundevoiridespacecours-number-iddevoir-number)
+
+### `modifierDevoir(idEspaceCours: number, IdDevoir: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Les attributs du devoir d ont été modifié
+
+**RDCU**
+
+![modifierDevoir](../../out/docs/ModifierDevoir/RDCU_ModifierDevoir/ModifierDevoir.svg)
+
+## CU04d - Supprimer devoir
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Un devoir a été supprimé pour le cours.
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la suppression d’un devoir
+1. Le système affiche les valeurs du devoir à supprimer.
+1. L’enseignant confirme la suppression du devoir
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;2a. Le système désactive la possibilité de suppression tant que le devoir a été utilisé par des étudiants.
+
+<hr />
+
+## DSS CU04b - Supprimer devoir
+
+![DSS_supprimerDevoir](../../out/docs/SupprimerDevoir/DSS_SupprimerDevoir/DSS_supprimerDevoir.svg)
+
+### `recupererUnDevoir(idEspaceCours: number, IdDevoir: number)`
+[RécupérerUnDevoir](#recupererundevoiridespacecours-number-iddevoir-number)
+
+### `supprimerDevoir(idEspaceCours: number, IdDevoir: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- L'instance d de Devoir a été supprimée
+
+**RDCU**
+
+![supprimerDevoir](../../out/docs/SupprimerDevoir/RDCU_supprimerDevoir/supprimerDevoir.svg)
