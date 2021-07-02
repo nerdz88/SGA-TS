@@ -323,7 +323,8 @@ export class SgaRouteur {
 
     public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
 
-        this.gestionnaireQuestionnaire.ajouterQuestion(req.params.idQuestionnaire, parseInt(req.params.idEspaceCours), JSON.stringify(req.body.data))
+        let arrayQuestions = JSON.parse(req.body)
+        this.gestionnaireQuestionnaire.ajouterQuestion(parseInt(req.params.idQuestionnaire), parseInt(req.params.idEspaceCours), arrayQuestions)
        
         res.status(200).send({
             message: 'Succes',

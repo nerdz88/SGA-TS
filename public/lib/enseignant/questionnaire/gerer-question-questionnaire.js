@@ -42,7 +42,7 @@ window.addEventListener("load", function () {
         $.ajax({
             type: "POST",
             url: endPoint,
-            data: JSON.stringify(lstIdquestion),
+            data: JSON.stringify({liste: lstIdquestion}),
             success: function (data) {
                 console.log("Ajouter-Modifier Question Questionnaire - OK");
                 window.location.href = "/enseignant/questionnaire/" + idEspaceCours;       

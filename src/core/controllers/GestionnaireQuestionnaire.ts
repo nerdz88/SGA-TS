@@ -14,14 +14,18 @@ export class GestionnaireQuestionnaire {
   ) {
     let arrayIdQuestion = JSON.parse(arrayIdQuestionsAjouter);
     let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-    let questions = arrayIdQuestion
-      .map((id) => {
-        return espaceCours.recupererUneQuestion(id);
-      })
-      .filter((element) => element !== undefined);
-    espaceCours
-      .recupererUnQuestionnaire(idQuestionnaire)
-      .setQuestion(questions);
+    arrayIdQuestion.forEach(question => {
+        espaceCours.recupererUnQuestionnaire(idQuestionnaire).ajouterQuestion(espaceCours.recupererUneQuestion(question))
+    });
+    console.log("succesAjouterQuestion!!")
+    // let questions = arrayIdQuestion
+    //   .map((id) => {
+    //     return espaceCours.recupererUneQuestion(id);
+    //   })
+    //   .filter((element) => element !== undefined);
+    // espaceCours
+    //   .recupererUnQuestionnaire(idQuestionnaire)
+    //   .setQuestion(questions);
   }
 
   public recupererTousQuestionnaires(idEnseignant: number): string {

@@ -54,4 +54,8 @@ export class Questionnaire {
     public setRemise(arrayRemise : []){
         this._remiseArray = arrayRemise;
     }
+
+    public ajouterQuestion(question: Question) {
+        this._questions.push(question)
+    }
 }
