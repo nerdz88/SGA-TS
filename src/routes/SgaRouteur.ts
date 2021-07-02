@@ -147,23 +147,23 @@ export class SgaRouteur {
             });
     }
 
-    public recupererToutQuestionParTag(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
-        let tag = req.params.tag;
-        let data=JSON.parse(this.gestionnaireQuestionnaire.recupererQuestionParTag(id,tag));
-        console.log(data)
-        res.status(200)
-            .send({
-                message: 'Success',
-                status: res.status,
-                questions:data
-            });
-    }
+    // public recupererToutQuestionParTag(req: Request, res: Response, next: NextFunction) {
+    //     let id = parseInt(req.params.id);
+    //     let tag = req.params.tag;
+    //     let data=JSON.parse(this.gestionnaireQuestionnaire.recupererQuestionParTag(id,tag));
+    //     //console.log(data)
+    //     res.status(200)
+    //         .send({
+    //             message: 'Success',
+    //             status: res.status,
+    //             questions:data
+    //         });
+    // }
 
     public recupererToutTags(req: Request, res: Response, next: NextFunction){
         let id = parseInt(req.params.id);
         let data= this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(id)
-        console.log(data)
+        //console.log(data)
         res.status(200)
             .send({
                 message: 'Success',
@@ -323,13 +323,13 @@ export class SgaRouteur {
 
     public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
 
-        let arrayQuestions = JSON.parse(req.body)
-        this.gestionnaireQuestionnaire.ajouterQuestion(parseInt(req.params.idQuestionnaire), parseInt(req.params.idEspaceCours), arrayQuestions)
+        let arrayQuestions = JSON.stringify(req.body.data.split(","));
+        this.gestionnaireQuestionnaire.ajouterQuestion(parseInt(req.params.idQuestionnaire), parseInt(req.params.idEspaceCours), arrayQuestions);
        
         res.status(200).send({
             message: 'Succes',
             status: res.status
-        })
+        });
 
     }
     
@@ -371,7 +371,7 @@ export class SgaRouteur {
         this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this));
         this.router.post('/enseignant/questionnaire/ajouter/:id',this.creerQuestionnaire.bind(this));
         this.router.get('/enseignant/questionnaire/tags/',this.recupererToutTags.bind(this));
-        this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
+        // this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
         this.router.post('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
     }
 }

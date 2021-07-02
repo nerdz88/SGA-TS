@@ -12,7 +12,7 @@ block content
                     div
                         label
                             input(class="with-gap ckb-tags" type="checkbox" name=tag checked="checked") 
-                            span #{tag}                                             
+                            span #{tag || "Sans tag"}                                             
         div.row
             ul.collection.with-header
                 li.collection-header
@@ -21,7 +21,7 @@ block content
                     li.collection-item.question-item(data-tags=question._tags data-id=question._id)
                         div
                             div.text-bold #{question._nom}                                 
-                            div Tags: #{question._tags.join(",")}
+                            div Tags: #{question._tags.join(",") || "-"}
                 else      
                     em Vous n'avez pas de Questions
         div.row 
