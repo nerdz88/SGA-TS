@@ -1,3 +1,4 @@
+
 export class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
 
@@ -17,7 +18,7 @@ export class Question {
 
         let values = JSON.parse(questionJson);
         this._idEspaceCours = values.idEspaceCours;
-        this._tags = values.tags.split(",");
+        this._tags = values.tags ? values.tags.split(",") : [];
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
         this._reponse = values.reponse;

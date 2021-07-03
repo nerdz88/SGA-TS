@@ -56,7 +56,6 @@ export class Universite {
             let index=question.getTag().findIndex(t => t==tag)
             return index!=-1;
         })
-        console.log(questions)
         return questions;
     }
 
