@@ -1,54 +1,79 @@
-import { Universite } from '../service/Universite';
+import { EspaceCours } from "../model/EspaceCours";
+import { Universite } from "../service/Universite";
 
 export class GestionnaireQuestionnaire {
+  private universite: Universite;
 
-    private universite: Universite;
+  constructor(universite: Universite) {
+    this.universite = universite;
+  }
+  public ajouterQuestion(idQuestionnaire, idEspaceCours: number, arrayIdQuestionsAjouter: string) {
 
-    constructor(universite: Universite) {
-        this.universite = universite;
-    }
-    public ajouterQuestion(idQuestionnaire,idEspaceCours: number, arrayIdQuestionsAjouter: string) {
-        let arrayIdQuestion = JSON.parse(arrayIdQuestionsAjouter);
-        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours)
-        let questions = arrayIdQuestion.map((id)=>{
-            return espaceCours.recupererUneQuestion(id)
-        }).filter((element)=>element!==undefined)
-        espaceCours.recupererUnQuestionnaire(idQuestionnaire).setQuestion(questions)
-    }
+    let arrayIdQuestion = JSON.parse(arrayIdQuestionsAjouter);
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
 
-    public recupererToutQuestionnaires(idEspaceCours: number) :string{
-        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours)
-        return JSON.stringify(espaceCours.recupererToutQuestionnaires())
-    }
+    questionnaire.setQuestion([]);
+    arrayIdQuestion.forEach(idQuestion => {
+      questionnaire.ajouterQuestion(espaceCours.recupererUneQuestion(idQuestion));
+    });
+  }
 
-    
-    recupererTagQuestionParEspaceCours(id: number) {
-        return this.universite.recupererTagQuestionParEspaceCours(id)
-    }
+  public recupererTousQuestionnaires(idEnseignant: number): string {
+    let arrayEspaceCours = this.universite.recupererTousEspaceCours(idEnseignant)
+    if (arrayEspaceCours.length == 0) return "[]";
 
-    
-    recupererQuestionParTag(id: number,tag : string) {
-        return JSON.stringify(this.universite.recupererToutesQuestionsParTag(id,tag))
-    }
+    return JSON.stringify(
+      arrayEspaceCours.flatMap((ec) => {
+        let questionnaires = ec.recupererToutQuestionnaires();
+        return questionnaires.length > 0 ? questionnaires : [];
+      })
+    );
+  }
 
-    public recupererQuestionnaireParId(idEspaceCours: number,idQuestionnaire:number){
-        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours)
-        return JSON.stringify(espaceCours.
-            recupererToutQuestionnaires().
-            find((q)=>q.getId()==idQuestionnaire))
-    }
+  public recupererTousQuestionnairesEspaceCours(idEspaceCours: number): string {
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    return JSON.stringify(espaceCours.recupererToutQuestionnaires());
+  }
 
-    public creerQuestionnaire(idEspaceCours:number,questionnaireValue : string){
-        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-        console.log(espaceCours);
-        espaceCours.ajouterQuestionnaire(questionnaireValue)
-    }    
+  recupererTagQuestionParEspaceCours(idEspaceCours: number) {
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    return JSON.stringify(espaceCours.recupererTagQuestions());
+  }
 
-    public supprimerQuestionnaire(idEspaceCours: number, IdQuestion: number): boolean {
-        return true;
-    }
+  // recupererQuestionParTag(id: number, tag: string) {
+  //   return JSON.stringify(this.universite.recupererToutesQuestionsParTag(id, tag));
+  // }
 
-    public modifierQuestionnaire(idEspaceCours: number, IdQuestion: number): boolean {
-        return true;
-    }
+  public recupererQuestionnaireParId(
+    idEspaceCours: number,
+    idQuestionnaire: number
+  ) {
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    return JSON.stringify(
+      espaceCours
+        .recupererToutQuestionnaires()
+        .find((q) => q.getId() == idQuestionnaire)
+    );
+  }
+
+  public creerQuestionnaire(idEspaceCours: number, questionnaireValue: string): number {
+    let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+    let idQuestionnaire = espaceCours.ajouterQuestionnaire(questionnaireValue);
+    return idQuestionnaire;
+  }
+
+  public supprimerQuestionnaire(
+    idEspaceCours: number,
+    IdQuestion: number
+  ): boolean {
+    return true;
+  }
+
+  public modifierQuestionnaire(
+    idEspaceCours: number,
+    IdQuestion: number
+  ): boolean {
+    return true;
+  }
 }

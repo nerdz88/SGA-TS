@@ -10,17 +10,20 @@ export class Question {
     private _descriptionReponse: string
     private _mauvaiseReponseDescription: string
     static currentId: number = 0;
-    
+
     constructor(questionJson: string) {
-        if(questionJson == undefined)
+        if (questionJson == undefined)
             return;
 
         let values = JSON.parse(questionJson);
         this._idEspaceCours = values.idEspaceCours;
-        this._tags = values.tags.split(",");
+
+        this._tags = values.tags.toLowerCase().split(",")
+            .filter((tag, index, list) => list.indexOf(tag) === index);
+
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
-        this._reponse = values.reponse;
+        this._reponse = Boolean(values.reponse);
         this._descriptionReponse = values.descriptionReponse
         this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
         this._id = ++Question.currentId;
@@ -28,7 +31,8 @@ export class Question {
 
     public modifier(questionJson: string) {
         let values = JSON.parse(questionJson);
-        this._tags = values.tags.split(",");
+        this._tags = values.tags.toLowerCase().split(",")
+            .filter((tag, index, list) => list.indexOf(tag) === index);
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
         this._reponse = values.reponse;
@@ -48,6 +52,7 @@ export class Question {
     public getReponse() {
         return this._reponse;
     }
+    
     public getTag() {
         return this._tags;
     }

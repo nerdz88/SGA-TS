@@ -1,0 +1,48 @@
+extends ../../commun/master-template.pug 
+
+block content
+    //- Start bloc content
+    +btn-back(estModification ? "Modifier un questionnaire" : "Ajouter un questionnaire", 
+     "/enseignant/questionnaire/" + idEspaceCours)  
+    div.row
+        div.col.s10.offset-s1   
+            if !estModification 
+                div.row
+                    div.col.s12
+                        a(class="waves-effect waves-light btn right btn-terminer-ajout blue accent-2" href="/enseignant/questionnaire/" + idEspaceCours) Terminer l'ajout
+            form.form-ajouter-question.section(id="form-ajouter-questionnaire") 
+                //- Début Form 
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="estModification", value=estModification.toString())   
+                input(type="hidden" name="idQuestionnaire", value=estModification ? questionnaire._id : "")  
+
+                div.row.no-margin
+                    div.input-field.col.s6
+                        input#nom(type="text" name="nom" value=estModification ? questionnaire._nom : "" required)
+                        label(for="nom") Nom
+                
+                div.row.no-margin
+                    div.input-field.col.s12
+                        textarea#description(class="materialize-textarea" name="description" required)
+                            |#{estModification ? questionnaire._descriptionQuestion : ""}
+                        label(for="description") Description              
+               
+                div.row
+                    div.input-field.col.s6
+                        div.row
+                            div.col.s12
+                                label Status
+                            div.col.s12
+                                div.switch
+                                    label Inactif 
+                                        input#status(type="checkbox" name="status" checked=estModification && questionnaire._status)
+                                        span.lever 
+                                        |Actif
+                div.row
+                  div.col.s12  
+                    button(class="waves-effect waves-light btn" type="submit") #{estModification ? "Modifier" : "Créer"} 
+                //- Fin form
+
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/questionnaire/ajouter-modifier-questionnaire.js")

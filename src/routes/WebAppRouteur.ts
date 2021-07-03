@@ -105,34 +105,51 @@ export class WebAppRouteur {
         res.render("enseignant/cours/detail-cours", { espaceCours: cours });
     }
 
-    public recupererToutQuestionnaires(req: Request, res: Response, next: NextFunction) {
-        let questionnaires = "{}";
-        let arrayQuestionnaire: string;
-        //let idEspaceCours = parseInt(req.params.id);
-        let idEspaceCours = 3;
-        if (req.params.idQuestionnaire != undefined) {
-            console.log("entree")
-            let id = parseInt(req.params.idQuestionnaire);
-            //let id=
-            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours,id);
-        } else {
-            console.log("tout questionnaire")
-            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererToutQuestionnaires(idEspaceCours);
-            console.log(arrayQuestionnaire)
-        }
-        //côté front ***
-        //res.render("enseignant/questionnaire/liste-questionnaire", { questionnaire: JSON.parse(arrayQuestionnaire)});
-    }
 
     public creerQuestionnaires(req: Request, res: Response, next: NextFunction) {
-        let id = req.params.id;
+        
         //côté front
-        /*res.render("enseignant/question/ajouter-modifier-questionnaire",
+        let id = parseInt(req.params.id);
+        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
             {
                 idEspaceCours: id,
-                question: {},
+                questionnaire: {},
                 estModification: false
-            });*/
+            });
+        
+    }
+    
+    public modifierQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        
+        //côté front
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let questionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours, idQuestionnaire);
+        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
+            {
+                idEspaceCours: idEspaceCours,
+                questionnaire: JSON.parse(questionnaire),
+                estModification: true
+            });
+        
+    }
+    
+
+    public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
+
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+
+        let questions = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(idEspaceCours);
+        let tags = this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(idEspaceCours);
+        
+        res.render("enseignant/questionnaire/gerer-question-questionnaire", {
+            idEspaceCours: idEspaceCours,
+            idQuestionnaire: idQuestionnaire,
+            questions: JSON.parse(questions),
+            tags: JSON.parse(tags)
+        })
+
     }
 
     //#endregion Gestion Cours
@@ -198,6 +215,25 @@ export class WebAppRouteur {
 
     //#endregion Gestion Questions
 
+    //#region Gestion Questionnaires
+
+
+    public recupererTousQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let arrayQuestionnaire: string;
+        let espaceCours = "{}";
+        if (req.params.id == undefined) {       
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnaires(AuthorizationHelper.getIdUser(req))
+        } else {
+            let id = parseInt(req.params.id);
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(id);   
+            espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);            
+        }
+        //console.log(espaceCours)
+        //côté front ***
+        res.render("enseignant/questionnaire/liste-questionnaires", { questionnaires: JSON.parse(arrayQuestionnaire), espaceCours: JSON.parse(espaceCours)});
+    }
+
+    //#endregion Gestion Questionnaires
 
     //#region Gestion Devoirs
 
@@ -215,7 +251,6 @@ export class WebAppRouteur {
         let idDevoir = parseInt(req.params.idDevoir);
         let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
         res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir), currentOrdre: ordreTri });
-
     }
 
 
@@ -279,8 +314,10 @@ export class WebAppRouteur {
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));
 
         //Questionnaire
-        this.router.get('/enseignant/questionnaire/',this.recupererToutQuestionnaires.bind(this))
+        this.router.get('/enseignant/questionnaire/',this.recupererTousQuestionnaires.bind(this))
+        this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this))
         this.router.get('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
     }
 
 }

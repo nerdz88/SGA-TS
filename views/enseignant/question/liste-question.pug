@@ -3,7 +3,7 @@ extends ../../commun/master-template.pug
 block content
     //- Start bloc content  
     +btn-back(!espaceCours._id ? "Vos Questions" : "Questions pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, 
-        !espaceCours._id ? "/" : "/enseignant/cours")  
+        !espaceCours._id ? "/" : "/enseignant/cours/")  
     div.row
         div.col.s10.offset-s1   
             if espaceCours._id 
