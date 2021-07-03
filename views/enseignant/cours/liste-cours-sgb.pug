@@ -14,7 +14,8 @@ block content
                   div.text-bold #{unCours._sigle}                     
                 div #{unCours._titre}             
                 div Gr: #{unCours._groupe} 
-                <span name=#{unCours._id} class="badgeDisponible">Disponible</span> 
+                span(class=`badgeDisponible${unCours._disponible ? " disponible" : " indisponible"}`)
+                  |#{unCours._disponible ? "Disponible" : "Indisponible"}
               div.card-action
                 form.center-align.form-ajouter-cours.no-margin(id=unCours._id) 
                   input.coursData(name="data", type="hidden", value=unCours)

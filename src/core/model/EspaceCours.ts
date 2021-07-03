@@ -39,16 +39,21 @@ export class EspaceCours {
         this._enseignantId = _enseignantId;
     }
 
-    ajouterEtudiants(etudiants: any) {
+    public ajouterEtudiants(etudiants: any) {
         etudiants.forEach((element) => {
             this._etudiants.push(new Etudiant(element._id, element._last_name, element._first_name, element._email, element._permanent_code));
         })
     }
 
-    ajouterQuestionnaire(questionnaireJson: string) {
-        let newQuestionnaire = new Questionnaire(questionnaireJson);
+    public ajouterQuestionnaire(questionnaireJson: string) {
+        let newQuestionnaire = new Questionnaire(questionnaireJson, this._etudiants);
         this._questionnaires.push(newQuestionnaire);
         return newQuestionnaire.getId();
+    }
+
+    public modifierQuestionnaire(idQuestionnaire: number, questionnaireJson) {
+        let q = this.recupererUnQuestionnaire(idQuestionnaire);
+        q.modifier(questionnaireJson);
     }
 
     public ajouterQuestion(questionJson: string) {
@@ -71,10 +76,10 @@ export class EspaceCours {
         }
         return false
     }
+    
     public recupererToutesQuestions(): Question[] {
         return this._questions;
     }
-
 
     public recupererUneQuestion(idQuestion: number): Question {
         let q = this._questions.find(c => c.getId() == idQuestion);
@@ -97,7 +102,6 @@ export class EspaceCours {
         let devoir = this.recupererUnDevoir(idDevoir);
         devoir.modifier(jsonString);
     }
-
 
     public recupererTousDevoirs(): Devoir[] {
         return this._devoirs;
@@ -157,8 +161,17 @@ export class EspaceCours {
     public recupererToutQuestionnaires(): Questionnaire[] {
         return this._questionnaires;
     }
+
     public recupererUnQuestionnaire(idQuestionnaire: number): Questionnaire {
-        let q = this._questionnaires.find(c => c.getId() == idQuestionnaire);
-        return q;
+        return this._questionnaires.find(c => c.getId() == idQuestionnaire);
+    }
+
+    public suprimerQuestionnaire(idQuestionnaire: number): boolean {
+        let index = this._questionnaires.findIndex(q => q.getId() == idQuestionnaire);
+        if (index != -1) {
+            this._questionnaires.splice(index, 1);
+            return true;
+        }
+        return false;
     }
 }

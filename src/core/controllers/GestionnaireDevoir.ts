@@ -1,3 +1,4 @@
+import { Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 
 export class GestionnaireDevoir {
@@ -32,30 +33,10 @@ export class GestionnaireDevoir {
         return JSON.stringify(espaceCours.recupererTousDevoirs());
     }
 
-    public recupererUnDevoir(idEspaceCours: number, IdDevoir: number, ordreTri: number) {
+    public recupererUnDevoir(idEspaceCours: number, IdDevoir: number, ordreTri: number = 0) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-        let devoir = espaceCours.recupererUnDevoir(IdDevoir)
-
-        devoir.remises = devoir.remises.sort((a, b) => {
-            switch (ordreTri) {
-                case OrdreTriRemise.NomEtudiantAlphaCroissant: {
-                    return a.etudiant.getNomComplet().localeCompare(b.etudiant.getNomComplet())
-                }
-                case OrdreTriRemise.NomEtudiantAlphaDecroissant: {
-                    return b.etudiant.getNomComplet().localeCompare(a.etudiant.getNomComplet())
-                }
-                case OrdreTriRemise.NoteCroissant: {
-                    return a.note - b.note
-                }
-                case OrdreTriRemise.NomEtudiantAlphaDecroissant: {
-                    return b.note - a.note
-                }
-                default: {
-                    return a.id - a.id
-                }
-            }
-        })
-
+        let devoir = espaceCours.recupererUnDevoir(IdDevoir);
+        devoir.remises = Remise.orderBy(devoir.remises, ordreTri);   
         return JSON.stringify(devoir);
     }
 
@@ -67,10 +48,3 @@ export class GestionnaireDevoir {
 
 }
 
-enum OrdreTriRemise {
-    Default,
-    NomEtudiantAlphaCroissant,
-    NomEtudiantAlphaDecroissant,
-    NoteCroissant,
-    NoteDecroissant
-}

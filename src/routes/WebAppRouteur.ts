@@ -70,23 +70,6 @@ export class WebAppRouteur {
         res.render("enseignant/cours/liste-cours-sga", { espaceCours: JSON.parse(value) });
     }
 
-    public verifierSGBCoursDisponibilite(req: Request, res: Response, next: NextFunction) {
-        let idSGB = parseInt(req.params.id);
-        let disponible;
-        try {
-            disponible = this.gestionnaireCours.recupererUnEspaceCours(idSGB) == undefined;
-        } catch (error) {
-            disponible = true;
-        } finally {
-            res.status(200)
-                .send({
-                    message: 'Success',
-                    status: res.status,
-                    estDisponible: disponible
-                });
-        }
-    }
-
     /**
      * Methode GET qui affiche les details d'un cours
      * @param req 
@@ -105,52 +88,6 @@ export class WebAppRouteur {
         res.render("enseignant/cours/detail-cours", { espaceCours: cours });
     }
 
-
-    public creerQuestionnaires(req: Request, res: Response, next: NextFunction) {
-        
-        //côté front
-        let id = parseInt(req.params.id);
-        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
-            {
-                idEspaceCours: id,
-                questionnaire: {},
-                estModification: false
-            });
-        
-    }
-    
-    public modifierQuestionnaires(req: Request, res: Response, next: NextFunction) {
-        
-        //côté front
-        let idEspaceCours = parseInt(req.params.idEspaceCours);
-        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
-        let questionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours, idQuestionnaire);
-        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
-            {
-                idEspaceCours: idEspaceCours,
-                questionnaire: JSON.parse(questionnaire),
-                estModification: true
-            });
-        
-    }
-    
-
-    public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
-
-        let idEspaceCours = parseInt(req.params.idEspaceCours);
-        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
-
-        let questions = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(idEspaceCours);
-        let tags = this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(idEspaceCours);
-        
-        res.render("enseignant/questionnaire/gerer-question-questionnaire", {
-            idEspaceCours: idEspaceCours,
-            idQuestionnaire: idQuestionnaire,
-            questions: JSON.parse(questions),
-            tags: JSON.parse(tags)
-        })
-
-    }
 
     //#endregion Gestion Cours
 
@@ -217,6 +154,54 @@ export class WebAppRouteur {
 
     //#region Gestion Questionnaires
 
+    
+    public creerQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let id = parseInt(req.params.id);
+        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
+            {
+                idEspaceCours: id,
+                questionnaire: {},
+                estModification: false
+            });        
+    }
+    
+    public modifierQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let questionnaire = this.gestionnaireQuestionnaire.recupererUnQuestionnaire(idEspaceCours, idQuestionnaire);
+        res.render("enseignant/questionnaire/ajouter-modifier-questionnaire",
+            {
+                idEspaceCours: idEspaceCours,
+                questionnaire: JSON.parse(questionnaire),
+                estModification: true
+            });        
+    }    
+
+    public gererQuestionsQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+
+        let currentQuestionsID = this.gestionnaireQuestionnaire.recupererIdsQuestionsQuestionnaire(idEspaceCours, idQuestionnaire);
+        let questions = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(idEspaceCours);
+        let tags = this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(idEspaceCours);         
+        
+        res.render("enseignant/questionnaire/gerer-question-questionnaire", {
+            idEspaceCours: idEspaceCours,
+            idQuestionnaire: idQuestionnaire,
+            questions: JSON.parse(questions),
+            currentQuestionsID: JSON.parse(currentQuestionsID),
+            tags: JSON.parse(tags),
+            returnUrl: req.headers.referer
+        });
+    }
+    
+    public recupererUnQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let ordreTri: number = parseInt(req.query.o?.toString());
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let questionnaire = JSON.parse(this.gestionnaireQuestionnaire.recupererUnQuestionnaire(idEspaceCours, idQuestionnaire, ordreTri));
+        res.render("enseignant/questionnaire/detail-questionnaire", { questionnaire: questionnaire, currentOrdre: ordreTri});
+    }
 
     public recupererTousQuestionnaires(req: Request, res: Response, next: NextFunction) {
         let arrayQuestionnaire: string;
@@ -228,8 +213,6 @@ export class WebAppRouteur {
             arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(id);   
             espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);            
         }
-        //console.log(espaceCours)
-        //côté front ***
         res.render("enseignant/questionnaire/liste-questionnaires", { questionnaires: JSON.parse(arrayQuestionnaire), espaceCours: JSON.parse(espaceCours)});
     }
 
@@ -268,7 +251,7 @@ export class WebAppRouteur {
     public recupererModifierDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
-        let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, 0);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir);
 
         res.render("enseignant/devoir/ajouter-modifier-devoir",
             {
@@ -298,7 +281,7 @@ export class WebAppRouteur {
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
         this.router.get('/enseignant/cours/ajouter', this.recupererAjouterEspaceCours.bind(this));
         this.router.get('/enseignant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
-        this.router.get('/enseignant/cours/verifierDispo/:id', this.verifierSGBCoursDisponibilite.bind(this))
+        //this.router.get('/enseignant/cours/verifierDispo/:id', this.verifierSGBCoursDisponibilite.bind(this))
 
         //Questions
         this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
@@ -314,10 +297,13 @@ export class WebAppRouteur {
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));
 
         //Questionnaire
-        this.router.get('/enseignant/questionnaire/',this.recupererTousQuestionnaires.bind(this))
-        this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this))
+        this.router.get('/enseignant/questionnaire/',this.recupererTousQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/detail/:idEspaceCours/:idQuestionnaire', this.recupererUnQuestionnaire.bind(this));
         this.router.get('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaires.bind(this));
-        this.router.get('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
+        this.router.get('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
+        this.router.get('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
+
     }
 
 }

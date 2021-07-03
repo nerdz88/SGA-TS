@@ -103,8 +103,8 @@ export class SgaRouteur {
 
     //#endregion Gestion Cours
 
-    
-    
+
+
     //#region Gestion Questions
 
 
@@ -118,7 +118,7 @@ export class SgaRouteur {
         let idParam = req.params.id
         let id;
         let arrayQuestion: string;
-        if(idParam === "") {
+        if (idParam === "") {
             id = undefined;
         }
         if (id == undefined) {
@@ -135,44 +135,6 @@ export class SgaRouteur {
                     idEspaceCours: id ?? "none",
                     questions: JSON.parse(arrayQuestion)
                 }
-            });
-    }
-
-    public creerQuestionnaire(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
-        let params=JSON.stringify(req.body);
-        //voir dans le Questionnaire model pour savoir quel champs envoyé du front
-        let idQuestionnaire = this.gestionnaireQuestionnaire.creerQuestionnaire(id,params);
-        res.status(201)
-            .send({
-                message: 'Success',
-                status: res.status,
-                idQuestionnaire: idQuestionnaire
-            });
-    }
-
-    // public recupererToutQuestionParTag(req: Request, res: Response, next: NextFunction) {
-    //     let id = parseInt(req.params.id);
-    //     let tag = req.params.tag;
-    //     let data=JSON.parse(this.gestionnaireQuestionnaire.recupererQuestionParTag(id,tag));
-    //     //console.log(data)
-    //     res.status(200)
-    //         .send({
-    //             message: 'Success',
-    //             status: res.status,
-    //             questions:data
-    //         });
-    // }
-
-    public recupererToutTags(req: Request, res: Response, next: NextFunction){
-        let id = parseInt(req.params.id);
-        let data= this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(id)
-        //console.log(data)
-        res.status(200)
-            .send({
-                message: 'Success',
-                status: res.status,
-                tags:data
             });
     }
 
@@ -303,15 +265,16 @@ export class SgaRouteur {
 
     //#endregion Gestion Devoirs
 
+
     //#region Gestion Questionnaires
 
     public recupererTousQuestionnaires(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         let arrayQuestionnaire: string;
-        if (id == undefined) {          
+        if (id == undefined) {
             arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnaires(AuthorizationHelper.getIdUser(req))
         } else {
-            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(parseInt(id));               
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(parseInt(id));
         }
 
         res.status(200)
@@ -320,24 +283,76 @@ export class SgaRouteur {
                 status: res.status,
                 data: {
                     idEspaceCours: id ?? "none",
-                    questionnaire: JSON.parse(arrayQuestionnaire)
+                    questionnaires: JSON.parse(arrayQuestionnaire)
                 }
             });
     }
 
-    public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
+    public recupererUnQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
 
+        let questionnaire = this.gestionnaireQuestionnaire.recupererUnQuestionnaire(idEspaceCours, idQuestionnaire);
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+                questionnaire: JSON.parse(questionnaire)
+            });
+    }
+
+    public gererQuestionsQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
         let arrayQuestions = JSON.stringify(req.body.data.split(","));
-        this.gestionnaireQuestionnaire.ajouterQuestion(parseInt(req.params.idQuestionnaire), parseInt(req.params.idEspaceCours), arrayQuestions);
-       
+
+        this.gestionnaireQuestionnaire.gererQuestionsQuestionnaire(idEspaceCours, idQuestionnaire, arrayQuestions);
+
         res.status(200).send({
             message: 'Succes',
             status: res.status
         });
-
     }
-    
 
+    public creerQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let id = parseInt(req.params.id);
+        let params = JSON.stringify(req.body);
+        let idQuestionnaire = this.gestionnaireQuestionnaire.creerQuestionnaire(id, params);
+        res.status(201)
+            .send({
+                message: 'Success',
+                status: res.status,
+                idQuestionnaire: idQuestionnaire
+            });
+    }
+
+    public modifierQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let params = JSON.stringify(req.body);
+        this.gestionnaireQuestionnaire.modifierQuestionnaire(idEspaceCours, idQuestionnaire, params);
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+                idQuestionnaire: idQuestionnaire
+            });
+    }
+
+    public supprimerQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+
+        if (this.gestionnaireQuestionnaire.supprimerQuestionnaire(idEspaceCours, idQuestionnaire)) {
+            res.status(200)
+                .send({
+                    message: 'Success',
+                    status: res.status
+                });
+        } else {
+            throw new NotFoundError("La question n'a pas été supprimé");
+        }
+    }
 
     //#endregion Gestion Questionnaires
 
@@ -369,13 +384,15 @@ export class SgaRouteur {
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
         this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
-    
+
         // Questionnaires
-        this.router.get('/enseignant/questionnaire/',this.recupererTousQuestionnaires.bind(this));
-        this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this));
-        this.router.post('/enseignant/questionnaire/ajouter/:id',this.creerQuestionnaire.bind(this));
-        this.router.get('/enseignant/questionnaire/tags/',this.recupererToutTags.bind(this));
-        // this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
-        this.router.post('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
+        this.router.get('/enseignant/questionnaire/', this.recupererTousQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/:id', this.recupererTousQuestionnaires.bind(this));
+        this.router.post('/enseignant/questionnaire/detail/:idEspaceCours/:idQuestionnaire', this.recupererUnQuestionnaire.bind(this));
+        this.router.post('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaire.bind(this));
+        this.router.post('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
+        this.router.delete('/enseignant/questionnaire/supprimer/:idEspaceCours/:idQuestionnaire', this.supprimerQuestionnaire.bind(this));
+        this.router.post('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
+    
     }
 }

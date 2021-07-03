@@ -27,7 +27,11 @@ export class GestionnaireCours {
     }
 
     public async recupererGroupesCours(token: string) {
-        return await SGBService.recupererGroupesCours(token);
+        let groupesCours = await SGBService.recupererGroupesCours(token);
+        groupesCours.forEach((gc: any) => {
+            gc._disponible = !this.universite.espaceCoursExist(gc._id);
+        });
+        return groupesCours;
     }
 
 }

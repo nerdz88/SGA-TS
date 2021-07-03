@@ -2,11 +2,13 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-  +btn-back("Ajouter une question au questionnaire", "/enseignant/questionnaire/ajouter-modifier-questionnaire")
+    //-TODO AVOIR UN PARAM POUR LA PROVENANCE POUR MEILLEUR NAVIGATION   
+  +btn-back("Ajouter une question au questionnaire", returnUrl)
 
   div.row
     div.col.s10.offset-s1  
         div.row
+            h2 Catégories
             each tag in tags
                 div.col.s2
                     div
@@ -14,11 +16,10 @@ block content
                             input(class="with-gap ckb-tags" type="checkbox" name=tag checked="checked") 
                             span #{tag || "Sans tag"}                                             
         div.row
+            h2 Questions
             ul.collection.with-header
-                li.collection-header
-                    h2.center Questions
                 each question in questions   
-                    li.collection-item.question-item(data-tags=question._tags data-id=question._id)
+                    li(class=`collection-item question-item${currentQuestionsID.indexOf(question._id) != -1 ? " selected" : ""}` data-tags=question._tags data-id=question._id)
                         div
                             div.text-bold #{question._nom}                                 
                             div Tags: #{question._tags.join(",") || "-"}
@@ -28,7 +29,7 @@ block content
             form#form-sauvegarder-questions
                 input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
                 input(type="hidden" name="idQuestionnaire", value=idQuestionnaire)   
-                button(class="btn-submit-form" type="submit") Sauvegarder
+                button(class="waves-effect waves-light btn" type="submit") Sauvegarder
 
   //- End bloc content
 
