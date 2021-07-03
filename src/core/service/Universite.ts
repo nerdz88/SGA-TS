@@ -1,10 +1,9 @@
+import { Type } from 'class-transformer';
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
-import { Questionnaire } from "../model/Questionnaire";
 import { SGBService } from "./SGBService";
-import { Type, plainToClass } from 'class-transformer';
 
 export class Universite {
     @Type(() => EspaceCours)
@@ -78,7 +77,7 @@ export class Universite {
         return true;
     }
 
-    public espaceCoursExist(id: number) : boolean {
+    public espaceCoursExist(id: number): boolean {
         return this.getIndexEspaceCoursById(id) != -1;
     }
 
