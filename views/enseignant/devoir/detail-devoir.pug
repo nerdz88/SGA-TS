@@ -15,36 +15,7 @@ block content
                         li Date début: #{devoir._dateDebut}
                         li Date fin: #{devoir._dateFin}
 
-            h3 Remises des étudiants
-            div.row
-                div.col.s12
-                    table.bordered.highlight
-                        thead 
-                            tr  
-                                - var baseURL = "/enseignant/devoir/detail/" + devoir._idEspaceCours + "/" + devoir._id 
-                                th.data-field 
-                                    - var valueOrdreEtudiant = currentOrdre == 1 ? 2 : 1 
-                                    a.sort-header.with-icon(href=baseURL + "?o=" +  valueOrdreEtudiant) Étudiant
-                                        if currentOrdre == 1 || currentOrdre == 2
-                                            i.material-icons #{currentOrdre == 1 ? "arrow_drop_up" : "arrow_drop_down"} 
-                                th.data-field Code permanent 
-                                th.data-field Etat
-                                th.data-field Date de remise
-                                th.data-field Date de correction
-                                th.data-field
-                                    - var valueOrdreNote = currentOrdre == 3 ? 4 : 3 
-                                    a.sort-header.with-icon(href=baseURL + "?o=" + valueOrdreNote) Note 
-                                        if currentOrdre == 3 || currentOrdre == 4
-                                            i.material-icons #{currentOrdre == 3 ? "arrow_drop_up" : "arrow_drop_down"} 
-                        tbody 
-                            each remise in devoir._remises        
-                                tr 
-                                    td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
-                                    td #{remise._etudiant._code_permanent}
-                                    td #{remise._etat}
-                                    td #{remise._dateRemise || "-"}
-                                    td #{remise._dateCorrection || "-"}
-                                    td #{remise._note || "-"} / #{devoir._noteMaximale} 
+            +table-remise-etudiants(devoir._remises, `/enseignant/questionnaire/detail/${devoir._idEspaceCours}/${devoir._id}`, currentOrdre)
 
             div.section
                 div.row

@@ -1,10 +1,9 @@
+import { Type } from 'class-transformer';
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
-import { Questionnaire } from "../model/Questionnaire";
 import { SGBService } from "./SGBService";
-import { Type, plainToClass } from 'class-transformer';
 
 export class Universite {
     @Type(() => EspaceCours)
@@ -27,33 +26,6 @@ export class Universite {
         this.arrayEspaceCours = universite.arrayEspaceCours;
     }
 
-    public recupererTousQuestionnaires(idEnseignant: number) {
-        let arrayQuestionnaire = [];
-        this.arrayEspaceCours.forEach(function (ec) {
-            console.log(ec.getIdEnseignant)
-            arrayQuestionnaire.push(ec.recupererToutQuestionnaires())
-        })
-        return arrayQuestionnaire;
-    }
-
-    public recupererQuestionnaireParEspaceCours(idEspaceCours: number) {
-        let espace = this.recupererUnEspaceCours(idEspaceCours);
-        /*let array=this.arrayEspaceCours.map((espaceCours)=>{
-            return espaceCours.getID()==idEspaceCours ? espaceCours.recupererToutQuestionnaires(): undefined
-        }).filter(function( element ) {return element !== undefined;});*/
-        //console.log(espace.recupererToutQuestionnaires())
-        return espace.recupererToutQuestionnaires();
-    }
-
-
-    public recupererToutesQuestionsParTag(idEspaceCours: number, tag: string) {
-        let espaceCours = this.recupererUnEspaceCours(idEspaceCours);
-        let questions = espaceCours.recupererToutesQuestions().filter((question) => {
-            let index = question.getTag().findIndex(t => t == tag)
-            return index != -1;
-        })
-        return questions;
-    }
 
     public async ajouterEspaceCours(coursSGB: any, token: string, idEnseignant: number) {
         if (this.getIndexEspaceCoursById(coursSGB._id) != -1) {
@@ -103,6 +75,10 @@ export class Universite {
         }
         this.arrayEspaceCours.splice(index, 1);
         return true;
+    }
+
+    public espaceCoursExist(id: number): boolean {
+        return this.getIndexEspaceCoursById(id) != -1;
     }
 
     private getCoursBySigle(sigle: string) {

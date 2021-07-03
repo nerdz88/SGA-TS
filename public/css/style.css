@@ -56,23 +56,30 @@ body {
 .text-bolder{
   font-weight: 700;
 }
-.badgeDisponible {
+.badgeDisponible { 
+  color: #fff;
+  font-size: 75%;
+  font-weight: 700;
+  text-align: center;
+  border-radius: .25rem;
+  line-height: 22px;
+  padding: 0 6px;
+  float: right;
+}
+
+.badgeDisponible.disponible {
   background-color: green;
-    color: #fff;
-    font-size: 75%;
-    font-weight: 700;
-    text-align: center;
-    border-radius: .25rem;
-    line-height: 22px;
-    padding: 0 6px;
-    float: right;
+}
+
+.badgeDisponible.indisponible {
+  background-color: red;
 }
 
 .question-item:hover {
  cursor: pointer;
 }
 .question-item.selected {
-  background-color: rgb(0, 138, 126);
+  background-color: #e0f2f1;
 }
 
 /* 
