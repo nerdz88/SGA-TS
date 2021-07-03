@@ -4,72 +4,93 @@ skinparam defaultfontname Verdana
 skinparam RoundCorner 20
 ' skinparam linetype ortho
 
-title Modèle du domaine (adapté au Cas d'utilisation \n ajouter et récupérer )
-class Cours << (1,blue) >> {
-    id : number
+title Modèle du domaine
+
+
+package SGB{
+    class Université << (2,red) >>{}
+
+    class CatalogueCours << (2,red)>>{}
+
+    class Enseignant << 1,yellow) >>{
+    prenom : String
     nom : String
-}
+    courriel : String
+    }
 
-
-class Enseignant << (1,blue) >>{
-    token : String
-}
-
-class Etudiant << (1,blue) >>{
+    class Etudiant << 1,yellow) >>{
     nom : String
-}
+    codePermanent : String
+    prenom : String
+    courriel : String
+    }
 
-class Devoir << (2,red) >>{
-    id: number
-    nom: String
-    description : String
-    note maximale : number
-    date de début : String
-    date de fin : String
-    visible : boolean
-}
-
-class Remise << (2,red) >>{
-    id : number
-    etat : String
-    idEtudiant : number
-}
-
-class Question << 1,yellow) >>{
-    id : number
+    class Cours << (1,blue) >>{
+    id : numbers
     nom : String
-    tags : String []
-    texteQuestion : String
-    reponse : boolean
-    texteBonneReponse : String
-    texteMauvaiseReponse : String
+    }
+
+    class GroupeCours << 1,yellow) >>{
+        id : number
+        limiteNombreInscription : number
+    }
 }
 
-class Questionnaire << (2,red) >>{
-    id: number
-    description: String
+package SGA{
+    class Devoir << (2,red) >>{
+        id: number
+        nom: String
+        description : String
+        note maximale : number
+        date de début : String
+        date de fin : String
+        visible : boolean
+    }
+
+    class Remise << (2,red) >>{
+        id : number
+        etat : String
+        dateRemise : String
+    }
+
+    class Question << 1,yellow) >>{
+        id : number
+        nom : String
+        tags : String
+        texteQuestion : String
+        reponse : boolean
+        texteBonneReponse : String
+        texteMauvaiseReponse : String
+    }
+
+    class Questionnaire << (2,red) >>{
+        id: number
+        description: String
+        état : boolean
+    }
+
+    class EspaceCours << (2,red) >>{
+        idEspaceGroupeCours : number
+    }
 }
 
-class EspaceCours << (2,red) >>{
-    idEspaceCours : number
-}
-
-class Université << (2,red) >>{
-
-}
+Université "1" -- "1"CatalogueCours : offre >
+CatalogueCours "1"-- "*"Cours : repertorie >
 Devoir "1"--"*" Remise : contient >
-EspaceCours "1"--"1..*" Devoir: contient >
-Enseignant "1"--"1..*" EspaceCours : enseigne >
+EspaceCours "1"--"*" Devoir: contient >
 Université "1"--"*" Enseignant : emploie >
-Cours "1"-- "1" EspaceCours : décrit >
-Université "1"--"*" Cours : contient >
-EspaceCours "1"-- "*"Etudiant : est_suivi_par >
 Questionnaire "1"--"1..*" Question : contient >
 Questionnaire"1"--"*" Remise : possède >
-Université "1"--"*" EspaceCours : contient >
 Université "1"--"*" Etudiant : est-inscrit-à <
 Question "*"--"1" EspaceCours : contient <
-Questionnaire "*"--"1" EspaceCours : contient >
+Questionnaire "*"--"1" EspaceCours : contient <
+Etudiant "1" -- "1..*"GroupeCours : S'inscrit-dans >
+Enseignant "1" -- "*"GroupeCours : Enseigne >
+Cours "1" -- "1..*" GroupeCours : décris >
+GroupeCours "1"-- "1..0"EspaceCours : Est-un-support-des-activités-du <
+Etudiant "1" - "*" Remise : Crée >
+Enseignant "1" - "*" Question : Crée >
+Enseignant "1" - "*" Questionnaire : Crée >
 
 legend
 |= |= Type |

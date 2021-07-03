@@ -4,7 +4,7 @@ hide footbox
 actor ":Enseignant" as professeur
 participant ":Systeme" as systeme
 
-professeur ->  systeme : recupererTousEspaceCours(token : String)
+professeur ->  systeme : recupererTousEspaceCours(token : number)
 professeur <-- systeme : liste des espaceCours de l'enseignant\net le nombre de devoirs associés à chacun
 professeur -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours : int)
 professeur <-- systeme : devoir associées à l'espaceCours
