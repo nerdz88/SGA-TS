@@ -20,6 +20,11 @@ beforeAll((done) => {
         });
 });
 
+beforeEach(() => {
+    //Permet de ne pas afficher les console.error du middleware.error.ts
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
 afterEach(function () {
     universite.reset();
 });

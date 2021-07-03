@@ -17,7 +17,7 @@ export class Question {
             return;
 
         let values = JSON.parse(questionJson);
-        this._idEspaceCours = values.idEspaceCours;
+        this._idEspaceCours = parseInt(values.idEspaceCours);
 
         this._tags = values.tags ? values.tags.toLowerCase().split(",")
             .filter((tag, index, list) => list.indexOf(tag) === index) : [];

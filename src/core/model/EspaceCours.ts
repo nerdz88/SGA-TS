@@ -39,6 +39,13 @@ export class EspaceCours {
         this._enseignantId = _enseignantId;
     }
 
+    //Reset pour les tests
+    public static reset() {
+        Devoir.currentId = 0;
+        Question.currentId = 0;
+        Questionnaire.currentId = 0;
+    }
+
     public ajouterEtudiants(etudiants: any) {
         etudiants.forEach((element) => {
             this._etudiants.push(new Etudiant(element._id, element._last_name, element._first_name, element._email, element._permanent_code));
@@ -76,7 +83,7 @@ export class EspaceCours {
         }
         return false
     }
-    
+
     public recupererToutesQuestions(): Question[] {
         return this._questions;
     }

@@ -19,6 +19,11 @@ beforeAll((done)=>{
             })
 })
 
+beforeEach(() => {
+    //Permet de ne pas afficher les console.error du middleware.error.ts
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
 afterEach(function () {
     universite.reset();
 });
@@ -49,7 +54,7 @@ describe('Details questions', ()=> {
         const get = await authenticatedSession.get("/api/v1/enseignant/question/detail/1/1")
         expect(get.status).toBe(200)
         expect(get.body.message).toContain("Success")
-        expect(get.body.question._idEspaceCours).toBe("1")
+        expect(get.body.question._idEspaceCours).toBe(1)
         expect(get.body.question._id).toBe(1)
         expect(get.body.question._nom).toContain("Question1")
         expect(get.body.question._tags[0]).toContain("q1")
@@ -95,7 +100,7 @@ describe('Recuperer question espace cours', ()=> {
 
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
-        expect(question._idEspaceCours).toBe("2")
+        expect(question._idEspaceCours).toBe(2)
         expect(question._id).toBe(2)
 
     })
