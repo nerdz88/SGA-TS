@@ -24,7 +24,7 @@ describe("Test des classes d'erreur", () => {
         expect(alreadyExistError.code).toBe(400)
         expect(invalidParameterError.code).toBe(400)
         expect(notFoundError.code).toBe(404)
-        expect(sgbError.code).toBe(414)
+        expect(sgbError.code).toBe(500)
         expect(unauthorizedError.code).toBe(401)
 
     })

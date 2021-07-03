@@ -22,8 +22,8 @@ export class Questionnaire {
         this._description = values.description;
         this._status = values.status;
         this._questions = [];
-        this._remiseArray = [];
-        this._id = ++Question.currentId;
+        this._remiseArray =[];
+        this._id = ++Questionnaire.currentId;
     }
 
 
@@ -59,5 +59,9 @@ export class Questionnaire {
 
     public setRemise(arrayRemise: []) {
         this._remiseArray = arrayRemise;
+    }
+
+    public ajouterQuestion(question: Question) {
+        this._questions.push(question)
     }
 }

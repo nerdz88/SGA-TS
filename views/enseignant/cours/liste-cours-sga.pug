@@ -20,13 +20,19 @@ block content
                   div #{espace._cours._titre}                
                   div Gr: #{espace._numero}            
                 div.card-action
-                  a(class="btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail 
-                  a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions (#{espace._questions.length})
-                  a(class="btn-devoir-cours" href="/enseignant/devoir/" + espace._id) Devoirs (#{espace._devoirs.length})
+                  a(class="btn-detail-cours" href="/enseignant/cours/detail/" + espace._id) Détail&nbsp;
+                  br
+                  a(class="btn-question-cours" href="/enseignant/question/" + espace._id) Questions&nbsp;(#{espace._questions.length})
+                  br
+                  a(class="btn-devoir-cours" href="/enseignant/devoir/" + espace._id) Devoirs&nbsp;(#{espace._devoirs.length})
+                  br 
+                  a(class="btn-questionnaire-cours" href="/enseignant/questionnaire/" + espace._id) Questionnaires&nbsp;(#{espace._questionnaires.length})
+                  br
                   a(class="btn-delete-cours" href="javascript:void(0)" 
                     data-id-espace-cours=espace._id
                     data-titre-espace-cours=espace._cours._sigle + "-" + espace._cours._titre + "- Gr :" + espace._numero
-                    ) Supprimer 
+                    ) Supprimer
+                  
           else
             div.col.s12
               em Vous n'avez pas de cours

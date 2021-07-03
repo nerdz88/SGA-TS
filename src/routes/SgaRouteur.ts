@@ -115,9 +115,13 @@ export class SgaRouteur {
      * @param next 
      */
     public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
+        let idParam = req.params.id
+        let id;
         let arrayQuestion: string;
-        if (id != undefined) {
+        if(idParam === "") {
+            id = undefined;
+        }
+        if (id == undefined) {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
         } else {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(id);
@@ -138,31 +142,32 @@ export class SgaRouteur {
         let id = parseInt(req.params.id);
         let params=JSON.stringify(req.body);
         //voir dans le Questionnaire model pour savoir quel champs envoyé du front
-        this.gestionnaireQuestionnaire.creerQuestionnaire(id,params);
+        let idQuestionnaire = this.gestionnaireQuestionnaire.creerQuestionnaire(id,params);
         res.status(201)
             .send({
                 message: 'Success',
-                status: res.status
+                status: res.status,
+                idQuestionnaire: idQuestionnaire
             });
     }
 
-    public recupererToutQuestionParTag(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
-        let tag = req.params.tag;
-        let data=JSON.parse(this.gestionnaireQuestionnaire.recupererQuestionParTag(id,tag));
-        console.log(data)
-        res.status(200)
-            .send({
-                message: 'Success',
-                status: res.status,
-                questions:data
-            });
-    }
+    // public recupererToutQuestionParTag(req: Request, res: Response, next: NextFunction) {
+    //     let id = parseInt(req.params.id);
+    //     let tag = req.params.tag;
+    //     let data=JSON.parse(this.gestionnaireQuestionnaire.recupererQuestionParTag(id,tag));
+    //     //console.log(data)
+    //     res.status(200)
+    //         .send({
+    //             message: 'Success',
+    //             status: res.status,
+    //             questions:data
+    //         });
+    // }
 
     public recupererToutTags(req: Request, res: Response, next: NextFunction){
         let id = parseInt(req.params.id);
         let data= this.gestionnaireQuestionnaire.recupererTagQuestionParEspaceCours(id)
-        console.log(data)
+        //console.log(data)
         res.status(200)
             .send({
                 message: 'Success',
@@ -230,7 +235,7 @@ export class SgaRouteur {
     //#endregion Gestion Questions
 
 
-    //#region Gestion Questions
+    //#region Gestion Devoir
 
     supprimerDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
@@ -300,16 +305,13 @@ export class SgaRouteur {
 
     //#region Gestion Questionnaires
 
-    public recupererToutQuestionnaires(req: Request, res: Response, next: NextFunction) {
-
-        let idEspaceCours = parseInt(req.params.id);
+    public recupererTousQuestionnaires(req: Request, res: Response, next: NextFunction) {
+        let id = req.params.id;
         let arrayQuestionnaire: string;
-
-        if (req.params.idQuestionnaire != undefined) {
-            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererToutQuestionnaires(idEspaceCours);
+        if (id == undefined) {          
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnaires(AuthorizationHelper.getIdUser(req))
         } else {
-            let idQuestionnaire = parseInt(req.params.idQuestionnaire)
-            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererQuestionnaireParId(idEspaceCours,idQuestionnaire)
+            arrayQuestionnaire = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(parseInt(id));               
         }
 
         res.status(200)
@@ -317,12 +319,23 @@ export class SgaRouteur {
                 message: 'Success',
                 status: res.status,
                 data: {
-                    idEspaceCours: idEspaceCours ?? "none",
+                    idEspaceCours: id ?? "none",
                     questionnaire: JSON.parse(arrayQuestionnaire)
                 }
             });
     }
 
+    public ajouterQuestionsAuQuestionnaire(req: Request, res: Response, next: NextFunction) {
+
+        let arrayQuestions = JSON.stringify(req.body.data.split(","));
+        this.gestionnaireQuestionnaire.ajouterQuestion(parseInt(req.params.idQuestionnaire), parseInt(req.params.idEspaceCours), arrayQuestions);
+       
+        res.status(200).send({
+            message: 'Succes',
+            status: res.status
+        });
+
+    }
     
 
 
@@ -358,9 +371,11 @@ export class SgaRouteur {
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
     
         // Questionnaires
-        this.router.get('/enseignant/questionnaire/',this.recupererToutQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/',this.recupererTousQuestionnaires.bind(this));
+        this.router.get('/enseignant/questionnaire/:id',this.recupererTousQuestionnaires.bind(this));
         this.router.post('/enseignant/questionnaire/ajouter/:id',this.creerQuestionnaire.bind(this));
         this.router.get('/enseignant/questionnaire/tags/',this.recupererToutTags.bind(this));
-        this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
+        // this.router.get('/enseignant/questionnaire/:tag',this.recupererToutQuestionParTag.bind(this));
+        this.router.post('/enseignant/questionnaire/ajouterQuestion/:idEspaceCours/:idQuestionnaire', this.ajouterQuestionsAuQuestionnaire.bind(this))
     }
 }

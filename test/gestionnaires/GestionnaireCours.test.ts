@@ -1,6 +1,6 @@
 import * as supertest from "supertest";
 import 'jest-extended';
-import app, { universite } from '../src/App';
+import app, { universite } from '../../src/App';
 var session = require('supertest-session');
 var testSession = session(app);
 
