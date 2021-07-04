@@ -10,7 +10,7 @@ window.addEventListener("load", function () {
             var tags = $(question).data("tags");
             $(tags).each(function(){
                 var tag = this;
-                var tagValue = $(".ckb-tags[name='"+ tag +"']").is(':checked');
+                var tagValue = $(`.ckb-tags[name='${tag}']`).is(':checked');
                 if(tagValue)
                     $(question).removeClass("hide");
             });       
@@ -24,29 +24,22 @@ window.addEventListener("load", function () {
 
     $("#form-sauvegarder-questions").on("submit", function (e) {
         e.preventDefault();
-
         var idEspaceCours = $(this).find('input[name="idEspaceCours"]').val();
-        var idQuestionnaire = $(this).find('input[name="idQuestionnaire"]').val();  
-
-        var endPoint = "/api/v1/enseignant/questionnaire/ajouterQuestion/" + idEspaceCours + "/" + idQuestionnaire;
-
-        var lstIdquestion = [];
-        
+        var idQuestionnaire = $(this).find('input[name="idQuestionnaire"]').val();
+        var endPoint = `/api/v1/enseignant/questionnaire/question/${idEspaceCours}/${idQuestionnaire}`;
+        var lstIdquestion = [];        
         $(".question-item.selected").each(function() {
                 var question = $(this);
                 lstIdquestion.push($(question).data("id"));
-        })
-        console.log(lstIdquestion);
+        });                
         $.ajax({
             type: "POST",
             url: endPoint,
             data: { data: lstIdquestion.join(",") },
             success: function (data) {
-                console.log("Ajouter-Modifier Question Questionnaire - OK");
-                window.location.href = "/enseignant/questionnaire/" + idEspaceCours;       
+                window.location.href = `/enseignant/questionnaire/${idEspaceCours}`;       
             },
             error: function (e) {
-                console.log("Ajouter-Modifier Question Questionnaire - KO");
                 showErrorToast(e.responseJSON.error.message);
             }
         });   

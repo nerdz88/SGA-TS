@@ -19,11 +19,16 @@ beforeAll((done)=>{
             })
 })
 
+beforeEach(() => {
+    //Permet de ne pas afficher les console.error du middleware.error.ts
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
 afterEach(function () {
     universite.reset();
 });
 
-describe('Test Gestionnaire Question', ()=> {
+describe('Ajouter une question', ()=> {
 
     it("Ajouter une question a un groupe cour", async()=>{
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
@@ -34,7 +39,9 @@ describe('Test Gestionnaire Question', ()=> {
         expect(reponse.body.message).toContain("Success")
 
     })
+})
 
+describe('Details questions', ()=> {
     it("Obtenir les details d'une question", async()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
@@ -47,7 +54,7 @@ describe('Test Gestionnaire Question', ()=> {
         const get = await authenticatedSession.get("/api/v1/enseignant/question/detail/1/1")
         expect(get.status).toBe(200)
         expect(get.body.message).toContain("Success")
-        expect(get.body.question._idEspaceCours).toBe("1")
+        expect(get.body.question._idEspaceCours).toBe(1)
         expect(get.body.question._id).toBe(1)
         expect(get.body.question._nom).toContain("Question1")
         expect(get.body.question._tags[0]).toContain("q1")
@@ -58,7 +65,9 @@ describe('Test Gestionnaire Question', ()=> {
         expect(get.body.question._reponse).toBeTrue
 
     })
+})
 
+describe('Recuperer toutes questions', ()=> {
     it("Recuperer toutes les questions du SGA",async()=>{
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
@@ -73,7 +82,9 @@ describe('Test Gestionnaire Question', ()=> {
         expect(reponse.body.data.questions).toBeArrayOfSize(2)
 
     })
+})
 
+describe('Recuperer question espace cours', ()=> {
     it("Recuperer question d'un espace cours", async()=>{
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
@@ -89,11 +100,13 @@ describe('Test Gestionnaire Question', ()=> {
 
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
-        expect(question._idEspaceCours).toBe("2")
+        expect(question._idEspaceCours).toBe(2)
         expect(question._id).toBe(2)
 
     })
+})
 
+describe('Modifier question', ()=> {
     it("Modifier une question d'un espace cours", async()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
@@ -111,7 +124,9 @@ describe('Test Gestionnaire Question', ()=> {
         expect(questionData._nom).toContain("Question2")
 
     })
+})
 
+describe('Supprimer question', ()=> {
     it("Supprimer une question", async()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})

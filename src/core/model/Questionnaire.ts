@@ -1,32 +1,33 @@
 import { Question } from "./Question";
 import { Remise } from "./Remise";
 import { Type } from 'class-transformer';
+import { Etudiant } from "./Etudiant";
 
 export class Questionnaire {
     private _id: number;
     static currentId: number = 0;
+    private _idEspaceCours: number
     private _description: string;
     private _nom: string;
     private _status: boolean
     @Type(() => Question)
     private _questions: Question[]
     @Type(() => Remise)
-    private _remiseArray: Remise[]
+    private _remises: Remise[]
 
-    constructor(questionnaireJson: string) {
+    constructor(questionnaireJson: string, etudiants: Etudiant[]) {
         if (questionnaireJson == undefined)
             return;
 
         let values = JSON.parse(questionnaireJson);
+        this._idEspaceCours = values.idEspaceCours;
         this._nom = values.nom;
         this._description = values.description;
         this._status = values.status;
         this._questions = [];
-        this._remiseArray =[];
+        this._remises = this.initRemises(etudiants);
         this._id = ++Questionnaire.currentId;
     }
-
-
 
     public modifier(questionJson: string) {
         let values = JSON.parse(questionJson);
@@ -34,8 +35,18 @@ export class Questionnaire {
         this._description = values.description;
         this._status = values.status;
     }
+
+    private initRemises(etudiants: Etudiant[]): Remise[] {
+        var listRemise = [];
+        etudiants.forEach(etudiant => listRemise.push(new Remise(etudiant)));
+        return listRemise;
+    }
+
     public getId() {
         return this._id;
+    }
+    public getIdEspaceCours() {
+        return this._idEspaceCours;
     }
     public getNom() {
         return this._nom;
@@ -43,8 +54,8 @@ export class Questionnaire {
     public getDescription() {
         return this._description;
     }
-    public getRemise() {
-        return this._remiseArray;
+    public getRemise(): Remise[] {
+        return this._remises;
     }
     public getStatus() {
         return this._status;
@@ -57,8 +68,8 @@ export class Questionnaire {
         this._questions = arrayQuestion;
     }
 
-    public setRemise(arrayRemise: []) {
-        this._remiseArray = arrayRemise;
+    public setRemise(arrayRemise: Remise[]) {
+        this._remises = arrayRemise;
     }
 
     public ajouterQuestion(question: Question) {
