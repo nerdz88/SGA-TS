@@ -16,9 +16,21 @@ export class GestionnaireQuestionnaire {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
 
+        if (questionnaire != null) {
+            questionnaire.getQuestions().forEach((question) => {
+                question.setNbOccurence(question.getNbOccurence() - 1)
+            })
+        }
+
         questionnaire.setQuestion([]);
         arrayIdQuestion.forEach(idQuestion => {
-            questionnaire.ajouterQuestion(espaceCours.recupererUneQuestion(idQuestion));
+            if (idQuestion != "") {
+                let question = espaceCours.recupererUneQuestion(idQuestion)
+                let ajout = questionnaire.ajouterQuestion(question);
+                if (ajout) {
+                    question.setNbOccurence(question.getNbOccurence() + 1)
+                }
+            }
         });
     }
 

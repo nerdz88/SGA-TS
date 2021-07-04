@@ -264,8 +264,6 @@ export class WebAppRouteur {
 
     //#endregion Gestion Devoirs
 
-
-
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.

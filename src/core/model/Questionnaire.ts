@@ -60,7 +60,7 @@ export class Questionnaire {
     public getStatus() {
         return this._status;
     }
-    public getQuestions() {
+    public getQuestions(): Question[] {
         return this._questions;
     }
 
@@ -73,6 +73,6 @@ export class Questionnaire {
     }
 
     public ajouterQuestion(question: Question) {
-        this._questions.push(question)
+        return this._questions.push(question)
     }
 }

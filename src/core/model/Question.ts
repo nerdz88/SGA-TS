@@ -10,6 +10,7 @@ export class Question {
     private _reponse: boolean
     private _descriptionReponse: string
     private _mauvaiseReponseDescription: string
+    private _nbOccurence: number
     static currentId: number = 0;
 
     constructor(questionJson: string) {
@@ -27,6 +28,7 @@ export class Question {
         this._descriptionReponse = values.descriptionReponse
         this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
         this._id = ++Question.currentId;
+        this._nbOccurence = 0
     }
 
     public modifier(questionJson: string) {
@@ -65,5 +67,13 @@ export class Question {
     }
     public getDescriptionQuestion() {
         return this._descriptionQuestion;
+    }
+
+    public setNbOccurence(nbOccurence: number) {
+        this._nbOccurence = nbOccurence
+    }
+    
+    public getNbOccurence() {
+        return this._nbOccurence
     }
 }

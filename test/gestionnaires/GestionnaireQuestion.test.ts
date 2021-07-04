@@ -8,6 +8,7 @@ const COURSEVALUE1 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"
 const COURSEVALUE2 = '{"_id":2,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"02","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-02","_date_fin":"2019-09-03"}'
 const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","idQuestion":"","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true"}';
 const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","idQuestion":"","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false"}';
+const QUESTIONNAIRE1 = '{"idEspaceCours":"1","estModification":"false","idQuestionnaire":"","nom":"Questionnaire1","description":"description1","status":"on"}'
 
 beforeAll((done)=>{
     request.post("/api/v1/login")
@@ -141,6 +142,20 @@ describe('Supprimer question', ()=> {
 
         expect(verification.status).toBe(200)
         expect(verification.body.data.questions).toBeEmpty
+
+    })
+
+})
+
+describe("Test occurence d'une question", ()=> {
+
+    it("devrais retourner la bonne occurence lors d'un ajout et d'une supression d'une question a un questionnaire", async() => {
+
+        await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
+        await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTION1))
+        await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1}) 
+        await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: '1'})
 
     })
 

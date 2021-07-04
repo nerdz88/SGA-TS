@@ -35,5 +35,5 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                             td #{remise._etat}
                             td #{remise._dateRemise || "-"}
                             td #{remise._dateCorrection || "-"}
-                            td #{remise._note || "-"} / #{questionnaire._questions.length} 
+                            td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
 

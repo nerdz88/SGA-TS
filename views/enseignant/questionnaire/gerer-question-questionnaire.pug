@@ -21,7 +21,7 @@ block content
                 each question in questions   
                     li(class=`collection-item question-item${currentQuestionsID.indexOf(question._id) != -1 ? " selected" : ""}` data-tags=question._tags data-id=question._id)
                         div
-                            div.text-bold #{question._nom}                                 
+                            div.text-bold #{question._nom} &nbsp;(#{question._nbOccurence})                          
                             div Tags: #{question._tags.join(",") || "-"}
                 else      
                     em Vous n'avez pas de Questions

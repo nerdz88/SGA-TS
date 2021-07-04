@@ -176,7 +176,12 @@ export class EspaceCours {
     public suprimerQuestionnaire(idQuestionnaire: number): boolean {
         let index = this._questionnaires.findIndex(q => q.getId() == idQuestionnaire);
         if (index != -1) {
+            let questions = this._questionnaires[index].getQuestions()
             this._questionnaires.splice(index, 1);
+            if(questions.length != 0)
+            questions.forEach(question => {
+                question.setNbOccurence(question.getNbOccurence()-1)
+            });
             return true;
         }
         return false;
