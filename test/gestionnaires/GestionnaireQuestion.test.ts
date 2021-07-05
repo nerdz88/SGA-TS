@@ -1,3 +1,4 @@
+import { setupMaster } from 'cluster';
 import 'jest-extended';
 import app, { universite } from "../../src/App";
 
@@ -149,14 +150,36 @@ describe('Supprimer question', ()=> {
 
 describe("Test occurence d'une question", ()=> {
 
-    it("devrais retourner la bonne occurence lors d'un ajout et d'une supression d'une question a un questionnaire", async() => {
+    
+
+    it("devrais retourner la bonne occurence lors d'un ajout d'une question a un questionnaire ", async() => {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
                                 .send(JSON.parse(QUESTION1))
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1}) 
-        await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: '1'})
+        let reponse = await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: '1'})
+        let question = universite.recupererUnEspaceCours(1).recupererUneQuestion(1)
 
+        expect(reponse.status).toBe(200)
+        expect(reponse.body.message).toContain("Success")
+        expect(question.getNbOccurence()).toBe(1)
+
+    })
+
+    it("devrais retourner la bonne occurence lors d'une supression d'une question a un questionnaire ",async()=> {
+        
+        await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
+        await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTION1))
+        await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1}) 
+        let reponse = await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: ''})
+
+        let question = universite.recupererUnEspaceCours(1).recupererUneQuestion(1)
+
+        expect(reponse.status).toBe(200)
+        expect(reponse.body.message).toContain("Success")
+        expect(question.getNbOccurence()).toBe(0)
     })
 
 })

@@ -117,9 +117,9 @@ export class SgaRouteur {
     public recupererToutesQuestions(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
         let arrayQuestion: string;
-        if (id == undefined) {     
+        if (id == undefined) {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestions(AuthorizationHelper.getIdUser(req));
-        } else {          
+        } else {
             arrayQuestion = this.gestionnaireQuestion.recupererToutesQuestionsEspaceCours(parseInt(id));
         }
 
@@ -390,6 +390,6 @@ export class SgaRouteur {
         this.router.post('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
         this.router.delete('/enseignant/questionnaire/supprimer/:idEspaceCours/:idQuestionnaire', this.supprimerQuestionnaire.bind(this));
         this.router.post('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
-    
+
     }
 }
