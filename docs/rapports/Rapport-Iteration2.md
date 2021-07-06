@@ -5,7 +5,10 @@
 ### Coéquipiers
 
 - Bédard, Tommy, AQ13400
-- Nom, Prénom, Code universel
+- Abdelli, Pierre Amar, AQ48850
+- Bewa, Lionel, AQ22600
+- El-Safady, Sobhi, AP94320
+- Korchi, Zakaria, AQ25210
 
 ### Chargés de laboratoire
 
@@ -24,7 +27,7 @@
 </details>
 
 # Introduction
-<!-- TO DO -->
+L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, les cas d'utilisations CU04 (a,b,c,d) ainsi que CU05 (a,b,c,d) ont été implémentés, testés et documentés. Ces cas correspondent à la gestion des devoirs ainsi que des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système.
 
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
@@ -64,7 +67,7 @@ On répète les étapes 5-6 tant qu’il y a un devoir à ajouter
 
 _PostCondition_
 
-- Aucun
+- Aucune
 
 **RDCU**
 
@@ -76,7 +79,7 @@ _PostCondition_
 
 _PostCondition_
 
-- Aucune.
+- Aucune
 
 **RDCU**
 
@@ -89,9 +92,9 @@ _PostCondition_
 
 _PostCondition_
 
-- Un nouveau devoir d a été créé
+- Une nouvelle instance d de Devoir a été créée
 - Les attributs de d ont été initialisés
-- d a été associé à un espaceCours sur la base de idEspaceCours
+- d a été associé à un EspaceCours sur une base de correspondance avec idEspaceCours
 
 **RDCU**
 
@@ -267,7 +270,7 @@ _PostCondition_
 
 **RDCU**
 
-![recupererToutQuestionnaires](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/recupererToutQuestionnaires.svg)
+![recupererTousQuestionnaires](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/recupererToutQuestionnaires.svg)
 
 ### `creerQuestionnaire(idEspaceCours:number, description : String, etat : boolean)`
 
@@ -301,7 +304,7 @@ _PostCondition_
 
 _PostCondition_
 
-- Les questions basé sur une correspondance avec idQuestionsAjouter ont été associées au questionnaire sur une bsae de correspondance avec idQuestionnaire
+- Les questions basé sur une correspondance avec idQuestionsAjouter ont été associées au questionnaire sur une base de correspondance avec idQuestionnaire
 
 **RDCU**
 
@@ -446,7 +449,7 @@ _PostCondition_
 **Contrat d'opération**
 
 _PostCondition_
-- Un Questionnaire "questionnaire" a été supprimé sur une base de correspondance avec idQuestionnaire
+- L'instance "questionnaire" a été supprimé sur une base de correspondance avec idQuestionnaire
 
 **RDCU**
 

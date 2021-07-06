@@ -7,7 +7,7 @@ participant ":Universite" as universite
 participant "espaceCours : EspaceCours" as cours
 
 -> gestionnaireDevoir : devoirs = recupererTousDevoirsEspaceCours(idEspaceCours)
-note left : Selon contrôleur,\nreçoit l'opération système
+note left : Selon contrôleur,\ncontôleur de session
 gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
 note left : Selon expert, universite\ncontient les espaceCours
 gestionnaireDevoir -> cours : devoirs = recupererTousDevoirs()
@@ -26,7 +26,7 @@ participant "devoirs : Devoirs[]" as devoirs
 
 loop [!terminerDevoir]
   ->gestionnaireDevoir : devoir = ajouterDevoir(idEspaceCours, id, \nnom, description, noteMaximale,\ndateDebut, dateFin, visible)
-  note left : Selon contrôleur,\nreçoit l'opération système 
+  note left : Selon contrôleur,\ncontôleur de session
   gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
   note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
   gestionnaireDevoir -> cours : ajouterDevoir(id, nom, description, noteMaximale, \ndateDebut, dateFin,visible)

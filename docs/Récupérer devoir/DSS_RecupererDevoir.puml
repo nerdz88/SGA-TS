@@ -8,7 +8,7 @@ professeur ->  systeme : recupererTousEspaceCours(token : String)
 professeur <-- systeme : liste des espaceCours de l'enseignant\net le nombre de devoirs associés à chacun
 loop !termineRecupererDevoirsEspaceCours
 professeur -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours : number)
-professeur <-- systeme : devoir associées à l'espaceCours
+professeur <-- systeme : devoirs associés à l'espaceCours
 loop !termineRecupererUnDevoir
 professeur -> systeme : recupererUnDevoir(idEspaceCours: number,\nIdDevoir: number)
 professeur <-- systeme : détails du devoir

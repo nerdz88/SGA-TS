@@ -9,7 +9,7 @@ participant "devoirs : Devoirs[]" as devoirs
 participant "devoir : Devoir" as devoir
 
 -> gestionnaireDevoir : devoirModifie = modifierDevoir(\nidEspaceCours,\nIdDevoir,\nnom,\ndescription,\nnote maximale,\ndate de début,\ndate de fin,\nvisible)
-note left : Selon Contôleur,\nreçoit l'opération système
+note left : Selon contrôleur,\ncontôleur de session
 gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
 note left : Selon expert, universite\ncontient les espaceCours
 gestionnaireDevoir -> cours : devoirModifie = modifierDevoir(\nIdDevoir,\nnom,\ndescription,\nnote maximale,\ndate de début,\ndate de fin,\nvisible)

@@ -9,7 +9,7 @@ participant "espaceCoursCourant : EspaceCours" as courant
 participant "espaceCoursResultant : EspaceCours[]" as resultat
 
 ->controleur : espacesCours = recupererTousEspaceCours(token)
-note right : Selon Contôleur,\nreçoit l'opération système
+note right : Selon Contôleur,\ncontrôleur de session
 controleur -> mapCours : espacesCoursResultant = recupererTousEspaceCours(token)
 note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousEspaceCours
 mapCours --> resultat** : create()

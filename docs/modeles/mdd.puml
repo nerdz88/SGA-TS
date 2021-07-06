@@ -88,9 +88,10 @@ Etudiant "1" -- "1..*"GroupeCours : S'inscrit-dans >
 Enseignant "1" -- "*"GroupeCours : Enseigne >
 Cours "1" -- "1..*" GroupeCours : décris >
 GroupeCours "1"-- "1..0"EspaceCours : Est-un-support-des-activités-du <
-Etudiant "1" - "*" Remise : Crée >
-Enseignant "1" - "*" Question : Crée >
-Enseignant "1" - "*" Questionnaire : Crée >
+Etudiant "1" -- "*" Remise : Crée >
+Enseignant "1" -- "*" Question : Crée >
+Enseignant "1" -- "*" Questionnaire : Crée >
+Enseignant "1" -- "*" Devoir : Crée >
 
 legend
 |= |= Type |
