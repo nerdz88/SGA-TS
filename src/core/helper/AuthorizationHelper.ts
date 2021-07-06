@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import { User } from '../model/User';
 
 
 export class AuthorizationHelper {
