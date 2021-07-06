@@ -9,6 +9,10 @@ beforeEach(()=>{
     devoir = new Devoir(DEVOIR1,[])
 })
 
+afterEach(function () {
+    Devoir.currentId = 0;
+});
+
 describe('Test des GET de la classe modele Devoir', () => {
     test("Creation d'un objet Devoir et validation des composantes", () => {
 
