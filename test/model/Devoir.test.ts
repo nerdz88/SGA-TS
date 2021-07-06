@@ -58,7 +58,7 @@ describe('Test de la methode modifier de la classe modele Devoir', () => {
         expect(devoir.dateDebut).toContain("10-04-2021")
         expect(devoir.dateFin).toContain("11-04-2021")
         expect(devoir.visible).toContain("false")
-        expect(devoir.id).toBe(1)
+        expect(devoir.id).toBe(3)
         expect(devoir.idEspaceCours).toContain("2")
         expect(devoir.noteMaximale).toBe("99")
     })
