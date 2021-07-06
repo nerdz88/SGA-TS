@@ -146,7 +146,8 @@ export class WebAppRouteur {
             {
                 idEspaceCours: idEspaceCours,
                 question: JSON.parse(question),
-                estModification: true
+                estModification: true,
+                returnUrl: req.headers.referer
             });
     }
 

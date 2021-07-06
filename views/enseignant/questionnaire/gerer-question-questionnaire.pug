@@ -2,8 +2,7 @@ extends ../../commun/master-template.pug
 
 block content
   //- Start bloc content
-    //-TODO AVOIR UN PARAM POUR LA PROVENANCE POUR MEILLEUR NAVIGATION   
-  +btn-back("Ajouter une question au questionnaire", returnUrl)
+  +btn-back("Gérer les questions du questionnaire", returnUrl)
 
   div.row
     div.col.s10.offset-s1  
@@ -23,6 +22,12 @@ block content
                         div
                             div.text-bold #{question._nom} &nbsp;(#{question._nbOccurence})                          
                             div Tags: #{question._tags.join(",") || "-"}
+                            div 
+                                a(class="btn-modifier-question" 
+                                    href="javascript:void(0)"
+                                    data-id-question=question._id
+                                    data-id-espace-cours=question._idEspaceCours) Modifier
+                               
                 else      
                     em Vous n'avez pas de Questions
         div.row 

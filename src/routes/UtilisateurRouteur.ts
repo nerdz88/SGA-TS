@@ -76,7 +76,7 @@ export class UtilisateurRouteur {
      */
     public logout(req: Request, res: Response, next: NextFunction) {
         //Sauvegarde l'état du l'université
-        //DevHelper.saveData(req);
+        DevHelper.saveData(req);
 
         var codeStatus = 200;
         req.session.destroy(() => {
