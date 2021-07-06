@@ -6,11 +6,14 @@ import app, { universite } from "../../src/App";
 import { AuthorizationHelper } from "../../src/core/helper/AuthorizationHelper";
 import { doesNotReject } from "assert";
 import { ECONNRESET } from "constants";
+import { GestionnaireQuestionnaire } from "../../src/core/controllers/GestionnaireQuestionnaire";
 
 var session = require("supertest-session")
 var request = session(app)
 var authenticatedSession;
 const COURSEVALUE1 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
+const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","idQuestion":"","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true"}';
+const QUESTION2 = '{"idEspaceCours":"1","estModification":"false","idQuestion":"","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false"}';
 const QUESTIONNAIRE1 = { idEspaceCours: "1", "estModification": "false", idQuestionnaire: "", nom: "Questionnaire1", description: "description1", status: "on" }
 const QUESTIONNAIRE2 = { idEspaceCours: "1", "estModification": "false", idQuestionnaire: "", nom: "Questionnaire2", description: "description2", status: "off" }
 const QUESTIONNAIREMODIF = { nom: "QuestionnaireModifier", description: "descriptionModifier", status:"off"}
@@ -146,6 +149,47 @@ describe("Test modifier un questionnaire", ()=>{
         expect(questionnaire.getNom()).toContain("QuestionnaireModifier")
         expect(questionnaire.getDescription()).toContain("descriptionModifier")
         expect(questionnaire.getStatus()).toBeFalse
+
+    })
+
+})
+
+describe("Test recupererTagQuestion", ()=>{
+
+    it("Devrais retourner tous les tags d'un espace cours", async()=>{
+
+        await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
+        await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTION1))
+        await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
+        
+        let gc = new GestionnaireQuestionnaire(universite)
+        let tags = JSON.parse(gc.recupererTagQuestionParEspaceCours(1))
+
+        expect(tags).toBeArrayOfSize(2)
+        expect(tags[0]).toContain("q1")
+
+
+    })
+
+    it("Devrais retourner les ids des questions du questionnaire", async()=>{
+
+        await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
+        await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTION1))
+        await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTION2))
+        await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
+
+        let gc = new GestionnaireQuestionnaire(universite)
+        var arrayIdQuestion = "1,2"
+        gc.gererQuestionsQuestionnaire(1,1,JSON.stringify(arrayIdQuestion.split(",")))
+        let ids = JSON.parse(gc.recupererIdsQuestionsQuestionnaire(1,1))
+
+        expect(ids).toBeArrayOfSize(2)
+        expect(ids[0]).toBe(1)
+        expect(ids[1]).toBe(2)
+
 
     })
 

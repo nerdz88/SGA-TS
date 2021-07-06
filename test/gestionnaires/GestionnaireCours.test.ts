@@ -1,6 +1,7 @@
 import * as supertest from "supertest";
 import 'jest-extended';
 import app, { universite } from '../../src/App';
+import { GestionnaireCours } from "../../src/core/controllers/GestionnaireCours";
 var session = require('supertest-session');
 var testSession = session(app);
 
@@ -175,6 +176,20 @@ describe('Test gestionnaire des cours - Supprimer 1 espaces cours', () => {
     });
 
 });
+
+describe('Test recuperer groupe cours de SGB', ()=>{
+
+    it("devrais retourner la liste des groupe cours provenant du SGB avec le token", async()=> {
+
+        let gc = new GestionnaireCours(universite)
+
+        let listeGroupeCours = await gc.recupererGroupesCours("e44cd054a9b7f4edee4f1f0ede5ee704")
+
+        expect(listeGroupeCours).toBeArrayOfSize(2)
+
+    })
+
+})
 
 
 
