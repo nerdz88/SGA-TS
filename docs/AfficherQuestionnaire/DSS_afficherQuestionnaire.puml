@@ -1,0 +1,20 @@
+@startuml DSS_afficherQuestionnaire
+title DSS afficherQuestionnaire
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererTousEspaceCours(token : number)
+systeme --> professeur : Cours de l’enseignant ainsi que le nombre\nde questionnaires associés à chaque cours
+loop !terminerRecupererTousQuestionnairesEspaceCours
+professeur -> systeme : recupererTousQuestionnairesEspaceCours\n(idEspaceCours: number)
+systeme --> professeur : Questionnaires associés au cours
+loop !terminerRecupererUnQuestionnaire
+professeur -> systeme : recupererUnQuestionnaire(idEspaceCours: number,\nidQuestionnaire: number)
+systeme --> professeur : Détails du questionnaire avec une description et\nun état pour indiquer si le questionnaire est actif
+systeme --> professeur : Liste des étudiants ayant réalisé le questionnaire\nainsi que la note qu’ils ont obtenue
+end
+professeur -> systeme : terminerRecupererUnQuestionnaire()
+end
+professeur -> systeme : terminerRecupererTousQuestionnairesEspaceCours()
+@enduml

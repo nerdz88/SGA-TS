@@ -1,0 +1,20 @@
+@startuml supprimerQuestionnaire
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU supprimerQuestionnaire
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaires : Questionnaire[]" as questionnaires
+
+-> gestionnaireQuestion : supprimerQuestionnaire(idEspaceCours, idQuestionnaire)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : supprimerQuestionnaire(IdQuestionnaire)
+note left : Selon expert
+cours -> cours : questionnaire = recupererUnQuestionnaire(IdQuestionnaire)
+note left : Selon expert, espaceCours\ncontient les questionnaires
+cours -> questionnaires : splice(questionnaire)
+note left : Selon expert, questionnaires est l'attribut\nd'espaceCours qui stocke les questionnaires
+@enduml

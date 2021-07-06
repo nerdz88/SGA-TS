@@ -1,0 +1,10 @@
+@startuml supprimerQuestionnaire
+title DSS supprimerQuestionnaire
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererUnQuestionnaire(idEspaceCours: number,\nidQuestionnaire: number)
+systeme --> professeur : détails du questionnaire avec une description\net un état pour indiquer si le questionnaire est actif
+professeur -> systeme : supprimerQuestionnaire(idEspaceCours: number, IdQuestionnaire: number)
+@enduml

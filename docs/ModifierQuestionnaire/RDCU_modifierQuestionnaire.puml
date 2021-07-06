@@ -1,0 +1,35 @@
+@startuml recupererQuestionsQuestionnaire
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU recupererQuestionsQuestionnaire
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+-> gestionnaireQuestion : questions = recupererQuestionsQuestionnaire\n(idEspaceCours: number, idQuestionnaire: number)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire = recupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert
+gestionnaireQuestion -> questionnaire : questions = getQuestions()
+note left : Selon expert
+@enduml
+
+@startuml modifierQuestionnaire
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU modifierQuestionnaire
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+-> gestionnaireQuestion : modifierQuestionnaire\n(idEspaceCours,\nidQuestionnaire,\ndescription,\netat)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire = recupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert
+gestionnaireQuestion -> questionnaire : modifier(description, etat)
+note left : Selon expert, description\net etat sont des attributs\nde Questionnaire
+@enduml

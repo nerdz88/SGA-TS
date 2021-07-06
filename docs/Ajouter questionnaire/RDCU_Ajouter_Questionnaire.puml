@@ -1,22 +1,22 @@
 @startuml recupererToutQuestionnaires
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour recupererToutQuestionnaires
+title RDCU pour recupererTousQuestionnairesEspaceCours
 participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
 participant "universite : Universite" as universite
 participant "espaceCours : EspaceCours" as cours
--> gestionnaireQuestion : questionnaires = recupererToutQuestionnaires(idEspaceCours)
-note left : Selon controleur,\ncontrôleur de session
+-> gestionnaireQuestion : questionnaires = recupererTousQuestionnairesEspaceCours(idEspaceCours)
+note left : Selon contrôleur,\ncontrôleur de session
 gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
 note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
-gestionnaireQuestion -> cours : questionnaires = recupererToutQuestionnaires()
+gestionnaireQuestion -> cours : questionnaires = recupererTousQuestionnairesEspaceCours()
 note left : Selon expert, espaceCours contient\ntous ces questionnaires
 @enduml
 
-@startuml ajouterQuestionnaireGenerale
+@startuml creerQuestionnaire
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour ajouterQuestionnaire
+title RDCU pour creerQuestionnaire
 participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
 participant "universite : Universite" as universite
 participant "espaceCours : EspaceCours" as cours
@@ -34,4 +34,60 @@ cours -> questionnaires : push(newQuestionnaire)
 note left : Selon expert
 gestionnaireQuestion -> cours : tags = recupererTagQuestions()
 note left : Selon expert
+@enduml
+
+@startuml recupererQuestionParTag
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererQuestionParTag
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questions : Question[]" as questions
+participant "questionCourante : Question" as question
+participant "questionsResultat : Question[]" as resultat
+
+-> gestionnaireQuestion : questionsResultat = recupererQuestionParTag(idEspaceCours, tag)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionsResultat = recupererQuestionParTag(tag)
+note left : Selon expert, espaceCours contient\ntous ces questionnaires
+cours -> resultat** : create()
+note left : Selon créateur, EspaceCours utilise\nétroitement questionsResultat
+loop questions.length
+cours -> questions : questionCourante = get(i)
+note left : Selon expert, questions est\nl'attribut de EspaceCours\noù sont stockées les questions
+cours -> question : tagCourant = getTag()
+note left : Selon expert, tag est un\nattribut de Question
+alt tagCourant = tag
+cours -> resultat : push(questionCourante)
+note left : Selon expert
+end
+end
+@enduml
+
+@startuml gererQuestionsQuestionnaire
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour gererQuestionsQuestionnaire
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+participant "questions : Question[]" as questions
+-> gestionnaireQuestion : gererQuestionsQuestionnaire\n(idQuestionnaire : number, idEspaceCours: number,\narrayIdQuestionsAjouter: string
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire = recupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert, espaceCours contient\ntous ces questionnaires
+loop questionnaires.questions.length
+gestionnaireQuestion -> cours : question = recupererUneQuestion(idQuestion)
+note left : Selon expert, espaceCours\ncontient ses questions
+gestionnaireQuestion -> questionnaire : ajouterQuestion(question)
+note left : Selon expert
+questionnaire -> questions : push(question)
+note left : Selon expert, questions est\nl'attribut de Questionnaire\noù sont stockées les questions
+end
 @enduml

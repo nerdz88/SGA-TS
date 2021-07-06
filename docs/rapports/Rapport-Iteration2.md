@@ -166,7 +166,7 @@ _PostCondition_
 
 &nbsp;&nbsp;&nbsp;1a. Un devoir ne peut pas être modifié si des étudiants ont déjà commencé à réaliser celui-ci.
 
-## DSS CU04b - Modifier devoir
+## DSS CU04c - Modifier devoir
 
 ![DSS_ModifierDevoir](../../out/docs/ModifierDevoir/DSS_ModifierDevoir/DSS_ModifierDevoir.svg)
 
@@ -205,7 +205,7 @@ _PostCondition_
 
 <hr />
 
-## DSS CU04b - Supprimer devoir
+## DSS CU04d - Supprimer devoir
 
 ![DSS_supprimerDevoir](../../out/docs/SupprimerDevoir/DSS_SupprimerDevoir/DSS_supprimerDevoir.svg)
 
@@ -223,3 +223,231 @@ _PostCondition_
 **RDCU**
 
 ![supprimerDevoir](../../out/docs/SupprimerDevoir/RDCU_supprimerDevoir/supprimerDevoir.svg)
+
+## CU05a - Ajouter questionnaire
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Un nouveau questionnaire a été créé et associé à un cours
+- Des questions ont étés associées au questionnaire
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la création d’un questionnaire
+1. Le système affiche les cours de l’enseignant ainsi que le nombre de questionnaires associés à chaque cours
+1. L’enseignant sélectionne un cours
+1. Le système affiche tous les questionnaires associés au cours.
+1. L’enseignant crée un nouveau questionnaire avec une description et un état pour indiquer si le questionnaire est actif
+1. Le système confirme la création du questionnaire
+1. Le système affiche la liste de catégories de questions
+1. L’enseignant sélectionne la catégorie de question
+1. Le système affiche les questions correspondant à la catégorie ainsi que le nombre de questionnaires auxquels ces questions ont déjà été ajoutées.
+1. L’enseignant sélectionne une ou plusieurs questions et les ajoute au questionnaire.
+
+On répète les étapes 7-10 tant que l’enseignant n’a pas terminé l’ajout de questions.
+
+**Extensions (ou scénarios alternatifs):** 
+
+## DSS CU05a - Ajouter questionnaire
+
+![DSS_ajouterQuestionnaire](../../out/docs/Ajouter%20questionnaire/DSS_Ajouter_Questionnaire/DSS_ajouterQuestionnaire.svg)
+
+### `recupererTousEspaceCours(token : String)` 
+[recupererTousEspaceCours](#recuperertousespacecourstoken--string)
+
+### `recupererTousQuestionnairesEspaceCours(idEspaceCours: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Aucune
+
+**RDCU**
+
+![recupererToutQuestionnaires](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/recupererToutQuestionnaires.svg)
+
+### `creerQuestionnaire(idEspaceCours:number, description : String, etat : boolean)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Une nouvelle instance newQuestionnaire de Questionnaire a été créee
+- Les attributs de newQuestionnaire ont été initialisés
+- newQuestionnaire a été associée à son espaceCours sur la base de correspondance de idEspaceCours
+
+**RDCU**
+
+![creerQuestionnaire](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/creerQuestionnaire.svg)
+
+### `recupererQuestionParTag(idEspaceCours: number,tag : string)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Aucune
+
+**RDCU**
+
+![recupererQuestionParTag](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/recupererQuestionParTag.svg)
+
+### `gererQuestionsQuestionnaire(idQuestionnaire : number, idEspaceCours: number, arrayIdQuestionsAjouter: string`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Les questions basé sur une correspondance avec idQuestionsAjouter ont été associées au questionnaire sur une bsae de correspondance avec idQuestionnaire
+
+**RDCU**
+
+![gererQuestionsQuestionnaire](../../out/docs/Ajouter%20questionnaire/RDCU_Ajouter_Questionnaire/gererQuestionsQuestionnaire.svg)
+
+## CU05b - Afficher questionnaire
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+- Il existe un cours, un questionnaire, etc.
+
+**Garanties en cas de succès (postconditions):**  
+- Aucune
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la gestion des questionnaires
+1. Le système affiche les cours de l’enseignant ainsi que le nombre de questionnaires associés à chaque cours
+1. L’enseignant sélectionne un cours
+1. Le système affiche tous les questionnaires associés au cours.
+1. L’enseignant sélectionne un questionnaire
+1. Le système affiche les détails du questionnaire avec une description et un état pour indiquer si le questionnaire est actif
+1. Le système affiche la liste des étudiants ayant réalisé le questionnaire ainsi que la note qu’ils ont obtenue.
+
+On répète les étapes 5 à 7 tant que l’enseignant n’a pas terminé.
+
+On répète les étapes 3 à 7 tant que l’enseignant n’a pas terminé.
+
+## DSS CU05b - Afficher questionnaire
+
+![DSS_afficherQuestionnaire](../../out/docs/AfficherQuestionnaire/DSS_afficherQuestionnaire/DSS_afficherQuestionnaire.svg)
+
+### `recupererTousEspaceCours(token : String)` 
+[recupererTousEspaceCours](#recuperertousespacecourstoken--string)
+
+### `recupererTousQuestionnairesEspaceCours(idEspaceCours: number)`
+[recupererTousQuestionnairesEspaceCours](#recuperertousquestionnairesespacecoursidespacecours-number)
+
+### `recupererUnQuestionnaire(idEspaceCours: number, idQuestionnaire: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+- Aucune
+
+**RDCU**
+
+Ici pour se qui est de l'affichage des détails du questionnaire, il suffit de récupérer les attributs du questionnaires. Pour la liste d'étudiants il faut récupérer la remise et ensuite récupérer les détails des étudiants. Ces opérations ne sont pas démontrées dans le RDCU car cela ce passe dans le "front-end".
+![recupererUnQuestionnaire](../../out/docs/AfficherQuestionnaire/RDCU_afficherQuestionnaire/recupererUnQuestionnaire.svg)
+
+## CU05c - Modifier questionnaire
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+- Il existe un cours, un questionnaire, etc.
+
+**Garanties en cas de succès (postconditions):**  
+- Un questionnaire a été modifié
+- Les questions associées au questionnaire ont été modifiées
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la modification d’un questionnaire
+1. Le système affiche la liste de questions associées au questionnaire
+1. L’enseignant modifie la description et/ou l’état du questionnaire
+1. L’enseignant modifie les questions associées au questionnaire
+1. Le système confirme la modification du questionnaire
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;3a. 4a. L’enseignant ajoute une question au questionnaire.
+
+&nbsp;&nbsp;&nbsp;4b. L’enseignant supprime une question du questionnaire.
+
+## DSS CU05c - Modifier questionnaire
+
+![DSS_modifierQuestionnaire](../../out/docs/ModifierQuestionnaire/DSS_modifierQuestionnaire/modifierQuestionnaire.svg)
+
+### `recupererQuestionsQuestionnaire(idEspaceCours: number, idQuestionnaire: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+- Aucune
+
+**RDCU**
+![recupererQuestionsQuestionnaire](../../out/docs/ModifierQuestionnaire/RDCU_modifierQuestionnaire/recupererQuestionsQuestionnaire.svg)
+
+### `modifierQuestionnaire(idEspaceCours: number,idQuestionnaire: number, description : String, etat : boolean)`
+
+**Contrat d'opération**
+
+_PostCondition_
+- Les attributs du Questionnaire "questionnaire" ont été modifiés
+
+**RDCU**
+![modifierQuestionnaire](../../out/docs/ModifierQuestionnaire/RDCU_modifierQuestionnaire/recupererQuestionsQuestionnaire.svg)
+
+### `modifierQuestion(tags : String[], nom : String, texteQuestion : String, reponse : boolean,texteBonneReponse : String, texteMauvaiseReponse : String)`
+
+**Contrat d'opération**
+
+_PostCondition_
+
+  - Les attributs de la Question "question" ont été modifiés
+
+**RDCU**
+
+![modifierQuestion](../../out/docs/Modifier%20question/RDCU_Modifier_Question/modifierQuestionFinal.svg)
+
+## CU05d - Supprimer questionnaire
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+- Il existe un cours, un questionnaire, etc.
+
+**Garanties en cas de succès (postconditions):**  
+- Un questionnaire associé à un cours est supprimé
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la suppression d’un questionnaire
+1. Le système affiche les détails du questionnaire avec une description et un état pour indiquer si le questionnaire est actif
+1. L’enseignant supprime le questionnaire
+
+**Extensions (ou scénarios alternatifs):**
+
+&nbsp;&nbsp;&nbsp;1a. Le système désactive la possibilité de suppression du questionnaire aussitôt qu’un étudiant à réalisé celui-ci dans le cadre du cours.
+
+<hr />
+
+## DSS CU05d - Supprimer questionnaire
+
+![DSS_supprimerQuestionnaire](../../out/docs/supprimerQuestionnaire/DSS_supprimerQuestionnaire/supprimerQuestionnaire.svg)
+
+### `recupererUnQuestionnaire(idEspaceCours: number, idQuestionnaire: number)` 
+[recupererUnQuestionnaire](#recupererunquestionnaireidespacecours-number-idquestionnaire-number)
+
+### `supprimerQuestionnaire(idEspaceCours: number, IdQuestionnaire: number)`
+
+**Contrat d'opération**
+
+_PostCondition_
+- Un Questionnaire "questionnaire" a été supprimé sur une base de correspondance avec idQuestionnaire
+
+**RDCU**
+
+![supprimerQuestionnaire](../../out/docs/supprimerQuestionnaire/RDCU_supprimerQuestionnaire/supprimerQuestionnaire.svg)

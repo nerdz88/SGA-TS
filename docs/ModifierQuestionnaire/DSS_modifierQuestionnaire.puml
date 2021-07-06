@@ -1,0 +1,12 @@
+@startuml modifierQuestionnaire
+title DSS modifierQuestionnaire
+hide footbox
+actor ":Enseignant" as professeur
+participant ":Systeme" as systeme
+
+professeur ->  systeme : recupererQuestionsQuestionnaire\n(idEspaceCours: number, idQuestionnaire: number)
+systeme --> professeur : Liste de questions associées au questionnaire
+professeur -> systeme : modifierQuestionnaire(idEspaceCours: number,\nidQuestionnaire: number, description : String, etat : boolean)
+professeur -> systeme : modifierQuestion(idQuestion : int, tags : String[], nom : String, \ntexteQuestion : String, reponse : boolean,\ntexteBonneReponse : String, texteMauvaiseReponse : String)
+systeme --> professeur : Confirmation modification du questionnaire
+@enduml

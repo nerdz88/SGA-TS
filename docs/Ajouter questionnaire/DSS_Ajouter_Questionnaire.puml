@@ -6,14 +6,14 @@ participant ":Systeme" as systeme
 
 professeur ->  systeme : recupererTousEspaceCours(token : number)
 systeme --> professeur : Cours de l’enseignant ainsi que le nombre\nde questionnaires associés à chaque cours
-professeur -> systeme : recupererToutQuestionnaires(idEspaceCours: number)
+professeur -> systeme : recupererTousQuestionnairesEspaceCours(idEspaceCours: number)
 systeme --> professeur : Les questionnaires associés au cours
 professeur -> systeme : creerQuestionnaire(idEspaceCours:number,\ndescription : String, etat : boolean)
 loop terminerAjouterQuestion
 systeme --> professeur : liste de catégories de questions
 professeur -> systeme : recupererQuestionParTag(idEspaceCours: number,tag : string)
 systeme --> professeur : questions correspondant à la catégorie ainsi que le nombre de\nquestionnaires auxquels ces questions ont déjà été ajoutées
-professeur -> systeme : ajouterQuestion(idQuestionnaire,idEspaceCours: number,\narrayIdQuestionsAjouter: string
+professeur -> systeme : gererQuestionsQuestionnaire(idQuestionnaire : number, idEspaceCours: number,\narrayIdQuestionsAjouter: string
 end
 professeur -> systeme : terminerAjouterQuestion()
 @enduml
