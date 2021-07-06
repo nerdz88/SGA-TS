@@ -50,22 +50,10 @@ describe('Recuperer tous devoirs espace cours', ()=> {
         await authenticatedSession.post("/api/v1/enseignant/devoir/ajouter/1")
             .send(JSON.parse(DEVOIR2))
 
-
-        await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE2})
-        await authenticatedSession.post("/api/v1/enseignant/devoir/ajouter/2")
-            .send(JSON.parse(DEVOIR1))
-        await authenticatedSession.post("/api/v1/enseignant/devoir/ajouter/2")
-            .send(JSON.parse(DEVOIR2))
-
         const reponse = await authenticatedSession.get("/api/v1/enseignant/devoir/1")
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
         expect(reponse.body.data.devoirs).toBeArrayOfSize(2)
-
-        const reponse2 = await authenticatedSession.get("/api/v1/enseignant/devoir/2")
-        expect(reponse2.status).toBe(200)
-        expect(reponse2.body.message).toContain("Success")
-        expect(reponse2.body.data.devoirs).toBeArrayOfSize(2)
 
     })
 })
@@ -101,7 +89,7 @@ describe('Supprimer devoir', ()=> {
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
 
-        const verification = await authenticatedSession.get("/api/v1/enseignant/devoir/")
+        const verification = await authenticatedSession.get("/api/v1/enseignant/devoir/1")
 
         expect(verification.status).toBe(200)
         expect(verification.body.data.devoirs).toBeEmpty
@@ -124,7 +112,7 @@ describe('Details devoirs', ()=> {
         const get = await authenticatedSession.get("/api/v1/enseignant/devoir/detail/1/1")
         expect(get.status).toBe(200)
         expect(get.body.message).toContain("Success")
-        expect(get.body.devoir._idEspaceCours).toBe(1)
+        expect(get.body.devoir._idEspaceCours).toBe("1")
         expect(get.body.devoir._id).toBe(1)
         expect(get.body.devoir._nom).toContain("devoir1")
         expect(get.body.devoir._description).toContain("ceci est une description")

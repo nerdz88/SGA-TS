@@ -219,7 +219,7 @@ export class SgaRouteur {
             status: res.status,
             data: {
                 idEspaceCours: id ?? "none",
-                questions: JSON.parse(arrayDevoirs)
+                devoirs: JSON.parse(arrayDevoirs)
             }
         });
     }
@@ -235,7 +235,7 @@ export class SgaRouteur {
             .send({
                 message: 'Success',
                 status: res.status,
-                question: JSON.parse(devoir)
+                devoir: JSON.parse(devoir)
             });
     }
 
