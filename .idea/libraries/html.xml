@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="html">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/node_modules/gitinspector/gitinspector/html/jquery.tablesorter.min.js.zip!/" />
+      <root url="jar://$PROJECT_DIR$/node_modules/gitinspector/gitinspector/html/flot.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
