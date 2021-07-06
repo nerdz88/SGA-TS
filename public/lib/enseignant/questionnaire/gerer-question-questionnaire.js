@@ -1,7 +1,9 @@
 //Fichier Javascript pour la page d'ajout de cours
-
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
+
+
+    initEvenementModifierQuestion();
 
     $(".ckb-tags").on("change", function() {      
         $(".question-item").each(function() {
@@ -46,3 +48,21 @@ window.addEventListener("load", function () {
     });
 
 });
+
+
+function initEvenementModifierQuestion() {
+    $(".btn-modifier-question").on("click", function () {
+        var idQuestion = $(this).data("idQuestion");
+        var idEspaceCours = $(this).data("idEspaceCours");
+        $.confirm({
+            title: 'Confirmation',
+            backgroundDismiss: true,
+            content: 'Voulez vous vraiment continuer? Vos modifications non sauvegardés vont être perdu.',
+            buttons: {
+                confirm: function () {
+                    window.location.href =  `/enseignant/question/modifier/${idEspaceCours}/${idQuestion}`;
+                }
+            }
+        });
+    });
+}
