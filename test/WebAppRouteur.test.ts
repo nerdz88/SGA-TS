@@ -26,9 +26,9 @@ beforeAll(async()=>{
     await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1})
     await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1").send(JSON.parse(QUESTION1))
     await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1").send(JSON.parse(QUESTION2))
-    await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
-    await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE2)
-    await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: JSON.stringify("1,2")})
+    await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1})
+    await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE2})
+    await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: '1,2'})
 
 })
 
