@@ -38,7 +38,4 @@ loop [!terminerDevoir]
   gestionnaireDevoir -> cours : devoir = recupererTousDevoirs()
   note left : Selon expert
 end
--> gestionnaireDevoir : terminerAjouterDevoir()
-note left : Permet sortir de la boucle
-
 @enduml
