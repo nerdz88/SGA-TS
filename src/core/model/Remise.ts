@@ -1,7 +1,7 @@
 import { Etudiant } from "./Etudiant";
 import { Type } from 'class-transformer';
 
-enum Etat {
+export enum Etat {
     NonRemis = "Non Remis",
     Remis = "Remis",
     RemisCorrige = "Remis et Corrigé"
@@ -95,7 +95,7 @@ export class Remise {
     }
 }
 
-enum OrdreTriRemise {
+export enum OrdreTriRemise {
     Default,
     NomEtudiantAlphaCroissant,
     NomEtudiantAlphaDecroissant,
