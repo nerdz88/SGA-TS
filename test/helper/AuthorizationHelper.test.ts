@@ -54,5 +54,5 @@ describe('AuthorizationHelper Test - Login', () => {
         expect(AuthorizationHelper.getIdUser(mockedReqLogin)).toBe(1);
     });
 
-
 })
+
