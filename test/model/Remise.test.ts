@@ -24,8 +24,24 @@ describe("Test Model Remise", ()=> {
     it("Devrais retourner la liste d'etudiant dans l'ordre spécifié", ()=> {
 
         Remise.orderBy(remises, OrdreTriRemise.NomEtudiantAlphaCroissant)
+        expect(remises[0].etudiant.getNom()).toContain("Larouche")
+        Remise.orderBy(remises, OrdreTriRemise.NomEtudiantAlphaDecroissant)
+        expect(remises[0].etudiant.getNom()).toContain("Zoubir")
 
-        expect(remises[0]).toEqual(etudiant1)
+    })
+
+    it("Devrais retourner la liste des etuidiants trier par note", ()=> {
+
+        remise1.note = 60
+        remise2.note = 80
+        remise3.note = 100
+        remise4.note = 35
+
+        Remise.orderBy(remises, OrdreTriRemise.NoteCroissant)
+        expect(remises[0].etudiant.getNom()).toContain("Price")
+
+        Remise.orderBy(remises, OrdreTriRemise.NoteDecroissant)
+        expect(remises[0].etudiant.getNom()).toContain("Price")
 
     })
 
