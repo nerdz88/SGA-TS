@@ -5,3 +5,4 @@ dist
 coverage
 typings-custom/flash.ts.broken
 package-lock.json
+src/data/log/testing/*

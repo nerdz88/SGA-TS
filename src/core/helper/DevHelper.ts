@@ -10,7 +10,7 @@ import { Universite } from '../service/Universite';
 export class DevHelper {
     private static DEV_LOGIN = "dev";
     private static DEV_IMPERSONALISATION: string = "teacher+3@gmail.com"
-    private static PATH_DATA = "./src/data/universite.json";
+    private static PATH_DATA = "./src/data/cache/universite.json";
 
     public static login(req: Request, filename?: string): string {
         var email = req.body.email;
@@ -44,5 +44,9 @@ export class DevHelper {
             console.error(e);
         }
     }
+
+    public static isTestingJest() {
+        return process.env.JEST_WORKER_ID !== undefined;
+    } 
 
 }
