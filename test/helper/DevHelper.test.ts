@@ -6,7 +6,7 @@ import * as fs from 'fs';
 var session = require('supertest-session');
 var testSession = session(app);
 const COURSEVALUE1 = '{"_id":3,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
-const PATH_DATA = "./src/data/universiteTEST.json";
+const PATH_DATA = "./src/data/cache/universiteTEST.json";
 
 
 beforeEach((done) => {
