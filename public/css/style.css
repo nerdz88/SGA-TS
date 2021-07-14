@@ -82,6 +82,12 @@ body {
   background-color: #e0f2f1;
 }
 
+@media only screen and (min-width: 600px) {
+  .table-container {
+    overflow-x:scroll;
+  }
+}
+
 /* 
 #main {
   display: flex;
