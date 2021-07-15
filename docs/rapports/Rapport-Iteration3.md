@@ -29,18 +29,6 @@
 # Introduction
 L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, les cas d'utilisations CU04 (a,b,c,d) ainsi que CU05 (a,b,c,d) ont été implémentés, testés et documentés. Ces cas correspondent à la gestion des devoirs ainsi que des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système.
 
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
 
@@ -95,43 +83,6 @@ _PostCondition_
 
 ![recupererQuestionsQuestionnaire](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/recupererQuestionsQuestionnaire.svg)
 
-### `recupererTousQuestionnairesEspaceCours(idEspaceCours: number)` 
-
-**Contrat d'opération**
-
-_PostCondition_
-
-- Aucune
-
-**RDCU**
-
-![recupererTousQuestionnairesEspaceCours](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/recupererTousQuestionnairesEspaceCours.svg)
-
-### `ajouterReponseTentative(idEspaceCours : number,idQuestionnaire : number, reponse : String)` 
-
-**Contrat d'opération**
-
-_PostCondition_
-
-- Une instance "i" de Tentantive a été créée
-- les attributs de i ont été initialisée
-- i a été liée à un Questionnaire sur la base de correspondance avec idQuestionnaire
-
-**RDCU**
-
-![ajouterReponseTentative](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/ajouterReponseTentative.svg)
-
-### `recupererTousQuestionnairesEspaceCours(idEspaceCours: number)` 
-
-**Contrat d'opération**
-
-_PostCondition_
-
-- Aucune
-
-**RDCU**
-
-![recupererTousQuestionnairesEspaceCours](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/recupererTousQuestionnairesEspaceCours.svg)
 
 ### `ajouterReponseTentative(idEspaceCours : number,idQuestionnaire : number, reponse : String)` 
 
