@@ -16,7 +16,7 @@ note left : Selon expert, espaceCours contient\ntous ces questionnaires
 @startuml recupererQuestionsQuestionnaire
 skinparam style strictuml
 skinparam defaultfontname Verdana
-title RDCU pour recupererTousQuestionnairesEspaceCours
+title RDCU pour recupererQuestionsQuestionnaire
 participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
 participant "universite : Universite" as universite
 participant "espaceCours : EspaceCours" as cours
