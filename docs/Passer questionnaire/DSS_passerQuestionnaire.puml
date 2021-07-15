@@ -1,0 +1,20 @@
+@startuml DSS_Passerquestionnaire
+title DSS Passerquestionnaire
+hide footbox
+actor ":Etudiant" as etudiant
+participant ":Systeme" as systeme
+
+etudiant ->  systeme : recupererTousQuestionnairesEspaceCours(idEspaceCours: number)
+loop !terminerPasserQuestionnaire
+systeme --> etudiant : Questionnaires déjà complétés avec les notes reçues
+systeme --> etudiant : Questionnaires à compléter
+etudiant -> systeme : recupererQuestionsQuestionnaire(idEspaceCours: number,\nidQuestionnaire: number)
+loop !terminerAjouterReponseTentative
+systeme --> etudiant : affiche une question
+etudiant -> systeme : ajouterReponseTentative(idEspaceCours : number,\nidQuestionnaire : number, reponse : String)
+end
+etudiant -> systeme : terminerAjouterReponseTentative(idEspaceCours : number,\nidQuestionnaire : number)
+systeme --> etudiant : note obtenue et texte de rétroaction\n(bonne ou mauvaise réponse) pour\nchaque question ainsi que note\nrésultante en pourcentage
+end
+etudiant -> systeme : terminerPasserQuestionnaire()
+@enduml

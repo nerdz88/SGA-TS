@@ -51,6 +51,7 @@ package SGA{
         id : number
         etat : String
         dateRemise : String
+
     }
 
     class Question << 1,yellow) >>{
@@ -58,7 +59,6 @@ package SGA{
         nom : String
         tags : String
         texteQuestion : String
-        reponse : boolean
         texteBonneReponse : String
         texteMauvaiseReponse : String
     }
@@ -69,6 +69,35 @@ package SGA{
         état : boolean
     }
 
+    class Tentative <<(3, green) >>{
+        id : number
+        note : number
+        statut : Sring
+    }
+
+    class QuestionChoixMultiple <<(3, green) >> extends Question {
+        reponse : String
+    }
+
+    class QuestionVraiFaux<<(3, green) >> extends Question {
+        reponse : boolean
+    }
+
+    class QuestionMiseEnCorrespondance<<(3, green) >> extends Question {
+        reponse : String
+    }
+
+    class QuestionReponseCourte<<(3, green) >> extends Question {
+        reponse : String
+    }
+
+    class QuestionNumerique<<(3, green) >> extends Question {
+        reponse : number
+    }
+
+    class QuestionChoixEssai<<(3, green) >> extends Question {
+        reponse : String
+    }
     class EspaceCours << (2,red) >>{
         idEspaceGroupeCours : number
     }
@@ -80,7 +109,6 @@ Devoir "1"--"*" Remise : contient >
 EspaceCours "1"--"*" Devoir: contient >
 Université "1"--"*" Enseignant : emploie >
 Questionnaire "1"--"1..*" Question : contient >
-Questionnaire"1"--"*" Remise : possède >
 Université "1"--"*" Etudiant : est-inscrit-à <
 Question "*"--"1" EspaceCours : contient <
 Questionnaire "*"--"1" EspaceCours : contient <
@@ -92,6 +120,8 @@ Etudiant "1" -- "*" Remise : Crée >
 Enseignant "1" -- "*" Question : Crée >
 Enseignant "1" -- "*" Questionnaire : Crée >
 Enseignant "1" -- "*" Devoir : Crée >
+Tentative "1" -- "*" Question : Contient > 
+Questionnaire"1" -- "*"Tentative : Contient >
 
 legend
 |= |= Type |

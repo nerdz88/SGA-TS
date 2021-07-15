@@ -1,0 +1,100 @@
+@startuml recupererTousQuestionnairesEspaceCours
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererTousQuestionnairesEspaceCours
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+-> gestionnaireQuestion : questionnaires = recupererTousQuestionnairesEspaceCours(idEspaceCours)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaires = recupererTousQuestionnairesEspaceCours()
+note left : Selon expert, espaceCours contient\ntous ces questionnaires
+@enduml
+
+@startuml recupererQuestionsQuestionnaire
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererTousQuestionnairesEspaceCours
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+-> gestionnaireQuestion : questions = recupererQuestionsQuestionnaire\n(idEspaceCours, idQuestionnaire)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire =\nrecupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert, espaceCours contient\ntous ses questionnaires
+gestionnaireQuestion -> questionnaire : questions = recupererQuestions()
+note left : Selon expert, questionnaire contient\ntoutes ses questions
+@enduml 
+
+@startuml ajouterReponseTentative
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouterReponseTentative
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+participant "tentative : Tentative" as tentative
+participant "questions : Question[]" as questions
+participant "question : Question" as question
+-> gestionnaireQuestion : ajouterReponseTentative(idEspaceCours,\nidQuestionnaire, idQuestion, reponse)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire =\nrecupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert, espaceCours contient\ntous ses questionnaires
+gestionnaireQuestion -> questionnaire : ajouterReponseTentative(idQuestion, reponse)
+note left : Selon expert, Quesitonnaire\ncontient les informations\npour ajouterReponseTentative
+questionnaire --> tentative** : create(questions)
+note left : Selon createur, gestionnaireQuestion\n contient Tentative\nquestions est le tableau de question\ndu questionnaire stocké en attribut
+tentative --> questions** : create(questions)
+note left : Selon createur, Tentative\ncontient les questions
+loop !terminerAjouterReponseTentative
+questionnaire -> tentative : repondre(idQuestion, reponse)
+note left : Selon expert, tentative doit initialiser\nles reponse à ses questions
+tentative -> questions : question = getQuestion(idQuestion)
+note left : Selon expert
+tentative -> question : setReponse(reponse)
+note left : Selon expert
+end
+@enduml
+
+@startuml terminerAjouterReponseTentative
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour terminerAjouterReponseTentative
+participant ": GestionnaireQuestionnaire" as gestionnaireQuestion
+participant "universite : Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "questionnaire : Questionnaire" as questionnaire
+participant "tentative : Tentative" as tentative
+participant "questions : Question[]" as questions
+participant "question : Question" as question
+-> gestionnaireQuestion : tentative = terminerAjouterReponseTentative(idEspaceCours,\nidQuestionnaire)
+note left : Selon contrôleur,\ncontrôleur de session
+gestionnaireQuestion -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite a toutes les\ninformations pour recupererUnEspaceCours
+gestionnaireQuestion -> cours : questionnaire =\nrecupererUnQuestionnaire(idQuestionnaire)
+note left : Selon expert, espaceCours contient\ntous ses questionnaires
+gestionnaireQuestion -> questionnaire : solutionnaire = recupererReponse()
+note left : Selon expert, Questionnaire\ncontient ces Questions qui\ncontiennent leurs réponses.\nsolutionnaire est un tableau\navec seulement les réponses
+gestionnaireQuestion -> tentative : tentative = corriger(solutionnaire)
+note left : Selon faire soi-même, Questionnaire\nse corrige lui même afin de réduire\nle décalage des représentations
+loop questions.length
+tentative -> questions : question = getQuestion(i)
+note left : Selon expert
+tentative -> question : reponse = getReponse()
+note left : Selon expert
+alt reponse == solutionnaire[i]
+tentative -> tentative : note++
+note left : Selon expert
+end
+end
+tentative -> tentative : setStatut("évalué")
+note left : Selon expert
+@enduml
