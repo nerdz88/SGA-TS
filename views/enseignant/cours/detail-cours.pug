@@ -14,7 +14,7 @@ block content
             li Date fin: #{espaceCours._dateFin}
 
       h3 Étudiants
-      div.row(style = "overflow-x:scroll")
+      div.row.table-container
         div.col.s12.l6
           if espaceCours._etudiants.length > 0
             table.bordered.highlight
