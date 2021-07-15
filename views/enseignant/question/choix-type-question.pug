@@ -1,0 +1,17 @@
+extends ajouter-modifier-question.pug
+
+block question
+
+    ul(class="collection with-header")
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/1`) Choix multiples
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/2`) Vrai Faux
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/3`) Mise en correspondance
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/4`) Réponse courte
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/5`) Numérique
+        li(class="collection-item")
+            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/6`) Choix essai

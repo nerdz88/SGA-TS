@@ -6,6 +6,7 @@ import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuest
 import { HttpError } from '../core/errors/HttpError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
+import { TypeQuestion } from '../core/model/TypeQuestion';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
 export class WebAppRouteur {
@@ -126,7 +127,20 @@ export class WebAppRouteur {
      */
     public recupererAjouterQuestion(req: Request, res: Response, next: NextFunction) {
         let id = req.params.id;
-        res.render("enseignant/question/ajouter-modifier-question",
+        let choix = req.params.type;
+        var enumChoixType = TypeQuestion[choix]
+        console.log(enumChoixType)
+        res.render("enseignant/question/" + enumChoixType,
+            {
+                idEspaceCours: id,
+                question: {},
+                estModification: false
+            });
+    }
+
+    public recupererAjouterChoixTypeQuestion(req: Request, res: Response, next: NextFunction) {
+        let id = req.params.id;
+        res.render("enseignant/question/choix-type-question",
             {
                 idEspaceCours: id,
                 question: {},
@@ -142,7 +156,7 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        res.render("enseignant/question/ajouter-modifier-question",
+        res.render("enseignant/question/question-vrai-faux",
             {
                 idEspaceCours: idEspaceCours,
                 question: JSON.parse(question),
@@ -286,7 +300,8 @@ export class WebAppRouteur {
         this.router.get('/enseignant/question/', this.recupererToutesQuestions.bind(this));
         this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
         this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
-        this.router.get('/enseignant/question/ajouter/:id', this.recupererAjouterQuestion.bind(this));
+        this.router.get('/enseignant/question/ajouter/:id/:type', this.recupererAjouterQuestion.bind(this));
+        this.router.get('/enseignant/question/choix/:id', this.recupererAjouterChoixTypeQuestion)
         this.router.get('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.recupererModifierQuestion.bind(this));
 
         //Devoirs
