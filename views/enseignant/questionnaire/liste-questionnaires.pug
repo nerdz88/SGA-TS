@@ -1,5 +1,4 @@
-extends ../../commun/master-template.pug 
-
+extends ../master-template-enseignant.pug 
 block content
     //- Start bloc content  
     +btn-back(!espaceCours._id ? "Vos Questionnaires" : `Questionnaires pour ${espaceCours._cours._sigle} Gr: ${espaceCours._numero}`, 

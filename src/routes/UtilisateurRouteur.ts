@@ -3,6 +3,7 @@ import { GestionnaireUtilisateur } from '../core/controllers/GestionnaireUtilisa
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import { DevHelper } from '../core/helper/DevHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
+import { Etudiant } from '../core/model/Etudiant';
 import { User } from '../core/model/User';
 
 
@@ -49,10 +50,25 @@ export class UtilisateurRouteur {
         this.gestionnaireUtilisateur.login(email, req.body.password)
             .then(reponse => {
                 let token = reponse.token;
-                let user: User = new User(Number.parseInt(reponse.user.id), reponse.user.last_name, reponse.user.first_name, reponse.user.email);
+                let user: User
+                let isEtudiant = reponse.user.permanent_code != undefined;
+                if (isEtudiant) {
+                    user = new Etudiant(Number.parseInt(reponse.user.id),
+                        reponse.user.last_name,
+                        reponse.user.first_name,
+                        reponse.user.email,
+                        reponse.user.permanent_code);
+                }
+                else {
+                    user = new User(Number.parseInt(reponse.user.id),
+                        reponse.user.last_name,
+                        reponse.user.first_name,
+                        reponse.user.email);
+                }
 
                 req.session["user"] = user;
                 req.session["token"] = token;
+                req.session["isEtudiant"] = isEtudiant;
 
                 res.status(200)
                     .send({
@@ -81,7 +97,7 @@ export class UtilisateurRouteur {
         var codeStatus = 200;
         req.session.destroy(() => {
             codeStatus = 400;
-        });      
+        });
 
         res.status(codeStatus)
             .send({

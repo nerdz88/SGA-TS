@@ -4,21 +4,23 @@ import { AuthorizationHelper } from '../helper/AuthorizationHelper';
 
 function authMiddleware(req: Request, res: Response, next: NextFunction) {
     //On skip les fichiers de ressources 
+    if (AuthorizationHelper.isPublicFile(req)) {
+        return next();
+    }
 
-    if (!isPublicFile(req.url) && !AuthorizationHelper.isLoggedIn(req)) {
-        if(req.url.startsWith("/api/v"))
-        {
+    //On n'est pas login
+    if (!AuthorizationHelper.isLoggedIn(req)) {
+        if (req.url.startsWith("/api/v")) {
             throw new UnauthorizedError();
         }
-        res.redirect("/login");                
+        return res.redirect("/login");
+    }
+    //On n'a pas l'accès, selon notre role (etudiant ou enseignant)
+    if (!AuthorizationHelper.hasAccess(req)) {
+        throw new UnauthorizedError();
     }
 
-    next();    
-
-    function isPublicFile(path: string) : boolean
-    {
-        return path.startsWith("/lib") || path.startsWith("/css")
-    }
+    return next();
 }
 
 export default authMiddleware;

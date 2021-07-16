@@ -13,6 +13,7 @@ footer {
   bottom: 0;
   width: 100%;
   text-align: center;
+  z-index: 99999;
 }
 
 .padding-right {
@@ -82,10 +83,19 @@ body {
   background-color: #e0f2f1;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (max-width: 600px) {
   .table-container {
     overflow-x:scroll;
   }
+}
+main {
+  margin-bottom: 75px;
+}
+.card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }
 
 /* 

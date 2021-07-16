@@ -20,7 +20,7 @@ export class Universite {
     public reset() {
         this.arrayEspaceCours = new Array();
         this.arrayCours = new Array();
-        EspaceCours.reset();        
+        EspaceCours.reset();
     }
 
     public setUniversite(universite: Universite) {
@@ -68,6 +68,10 @@ export class Universite {
             }
         });
         return arrayEspaceCoursDeEnseignant;
+    }
+
+    public recupererTousEspaceCoursEtudiant(idEtudiant: number): EspaceCours[] {
+        return this.arrayEspaceCours.filter(e => e.hasEtudiantById(idEtudiant));
     }
 
     public supprimerEspaceCours(id: number): boolean {

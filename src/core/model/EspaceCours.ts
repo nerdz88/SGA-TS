@@ -153,6 +153,9 @@ export class EspaceCours {
         return this._etudiants;
     }
 
+    public hasEtudiantById(idEtudiant: number) : boolean {
+       return this._etudiants.find(e => e.getId() == idEtudiant) != undefined;
+    }
 
     public getIdEnseignant(): number {
         return this._enseignantId;
