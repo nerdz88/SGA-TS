@@ -18,6 +18,10 @@ export class GestionnaireCours {
         return JSON.stringify(this.universite.recupererTousEspaceCours(idEnseignant));
     }
 
+    public recupererTousEspaceCoursEtudiant(idEtudiant: number): string {
+        return JSON.stringify(this.universite.recupererTousEspaceCoursEtudiant(idEtudiant));
+    }
+
     public recupererUnEspaceCours(id: number) {
         return JSON.stringify(this.universite.recupererUnEspaceCours(id));
     }
