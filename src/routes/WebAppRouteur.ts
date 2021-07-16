@@ -313,13 +313,13 @@ export class WebAppRouteur {
 
     }
 
-    // public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
-    //     let ordreTri: number = parseInt(req.query.o?.toString());
-    //     let idEspaceCours = parseInt(req.params.idEspaceCours);
-    //     let idDevoir = parseInt(req.params.idDevoir);
-    //     let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
-    //     res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir), currentOrdre: ordreTri });
-    // }
+    public recupererUnDevoirEtudiant(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idDevoir = parseInt(req.params.idDevoir);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoirEtudiant(idEspaceCours, idDevoir, AuthorizationHelper.getIdUser(req));
+
+        res.render("etudiant/devoir/detail-devoir", { devoir: JSON.parse(devoir), returnUrl: req.headers.referer });
+    }
 
     //#endregion Devoirs
 
@@ -379,7 +379,7 @@ export class WebAppRouteur {
 
         //Devoirs
         this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
-        this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
+        this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
 
 
         // //Questionnaire

@@ -50,6 +50,13 @@ export class GestionnaireDevoir {
         return JSON.stringify(devoir);
     }
 
+    public recupererUnDevoirEtudiant(idEspaceCours: number, IdDevoir: number, idEtudiant: number) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoir:any = espaceCours.recupererUnDevoir(IdDevoir);
+        devoir._remiseEtudiant = devoir._remises.find(r => r._etudiant._id = idEtudiant);     
+        return JSON.stringify(devoir);
+    }
+
     public supprimerDevoir(idEspaceCours: number, IdDevoir: number): boolean {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         return espaceCours.suprimerDevoir(IdDevoir)

@@ -38,6 +38,7 @@ export class Devoir {
         return listRemise;
     }
 
+
     get nom(): string {
         return this._nom;
     }

@@ -1,0 +1,40 @@
+extends ../master-template-etudiant.pug 
+block content
+    //- Start bloc content
+    +btn-back("Détail Devoir", returnUrl )
+    div.row
+        - var dateDebut = moment(devoir._dateDebut, "DD-MM-YYYY")
+        - var dateFin = moment(devoir._dateFin, "DD-MM-YYYY")
+        - var isOpen = moment().isBetween(dateDebut, dateFin, "[]"); 
+        div.col.s10.offset-s1     
+            h2.no-margin #{devoir._nom} 
+            div.row
+                div.col.s12
+                    ul.entries                        
+                        li Description: #{devoir._description} 
+                        li Note Maximale: #{devoir._noteMaximale} 
+                        li Date début: #{dateDebut.format("LL")} 
+                        li Date fin: #{dateFin.format("LL")}    
+
+            h2.no-margin Remise 
+            div.row
+                div.col.s12
+                    ul.entries                        
+                        li État: #{devoir._remiseEtudiant._etat} 
+                        li Date remise: #{devoir._remiseEtudiant._dateRemis || "-"} 
+                        li Date correction: #{devoir._remiseEtudiant._dateCorrection || "-"}
+                        li Note: #{devoir._remiseEtudiant._note || "-"} / #{devoir._noteMaximale}
+
+            if isOpen
+                div.section
+                    div.row
+                        div.col.s12
+                            a(class="waves-effect waves-light btn blue accent-2 right btn-remettre-devoir" href="javascript:void(0)" 
+                                data-id-devoir=devoir._id
+                                data-id-remise=devoir._remiseEtudiant._id
+                                data-nom=devoir._nom
+                                data-id-espace-cours=devoir._idEspaceCours) Remettre 
+    //- End bloc content
+
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/devoir/devoir.js")
