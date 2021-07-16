@@ -225,7 +225,17 @@ L’enseignant répète les étapes 5 à 7 jusqu’à ce qu’il n’ait plus de
 
 **Extensions (ou scénarios alternatifs):** 
 
-&nbsp;&nbsp;&nbsp;5-6-7a. L’enseignant téléverse tous les devoirs corrigés ainsi que les fichiers avec l’extension “.note” pour associer la note au devoir corrigé. Un fichier “.note” par devoir (facultatif)
+~~&nbsp;&nbsp;&nbsp;5-6-7a. L’enseignant téléverse tous les devoirs corrigés ainsi que les fichiers avec l’extension “.note” pour associer la note au devoir corrigé. Un fichier “.note” par devoir (facultatif)~~ 
+
+Après la [confirmation du professeur](https://github.com/log210-cfuhrman/lab1-e2021-equipe-03/issues/104#issuecomment-881499685) voici la nouvelle extension:
+
+- L'enseignant télécharge toutes les remises et le système génère un chiffrier 
+- Le chiffrier est un fichier CSV avec 3 colonnes: le code permanent de l'étudiant, le nom complet de l'étudiant et la note (champ vide)
+- L'enseignant fait la correction et l'annotation des copies 
+- L'enseignant téléverse les copies annotées et le fichier CSV rempli
+- Le SGA attribut les copies annotées aux étudiants en plus de lire le fichier CSV pour obtenir les notes 
+
+[Exemple de fichier CSV](https://support.staffbase.com/hc/en-us/articles/360007108391#csv-example-username)
 
 <hr />
 
