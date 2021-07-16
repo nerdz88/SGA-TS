@@ -2,10 +2,10 @@ extends ../master-template-etudiant.pug
 block content
     //- Start bloc content
     +btn-back("Détail Devoir", returnUrl )
-    div.row
-        - var dateDebut = moment(devoir._dateDebut, "DD-MM-YYYY")
-        - var dateFin = moment(devoir._dateFin, "DD-MM-YYYY")
-        - var isOpen = moment().isBetween(dateDebut, dateFin, "[]"); 
+    - var dateDebut = moment(devoir._dateDebut, "DD-MM-YYYY")
+    - var dateFin = moment(devoir._dateFin, "DD-MM-YYYY")
+    - var isOpen = moment().isBetween(dateDebut, dateFin, "[]"); 
+    div.row       
         div.col.s10.offset-s1     
             h2.no-margin #{devoir._nom} 
             div.row
@@ -29,12 +29,10 @@ block content
                 div.section
                     div.row
                         div.col.s12
-                            a(class="waves-effect waves-light btn blue accent-2 right btn-remettre-devoir" href="javascript:void(0)" 
-                                data-id-devoir=devoir._id
-                                data-id-remise=devoir._remiseEtudiant._id
-                                data-nom=devoir._nom
-                                data-id-espace-cours=devoir._idEspaceCours) Remettre 
+                            a(class="waves-effect waves-light btn blue accent-2 right btn-remettre-devoir modal-trigger" 
+                                href=`#modal-remettre-devoir-${devoir._id}`) Remettre
+    if isOpen
+        +modal-remettre-devoir(devoir._nom,  devoir._idEspaceCours, devoir._id)
     //- End bloc content
-
 block more-script
-    script(type="text/javascript" src="/lib/enseignant/devoir/devoir.js")
+    script(type="text/javascript" src="/lib/etudiant/devoir/devoir.js")
