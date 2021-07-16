@@ -303,8 +303,25 @@ export class WebAppRouteur {
 
     //#region Étudiant 
 
+    //#region Devoirs
 
+    public recupererTousDevoirsEtudiant(req: Request, res: Response, next: NextFunction) {
+        let id = parseInt(req.params.id);
+        let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+        let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEtudiant(AuthorizationHelper.getIdUser(req), id);
+        res.render("etudiant/devoir/liste-devoir", { devoirs: JSON.parse(arrayDevoirs), espaceCours: JSON.parse(espaceCours) });
 
+    }
+
+    // public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
+    //     let ordreTri: number = parseInt(req.query.o?.toString());
+    //     let idEspaceCours = parseInt(req.params.idEspaceCours);
+    //     let idDevoir = parseInt(req.params.idDevoir);
+    //     let devoir = this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir, ordreTri);
+    //     res.render("enseignant/devoir/detail-devoir", { devoir: JSON.parse(devoir), currentOrdre: ordreTri });
+    // }
+
+    //#endregion Devoirs
 
 
     //#endregion Étudiant
@@ -361,7 +378,7 @@ export class WebAppRouteur {
         this.router.get('/etudiant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
 
         //Devoirs
-        this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
+        this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
         this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
 
 

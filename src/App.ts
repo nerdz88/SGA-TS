@@ -29,6 +29,8 @@ class App {
     this.routes();
     this.expressApp.set('view engine', 'pug');
     this.expressApp.use(express.static(__dirname + '/public')); // https://expressjs.com/en/starter/static-files.html
+    this.expressApp.locals.moment = require("moment");
+    this.expressApp.locals.moment.locale("fr");
     //errorMiddleware doit être à la fin
     this.expressApp.use(errorMiddleware);
   }

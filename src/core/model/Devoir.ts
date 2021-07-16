@@ -1,8 +1,6 @@
-import { AlreadyExistsError } from '../errors/AlreadyExistsError';
-import { EspaceCours } from "./EspaceCours"
-import { Remise } from "./Remise";
-import { Etudiant } from './Etudiant';
 import { Type } from 'class-transformer';
+import { Etudiant } from './Etudiant';
+import { Remise } from "./Remise";
 
 export class Devoir {
     private _id: number;
@@ -15,11 +13,11 @@ export class Devoir {
     private _visible: boolean;
     @Type(() => Remise)
     private _remises: Remise[];
-    
+
     static currentId: number = 0;
 
     constructor(devoirJson: string, etudiants: Etudiant[]) {
-        if(devoirJson == undefined)
+        if (devoirJson == undefined)
             return;
 
         let values = JSON.parse(devoirJson);
