@@ -147,11 +147,11 @@ export class WebAppRouteur {
         let id = req.params.id;
         let choix = req.params.type;
         var enumChoixType = TypeQuestion[choix]
-        console.log(enumChoixType)
         res.render("enseignant/question/" + enumChoixType,
             {
                 idEspaceCours: id,
                 question: {},
+                typeQuestion: choix,
                 estModification: false
             });
     }

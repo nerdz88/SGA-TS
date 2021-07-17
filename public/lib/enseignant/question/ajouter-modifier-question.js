@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
         var idEspaceCours = $(form).find('input[name="idEspaceCours"]').val();
         var endPoint = estModification ? "/api/v1/enseignant/question/modifier/" + idEspaceCours + "/" + idQuestion
             : "/api/v1/enseignant/question/ajouter/" + idEspaceCours
+        
 
         console.log("Envoyer formulaire - Ajax - Ajouter/Modifier Question");
         envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint);

@@ -1,4 +1,4 @@
-import { AnswerChoixMultiples } from "../answers/AnswerChoixMultiples";
+import { AnswerChoixMultiples } from "../answers/ReponseChoixMultiple";
 import { Question } from "./Question";
 
 export class QuestionChoixMultiple extends Question {

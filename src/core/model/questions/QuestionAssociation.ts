@@ -1,4 +1,4 @@
-import { AnswerAssociation } from "../answers/AnswerAssociation";
+import { AnswerAssociation } from "../answers/ReponseMiseEnCorrespondance";
 import { Question } from "./Question";
 export class QuestionAssociation extends Question {
 

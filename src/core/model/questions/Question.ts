@@ -1,4 +1,4 @@
-import { Answer } from "../answers/Answer";
+import { Answer } from "../answers/Reponse";
 import { TypeQuestion } from "../TypeQuestion";
 
 export abstract class Question {

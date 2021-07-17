@@ -1,4 +1,4 @@
-import { AnswerTrueFalse } from "../answers/AnswerVraiFaux";
+import { AnswerTrueFalse } from "../answers/ReponseVraiFaux";
 import { Question } from "./Question";
 
 export class QuestionVraiFaux extends Question {

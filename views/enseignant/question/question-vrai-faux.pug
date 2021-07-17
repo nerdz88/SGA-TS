@@ -7,6 +7,7 @@ block question
         input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
         input(type="hidden" name="estModification", value=estModification.toString())   
         input(type="hidden" name="idQuestion", value=estModification ? question._id : "")  
+        input(type="hidden" name="typeQuestion", value=typeQuestion)
 
         div.row.no-margin
             div.input-field.col.s6

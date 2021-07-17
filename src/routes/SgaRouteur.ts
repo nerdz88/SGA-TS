@@ -169,8 +169,9 @@ export class SgaRouteur {
     }
 
     public ajouterQuestion(req: Request, res: Response, next: NextFunction) {
-        let id = parseInt(req.params.id);
-        console.log(req.body)
+        let id = parseInt(req.params.id)
+        let typeQuestion = req.body.typeQuestion;
+        console.log(typeQuestion)
         this.gestionnaireQuestion.ajouterQuestion(id, JSON.stringify(req.body));
 
         res.status(201)

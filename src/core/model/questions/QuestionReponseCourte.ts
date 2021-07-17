@@ -1,4 +1,4 @@
-import { AnswerReponseCourte } from "../answers/AnswerReponseCourte";
+import { AnswerReponseCourte } from "../answers/ReponseCourte";
 import { Question } from "./Question";
 
 export class QuestionReponseCourte extends Question {
