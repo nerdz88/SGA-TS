@@ -120,8 +120,8 @@ Etudiant "1" -- "*" Remise : Crée >
 Enseignant "1" -- "*" Question : Crée >
 Enseignant "1" -- "*" Questionnaire : Crée >
 Enseignant "1" -- "*" Devoir : Crée >
-Tentative "1" -- "*" Question : Contient > 
-Questionnaire"1" -- "*"Tentative : Contient >
+Questionnaire"1" -- "1"Tentative : est effuctué sur <
+Etudiant "1" -- "1" Tentative : effectue une >
 
 legend
 |= |= Type |

@@ -210,7 +210,7 @@ export class SgaRouteur {
 
     //#region Gestion Devoir
 
-    supprimerDevoir(req: Request, res: Response, next: NextFunction) {
+    public supprimerDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
 
@@ -225,7 +225,7 @@ export class SgaRouteur {
         }
     }
 
-    recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
+    public recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
         let arrayDevoirs: string;
         arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
@@ -239,7 +239,7 @@ export class SgaRouteur {
         });
     }
 
-    recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
+    public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
         let ordreTri: number = parseInt(req.query.o?.toString());
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
@@ -254,7 +254,7 @@ export class SgaRouteur {
             });
     }
 
-    modifierDevoir(req: Request, res: Response, next: NextFunction) {
+    public modifierDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
         this.gestionnaireDevoir.modifierDevoir(idEspaceCours, idDevoir, JSON.stringify(req.body));
@@ -265,7 +265,7 @@ export class SgaRouteur {
             });
     }
 
-    ajouterDevoir(req: Request, res: Response, next: NextFunction) {
+    public ajouterDevoir(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
         this.gestionnaireDevoir.ajouterDevoir(id, JSON.stringify(req.body));
         res.status(201)
@@ -444,6 +444,15 @@ export class SgaRouteur {
 
 
     }
+
+    public recupererDevoirACorriger(req: any, res: Response, next: NextFunction) {
+
+        let idEspaceCours = req.params.idEspaceCours;
+        let idDevoir = req.params.idDevoir;
+        this.gestionnaireDevoir.recupererUnDevoir
+
+    }
+    
 
 
     //#endregion Devoir
