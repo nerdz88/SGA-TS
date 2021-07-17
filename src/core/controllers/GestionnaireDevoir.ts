@@ -70,8 +70,8 @@ export class GestionnaireDevoir {
 
     public corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-        let devoir: any = espaceCours.recupererUnDevoir(idDevoir);
-        devoir.corrigerDevoir(idRemise, pathFichierCorrection, note);
+        let devoir = espaceCours.recupererUnDevoir(idDevoir);
+        devoir.corrigerDevoir(idRemise, note, pathFichierCorrection);
     }
 
 
