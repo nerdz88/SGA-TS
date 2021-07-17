@@ -280,7 +280,6 @@ export class WebAppRouteur {
             });
     }
 
-
     public recupererModifierDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
@@ -294,6 +293,31 @@ export class WebAppRouteur {
             });
     }
 
+
+    public corrigerDevoir(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let espaceCours = JSON.parse(this.gestionnaireCours.recupererUnEspaceCours(idEspaceCours));
+    
+        let data;
+        data = {
+            espaceCours: espaceCours,
+            returnURL: req.headers.referer 
+        }
+
+        let path;
+        let idDevoir = parseInt(req.params.idDevoir);
+        if (idDevoir) {
+            path = "enseignant/devoir/corriger-devoir"
+            data.devoir = JSON.parse(this.gestionnaireDevoir.recupererUnDevoir(idEspaceCours, idDevoir));
+
+        }
+        else {
+            path = "enseignant/devoir/corriger-devoir-espace-cours"
+            data.devoirs = JSON.parse(this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(idEspaceCours));
+        }
+
+        res.render(path, data);
+    }
 
     //#endregion Gestion Devoirs
 
@@ -361,6 +385,9 @@ export class WebAppRouteur {
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
         this.router.get('/enseignant/devoir/ajouter/:id', this.recupererAjouterDevoir.bind(this));
         this.router.get('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.recupererModifierDevoir.bind(this));
+        this.router.get('/enseignant/devoir/corriger/:idEspaceCours', this.corrigerDevoir.bind(this));
+        this.router.get('/enseignant/devoir/corriger/:idEspaceCours/:idDevoir', this.corrigerDevoir.bind(this));
+
 
         //Questionnaire
         this.router.get('/enseignant/questionnaire/', this.recupererTousQuestionnaires.bind(this));

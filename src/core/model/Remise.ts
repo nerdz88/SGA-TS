@@ -17,6 +17,7 @@ export class Remise {
     private _etat: Etat;
     private _dateDeCorrection: Date;
     private _pathFichier: string
+    private _pathFichierCorrecton: string
     static currentId: number = 0;
 
     constructor(etudiant: Etudiant) {

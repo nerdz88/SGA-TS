@@ -1,0 +1,13 @@
+extends ../master-template-enseignant.pug 
+block content
+    //- Start bloc content
+    +btn-back("Corriger Devoir pour " + espaceCours._cours._sigle + " Gr: " + espaceCours._numero, returnURL)  
+
+    div.row
+        div.col.s10.offset-s1     
+            +corriger-devoir-espace-cours(espaceCours._id, devoirs) 
+
+    //- End bloc content
+
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/devoir/devoir.js")

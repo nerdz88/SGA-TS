@@ -19,10 +19,13 @@ block content
             div.section
                 div.row
                     div.col.s12
+                        a(class="waves-effect waves-light btn blue accent-2 left btn-corriger-devoir"
+                            href="/enseignant/devoir/corriger/" + devoir._idEspaceCours + "/" + devoir._id) Corriger
                         a(class="waves-effect waves-light btn red right btn-delete-devoir" href="javascript:void(0)" 
                             data-id-devoir=devoir._id
                             data-nom=devoir._nom
                             data-id-espace-cours=devoir._idEspaceCours) Supprimer 
+                        
     //- End bloc content
 
 block more-script
