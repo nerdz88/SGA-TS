@@ -10,7 +10,8 @@ export class GestionnaireQuestion {
     }
     public ajouterQuestion(idEspaceCours: number, jsonString: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-        espaceCours.ajouterQuestion(jsonString);
+        let jsonObject = JSON.parse(jsonString);
+        espaceCours.ajouterQuestion(jsonString,jsonObject.typeQuestion);
     }
 
     public modifierQuestion(idEspaceCours: number, IdQuestion: number, jsonString: string) {

@@ -1,7 +1,7 @@
-import { Question } from "./Question";
 import { Remise } from "./Remise";
 import { Type } from 'class-transformer';
 import { Etudiant } from "./Etudiant";
+import { Question } from "./questions/Question";
 
 export class Questionnaire {
     private _id: number;

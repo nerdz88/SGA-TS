@@ -3,7 +3,6 @@ import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
 import { EspaceCours } from "../model/EspaceCours";
-import { Question } from '../model/Question';
 import { SGBService } from "./SGBService";
 
 export class Universite {
