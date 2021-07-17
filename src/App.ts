@@ -3,6 +3,7 @@ import 'es6-shim';
 import * as express from 'express';
 import * as ExpressSession from 'express-session';
 import * as logger from 'morgan';
+import * as fileUpload from 'express-fileupload';
 import { GestionnaireCours } from './core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from './core/controllers/GestionnaireDevoir';
 import { GestionnaireQuestion } from './core/controllers/GestionnaireQuestion';
@@ -13,6 +14,7 @@ import { Universite } from './core/service/Universite';
 import { SgaRouteur } from './routes/SgaRouteur';
 import { UtilisateurRouteur } from './routes/UtilisateurRouteur';
 import { WebAppRouteur } from './routes/WebAppRouteur';
+
 
 export const universite: Universite = new Universite();
 
@@ -35,6 +37,7 @@ class App {
     this.expressApp.use(errorMiddleware);
   }
 
+
   // Configure Express middleware.
   private middleware(): void {
     this.expressApp.use(logger('dev'));
@@ -46,6 +49,11 @@ class App {
         resave: false,
         saveUninitialized: true
       }));
+
+      this.expressApp.use(fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/temp/upload/"
+      }))
 
     //this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
   }

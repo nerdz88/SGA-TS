@@ -24,6 +24,7 @@ window.addEventListener("load", function () {
 
 });
 
+
 function showSuccessToast(description) {
     showToast("Succès", description, "success");
 }

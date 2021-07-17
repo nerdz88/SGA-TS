@@ -60,6 +60,7 @@
         "debug": "^4.3.1",
         "es6-shim": "^0.35.6",
         "express": "^4.17.1",
+        "express-fileupload": "^1.2.1",
         "express-session": "^1.17.2",
         "http": "*",
         "materialize-css": "^1.0.0",

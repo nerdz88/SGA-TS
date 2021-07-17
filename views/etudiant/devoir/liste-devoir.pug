@@ -11,7 +11,7 @@ block content
                             each unDevoir in devoirs
                                 - var dateDebut = moment(unDevoir._dateDebut, "DD-MM-YYYY")
                                 - var dateFin = moment(unDevoir._dateFin, "DD-MM-YYYY")
-                                - var isOpen = moment().isBetween(dateDebut, dateFin, "[]"); 
+                                - var isOpen = moment().isBetween(dateDebut, dateFin, "[]") && unDevoir._remiseEtudiant._etat == "Non Remis"; 
                                 div.col.s12.l5
                                     div.card
                                         div.card-content

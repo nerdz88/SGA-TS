@@ -3,32 +3,34 @@
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
     $('.modal').modal();
-    // $(".btn-delete-devoir").on("click", function () {
-    //     var nomDevoir = $(this).data("nom");
-    //     var idDevoir = $(this).data("idDevoir");
-    //     var idEspaceCours = $(this).data("idEspaceCours");
-    //     $.confirm({
-    //         title: 'Confirmation',
-    //         backgroundDismiss: true,
-    //         content: 'Voulez-vous vraiment supprimer ce devoir: ' + nomDevoir,
-    //         buttons: {
-    //             confirm: function () {
-    //                 $.ajax({
-    //                     type: "DELETE",
-    //                     url: "/api/v1/enseignant/devoir/supprimer/" + idEspaceCours + "/" + idDevoir,
-    //                     success: function () {
-    //                         var endpoint = "/enseignant/devoir" + (idEspaceCours ? "/" + idEspaceCours : "");
-    //                         window.location.href = endpoint;
-    //                     },
-    //                     error: function (e) {
-    //                         showErrorToast(e.responseJSON.error.message);
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //     });
-    // });
+    $(".form-remettre-devoir").on("submit", function (e) {
+        //On veut envoyer le formulaire!
+        e.preventDefault();
 
+        var form = this;
+        var endPoint = "/api/v1/etudiant/devoir/remettre"
+        $.ajax({
+            type: "POST",
+            url: endPoint,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $.alert({
+                    title: 'Succès',
+                    type: 'green',
+                    content: 'Votre devoir a bien été remis',
+                    onClose: function() {
+                        window.location.reload();
+                    }
+                });           
+            },
+            error: function (e) {
+                showErrorToast(e.responseJSON.error.message);
+            }
+        });
+    });
     console.log("devoir.js => Page Load");
 });
+
 

@@ -1,10 +1,10 @@
 extends ../master-template-etudiant.pug 
 block content
     //- Start bloc content
-    +btn-back("Détail Devoir", returnUrl )
-    - var dateDebut = moment(devoir._dateDebut, "DD-MM-YYYY")
-    - var dateFin = moment(devoir._dateFin, "DD-MM-YYYY")
-    - var isOpen = moment().isBetween(dateDebut, dateFin, "[]"); 
+    +btn-back("Détail Devoir", returnUrl)
+    - var dateDebut = moment(devoir._dateDebut, "DD-MM-YYYY");
+    - var dateFin = moment(devoir._dateFin, "DD-MM-YYYY");
+    - var isOpen = moment().isBetween(dateDebut, dateFin, "[]") && devoir._remiseEtudiant._etat == "Non Remis"; 
     div.row       
         div.col.s10.offset-s1     
             h2.no-margin #{devoir._nom} 

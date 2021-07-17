@@ -3,7 +3,10 @@ import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from "../core/controllers/GestionnaireDevoir";
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
+import { HttpError } from '../core/errors/HttpError';
+import { InvalidParameterError } from '../core/errors/InvalidParameterError';
 import { NotFoundError } from '../core/errors/NotFoundError';
+import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
 
@@ -27,7 +30,7 @@ export class SgaRouteur {
         this.init();
     }
 
-
+    //#region Enseignant 
 
     //#region Gestion Cours
 
@@ -78,12 +81,24 @@ export class SgaRouteur {
      */
     public recupererUnEspaceCours(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
-        let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+        let espaceCours = JSON.parse(this.gestionnaireCours.recupererUnEspaceCours(id));
+
+        let hasAccess = true;
+        if (AuthorizationHelper.isEtudiant(req)) {
+            hasAccess = espaceCours._etudiants.find((e: { _id: number; }) => e._id == AuthorizationHelper.getIdUser(req)) != undefined;
+        }
+        else {
+            hasAccess = parseInt(espaceCours._enseignantId) == AuthorizationHelper.getIdUser(req);
+        }
+        if (!hasAccess) {
+            throw new UnauthorizedError();
+        }
+
         res.status(200)
             .send({
                 message: 'Success',
                 status: res.status,
-                espaceCours: JSON.parse(espaceCours)
+                espaceCours: espaceCours
             });
     }
 
@@ -353,13 +368,102 @@ export class SgaRouteur {
 
     //#endregion Gestion Questionnaires
 
+    //#endregion Enseignant
+
+    //#region Étudiant
+
+    //#region Cours
+
+    /**
+     * Méthode GET qui retourne la liste des cours d'un étudiant
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+    public recupererTousEspaceCoursEtudiant(req: Request, res: Response, next: NextFunction) {
+        let espaceCours = this.gestionnaireCours.recupererTousEspaceCoursEtudiant(AuthorizationHelper.getIdUser(req));
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+                espaceCours: JSON.parse(espaceCours)
+            });
+    }
+
+    //#endregion Cours
+
+    //#region Devoir
+
+    public recupererUnDevoirEtudiant(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idDevoir = parseInt(req.params.idDevoir);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoirEtudiant(idEspaceCours, idDevoir, AuthorizationHelper.getIdUser(req));
+
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+                devoir: JSON.parse(devoir)
+            });
+    }
+
+    public recupererTousDevoirsEtudiant(req: Request, res: Response, next: NextFunction) {
+        let id = parseInt(req.params.id);
+        let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEtudiant(AuthorizationHelper.getIdUser(req), id);
+
+        res.status(200).send({
+            message: 'Success',
+            status: res.status,
+            data: {
+                devoirs: JSON.parse(arrayDevoirs)
+            }
+        });
+    }
+
+    public remettreDevoir(req: any, res: Response, next: NextFunction) {
+        if (!req.files.devoir)
+            throw new InvalidParameterError("Vous devez fournir un fichier pdf");
+
+
+        let idEspaceCours = req.body.idEspaceCours;
+        let idDevoir = req.body.idDevoir;
+        let etudiant = AuthorizationHelper.getCurrentUserInfo(req);
+
+        let newFilename = `${idEspaceCours}-${idDevoir}-${etudiant._id}-${etudiant._code_permanent}-devoir-${new Date().getTime()}.pdf`
+        let pathUpload = `uploads/devoirs/${newFilename}`;
+        req.files.devoir.mv(pathUpload, e => {
+            if (e) {
+                throw new HttpError();
+            }
+            res.status(200).send({
+                message: 'Success',
+                status: res.status,
+                path: pathUpload
+            });
+        });
+
+
+
+
+    }
+
+
+    //#endregion Devoir
+
+    //#endregion Étudiants
+
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
      */
     init() {
+
+
         //Indique qu'on veut être login
         this.router.use(authMiddleware);
+
+        //#region Enseignant
 
         //Cours
         this.router.get('/enseignant/cours', this.recupererTousEspaceCours.bind(this));
@@ -390,6 +494,23 @@ export class SgaRouteur {
         this.router.post('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
         this.router.delete('/enseignant/questionnaire/supprimer/:idEspaceCours/:idQuestionnaire', this.supprimerQuestionnaire.bind(this));
         this.router.post('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
+
+        //#endregion Enseignant
+
+
+        //#region Étudiant
+
+        //Cours
+        this.router.get('/etudiant/cours', this.recupererTousEspaceCoursEtudiant.bind(this));
+        this.router.get('/etudiant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
+
+        //Devoirs
+        this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
+        this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
+
+        this.router.post('/etudiant/devoir/remettre', this.remettreDevoir.bind(this));
+
+        //#endregion Étudiant
 
     }
 }
