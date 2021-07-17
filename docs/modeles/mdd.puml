@@ -95,11 +95,29 @@ package SGA{
         reponse : number
     }
 
-    class QuestionChoixEssai<<(3, green) >> extends Question {
-        reponse : String
-    }
     class EspaceCours << (2,red) >>{
         idEspaceGroupeCours : number
+    }
+    class Reponse << (3,orange) >>{
+        reponse : String
+        bonnneReponseText: String
+        mauvaiseReponseText: String
+    }
+
+    class ReponseChoixMultiple << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseNumerique << (3,orange) >> extends Reponse {
+        ponderation: number
+    }
+    class ReponseVraiFaux << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseMiseEnCorrespondance << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseReponseCourte << (3,orange) >> extends Reponse {
+
     }
 }
 
@@ -122,11 +140,19 @@ Enseignant "1" -- "*" Questionnaire : Crée >
 Enseignant "1" -- "*" Devoir : Crée >
 Questionnaire"1" -- "1"Tentative : est effuctué sur <
 Etudiant "1" -- "1" Tentative : effectue une >
+Tentative "1" -- "*" Reponse : contient >
+QuestionVraiFaux "1" -- "*" Reponse : contient >
+QuestionReponseCourte "1" -- "*" Reponse : contient >
+QuestionNumerique "1" -- "*" Reponse : contient >
+QuestionChoixMultiple "1" -- "*" Reponse : contient >
+QuestionMiseEnCorrespondance "1" -- "*" Reponse : contient >
+
 
 legend
 |= |= Type |
 |<back:blue>_1_</back>| Classe non modifiée première itération |
 |<back:yellow>_1_</back>| Classe modifiée première itération |
 |<back:red>_2_</back>| Nouvelle classe deuxième itération |
+|<back:orange>_3_</back> | Nouvelle classe troisième itération |
 endlegend
 @enduml
