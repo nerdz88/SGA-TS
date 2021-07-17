@@ -7,6 +7,8 @@ import { Questionnaire } from "./Questionnaire";
 import { Devoir } from "./Devoir";
 import { InvalidParameterError } from "../errors/InvalidParameterError";
 import { Type } from 'class-transformer';
+import { Etat } from "./Remise";
+import { HttpError } from "../errors/HttpError";
 
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -107,6 +109,8 @@ export class EspaceCours {
 
     public modifierDevoir(idDevoir: number, jsonString: string) {
         let devoir = this.recupererUnDevoir(idDevoir);
+        if (devoir.remises.find(r => r.etat != Etat.NonRemis) != undefined)
+            throw new HttpError("Impossible de modifier un devoir, ayant déjà une remise d'un étudiant")
         devoir.modifier(jsonString);
     }
 
@@ -122,6 +126,11 @@ export class EspaceCours {
     }
 
     public suprimerDevoir(idDevoir: number) {
+        let devoir = this.recupererUnDevoir(idDevoir);
+        
+        if (devoir.remises.find(r => r.etat != Etat.NonRemis) != undefined)
+            throw new HttpError("Impossible de supprimer un devoir, ayant déjà une remise d'un étudiant")
+
         let index = this._devoirs.findIndex(d => d.id == idDevoir);
         if (index != -1) {
             this._devoirs.splice(index, 1);
@@ -153,8 +162,8 @@ export class EspaceCours {
         return this._etudiants;
     }
 
-    public hasEtudiantById(idEtudiant: number) : boolean {
-       return this._etudiants.find(e => e.getId() == idEtudiant) != undefined;
+    public hasEtudiantById(idEtudiant: number): boolean {
+        return this._etudiants.find(e => e.getId() == idEtudiant) != undefined;
     }
 
     public getIdEnseignant(): number {
@@ -181,10 +190,10 @@ export class EspaceCours {
         if (index != -1) {
             let questions = this._questionnaires[index].getQuestions()
             this._questionnaires.splice(index, 1);
-            if(questions.length != 0)
-            questions.forEach(question => {
-                question.setNbOccurence(question.getNbOccurence()-1)
-            });
+            if (questions.length != 0)
+                questions.forEach(question => {
+                    question.setNbOccurence(question.getNbOccurence() - 1)
+                });
             return true;
         }
         return false;
