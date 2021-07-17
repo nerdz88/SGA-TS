@@ -1,3 +1,4 @@
+import { Devoir } from "../model/Devoir";
 import { Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 
@@ -19,24 +20,40 @@ export class GestionnaireDevoir {
         espaceCours.modifierDevoir(IdDevoir, jsonString);
     }
 
-    /*
-        public recupererTousDevoirs(idEnseignant: number): string {
-            let arrayEspaceCours = this.universite.recupererTousEspaceCours(idEnseignant)
-            return JSON.stringify(arrayEspaceCours.flatMap(ec => {
-                let devoirs = ec.recupererTousDevoirs();
-                return devoirs.length > 0 ? devoirs : []
-            }));
-        }*/
-
     public recupererTousDevoirsEspaceCours(idEspaceCours: number): string {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         return JSON.stringify(espaceCours.recupererTousDevoirs());
     }
 
+    public recupererTousDevoirsEtudiant(idEtudiant: number, idEspaceCours: number): string {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoirsEspaceCours = espaceCours.recupererTousDevoirs();
+
+        if (devoirsEspaceCours.length == 0) return "[]";
+
+        let devoirsEtudiant = [];
+        devoirsEspaceCours.forEach((d: any) => {
+            if (!d._visible)
+                return;
+            d._remiseEtudiant = d._remises.find(r => r._etudiant._id = idEtudiant);
+            devoirsEtudiant.push(d);
+        });
+
+        return JSON.stringify(devoirsEtudiant);
+    }
+
+
     public recupererUnDevoir(idEspaceCours: number, IdDevoir: number, ordreTri: number = 0) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let devoir = espaceCours.recupererUnDevoir(IdDevoir);
-        devoir.remises = Remise.orderBy(devoir.remises, ordreTri);   
+        devoir.remises = Remise.orderBy(devoir.remises, ordreTri);
+        return JSON.stringify(devoir);
+    }
+
+    public recupererUnDevoirEtudiant(idEspaceCours: number, IdDevoir: number, idEtudiant: number) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoir: any = espaceCours.recupererUnDevoir(IdDevoir);
+        devoir._remiseEtudiant = devoir._remises.find(r => r._etudiant._id = idEtudiant);
         return JSON.stringify(devoir);
     }
 
@@ -44,6 +61,12 @@ export class GestionnaireDevoir {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         return espaceCours.suprimerDevoir(IdDevoir)
         //test
+    }
+
+    public remettreDevoir(idEspaceCours: number, idDevoir: number, idEtudiant: number, pathFichier: string) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoir: any = espaceCours.recupererUnDevoir(idDevoir);
+        devoir.remettreDevoir(idEtudiant, pathFichier);
     }
 
 }

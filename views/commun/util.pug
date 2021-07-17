@@ -33,7 +33,32 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                             td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
                             td #{remise._etudiant._code_permanent}
                             td #{remise._etat}
-                            td #{remise._dateRemise || "-"}
-                            td #{remise._dateCorrection || "-"}
+                            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
+                            td #{remise._dateCorrection ? moment(remise._dateCorrection).format("LLL") : "-"} 
                             td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
+
+
+
+mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
+    div.modal(id=`modal-remettre-devoir-${idDevoir}`)
+        div.modal-content
+            h1#modal-titre Remettre : #{titre}
+            p Êtes vous sure de vouloir remettre votre devoir maintenant? La remise est #[b définitive]. 
+            form.form-remettre-devoir(id=`form-remettre-devoir-${idDevoir}`)
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="idDevoir", value=idDevoir) 
+                div.row
+                    div.file-field.input-field.col.s12   
+                        div(class="waves-effect waves-light btn blue accent-2") 
+                            span Fichier 
+                            input(type="file" accept=".pdf" name="devoir" required)
+                        .file-path-wrapper 
+                            input(class="file-path validate" type="text" accept=".pdf" required)
+                div.row
+                    div.col.s12  
+                        button(class="waves-effect waves-light btn" type="submit") Remettre  
+
+
+
+
 

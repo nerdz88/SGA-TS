@@ -4,8 +4,8 @@
  export class HttpError extends Error {
     protected _code: number;
 
-    constructor(message: string, code?: number) {
-        super(message);
+    constructor(message?: string, code?: number) {
+        super(message ?? "Une erreur s'est produite,veuillez réessayer plus tard");
         this._code = code ?? 500;
     }
 

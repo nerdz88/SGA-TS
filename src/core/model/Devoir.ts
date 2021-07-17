@@ -1,8 +1,9 @@
-import { AlreadyExistsError } from '../errors/AlreadyExistsError';
-import { EspaceCours } from "./EspaceCours"
-import { Remise } from "./Remise";
-import { Etudiant } from './Etudiant';
 import { Type } from 'class-transformer';
+import { HttpError } from '../errors/HttpError';
+import { UnauthorizedError } from '../errors/UnauthorizedError';
+import { Etudiant } from './Etudiant';
+import { Etat, Remise } from "./Remise";
+import moment = require('moment');
 
 export class Devoir {
     private _id: number;
@@ -15,11 +16,11 @@ export class Devoir {
     private _visible: boolean;
     @Type(() => Remise)
     private _remises: Remise[];
-    
+
     static currentId: number = 0;
 
     constructor(devoirJson: string, etudiants: Etudiant[]) {
-        if(devoirJson == undefined)
+        if (devoirJson == undefined)
             return;
 
         let values = JSON.parse(devoirJson);
@@ -38,6 +39,20 @@ export class Devoir {
         var listRemise = [];
         etudiants.forEach(etudiant => listRemise.push(new Remise(etudiant)));
         return listRemise;
+    }
+
+    public remettreDevoir(idEtudiant: number, pathFichier: string) {
+        let dateDebut = moment(this._dateDebut, "DD-MM-YYYY")
+        let dateFin = moment(this._dateFin, "DD-MM-YYYY")
+        if (!this._visible || !moment(new Date()).isBetween(dateDebut, dateFin))
+            throw new HttpError("Le devoir ne permet pas de remises")
+        let remise = this._remises.find(r => r.etudiant.getId() == idEtudiant);
+        if (remise == undefined)
+            throw new UnauthorizedError("L'étudiant n'a pas accès au devoir");
+
+        remise.pathFichier = pathFichier;
+        remise.dateRemise = new Date();
+        remise.etat = Etat.Remis;
     }
 
     get nom(): string {

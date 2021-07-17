@@ -3,6 +3,7 @@ import { GestionnaireCours } from '../core/controllers/GestionnaireCours';
 import { GestionnaireDevoir } from '../core/controllers/GestionnaireDevoir';
 import { GestionnaireQuestion } from '../core/controllers/GestionnaireQuestion';
 import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuestionnaire';
+import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
 import { TypeQuestion } from '../core/model/TypeQuestion';
@@ -43,7 +44,6 @@ export class WebAppRouteur {
         }
 
         if (AuthorizationHelper.isEtudiant(req)) {
-            //TODO get espaceCours d'un étudiant
             let espaceCours = this.gestionnaireCours.recupererTousEspaceCoursEtudiant(AuthorizationHelper.getIdUser(req));
             data.espaceCours = JSON.parse(espaceCours);
         }
@@ -101,7 +101,7 @@ export class WebAppRouteur {
             hasAccess = parseInt(cours._enseignantId) == AuthorizationHelper.getIdUser(req);
         }
         if (!hasAccess) {
-            return res.redirect("/");
+            throw new UnauthorizedError();
         }
 
         res.render(`${AuthorizationHelper.getPrefixPage(req)}/cours/detail-cours`, { espaceCours: cours });
@@ -303,8 +303,26 @@ export class WebAppRouteur {
 
     //#region Étudiant 
 
+    //#region Devoirs
+
+    public recupererUnDevoirEtudiant(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idDevoir = parseInt(req.params.idDevoir);
+        let devoir = this.gestionnaireDevoir.recupererUnDevoirEtudiant(idEspaceCours, idDevoir, AuthorizationHelper.getIdUser(req));
+
+        res.render("etudiant/devoir/detail-devoir", { devoir: JSON.parse(devoir), returnUrl: req.headers.referer });
+    }
+
+    public recupererTousDevoirsEtudiant(req: Request, res: Response, next: NextFunction) {
+        let id = parseInt(req.params.id);
+        let espaceCours = this.gestionnaireCours.recupererUnEspaceCours(id);
+        let arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEtudiant(AuthorizationHelper.getIdUser(req), id);
+        res.render("etudiant/devoir/liste-devoir", { devoirs: JSON.parse(arrayDevoirs), espaceCours: JSON.parse(espaceCours) });
+
+    }
 
 
+    //#endregion Devoirs
 
 
     //#endregion Étudiant
@@ -361,8 +379,8 @@ export class WebAppRouteur {
         this.router.get('/etudiant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
 
         //Devoirs
-        this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
-        this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
+        this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
+        this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
 
 
         // //Questionnaire
