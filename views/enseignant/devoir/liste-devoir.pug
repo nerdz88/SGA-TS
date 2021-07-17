@@ -22,10 +22,7 @@ block content
                                         div.card-action
                                             a(class="btn-detail-devoir" href="/enseignant/devoir/detail/" + unDevoir._idEspaceCours + "/" + unDevoir._id) Détail
                                             a(class="btn-modifier-devoir" href="/enseignant/devoir/modifier/" + unDevoir._idEspaceCours + "/" + unDevoir._id) Modifier              
-                                            a(class="btn-delete-devoir" href="javascript:void(0)" 
-                                                data-id-devoir=unDevoir._id
-                                                data-nom=unDevoir._nom
-                                                data-id-espace-cours=unDevoir._idEspaceCours) Supprimer 
+                                            + montrer-bouton-supprimer-pour-liste-devoir(unDevoir)
                 else
                     div.col.s12
                         em Vous n'avez pas de devoirs
