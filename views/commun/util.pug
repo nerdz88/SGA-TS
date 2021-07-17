@@ -41,6 +41,33 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                             td #{remise._dateCorrection ? moment(remise._dateCorrection).format("LLL") : "-"} 
                             td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
 
+mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
+    - var unDevoirRemis = 0
+    each remise in devoir._remises
+        if remise._etat == "Remis"
+            - unDevoirRemis = 1
+    if unDevoirRemis == 1
+        a(class="waves-effect waves-light btn disabled red right btn-delete-devoir" href="javascript:void(0)"
+            data-id-devoir=devoir._id
+            data-nom=devoir._nom
+            data-id-espace-cours=devoir._idEspaceCours) Supprimer
+    else
+        a(class="waves-effect waves-light btn red right btn-delete-devoir" href="javascript:void(0)"
+            data-id-devoir=devoir._id
+            data-nom=devoir._nom
+            data-id-espace-cours=devoir._idEspaceCours) Supprimer
+
+
+mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
+    -  unDevoirRemis = 0
+    each remise in devoir._remises
+        if remise._etat === "Remis"
+            - unDevoirRemis = 1
+    if unDevoirRemis != 1
+        a(class="btn-delete-devoir"
+            data-id-devoir=devoir._id
+            data-nom=devoir._nom
+            data-id-espace-cours=devoir._idEspaceCours) Supprimer
 
 //- Modal pour remettre un devoir
 mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
