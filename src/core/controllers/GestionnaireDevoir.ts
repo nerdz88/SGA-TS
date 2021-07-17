@@ -35,8 +35,8 @@ export class GestionnaireDevoir {
         devoirsEspaceCours.forEach((d: any) => {
             if (!d._visible)
                 return;
-            d._remiseEtudiant = d._remises.find(r => r._etudiant._id = idEtudiant);     
-            devoirsEtudiant.push(d);      
+            d._remiseEtudiant = d._remises.find(r => r._etudiant._id = idEtudiant);
+            devoirsEtudiant.push(d);
         });
 
         return JSON.stringify(devoirsEtudiant);
@@ -52,8 +52,8 @@ export class GestionnaireDevoir {
 
     public recupererUnDevoirEtudiant(idEspaceCours: number, IdDevoir: number, idEtudiant: number) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
-        let devoir:any = espaceCours.recupererUnDevoir(IdDevoir);
-        devoir._remiseEtudiant = devoir._remises.find(r => r._etudiant._id = idEtudiant);     
+        let devoir: any = espaceCours.recupererUnDevoir(IdDevoir);
+        devoir._remiseEtudiant = devoir._remises.find(r => r._etudiant._id = idEtudiant);
         return JSON.stringify(devoir);
     }
 
@@ -61,6 +61,12 @@ export class GestionnaireDevoir {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         return espaceCours.suprimerDevoir(IdDevoir)
         //test
+    }
+
+    public remettreDevoir(idEspaceCours: number, idDevoir: number, idEtudiant: number, pathFichier: string) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoir: any = espaceCours.recupererUnDevoir(idDevoir);
+        devoir.remettreDevoir(idEtudiant, pathFichier);
     }
 
 }

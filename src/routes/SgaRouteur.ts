@@ -425,25 +425,22 @@ export class SgaRouteur {
         if (!req.files.devoir)
             throw new InvalidParameterError("Vous devez fournir un fichier pdf");
 
-
         let idEspaceCours = req.body.idEspaceCours;
         let idDevoir = req.body.idDevoir;
         let etudiant = AuthorizationHelper.getCurrentUserInfo(req);
 
-        let newFilename = `${idEspaceCours}-${idDevoir}-${etudiant._id}-${etudiant._code_permanent}-devoir-${new Date().getTime()}.pdf`
+        let newFilename = `${idEspaceCours}-${idDevoir}-${etudiant._id}-${etudiant._code_permanent}-devoir-${new Date().getTime()}.pdf`;
         let pathUpload = `uploads/devoirs/${newFilename}`;
-        req.files.devoir.mv(pathUpload, e => {
-            if (e) {
-                throw new HttpError();
-            }
+        
+        req.files.devoir.mv(pathUpload).then(() =>{
+            this.gestionnaireDevoir.remettreDevoir(idEspaceCours, idDevoir, etudiant._id, pathUpload);
+
             res.status(200).send({
                 message: 'Success',
                 status: res.status,
                 path: pathUpload
             });
-        });
-
-
+        }).catch(next);
 
 
     }

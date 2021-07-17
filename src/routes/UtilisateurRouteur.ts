@@ -105,6 +105,13 @@ export class UtilisateurRouteur {
             });
     }
 
+    public download(req: Request, res: Response, next: NextFunction){
+        //TODO maybe une validation des doits mais bon...
+        let pathFichier = decodeURIComponent(req.params.pathFichier);
+        res.download(pathFichier);
+    }
+    
+
     /**
      * Take each handler, and attach to one of the Express.Router's
      * endpoints.
@@ -114,5 +121,6 @@ export class UtilisateurRouteur {
         this.router.get('/login', this.recupererLogin.bind(this));
         this.router.post('/api/v1/login', this.login.bind(this));
         this.router.get('/api/v1/logout', authMiddleware, this.logout.bind(this));
+        this.router.get("/api/v1/download/:pathFichier", this.download.bind(this))
     }
 }

@@ -12,6 +12,7 @@ block content
                                 - var dateDebut = moment(unDevoir._dateDebut, "DD-MM-YYYY")
                                 - var dateFin = moment(unDevoir._dateFin, "DD-MM-YYYY")
                                 - var isOpen = moment().isBetween(dateDebut, dateFin, "[]") && unDevoir._remiseEtudiant._etat == "Non Remis"; 
+                                - var estRemis = unDevoir._remiseEtudiant._etat != "Non Remis"; 
                                 div.col.s12.l5
                                     div.card
                                         div.card-content
@@ -24,6 +25,9 @@ block content
                                             if isOpen 
                                                 a(class="btn-remettre-devoir modal-trigger" href=`#modal-remettre-devoir-${unDevoir._id}`) Remettre
                                                 +modal-remettre-devoir(unDevoir._nom,  unDevoir._idEspaceCours, unDevoir._id)
+                                            if estRemis
+                                                a(class="btn-telecharger-devoir" 
+                                                    href=`/api/v1/download/${encodeURIComponent(unDevoir._remiseEtudiant._pathFichier)}`) Télécharger Devoir remis
                 else
                     div.col.s12
                         em Vous n'avez pas de devoirs

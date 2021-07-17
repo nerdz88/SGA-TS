@@ -33,8 +33,8 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                             td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
                             td #{remise._etudiant._code_permanent}
                             td #{remise._etat}
-                            td #{remise._dateRemise || "-"}
-                            td #{remise._dateCorrection || "-"}
+                            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
+                            td #{remise._dateCorrection ? moment(remise._dateCorrection).format("LLL") : "-"} 
                             td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
 
 

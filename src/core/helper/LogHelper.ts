@@ -9,12 +9,12 @@ export class LogHelper {
 
     private static createMessage(type: string, name: string, message: string) {
         let dateFormated = (moment(new Date())).format('YYYY-MMM-DD HH:mm:ss')
-        return `[${dateFormated}] [${type}] ${name} - ${message}`;
+        return `\r\n[${dateFormated}] [${type}] ${name} - ${message}`;
     }
 
     public static log(path: string, type: string, name: string, message: string) {
         try {
-            fs.writeFileSync(path, this.createMessage(type, name, message));
+            fs.appendFileSync(path, this.createMessage(type, name, message));
         } catch (e) {
             //Une erreur mais c'est pas grave
             console.warn(e);

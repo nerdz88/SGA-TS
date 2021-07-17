@@ -16,7 +16,7 @@ export class Remise {
     private _note: number;
     private _etat: Etat;
     private _dateDeCorrection: Date;
-    private _cheminFichier: string
+    private _pathFichier: string
     static currentId: number = 0;
 
     constructor(etudiant: Etudiant) {
@@ -96,12 +96,12 @@ export class Remise {
     }
 
     
-    get cheminFichier(): string {
-        return this._cheminFichier;
+    get pathFichier(): string {
+        return this._pathFichier;
     }
 
-    set cheminFichier(value: string) {
-        this._cheminFichier = value;
+    set pathFichier(value: string) {
+        this._pathFichier = value;
     }
 }
 
