@@ -23,7 +23,7 @@ block content
                     ul.entries                        
                         li État: #{devoir._remiseEtudiant._etat} 
                         li Date remise: #{devoir._remiseEtudiant._dateRemise ? moment(devoir._remiseEtudiant._dateRemise).format("LLL") : "-"} 
-                        li Date correction: #{devoir._remiseEtudiant._dateCorrection ? moment(devoir._remiseEtudiant._dateCorrection).format("LLL") : "-"} 
+                        li Date correction: #{devoir._remiseEtudiant._dateDeCorrection ? moment(devoir._remiseEtudiant._dateDeCorrection).format("LLL") : "-"} 
                         li Note: #{devoir._remiseEtudiant._note || "-"} / #{devoir._noteMaximale}
 
             if isOpen
@@ -36,10 +36,16 @@ block content
                 div.section
                     div.row
                         div.col.s12
-                            a(class="waves-effect waves-light btn blue accent-2 right btn-telecharger-devoir" 
-                                href=`/api/v1/download/${encodeURIComponent(devoir._remiseEtudiant._pathFichier)}`) Télécharger Devoir remis
+                            a(class="waves-effect waves-light btn right btn-telecharger-devoir" 
+                                style="margin-left:15px"
+                                href=`/api/v1/download/${encodeURIComponent(devoir._remiseEtudiant._pathFichier)}`) Devoir remis
+                            if devoir._remiseEtudiant._etat == "Remis et Corrigé" && devoir._remiseEtudiant._pathFichierCorrection
+                                a(class="waves-effect waves-light btn blue accent-2 right btn-telecharger-devoir" 
+                                    href=`/api/v1/download/${encodeURIComponent(devoir._remiseEtudiant._pathFichierCorrection)}`) retroaction
     if isOpen
         +modal-remettre-devoir(devoir._nom,  devoir._idEspaceCours, devoir._id)
     //- End bloc content
 block more-script
     script(type="text/javascript" src="/lib/etudiant/devoir/devoir.js")
+    script.
+        console.log(!{JSON.stringify(devoir)})

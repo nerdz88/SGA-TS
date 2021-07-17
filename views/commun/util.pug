@@ -77,7 +77,7 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
                     div.file-field.input-field.col.s12   
                         div(class="waves-effect waves-light btn blue accent-2") 
                             span Fichier 
-                            input(type="file" accept=".pdf" name="devoir")
+                            input(type="file" accept=".pdf" name="devoirRetroaction")
                         .file-path-wrapper 
                             input(class="file-path validate" id=`fichier-devoir-${idDevoir}-${idRemise}` type="text" accept=".pdf")
                             label(for=`fichier-devoir-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
@@ -100,11 +100,16 @@ mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
             li.collection-item 
                 - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
                 div #{infoEtudiant}
-                    a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
-                        i(class="material-icons small waves-effect waves-light ") file_upload
+                    if remise._etat == "Remis et Corrigé"
+                        a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichierCorrection)}`)
+                            i(class="material-icons small waves-effect waves-light") library_books                   
+                    else 
+                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
+                            i(class="material-icons small waves-effect waves-light ") library_add
+                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
                     a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichier)}`)
                         i(class="material-icons small waves-effect waves-light") file_download                   
-                    +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
+                        
         else
             li.collection-item 
                 em Aucune remise.

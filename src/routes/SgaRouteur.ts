@@ -210,7 +210,7 @@ export class SgaRouteur {
 
     //#region Gestion Devoir
 
-    supprimerDevoir(req: Request, res: Response, next: NextFunction) {
+    public supprimerDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
 
@@ -225,7 +225,7 @@ export class SgaRouteur {
         }
     }
 
-    recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
+    public recupererTousDevoirsEspaceCours(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
         let arrayDevoirs: string;
         arrayDevoirs = this.gestionnaireDevoir.recupererTousDevoirsEspaceCours(id);
@@ -239,7 +239,7 @@ export class SgaRouteur {
         });
     }
 
-    recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
+    public recupererUnDevoir(req: Request, res: Response, next: NextFunction) {
         let ordreTri: number = parseInt(req.query.o?.toString());
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
@@ -254,7 +254,7 @@ export class SgaRouteur {
             });
     }
 
-    modifierDevoir(req: Request, res: Response, next: NextFunction) {
+    public modifierDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idDevoir = parseInt(req.params.idDevoir);
         this.gestionnaireDevoir.modifierDevoir(idEspaceCours, idDevoir, JSON.stringify(req.body));
@@ -265,7 +265,7 @@ export class SgaRouteur {
             });
     }
 
-    ajouterDevoir(req: Request, res: Response, next: NextFunction) {
+    public ajouterDevoir(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
         this.gestionnaireDevoir.ajouterDevoir(id, JSON.stringify(req.body));
         res.status(201)
@@ -274,6 +274,41 @@ export class SgaRouteur {
                 status: res.status
             });
     }
+
+    public corrigerDevoir(req: any, res: Response, next: NextFunction) {
+        let hasFichier = req.files.devoirRetroaction != undefined;
+
+        let idEspaceCours = req.body.idEspaceCours;
+        let idDevoir = req.body.idDevoir;
+        let idRemise = req.body.idRemise;
+        let note = req.body.noteDevoir;
+        let pathUpload;
+
+        if (hasFichier) {
+            let newFilename = `${idEspaceCours}-${idDevoir}-${idRemise}-devoir-retroaction-${new Date().getTime()}.pdf`;
+            pathUpload = `uploads/devoirs/${newFilename}`;
+
+            req.files.devoirRetroaction.mv(pathUpload).then(() => {
+                doCorrectionDevoir();
+            }).catch(next);
+        } else {
+            doCorrectionDevoir();
+        }
+
+        let self = this;
+        function doCorrectionDevoir() {
+            self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir, idRemise, note, pathUpload ?? "");
+
+            res.status(200).send({
+                message: 'Success',
+                status: res.status,
+                path: pathUpload ?? "NONE"
+            });
+        }
+
+    }
+
+
 
     //#endregion Gestion Devoirs
 
@@ -431,8 +466,8 @@ export class SgaRouteur {
 
         let newFilename = `${idEspaceCours}-${idDevoir}-${etudiant._id}-${etudiant._code_permanent}-devoir-${new Date().getTime()}.pdf`;
         let pathUpload = `uploads/devoirs/${newFilename}`;
-        
-        req.files.devoir.mv(pathUpload).then(() =>{
+
+        req.files.devoir.mv(pathUpload).then(() => {
             this.gestionnaireDevoir.remettreDevoir(idEspaceCours, idDevoir, etudiant._id, pathUpload);
 
             res.status(200).send({
@@ -479,6 +514,7 @@ export class SgaRouteur {
         // Devoirs
         this.router.get('/enseignant/devoir/:id', this.recupererTousDevoirsEspaceCours.bind(this));
         this.router.post('/enseignant/devoir/ajouter/:id', this.ajouterDevoir.bind(this));
+        this.router.post('/enseignant/devoir/corriger/', this.corrigerDevoir.bind(this));
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
         this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));

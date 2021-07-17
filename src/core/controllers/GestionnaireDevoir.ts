@@ -1,4 +1,3 @@
-import { Devoir } from "../model/Devoir";
 import { Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 
@@ -68,6 +67,13 @@ export class GestionnaireDevoir {
         let devoir: any = espaceCours.recupererUnDevoir(idDevoir);
         devoir.remettreDevoir(idEtudiant, pathFichier);
     }
+
+    public corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let devoir: any = espaceCours.recupererUnDevoir(idDevoir);
+        devoir.corrigerDevoir(idRemise, pathFichierCorrection, note);
+    }
+
 
 }
 
