@@ -1,0 +1,38 @@
+extends ../master-template-etudiant.pug 
+
+block content
+  //- Start bloc content
+  +btn-back("Détail Espace Cours", "/")
+  div.row
+    div.col.s10.offset-s1     
+      h2.no-margin #{espaceCours._cours._sigle} - #{espaceCours._cours._titre} - Gr: #{espaceCours._numero} 
+      div.row.no-margin
+        div.col.s12
+          ul.entries 
+            li Nombre maximun d'étudiants: #{espaceCours._cours._nbMaxEtudiant} 
+            li Date début: #{espaceCours._dateDebut}
+            li Date fin: #{espaceCours._dateFin}
+
+      h3 Étudiants
+      div.row.table-container
+        div.col.s12.l6
+          if espaceCours._etudiants.length > 0
+            table.bordered.highlight
+              thead 
+                tr  
+                  th.data-field Nom 
+                  th.data-field Prénom 
+                  th.data-field Email 
+                  th.data-field Code permanent 
+              tbody 
+                each unEtudiant in espaceCours._etudiants        
+                  tr 
+                    td #{unEtudiant._nom}
+                    td #{unEtudiant._prenom} 
+                    td #{unEtudiant._email} 
+                    td #{unEtudiant._code_permanent}
+          else
+            em Pas d'étudiants dans le cours
+
+block more-script
+  script(type="text/javascript" src="/lib/enseignant/cours/cours.js")
