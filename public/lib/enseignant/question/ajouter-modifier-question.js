@@ -1,5 +1,20 @@
 //Fichier Javascript pour la page d'ajout de cours
 
+$(document).on("click",".ajouterCourteQuestion", function(e){
+    if(this.innerHTML=="add"){
+        let value= "<div class='col s12'>  <a href='#!' class='waves-effect waves-circle waves-light btn-floating secondary-content'><i class='material-icons ajouterCourteQuestion'>add</i></a>"
+        $("#form-ajouter-question-vf").append("<div class='row'><div class='input-field col s12'><input type='text' class='validate'><label for='text'>Entrer votre courte question !</label><div class='input-field col s12'><input type='text' class='validate'><label for='text'>Entrer votre réponse !</label></div></div>"+value);
+        this.innerHTML="delete";
+        this.parentElement.style.backgroundColor="red";
+    }
+    else{
+       this.parentElement.parentElement.parentElement.remove();
+    }    
+    $elem = $('#addAll')
+    $('#form-ajouter-question-vf').append($elem.clone());
+    $elem.remove();
+})
+
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
     $("#form-ajouter-question").on("submit", function (e) {

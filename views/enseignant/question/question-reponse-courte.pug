@@ -1,0 +1,18 @@
+extends ajouter-modifier-question.pug 
+block question
+    form.form-ajouter-question.section(id="form-ajouter-question-vf")
+        div.row
+            div.col.s12(class="input-field")
+                input(type="text" class="validate")
+                <label for="text">Entrer votre courte question !</label>
+            div.col.s12(class="input-field")
+                input(type="text" class="validate")
+                <label for="text">Entrer votre réponse !</label>
+            div.col.s12  
+                <a href="#!" class="waves-effect waves-circle waves-light btn-floating secondary-content">
+                    <i class="material-icons ajouterCourteQuestion">add</i>
+                </a>
+        div.row
+        div.col.s12  
+            button(class="waves-effect waves-light btn" id="addAll" type="submit") #{"Ajouter"} 
+    
