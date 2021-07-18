@@ -1,4 +1,4 @@
-import { AnswerChoixMultiples } from "../answers/AnswerChoixMultiples";
+import { ReponseChoixMultiple } from "../reponses/ReponseChoixMultiple";
 import { Question } from "./Question";
 
 export class QuestionChoixMultiple extends Question {
@@ -10,7 +10,7 @@ export class QuestionChoixMultiple extends Question {
         let values = JSON.parse(questionJson)
         this._choix = values.choix;
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerChoixMultiples(reponse.reponse,reponse.ponderation,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseChoixMultiple(reponse.reponse,reponse.ponderation,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
@@ -23,7 +23,7 @@ export class QuestionChoixMultiple extends Question {
         let values = JSON.parse(questionJson)
         this._choix = values.choix;
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerChoixMultiples(reponse.reponse,reponse.ponderation,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseChoixMultiple(reponse.reponse,reponse.ponderation,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }

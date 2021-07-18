@@ -1,4 +1,4 @@
-export abstract class Answer {
+export abstract class Reponse {
        
     protected reponse: any;
     protected bonneReponseText: string;

@@ -1,4 +1,4 @@
-import { AnswerAssociation } from "../answers/AnswerAssociation";
+import { ReponseMiseEnCorrespondance } from "../reponses/ReponseMiseEnCorrespondance";
 import { Question } from "./Question";
 export class QuestionAssociation extends Question {
 
@@ -9,7 +9,7 @@ export class QuestionAssociation extends Question {
         let values = JSON.parse(questionJson)
         this.isShuffled = values.isShuffled;
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerAssociation(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
@@ -19,7 +19,7 @@ export class QuestionAssociation extends Question {
         let values = JSON.parse(questionJson)
         this.isShuffled = values.isShuffled;
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerAssociation(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }

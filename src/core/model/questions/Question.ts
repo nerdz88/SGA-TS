@@ -1,5 +1,4 @@
-import { Answer } from "../answers/Answer";
-import { TypeQuestion } from "../TypeQuestion";
+import { Reponse } from "../reponses/Reponse";
 
 export abstract class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -11,7 +10,7 @@ export abstract class Question {
     private _descriptionQuestion: string
     private _nbOccurence: number
     static currentId: number = 0;
-    protected _answerChoix: Answer[];
+    protected _answerChoix: Reponse[];
 
 
     constructor(questionJson: string) {

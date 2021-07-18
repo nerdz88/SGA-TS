@@ -1,4 +1,4 @@
-import { AnswerReponseCourte } from "../answers/AnswerReponseCourte";
+import { ReponseCourte } from "../reponses/ReponseCourte";
 import { Question } from "./Question";
 
 export class QuestionReponseCourte extends Question {
@@ -7,7 +7,7 @@ export class QuestionReponseCourte extends Question {
         super(questionJson)
         let values = JSON.parse(questionJson)
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
@@ -16,7 +16,7 @@ export class QuestionReponseCourte extends Question {
         super.modifier(questionJson);
         let values = JSON.parse(questionJson)
         this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }

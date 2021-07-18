@@ -1,6 +1,6 @@
-import { Answer } from "./Answer";
+import { Reponse } from "./Reponse";
 
-export class AnswerAssociation extends Answer{
+export class ReponseMiseEnCorrespondance extends Reponse{
 
     constructor(reponse: number[][], bonneReponseText: string, mauvaiseReponseText:string) {
         super(reponse,bonneReponseText,mauvaiseReponseText)
