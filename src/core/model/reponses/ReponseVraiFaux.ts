@@ -1,6 +1,6 @@
-import { Answer } from "./Reponse";
+import { Reponse } from "./Reponse";
 
-export class AnswerReponseCourte extends Answer{
+export class ReponseVraiFaux extends Reponse{
 
     constructor(reponse: number[][], bonneReponseText: string, mauvaiseReponseText:string) {
         super(reponse,bonneReponseText,mauvaiseReponseText)
@@ -12,7 +12,4 @@ export class AnswerReponseCourte extends Answer{
         this.bonneReponseText = values._bonneReponseText;
         this.mauvaiseReponseText = values._mauvaiseReponseText;
     }
-
-    
-
 }

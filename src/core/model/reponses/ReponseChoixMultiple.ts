@@ -1,6 +1,6 @@
-import { Answer } from "./Reponse";
+import { Reponse } from "./Reponse";
 
-export class AnswerChoixMultiples extends Answer{
+export class ReponseChoixMultiple extends Reponse{
 
     private ponderation : number;
 

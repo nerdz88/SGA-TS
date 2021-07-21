@@ -1,8 +1,8 @@
-import { Answer } from "./Reponse";
+import { Reponse } from "./Reponse";
 
-export class AnswerTrueFalse extends Answer{
+export class ReponseCourte extends Reponse{
 
-    constructor(reponse: number[][], bonneReponseText: string, mauvaiseReponseText:string) {
+    constructor(reponse: string, bonneReponseText: string, mauvaiseReponseText:string) {
         super(reponse,bonneReponseText,mauvaiseReponseText)
     }
 
@@ -12,4 +12,7 @@ export class AnswerTrueFalse extends Answer{
         this.bonneReponseText = values._bonneReponseText;
         this.mauvaiseReponseText = values._mauvaiseReponseText;
     }
+
+    
+
 }

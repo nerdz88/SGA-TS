@@ -1,4 +1,4 @@
-import { AnswerReponseCourte } from "../answers/ReponseCourte";
+import { ReponseCourte } from "../reponses/ReponseCourte";
 import { Question } from "./Question";
 
 export class QuestionReponseCourte extends Question {
@@ -6,17 +6,18 @@ export class QuestionReponseCourte extends Question {
     constructor(questionJson: string) {
         super(questionJson)
         let values = JSON.parse(questionJson)
-        this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+        JSON.parse(values.reponses).forEach( reponse => {
+            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
 
     public modifier(questionJson: string) {
         super.modifier(questionJson);
-        let values = JSON.parse(questionJson)
-        this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new AnswerReponseCourte(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+        let values = JSON.parse(questionJson);
+        this._answerChoix=[];
+        JSON.parse(values.reponses).forEach( reponse => {
+            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }

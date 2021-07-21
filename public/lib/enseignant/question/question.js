@@ -1,5 +1,4 @@
 //Fichier Javascript pour les pages de question
-
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
     $(".btn-delete-question").on("click", function () {
