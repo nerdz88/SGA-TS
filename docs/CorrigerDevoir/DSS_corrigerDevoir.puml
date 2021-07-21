@@ -1,0 +1,13 @@
+@startuml dss_corrigerDevoir
+title DSS corrigerDevoir
+hide footbox
+actor ":Enseignant" as enseignant
+participant ":Systeme" as systeme
+
+enseignant ->  systeme : recupererTousEspaceCours(token : String)
+enseignant <-- systeme : cours actifs de l’enseignant ainsi\nque le nombre de devoirs à corriger\npour chaque cours
+enseignant -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours: number)
+systeme --> enseignant : devoirs à corriger pour le cours
+enseignant -> systeme : recupererUnDevoirEtudiant(idEspaceCours: number,\nIdDevoir: number, idEtudiant: number)
+
+@enduml
