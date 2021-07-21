@@ -32,6 +32,43 @@ L'objectif général de ce projet est de concevoir un système de gestion des ap
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
 
+## CU03 - Corriger devoir
+**Acteur principal:**  Enseignant
+
+**Préconditions:** 
+- L’enseignant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Les devoirs associés au cours ont été corrigés
+-  Les notes des devoirs ont été transmises au système de gestion des bordereaux (SGB).
+
+**Scénario principal (succès):** 
+1. L’enseignant commence la correction de devoir
+1. Le système affiche les cours actifs de l’enseignant ainsi que le nombre de devoirs à corriger pour chaque cours
+1. L’enseignant sélectionne un cours
+1. Le système affiche tous les devoirs à corriger pour le cours.
+1. L’enseignant télécharge (“download”) le devoir de l’étudiant et le corrige.
+1. L’enseignant téléverse (“upload”) la version corrigée du devoir.
+1. L’enseignant indique la note du devoir.
+  
+L’enseignant répète les étapes 5 à 7 jusqu’à ce qu’il n’ait plus de devoirs à corriger
+
+**Extensions (ou scénarios alternatifs):** 
+
+~~&nbsp;&nbsp;&nbsp;5-6-7a. L’enseignant téléverse tous les devoirs corrigés ainsi que les fichiers avec l’extension “.note” pour associer la note au devoir corrigé. Un fichier “.note” par devoir (facultatif)~~ 
+
+Après la [confirmation du professeur](https://github.com/log210-cfuhrman/lab1-e2021-equipe-03/issues/104#issuecomment-881499685) voici la nouvelle extension:
+
+- L'enseignant télécharge toutes les remises et le système génère un chiffrier 
+- Le chiffrier est un fichier CSV avec 3 colonnes: le code permanent de l'étudiant, le nom complet de l'étudiant et la note (champ vide)
+- L'enseignant fait la correction et l'annotation des copies 
+- L'enseignant téléverse les copies annotées et le fichier CSV rempli
+- Le SGA attribut les copies annotées aux étudiants en plus de lire le fichier CSV pour obtenir les notes 
+
+[Exemple de fichier CSV](https://support.staffbase.com/hc/en-us/articles/360007108391#csv-example-username)
+
+<hr />
+
 ## CU07 - Passer questionnaire
 **Acteur principal:**  Étudiant
 
