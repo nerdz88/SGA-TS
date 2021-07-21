@@ -141,11 +141,12 @@ Enseignant "1" -- "*" Devoir : Crée >
 Questionnaire"1" -- "1"Tentative : est effuctué sur <
 Etudiant "1" -- "1" Tentative : effectue une >
 Tentative "1" -- "*" Reponse : contient >
-QuestionVraiFaux "1" -- "*" Reponse : contient >
-QuestionReponseCourte "1" -- "*" Reponse : contient >
-QuestionNumerique "1" -- "*" Reponse : contient >
-QuestionChoixMultiple "1" -- "*" Reponse : contient >
-QuestionMiseEnCorrespondance "1" -- "*" Reponse : contient >
+QuestionVraiFaux "1" -- "*" ReponseVraiFaux : contient >
+QuestionReponseCourte "1" -- "*" ReponseReponseCourte : contient >
+QuestionNumerique "1" -- "*" ReponseNumerique : contient >
+QuestionChoixMultiple "1" -- "*" ReponseChoixMultiple : contient >
+QuestionMiseEnCorrespondance "1" -- "*" ReponseMiseEnCorrespondance : contient >
+
 
 
 legend

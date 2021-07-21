@@ -73,7 +73,6 @@ export class EspaceCours {
     private creerQuestion(type : string,jsonString : string) :Question{
         switch(type){
             case "question-vrai-faux":
-
                 return new QuestionVraiFaux(jsonString);
             case "question-choix-multiples":
                 return new QuestionChoixMultiple(jsonString);

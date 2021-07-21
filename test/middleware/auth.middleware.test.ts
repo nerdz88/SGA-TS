@@ -35,13 +35,13 @@ describe('Auth middleware Test - NOT Login', () => {
         expect(nextFunction).toBeCalledTimes(1);
     });
 
-    it("Priavate page - Redirect function to be call", () => {
+    it("Private page - Redirect function to be call", () => {
         mockRequest.url = PATH_PRIVATE_PAGE;
         authMiddleware(mockRequest, mockResponse, nextFunction);
         expect(mockResponse.redirect).toBeCalledTimes(1);
     });
 
-    it("Priavate API - UnauthorizedError", () => {
+    it("Private API - UnauthorizedError", () => {
         mockRequest.url = PATH_PRIVATE_API;
         expect(() => {
             authMiddleware(mockRequest, mockResponse, nextFunction);
@@ -78,13 +78,13 @@ describe('Auth middleware Test - Login', () => {
         expect(nextFunction).toBeCalledTimes(1);
     });
 
-    it("Priavate page -  Next function to be call", () => {
+    it("Private page -  Next function to be call", () => {
         mockRequest.url = PATH_PRIVATE_PAGE;
         authMiddleware(mockRequest, mockResponse, nextFunction);
         expect(nextFunction).toBeCalledTimes(1);
     });
 
-    it("Priavate API -  Next function to be call", () => {
+    it("Private API -  Next function to be call", () => {
         mockRequest.url = PATH_PRIVATE_API;
         authMiddleware(mockRequest, mockResponse, nextFunction);
         expect(nextFunction).toBeCalledTimes(1);
