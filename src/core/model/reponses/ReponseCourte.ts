@@ -2,7 +2,7 @@ import { Reponse } from "./Reponse";
 
 export class ReponseCourte extends Reponse{
 
-    constructor(reponse: number[][], bonneReponseText: string, mauvaiseReponseText:string) {
+    constructor(reponse: string, bonneReponseText: string, mauvaiseReponseText:string) {
         super(reponse,bonneReponseText,mauvaiseReponseText)
     }
 

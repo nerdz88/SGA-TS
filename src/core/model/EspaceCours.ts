@@ -12,7 +12,7 @@ import { Question } from "./questions/Question";
 import { TypeQuestion } from "./TypeQuestion";
 import { QuestionChoixMultiple } from "./questions/QuestionChoixMultiple";
 import { QuestionNumerique } from "./questions/QuestionNumerique";
-import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
+import { QuestionReponseCourte as QuestionCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 
 export class EspaceCours {
@@ -70,26 +70,28 @@ export class EspaceCours {
         q.modifier(questionnaireJson);
     }
 
-    private creerQuestion(type : number,jsonString : string) :Question{
+    private creerQuestion(type : string,jsonString : string) :Question{
         switch(type){
-            case TypeQuestion["question-vrai-faux"]:
+            case "question-vrai-faux":
+
                 return new QuestionVraiFaux(jsonString);
-            case TypeQuestion["question-choix-multiples"]:
+            case "question-choix-multiples":
                 return new QuestionChoixMultiple(jsonString);
-            case TypeQuestion["question-mise-correspondance"]:
+            case "question-mise-correspondance":
                 //return new QuestionmiseEnCorrespondance
             break;
-            case TypeQuestion["question-numerique"]:
+            case "question-numerique":
                 return new QuestionNumerique(jsonString);
-            case TypeQuestion["question-reponse-courte"]:
-                return new QuestionReponseCourte(jsonString);
+            case "question-reponse-courte":
+                return new QuestionCourte(jsonString);
         }
         return null;
     }
 
-    public ajouterQuestion(questionJson: string, type : number) {
-        //let newQuestion = new Question(questionJson)
-        let newQuestion = this.creerQuestion(type,questionJson);
+    public ajouterQuestion(jsonString: string) {
+        let question =JSON.parse(jsonString);
+        let type = question.typeQuestion;
+        let newQuestion = this.creerQuestion(type,jsonString);
         if (this._questions.find(q => q.getNom() == newQuestion.getNom()))
             throw new AlreadyExistsError("la question " + newQuestion.getNom() + " existe déjà")
         this._questions.push(newQuestion);

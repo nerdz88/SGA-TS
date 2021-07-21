@@ -11,15 +11,17 @@ export abstract class Question {
     private _nbOccurence: number
     static currentId: number = 0;
     protected _answerChoix: Reponse[];
+    private _type:string;
 
 
     constructor(questionJson: string) {
         if (questionJson == undefined)
             return;
 
+        this._answerChoix=[];
         let values = JSON.parse(questionJson);
         this._idEspaceCours = parseInt(values.idEspaceCours);
-
+        this._type = values.typeQuestion;
         this._tags = values.tags ? values.tags.toLowerCase().split(",")
             .filter((tag, index, list) => list.indexOf(tag) === index) : [];
         this._nom = values.nom;
@@ -49,6 +51,10 @@ export abstract class Question {
     
     public getTag() {
         return this._tags;
+    }
+
+    public getType(){
+        return this._type;
     }
     public getDescriptionQuestion() {
         return this._descriptionQuestion;
