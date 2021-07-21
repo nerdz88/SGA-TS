@@ -1,3 +1,4 @@
+//- Afficher le titre de la page avec un bouton de retour, le code pour le retour est dans le main.js
 mixin btn-back(titre, lienRetour)
     div.row.no-margin
         div.col.s12
@@ -5,7 +6,10 @@ mixin btn-back(titre, lienRetour)
                 i(class="material-icons left medium waves-effect waves-light btn-retour"
                     data-lien-retour=lienRetour) chevron_left
                 |#{titre}
-                   
+
+//- Tableau pour afficher  les remises d'un devoir/questionnaires
+//- TODO les questionnaires ne vont plus avoir de remise alors il faudrait faire un autre version du tableau pour les questionnaires
+//- Plus besoin de l'avoir dans le util.pug   
 mixin table-remise-etudiants(remises, baseURL, currentOrdre)
     h3 Remises des étudiants
     div.row.table-container
@@ -34,7 +38,7 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                             td #{remise._etudiant._code_permanent}
                             td #{remise._etat}
                             td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
-                            td #{remise._dateCorrection ? moment(remise._dateCorrection).format("LLL") : "-"} 
+                            td #{remise._dateDeCorrection ? moment(remise._dateDeCorrection).format("LLL") : "-"} 
                             td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
 
 mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
@@ -53,6 +57,7 @@ mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
             data-nom=devoir._nom
             data-id-espace-cours=devoir._idEspaceCours) Supprimer
 
+
 mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
     -  unDevoirRemis = 0
     each remise in devoir._remises
@@ -64,6 +69,7 @@ mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
             data-nom=devoir._nom
             data-id-espace-cours=devoir._idEspaceCours) Supprimer
 
+//- Modal pour remettre un devoir
 mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
     div.modal(id=`modal-remettre-devoir-${idDevoir}`)
         div.modal-content
@@ -81,4 +87,67 @@ mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
                             input(class="file-path validate" type="text" accept=".pdf" required)
                 div.row
                     div.col.s12  
-                        button(class="waves-effect waves-light btn" type="submit") Remettre
+                        button(class="waves-effect waves-light btn" type="submit") Remettre  
+
+
+//- Modal pour corriger un devoir 
+mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise)
+    div.modal(id=`modal-corriger-devoir-${idDevoir}-${idRemise}`)
+        div.modal-content
+            h1#modal-titre Corriger : #{titre} - #{nomEtudiant}
+            p Êtes vous sure de vouloir remettre la correction du devoir de #[b #{nomEtudiant}] maintenant? La correction est #[b définitive]. 
+            form.form-corriger-devoir(id=`form-corriger-devoir-${idDevoir}-${idRemise}`)
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="idDevoir", value=idDevoir) 
+                input(type="hidden" name="idRemise", value=idRemise) 
+                div.row
+                    div.file-field.input-field.col.s12   
+                        div(class="waves-effect waves-light btn blue accent-2") 
+                            span Fichier 
+                            input(type="file" accept=".pdf" name="devoirRetroaction")
+                        .file-path-wrapper 
+                            input(class="file-path validate" id=`fichier-devoir-${idDevoir}-${idRemise}` type="text" accept=".pdf")
+                            label(for=`fichier-devoir-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
+                    div.input-field.col.s12
+                        input(id=`note-devoir-${idDevoir}-${idRemise}` type="number" name="noteDevoir" 
+                            onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
+                            required)
+                        label(for=`note-devoir-${idDevoir}-${idRemise}`) Note
+                div.row
+                    div.col.s12  
+                        button(class="waves-effect waves-light btn" type="submit") Corriger
+
+
+//- Permet d'afficher toutes les remises d'un devoir 
+mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
+    ul(class="collection with-header")
+        li.collection-header 
+            h2 #{titreDevoir}      
+        each remise in remises.filter(r => r._etat != "Non Remis") 
+            li.collection-item 
+                - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
+                div #{infoEtudiant}
+                    if remise._etat == "Remis et Corrigé"
+                        a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichierCorrection)}`)
+                            i(class="material-icons small waves-effect waves-light") library_books                   
+                    else 
+                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
+                            i(class="material-icons small waves-effect waves-light ") library_add
+                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
+                    a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichier)}`)
+                        i(class="material-icons small waves-effect waves-light") file_download                   
+                        
+        else
+            li.collection-item 
+                em Aucune remise.
+
+
+//- Permet d'afficher tous les devoirs remis d'un espace cours pour la correction
+mixin corriger-devoir-espace-cours(idEspace, devoirs)
+    div.row
+        div.col.s12
+            each devoir in devoirs.filter(d => d._remises.find(r => r._etat != "Non Remis")) 
+                +corriger-devoir(devoir._nom, devoir._id, idEspace, devoir._remises)      
+            else
+                em Aucun devoir ayant au moins une remise.
+

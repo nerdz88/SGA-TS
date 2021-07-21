@@ -108,7 +108,9 @@ export class UtilisateurRouteur {
     public download(req: Request, res: Response, next: NextFunction){
         //TODO maybe une validation des doits mais bon...
         let pathFichier = decodeURIComponent(req.params.pathFichier);
-        res.download(pathFichier);
+        res.download(pathFichier, (e) => {
+            next();
+        });
     }
     
 

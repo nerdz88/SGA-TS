@@ -19,6 +19,8 @@ block content
             div.section
                 div.row
                     div.col.s12
+                        a(class="waves-effect waves-light btn blue accent-2 left btn-corriger-devoir"
+                            href="/enseignant/devoir/corriger/" + devoir._idEspaceCours + "/" + devoir._id) Corriger                       
                         +montrer-bouton-supprimer-pour-detail-devoir(devoir)
     //- End bloc content
 

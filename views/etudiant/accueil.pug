@@ -20,8 +20,8 @@ block content
               div.card-action
                 a(class="btn-detail-cours" href="/etudiant/cours/detail/" + espace._id) Détail&nbsp;
                 //- TODO get le nombre de devoir non remis et memem chose pour questionnaire
-                a(class="btn-devoir-cours" href="/etudiant/devoir/" + espace._id) Devoirs&nbsp;(#{espace._devoirs.length})
-                a(class="btn-questionnaire-cours" href="/etudiant/questionnaire/" + espace._id) Questionnaires&nbsp;(#{espace._questionnaires.length})             
+                a(class="btn-devoir-cours" href="/etudiant/devoir/" + espace._id) Devoirs
+                a(class="btn-questionnaire-cours" href="/etudiant/questionnaire/" + espace._id) Questionnaires             
         else
           div.col.s12
             em Vous n'avez pas de cours

@@ -4,6 +4,7 @@ import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { Etudiant } from './Etudiant';
 import { Etat, Remise } from "./Remise";
 import moment = require('moment');
+import { NotFoundError } from '../errors/NotFoundError';
 
 export class Devoir {
     private _id: number;
@@ -53,6 +54,16 @@ export class Devoir {
         remise.pathFichier = pathFichier;
         remise.dateRemise = new Date();
         remise.etat = Etat.Remis;
+    }
+
+    public corrigerDevoir(idRemise: number, note: number, pathFichierCorrection: string) {
+        let remise = this._remises.find(r => r.id == idRemise);
+        if (remise == undefined)
+            throw new NotFoundError("Impossible de corriger le devoir, la remise [" + idRemise + "] n'existe pas");
+        remise.note = note;
+        remise.pathFichierCorrection = pathFichierCorrection;
+        remise.dateDeCorrection = new Date();
+        remise.etat = Etat.RemisCorrige;
     }
 
     get nom(): string {

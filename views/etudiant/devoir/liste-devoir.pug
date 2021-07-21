@@ -25,9 +25,14 @@ block content
                                             if isOpen 
                                                 a(class="btn-remettre-devoir modal-trigger" href=`#modal-remettre-devoir-${unDevoir._id}`) Remettre
                                                 +modal-remettre-devoir(unDevoir._nom,  unDevoir._idEspaceCours, unDevoir._id)
-                                            if estRemis
+                                            if unDevoir._remiseEtudiant._etat != "Non Remis"
+                                                br
                                                 a(class="btn-telecharger-devoir" 
-                                                    href=`/api/v1/download/${encodeURIComponent(unDevoir._remiseEtudiant._pathFichier)}`) Télécharger Devoir remis
+                                                    href=`/api/v1/download/${encodeURIComponent(unDevoir._remiseEtudiant._pathFichier)}`) Devoir remis
+                                            if unDevoir._remiseEtudiant._etat == "Remis et Corrigé"
+                                                br
+                                                a(class="btn-telecharger-devoir-corrigé" 
+                                                    href=`/api/v1/download/${encodeURIComponent(unDevoir._remiseEtudiant._pathFichierCorrection)}`) Retroaction
                 else
                     div.col.s12
                         em Vous n'avez pas de devoirs
