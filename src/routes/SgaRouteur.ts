@@ -170,7 +170,8 @@ export class SgaRouteur {
 
     public ajouterQuestion(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
-        this.gestionnaireQuestion.ajouterQuestion(id, JSON.stringify(req.body));
+        let value = JSON.stringify(req.body);
+        this.gestionnaireQuestion.ajouterQuestion(id,value);
 
         res.status(201)
             .send({
@@ -479,6 +480,15 @@ export class SgaRouteur {
 
 
     }
+
+    public recupererDevoirACorriger(req: any, res: Response, next: NextFunction) {
+
+        let idEspaceCours = req.params.idEspaceCours;
+        let idDevoir = req.params.idDevoir;
+        this.gestionnaireDevoir.recupererUnDevoir
+
+    }
+    
 
 
     //#endregion Devoir

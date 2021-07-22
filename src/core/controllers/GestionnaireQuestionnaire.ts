@@ -1,5 +1,5 @@
 import { EspaceCours } from "../model/EspaceCours";
-import { Question } from "../model/Question";
+import { Question } from "../model/questions/Question";
 import { Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 

@@ -136,7 +136,8 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        res.render("enseignant/question/detail-question", { question: JSON.parse(question) });
+        let jsonQuestion= JSON.parse(question);
+        res.render("enseignant/question/"+jsonQuestion._type+"/detail-question", { question: jsonQuestion });
     }
 
 
@@ -147,12 +148,12 @@ export class WebAppRouteur {
         let id = req.params.id;
         let choix = req.params.type;
         var enumChoixType = TypeQuestion[choix]
-        console.log(enumChoixType)
-        res.render("enseignant/question/" + enumChoixType,
+        res.render("enseignant/question/" + enumChoixType+"/ajouter-modifier-Question",
             {
                 idEspaceCours: id,
                 question: {},
-                estModification: false
+                estModification: false,
+                typeQuestion:enumChoixType
             });
     }
 
@@ -174,10 +175,11 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        res.render("enseignant/question/question-vrai-faux",
+        let jsonQuestion = JSON.parse(question);
+        res.render("enseignant/question/"+jsonQuestion._type+"/ajouter-modifier-Question",
             {
                 idEspaceCours: idEspaceCours,
-                question: JSON.parse(question),
+                question: jsonQuestion,
                 estModification: true,
                 returnUrl: req.headers.referer
             });

@@ -1,5 +1,6 @@
+import { Reponse } from "../reponses/Reponse";
 
-export class Question {
+export abstract class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
 
     private _id: number;
@@ -7,29 +8,28 @@ export class Question {
     private _tags: []
     private _nom: string
     private _descriptionQuestion: string
-    private _reponse: boolean
-    private _descriptionReponse: string
-    private _mauvaiseReponseDescription: string
     private _nbOccurence: number
     static currentId: number = 0;
+    protected _answerChoix: Reponse[];
+    private _type:string;
+
 
     constructor(questionJson: string) {
         if (questionJson == undefined)
             return;
 
+        this._answerChoix=[];
         let values = JSON.parse(questionJson);
         this._idEspaceCours = parseInt(values.idEspaceCours);
-
+        this._type = values.typeQuestion;
         this._tags = values.tags ? values.tags.toLowerCase().split(",")
             .filter((tag, index, list) => list.indexOf(tag) === index) : [];
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
-        this._reponse = Boolean(values.reponse);
-        this._descriptionReponse = values.descriptionReponse
-        this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
         this._id = ++Question.currentId;
         this._nbOccurence = 0
     }
+
 
     public modifier(questionJson: string) {
         let values = JSON.parse(questionJson);
@@ -37,9 +37,6 @@ export class Question {
             .filter((tag, index, list) => list.indexOf(tag) === index);
         this._nom = values.nom;
         this._descriptionQuestion = values.description;
-        this._reponse = values.reponse;
-        this._descriptionReponse = values.descriptionReponse
-        this._mauvaiseReponseDescription = values.descriptionMauvaiseReponse;
     }
 
     public getIdEspaceCours() {
@@ -51,19 +48,13 @@ export class Question {
     public getNom() {
         return this._nom;
     }
-    public getReponse() {
-        return this._reponse;
-    }
     
     public getTag() {
         return this._tags;
     }
 
-    public getDescriptionReponse() {
-        return this._descriptionReponse;
-    }
-    public getMauvaiseReponseDescription() {
-        return this._mauvaiseReponseDescription;
+    public getType(){
+        return this._type;
     }
     public getDescriptionQuestion() {
         return this._descriptionQuestion;

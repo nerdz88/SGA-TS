@@ -138,14 +138,14 @@ Etudiant "1" -- "*" Remise : Crée >
 Enseignant "1" -- "*" Question : Crée >
 Enseignant "1" -- "*" Questionnaire : Crée >
 Enseignant "1" -- "*" Devoir : Crée >
-Questionnaire"1" -- "1"Tentative : est effuctuée sur <
-Etudiant "1" -- "1" Tentative : effectue >
-Tentative "1" - "*" Reponse : contient >
-QuestionVraiFaux "1" - "*" ReponseVraiFaux : a >
-QuestionReponseCourte "1" -- "*" ReponseReponseCourte : a >
-QuestionNumerique "1" -- "*" ReponseNumerique : a >
-QuestionChoixMultiple "1" -- "*" ReponseChoixMultiple : a >
-QuestionMiseEnCorrespondance "1" -- "*" ReponseMiseEnCorrespondance : a >
+Questionnaire"1" -- "1"Tentative : est effuctué sur <
+Etudiant "1" -- "1" Tentative : effectue une >
+Tentative "1" -- "*" Reponse : contient >
+QuestionVraiFaux "1" -- "*" ReponseVraiFaux : contient >
+QuestionReponseCourte "1" -- "*" ReponseReponseCourte : contient >
+QuestionNumerique "1" -- "*" ReponseNumerique : contient >
+QuestionChoixMultiple "1" -- "*" ReponseChoixMultiple : contient >
+QuestionMiseEnCorrespondance "1" -- "*" ReponseMiseEnCorrespondance : contient >
 
 
 
