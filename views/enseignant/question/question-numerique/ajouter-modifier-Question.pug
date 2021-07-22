@@ -16,11 +16,11 @@ block question
                 label(for="tags") Tags (Séparer par des ",")
             div.col.s12(class="input-field")
                 input(type="text" id="question" required value=estModification ? question._descriptionQuestion :"")
-                <label for="text">Entrer votre courte question !</label>
+                <label for="text">Entrer une question</label>
             div.row(id="questionTotal")
                 div.col.s12(class="input-field")
-                    input(type="text" name="reponses" class="reponses" required)
-                    <label for="text">Entrer votre réponse</label>
+                    input(type="number" name="reponses" class="reponses" required)
+                    <label for="text">Entrer votre réponse numérique </label>
                 div.input-field.col.s6
                     textarea#descriptionReponse(class="materialize-textarea descriptionReponse" name="descriptionReponse")
                         |#{""}

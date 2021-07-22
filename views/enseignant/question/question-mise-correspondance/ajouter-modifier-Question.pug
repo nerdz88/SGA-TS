@@ -1,5 +1,18 @@
 extends ../ajouter-modifier-question.pug 
 block question
+    <div class="col s12 center">
+        <table id="tableauCorrespondance" title="Liste des correspondance">
+        </table>
+        <div class="input-field inline">
+            <input id="valeurCorrespondance" type="text">
+            <label>correspondance</label>
+        </div>
+        <div class="input-field inline">
+            <button id="creerCorrespondance"class="btn waves-effect waves-light" type="submit" name="action">Ajouter
+                <i class="material-icons right">send</i>
+        </div>
+    </div>
+    </button>
     form.form-ajouter-question.section(id="form-ajouter-question-vf")
         input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
         input(type="hidden" name="typeQuestion", value=estModification ? question._type : typeQuestion) 
@@ -7,6 +20,7 @@ block question
             input(type="hidden" name="estModification", value=estModification.toString())   
             input(type="hidden" name="idQuestion", value=question._id)  
             input(type="hidden" name="reponsesChoix", value=question._answerChoix)  
+            input(type="hidden" name="correspondance", value=question.correspondances)  
         div.row
             div.input-field.col.s6
                 input#nom(type="text" name="nom" value=estModification ? question._nom : "" required)
@@ -20,13 +34,17 @@ block question
             div.row(id="questionTotal")
                 div.col.s12(class="input-field")
                     input(type="text" name="reponses" class="reponses" required)
-                    <label for="text">Entrer votre réponse</label>
+                    <label for="text">Entrer une description</label>
+                <label>Selectionner la correspondance équivalente</label>
+                <select class="browser-default">
+                    <option value="" disabled selected>Choisissez la correspondance</option>
+                </select>
                 div.input-field.col.s6
-                    textarea#descriptionReponse(class="materialize-textarea descriptionReponse" name="descriptionReponse")
+                    textarea(class="materialize-textarea descriptionReponse" name="descriptionReponse")
                         |#{""}
                     label(for="descriptionReponse") Description bonne réponse
                 div.input-field.col.s6
-                    textarea#descriptionMauvaiseReponse(class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
+                    textarea(class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
                         |#{""}
                     label(for="descriptionMauvaiseReponse") Description mauvaise réponse
                 div.col.s12  

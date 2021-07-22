@@ -3,10 +3,11 @@ import { Reponse } from "./Reponse";
 export class ReponseChoixMultiple extends Reponse{
 
     private ponderation : number;
-
-    constructor(reponse : boolean, ponderation : number, bonneReponseText:string, mauvaiseReponseText: string) {
+    private choix :string;
+    constructor(reponse : boolean, /*ponderation : number,*/ bonneReponseText:string, mauvaiseReponseText: string,choix :string) {
         super(reponse,bonneReponseText,mauvaiseReponseText);
-        this.ponderation = ponderation;
+        this.choix = choix;
+        //this.ponderation = ponderation;
     }
 
     public getPonderation(): number {
@@ -19,10 +20,10 @@ export class ReponseChoixMultiple extends Reponse{
 
     public modifier(reponseJson : string){
         let values = JSON.parse(reponseJson);
-        this.reponse = values.reponse;
-        this.ponderation = values.ponderation;
-        this.bonneReponseText = values.descriptionReponse; 
-        this.mauvaiseReponseText = values.mauvaiseReponseDescription;
+        //this.ponderation = values.ponderation;
+        this.reponse = values._reponse;
+        this.bonneReponseText = values._bonneReponseText;
+        this.mauvaiseReponseText = values._mauvaiseReponseText;
     }
     
 }

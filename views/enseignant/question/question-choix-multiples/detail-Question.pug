@@ -1,0 +1,50 @@
+extends ../../master-template-enseignant.pug
+block content
+    +btn-back("Détail question à choix multiples",  "/enseignant/question/" + question._idEspaceCours)
+    div.row
+        div.col.s10.offset-s1   
+            div.row
+                div.col.s1
+                    a(class="waves-effect waves-light btn right btn-modifier-question blue accent-2" 
+                        href="/enseignant/question/modifier/" + question._idEspaceCours + "/" + question._id) Modifier  
+                div.col.s2                          
+                        a(class="waves-effect waves-light btn red right btn-delete-question" href="javascript:void(0)" 
+                            data-id-question=question._id
+                            data-nom=question._nom
+                            data-id-espace-cours=question._idEspaceCours) Supprimer 
+        form.form-ajouter-question.section(id="form-ajouter-question-vf")
+            input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
+            input(type="hidden" name="reponsesChoix", value=question._answerChoix) 
+            div.row
+                div.input-field.col.s6
+                    input#nom(type="text" name="nom" value=question._nom disabled)
+                    label(for="nom") Nom
+                div.input-field.col.s6
+                    input#tags(type="text" name="tags" value=question._tags.join(",") disabled)
+                    label(for="tags") Tags (Séparer par des ",")
+
+                div.row(id="questionTotal")
+                    div.col.s12(class="input-field")
+                        input(type="text" id="question" name="choix" class="description" required disabled)
+                        <label for="text">Entrer une description </label>
+                    div.col.s12
+                    div.col.s12(class="reponse")
+                        <label>
+                            <input type="checkbox" class="filled-in" name="reponses" disabled />
+                            <span>cocher pour admettre une réponse</span>
+                        </label>
+
+                    div.input-field.col.s6
+                        textarea#descriptionReponse(disabled class="materialize-textarea descriptionReponse" name="descriptionReponse")
+                            |#{""}
+                        label(for="descriptionReponse") Description bonne réponse
+                    div.input-field.col.s6
+                        textarea#descriptionMauvaiseReponse(disabled class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
+                            |#{""}
+                        label(for="descriptionMauvaiseReponse") Description mauvaise réponse
+                
+
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/enseignant/question/question.js")
+    script(type="text/javascript" src="/lib/enseignant/question/ajouter-modifier-question.js")

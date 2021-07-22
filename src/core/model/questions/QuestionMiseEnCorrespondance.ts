@@ -1,35 +1,29 @@
 import { ReponseMiseEnCorrespondance } from "../reponses/ReponseMiseEnCorrespondance";
 import { Question } from "./Question";
-export class QuestionAssociation extends Question {
+export class QuestionMiseEnCorrespondance extends Question {
 
-    private isShuffled: boolean;
-
+    //private isShuffled: boolean;
+    private correspondances:[];
     constructor(questionJson: string) {
         super(questionJson)
         let values = JSON.parse(questionJson)
-        this.isShuffled = values.isShuffled;
-        this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+        //this.isShuffled = values.isShuffled;
+        this.correspondances=values.correspondances;
+        JSON.parse(values.reponses).forEach( reponse => {
+            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse,reponse.correspondance);
             this._answerChoix.push(answer);
         });
     }
 
     public modifier(questionJson: string) {
         super.modifier(questionJson);
-        let values = JSON.parse(questionJson)
-        this.isShuffled = values.isShuffled;
-        this._answerChoix = values.reponse.forEach( reponse => {
-            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionBonneReponse,reponse.descriptionMauvaiseReponse);
+        //this.isShuffled = values.isShuffled;
+        let values = JSON.parse(questionJson);
+        this._answerChoix=[];
+        this.correspondances=values.correspondances;
+        JSON.parse(values.reponses).forEach( reponse => {
+            let answer = new ReponseMiseEnCorrespondance(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse,reponse.correspondance);
             this._answerChoix.push(answer);
         });
     }
-
-    public getIsShuffled(): boolean {
-        return this.isShuffled
-    }
-
-    public setShuffled(isShuffled: boolean) {
-        this.isShuffled = isShuffled;
-    }
-
 }

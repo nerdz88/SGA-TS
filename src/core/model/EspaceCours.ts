@@ -11,6 +11,7 @@ import { HttpError } from "../errors/HttpError";
 import { Question } from "./questions/Question";
 import { TypeQuestion } from "./TypeQuestion";
 import { QuestionChoixMultiple } from "./questions/QuestionChoixMultiple";
+import { QuestionMiseEnCorrespondance } from "./questions/QuestionMiseEnCorrespondance";
 import { QuestionNumerique } from "./questions/QuestionNumerique";
 import { QuestionReponseCourte as QuestionCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
@@ -77,8 +78,7 @@ export class EspaceCours {
             case "question-choix-multiples":
                 return new QuestionChoixMultiple(jsonString);
             case "question-mise-correspondance":
-                //return new QuestionmiseEnCorrespondance
-            break;
+                return new QuestionMiseEnCorrespondance(jsonString);
             case "question-numerique":
                 return new QuestionNumerique(jsonString);
             case "question-reponse-courte":
