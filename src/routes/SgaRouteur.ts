@@ -9,7 +9,7 @@ import { NotFoundError } from '../core/errors/NotFoundError';
 import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
-
+import * as fs from 'fs';
 
 //Le routeur permettant de gérer notre API SGA (Retourne du JSON)
 export class SgaRouteur {
@@ -171,7 +171,7 @@ export class SgaRouteur {
     public ajouterQuestion(req: Request, res: Response, next: NextFunction) {
         let id = parseInt(req.params.id);
         let value = JSON.stringify(req.body);
-        this.gestionnaireQuestion.ajouterQuestion(id,value);
+        this.gestionnaireQuestion.ajouterQuestion(id, value);
 
         res.status(201)
             .send({
@@ -286,8 +286,10 @@ export class SgaRouteur {
         let pathUpload;
 
         if (hasFichier) {
+            pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}/retroaction`;
+            fs.mkdirSync(pathUpload, { recursive: true });
             let newFilename = `${idEspaceCours}-${idDevoir}-${idRemise}-devoir-retroaction-${new Date().getTime()}.pdf`;
-            pathUpload = `uploads/devoirs/${newFilename}`;
+            pathUpload += `/${newFilename}`;
 
             req.files.devoirRetroaction.mv(pathUpload).then(() => {
                 doCorrectionDevoir();
@@ -309,6 +311,12 @@ export class SgaRouteur {
 
     }
 
+    public recupererTousDevoirsZip(req: any, res: Response, next: NextFunction) {
+        let idEspaceCours = req.params.idEspaceCours;
+        let idDevoir = req.params.idDevoir;
+        var zipPath = this.gestionnaireDevoir.creerZipCorrectionDevoir(idEspaceCours, idDevoir);      
+        res.download(zipPath);
+    }
 
 
     //#endregion Gestion Devoirs
@@ -465,8 +473,10 @@ export class SgaRouteur {
         let idDevoir = req.body.idDevoir;
         let etudiant = AuthorizationHelper.getCurrentUserInfo(req);
 
+        let pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}/remise`;
+        fs.mkdirSync(pathUpload, { recursive: true });
         let newFilename = `${idEspaceCours}-${idDevoir}-${etudiant._id}-${etudiant._code_permanent}-devoir-${new Date().getTime()}.pdf`;
-        let pathUpload = `uploads/devoirs/${newFilename}`;
+        pathUpload += `/${newFilename}`;
 
         req.files.devoir.mv(pathUpload).then(() => {
             this.gestionnaireDevoir.remettreDevoir(idEspaceCours, idDevoir, etudiant._id, pathUpload);
@@ -477,18 +487,16 @@ export class SgaRouteur {
                 path: pathUpload
             });
         }).catch(next);
-
-
     }
 
-    public recupererDevoirACorriger(req: any, res: Response, next: NextFunction) {
+    // public recupererDevoirACorriger(req: any, res: Response, next: NextFunction) {
 
-        let idEspaceCours = req.params.idEspaceCours;
-        let idDevoir = req.params.idDevoir;
-        this.gestionnaireDevoir.recupererUnDevoir
+    //     let idEspaceCours = req.params.idEspaceCours;
+    //     let idDevoir = req.params.idDevoir;
+    //     this.gestionnaireDevoir.recupererUnDevoir
 
-    }
-    
+    // }
+
 
 
     //#endregion Devoir
@@ -528,6 +536,7 @@ export class SgaRouteur {
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
         this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
+        this.router.get('/enseignant/devoir/zip/:idEspaceCours/:idDevoir', this.recupererTousDevoirsZip.bind(this));
 
         // Questionnaires
         this.router.get('/enseignant/questionnaire/', this.recupererTousQuestionnaires.bind(this));

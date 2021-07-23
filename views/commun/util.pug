@@ -122,7 +122,11 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
 mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
     ul(class="collection with-header")
         li.collection-header 
-            h2 #{titreDevoir}      
+            h2 #{titreDevoir}    
+                a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+                            i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") library_add 
+                a(class="secondary-content" href=`/api/v1/enseignant/devoir/zip/${idEspaceCours}/${idDevoir}`)
+                    i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") file_download                  
         each remise in remises.filter(r => r._etat != "Non Remis") 
             li.collection-item 
                 - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
