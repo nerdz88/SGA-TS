@@ -44,9 +44,9 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
 mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
     - var unDevoirRemis = 0
     each remise in devoir._remises
-        if remise._etat == "Remis"
+        if remise._etat == "Non Remis"
             - unDevoirRemis = 1
-    if unDevoirRemis == 1
+    if unDevoirRemis != 1
         a(class="waves-effect waves-light btn disabled red right btn-delete-devoir" href="javascript:void(0)"
             data-id-devoir=devoir._id
             data-nom=devoir._nom
@@ -61,9 +61,9 @@ mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
 mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
     -  unDevoirRemis = 0
     each remise in devoir._remises
-        if remise._etat === "Remis"
+        if remise._etat === "Non Remis" 
             - unDevoirRemis = 1
-    if unDevoirRemis != 1
+    if unDevoirRemis == 1
         a(class="btn-delete-devoir"
             data-id-devoir=devoir._id
             data-nom=devoir._nom
@@ -92,11 +92,11 @@ mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
 
 //- Modal pour corriger un devoir 
 mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise)
-    div.modal(id=`modal-corriger-devoir-${idDevoir}-${idRemise}`)
+    div.modal(id=`modal-corriger-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`)
         div.modal-content
             h1#modal-titre Corriger : #{titre} - #{nomEtudiant}
             p Êtes vous sure de vouloir remettre la correction du devoir de #[b #{nomEtudiant}] maintenant? La correction est #[b définitive]. 
-            form.form-corriger-devoir(id=`form-corriger-devoir-${idDevoir}-${idRemise}`)
+            form.form-corriger-devoir(id=`form-corriger-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`)
                 input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
                 input(type="hidden" name="idDevoir", value=idDevoir) 
                 input(type="hidden" name="idRemise", value=idRemise) 
@@ -106,13 +106,39 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
                             span Fichier 
                             input(type="file" accept=".pdf" name="devoirRetroaction")
                         .file-path-wrapper 
-                            input(class="file-path validate" id=`fichier-devoir-${idDevoir}-${idRemise}` type="text" accept=".pdf")
-                            label(for=`fichier-devoir-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
+                            input(class="file-path validate" id=`fichier-devoir-${idEspaceCours}-${idDevoir}-${idRemise}` type="text" accept=".pdf")
+                            label(for=`fichier-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
                     div.input-field.col.s12
-                        input(id=`note-devoir-${idDevoir}-${idRemise}` type="number" name="noteDevoir" 
+                        input(id=`note-devoir-${idEspaceCours}-${idDevoir}-${idRemise}` type="number" name="noteDevoir" 
                             onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
                             required)
-                        label(for=`note-devoir-${idDevoir}-${idRemise}`) Note
+                        label(for=`note-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`) Note
+                div.row
+                    div.col.s12  
+                        button(class="waves-effect waves-light btn" type="submit") Corriger
+
+
+//- Modal pour corriger un devoir 
+mixin modal-corriger-devoir-batch(titre, idEspaceCours, idDevoir)
+    div.modal(id=`modal-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+        div.modal-content
+            h1#modal-titre Corriger : #{titre} - Mode Multiple
+            p Êtes vous sure de vouloir remettre la correction des devoirs remis maintenant?
+                br
+                |Le fichier Zip #[b doit] contenir le Fichier CSV et #[b peut] contenir les fichiers de retroactions des étudiants
+                br 
+                |#[b Note:] Le téléchargement en Mode Multiple n'ajoute pas les remises déjà corrigés
+            form.form-corriger-devoir-batch(id=`form-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="idDevoir", value=idDevoir) 
+                div.row
+                    div.file-field.input-field.col.s12   
+                        div(class="waves-effect waves-light btn blue accent-2") 
+                            span Fichier 
+                            input(type="file" accept=".zip" name="devoirRetroactionZip")
+                        .file-path-wrapper 
+                            input(class="file-path validate" id=`fichier-devoir-batch-${idEspaceCours}-${idDevoir}` type="text" accept=".zip" required)
+                            label(for=`fichier-devoir-batch-${idEspaceCours}-${idDevoir}`) Zip de correction
                 div.row
                     div.col.s12  
                         button(class="waves-effect waves-light btn" type="submit") Corriger
@@ -122,7 +148,11 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
 mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
     ul(class="collection with-header")
         li.collection-header 
-            h2 #{titreDevoir}      
+            h2 #{titreDevoir}    
+                a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+                            i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") library_add 
+                a(class="secondary-content" href=`/api/v1/enseignant/devoir/zip/${idEspaceCours}/${idDevoir}`)
+                    i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") file_download                  
         each remise in remises.filter(r => r._etat != "Non Remis") 
             li.collection-item 
                 - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
@@ -131,7 +161,7 @@ mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
                         a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichierCorrection)}`)
                             i(class="material-icons small waves-effect waves-light") library_books                   
                     else 
-                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
+                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idEspaceCours}-${idDevoir}-${remise._id}`)
                             i(class="material-icons small waves-effect waves-light ") library_add
                         +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
                     a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichier)}`)
@@ -140,7 +170,7 @@ mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
         else
             li.collection-item 
                 em Aucune remise.
-
+    +modal-corriger-devoir-batch(titreDevoir, idEspaceCours, idDevoir)
 
 //- Permet d'afficher tous les devoirs remis d'un espace cours pour la correction
 mixin corriger-devoir-espace-cours(idEspace, devoirs)
