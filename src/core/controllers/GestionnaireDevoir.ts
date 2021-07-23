@@ -2,6 +2,7 @@ import { Etat, Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 import * as fs from 'fs';
 import * as AdmZip from 'adm-zip';
+import { InvalidParameterError } from "../errors/InvalidParameterError";
 
 export class GestionnaireDevoir {
 
@@ -94,19 +95,48 @@ export class GestionnaireDevoir {
             );
 
             let contentRowCSV: string[] = [
-                remise.etudiant.getId().toString(),
+                remise.id.toString(),
                 remise.etudiant.getCodePermanent(),
                 remise.etudiant.getNomComplet(),
                 filaname
             ];
             contentBufferCSV.push(contentRowCSV.join(";"));
         });
-        zipper.addFile(`note-devoir-${idDevoir}.csv`, contentBufferCSV.join("\r\n"));
+        zipper.addFile(`correction-devoir-${idDevoir}.csv`, contentBufferCSV.join("\r\n"));
         var zipPath = `uploads/devoirs/${idEspaceCours}/${idDevoir}/correction-devoir-${idDevoir}-${new Date().getTime()}.zip`;
         zipper.writeZip(zipPath);
         return zipPath;
     }
 
+    public corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number, pathFichierZip: string) {
+        const zipper = new AdmZip(pathFichierZip);
+        let fichierCSV = zipper.getEntries().find(f => f.entryName.toLowerCase().endsWith(".csv"))
+        if (fichierCSV == undefined)
+            throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le ZIP doit contenir un fichier .CSV")
+        let pathContenuZip = `./uploads/devoirs/${idEspaceCours}/${idDevoir}/retroaction`
+        zipper.extractAllTo(pathContenuZip, true);
+
+        let data = fs.readFileSync(`${pathContenuZip}/${fichierCSV.entryName}`);
+        let contenuFichierCSV: string[] = data.toString().replace(/\r\n/g, '\n').split('\n');
+        contenuFichierCSV.forEach((line, index) => {
+            //On skip le header
+            if (index == 0 || line == "")
+                return;
+
+            let lineCorrectionCSV = line.split(";");
+            let idRemise = lineCorrectionCSV[0];
+            let nomFichierRetro = lineCorrectionCSV[3];
+            let note = parseInt(lineCorrectionCSV[4]);
+
+            if (!Number.isInteger(note)|| note < 0)
+                throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le fichier CSV contient" +
+                    " une note invalide, la note doit être un nombre plus grand que 0");
+            let pathfichierRetro = `${pathContenuZip}/${nomFichierRetro}`;
+            let hasRetro = fs.existsSync(pathfichierRetro);
+            this.corrigerDevoir(idEspaceCours, idDevoir, parseInt(idRemise), note, hasRetro ? pathfichierRetro : "");
+        });
+
+    }
 
 
 }

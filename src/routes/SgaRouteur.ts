@@ -308,14 +308,35 @@ export class SgaRouteur {
                 path: pathUpload ?? "NONE"
             });
         }
-
     }
 
     public recupererTousDevoirsZip(req: any, res: Response, next: NextFunction) {
         let idEspaceCours = req.params.idEspaceCours;
         let idDevoir = req.params.idDevoir;
-        var zipPath = this.gestionnaireDevoir.creerZipCorrectionDevoir(idEspaceCours, idDevoir);      
+        var zipPath = this.gestionnaireDevoir.creerZipCorrectionDevoir(idEspaceCours, idDevoir);
         res.download(zipPath);
+    }
+
+    public corrigerTousDevoirsZip(req: any, res: Response, next: NextFunction) {
+        if (!req.files.devoirRetroactionZip)
+            throw new InvalidParameterError("Vous devez fournir un fichier zip");
+
+        let idEspaceCours = req.body.idEspaceCours;
+        let idDevoir = req.body.idDevoir;
+
+        let pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}`;
+        fs.mkdirSync(pathUpload, { recursive: true });
+        let newFilename = `correction-devoir-${idDevoir}-retroaction-${new Date().getTime()}.zip`;
+        pathUpload += `/${newFilename}`;
+
+        req.files.devoirRetroactionZip.mv(pathUpload).then(() => {
+            this.gestionnaireDevoir.corrigerTousDevoirsZip(idEspaceCours, idDevoir, pathUpload);
+            res.status(200).send({
+                message: 'Success',
+                status: res.status
+            });
+        }).catch(next);
+
     }
 
 
@@ -537,6 +558,7 @@ export class SgaRouteur {
         this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
         this.router.get('/enseignant/devoir/zip/:idEspaceCours/:idDevoir', this.recupererTousDevoirsZip.bind(this));
+        this.router.post('/enseignant/devoir/corriger/batch', this.corrigerTousDevoirsZip.bind(this));
 
         // Questionnaires
         this.router.get('/enseignant/questionnaire/', this.recupererTousQuestionnaires.bind(this));
