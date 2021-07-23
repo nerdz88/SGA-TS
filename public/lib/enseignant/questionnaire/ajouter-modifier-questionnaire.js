@@ -14,14 +14,14 @@ window.addEventListener("load", function () {
             : `/api/v1/enseignant/questionnaire/ajouter/${idEspaceCours}`
 
 
-        envoyerFormulaireAjax(form, endPoint, idEspaceCours, estModification && !isModifierContinuer);
+        envoyerFormulaireAjax(form, endPoint, idEspaceCours, estModification && !isModifierContinuer, estModification);
     });
     console.log("ajouter-question.js => Page Load");
 });
 
-function envoyerFormulaireAjax(form, endPoint, idEspaceCours, isRetourListeQuestionnaire) {
+function envoyerFormulaireAjax(form, endPoint, idEspaceCours, isRetourListeQuestionnaire, estModification) {
     $.ajax({
-        type: "POST",
+        type: estModification ? "PUT" : "POST",
         url: endPoint,
         data: $(form).serialize(),
         success: function (data) {

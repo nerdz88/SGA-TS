@@ -35,7 +35,7 @@ window.addEventListener("load", function () {
                 lstIdquestion.push($(question).data("id"));
         });                
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: endPoint,
             data: { data: lstIdquestion.join(",") },
             success: function (data) {
