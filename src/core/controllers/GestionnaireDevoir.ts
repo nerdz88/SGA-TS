@@ -103,9 +103,11 @@ export class GestionnaireDevoir {
             contentBufferCSV.push(contentRowCSV.join(";"));
         });
         zipper.addFile(`correction-devoir-${idDevoir}.csv`, contentBufferCSV.join("\r\n"));
-        var zipPath = `uploads/devoirs/${idEspaceCours}/${idDevoir}/correction-devoir-${idDevoir}-${new Date().getTime()}.zip`;
-        zipper.writeZip(zipPath);
-        return zipPath;
+        let zipPath = `uploads/devoirs/${idEspaceCours}/${idDevoir}`;       
+        fs.mkdirSync(zipPath, { recursive: true });
+        let nomFichier = `/correction-devoir-${idDevoir}-${new Date().getTime()}.zip`;        
+        zipper.writeZip(zipPath + nomFichier);
+        return zipPath + nomFichier;
     }
 
     public corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number, pathFichierZip: string) {
