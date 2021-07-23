@@ -547,7 +547,7 @@ export class SgaRouteur {
         this.router.get('/enseignant/question/:id', this.recupererToutesQuestions.bind(this));
         this.router.get('/enseignant/question/detail/:idEspaceCours/:idQuestion', this.recupererUneQuestion.bind(this));
         this.router.post('/enseignant/question/ajouter/:id', this.ajouterQuestion.bind(this));
-        this.router.post('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
+        this.router.put('/enseignant/question/modifier/:idEspaceCours/:idQuestion', this.modifierQuestion.bind(this));
         this.router.delete('/enseignant/question/supprimer/:idEspaceCours/:idQuestion', this.supprimerQuestion.bind(this));
 
         // Devoirs
@@ -555,7 +555,7 @@ export class SgaRouteur {
         this.router.post('/enseignant/devoir/ajouter/:id', this.ajouterDevoir.bind(this));
         this.router.post('/enseignant/devoir/corriger/', this.corrigerDevoir.bind(this));
         this.router.get('/enseignant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoir.bind(this));
-        this.router.post('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
+        this.router.put('/enseignant/devoir/modifier/:idEspaceCours/:idDevoir', this.modifierDevoir.bind(this));
         this.router.delete('/enseignant/devoir/supprimer/:idEspaceCours/:idDevoir', this.supprimerDevoir.bind(this));
         this.router.get('/enseignant/devoir/zip/:idEspaceCours/:idDevoir', this.recupererTousDevoirsZip.bind(this));
         this.router.post('/enseignant/devoir/corriger/batch', this.corrigerTousDevoirsZip.bind(this));
@@ -565,9 +565,9 @@ export class SgaRouteur {
         this.router.get('/enseignant/questionnaire/:id', this.recupererTousQuestionnaires.bind(this));
         this.router.get('/enseignant/questionnaire/detail/:idEspaceCours/:idQuestionnaire', this.recupererUnQuestionnaire.bind(this));
         this.router.post('/enseignant/questionnaire/ajouter/:id', this.creerQuestionnaire.bind(this));
-        this.router.post('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
+        this.router.put('/enseignant/questionnaire/modifier/:idEspaceCours/:idQuestionnaire', this.modifierQuestionnaire.bind(this));
         this.router.delete('/enseignant/questionnaire/supprimer/:idEspaceCours/:idQuestionnaire', this.supprimerQuestionnaire.bind(this));
-        this.router.post('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
+        this.router.put('/enseignant/questionnaire/question/:idEspaceCours/:idQuestionnaire', this.gererQuestionsQuestionnaire.bind(this));
 
         //#endregion Enseignant
 
