@@ -4,8 +4,8 @@ export enum TypeQuestion {
     "question-vrai-faux" = 2,
     "question-mise-correspondance" = 3,
     "question-reponse-courte" = 4,
-    "question-numerique" = 5
-
+    "question-numerique" = 5,
+    "question-essay" = 6
 }
 
 export namespace TypeQuestion {
@@ -30,6 +30,10 @@ export namespace TypeQuestion {
             }
             case "question-numerique": {
                 value = "Numérique";
+                break;
+            }
+            case "question-essay": {
+                value = "essaie";
                 break;
             }
         }
