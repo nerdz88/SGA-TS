@@ -15,6 +15,7 @@ import { QuestionMiseEnCorrespondance } from "./questions/QuestionMiseEnCorrespo
 import { QuestionNumerique } from "./questions/QuestionNumerique";
 import { QuestionReponseCourte as QuestionCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
+import { QuestionEssaie } from "./questions/QuestionEssaie";
 
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -83,6 +84,8 @@ export class EspaceCours {
                 return new QuestionNumerique(jsonString);
             case "question-reponse-courte":
                 return new QuestionCourte(jsonString);
+            case "question-essay":
+                return new QuestionEssaie(jsonString);
         }
         return null;
     }

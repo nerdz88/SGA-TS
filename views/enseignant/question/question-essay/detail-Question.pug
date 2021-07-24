@@ -1,6 +1,6 @@
 extends ../../master-template-enseignant.pug
 block content
-    +btn-back("Détail d'une question numérique",  "/enseignant/question/" + question._idEspaceCours)
+    +btn-back("Détail question essaie",  "/enseignant/question/" + question._idEspaceCours)
     div.row
         div.col.s10.offset-s1   
             div.row
@@ -12,7 +12,7 @@ block content
                     data-id-espace-cours=question._idEspaceCours) Supprimer 
 
             form.form-ajouter-question.section(id="form-ajouter-question-vf")
-                input(type="hidden" name="idEspaceCours", value=idEspaceCours)
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
                 input(type="hidden" name="reponsesChoix", value=question._answerChoix) 
                 div.row
                     div.input-field.col.s6
@@ -22,21 +22,8 @@ block content
                         input#tags(type="text" name="tags" value=question._tags.join(",") disabled)
                         label(for="tags") Tags (Séparer par des ",")
                     div.col.s12(class="input-field")
-                        input(type="number" id="question" required value= question._descriptionQuestion disabled)
+                        input(type="text" id="question" required value= question._descriptionQuestion disabled)
                         <label for="text">Entrer votre courte question !</label>
-                    div(id="questionTotal")
-                        div.col.s12(class="input-field")
-                            input(type="text" name="reponses" disabled class="reponses" required)
-                            <label for="text">Entrer votre réponse</label>
-                        div.input-field.col.s6
-                            textarea#descriptionReponse(disabled class="materialize-textarea descriptionReponse" name="descriptionReponse")
-                                |#{""}
-                            label(for="descriptionReponse") Description bonne réponse
-                        div.input-field.col.s6
-                            textarea#descriptionMauvaiseReponse(disabled class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
-                                |#{""}
-                            label(for="descriptionMauvaiseReponse") Description mauvaise réponse
-                    
 
     //- End bloc content
 block more-script

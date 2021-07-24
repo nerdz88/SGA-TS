@@ -33,8 +33,10 @@ M.updateTextFields();
 
 
 function addTextValues($newElement, reponse) {
-    var type = $newElement.find('input[name="reponses"]')[0].type;
-    $newElement.find('input[name="reponses"]')[0][type == "checkbox" ? "checked" : "value"] = reponse.reponse;
+    if($newElement.find('input[name="reponses"]').length>0){
+        var type = $newElement.find('input[name="reponses"]')[0].type;
+        $newElement.find('input[name="reponses"]')[0][type == "checkbox" ? "checked" : "value"] = reponse.reponse;    
+    }
     if (reponse.choix != null) {
         $newElement.find('input[name="choix"]')[0].value = reponse.choix;
     }
@@ -123,6 +125,8 @@ function buildFormat(type, form, idEspaceCours) {
             return buildReponseCourte(type, form, idEspaceCours);
         case "question-mise-correspondance":
             return buildQuestionCorrespondance(type, form, idEspaceCours);
+        case "question-essay":
+            return buildReponseCourte(type, form, idEspaceCours);
     }
 
 }
@@ -165,7 +169,7 @@ function buildQuestionMultiple(type, form, idEspaceCours) {
     }
     return {
         typeQuestion: type,
-        description: document.getElementById("question").value,
+        description: document.getElementById("questionDesciption").value,
         tags: document.getElementById("tags").value,
         nom: document.getElementById("nom").value,
         idEspaceCours: idEspaceCours,
