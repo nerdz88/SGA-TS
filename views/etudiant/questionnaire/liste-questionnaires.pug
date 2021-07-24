@@ -1,0 +1,23 @@
+extends ../master-template-etudiant.pug 
+block content
+    //- Start bloc content  
+    +btn-back("Questionnaires", "/")  
+    div.row
+        div.col.s10.offset-s1         
+            div.row
+                div.col.s12
+                    div.row
+                        each questionnaire in questionnaires
+                            div.col.s12.l4
+                                a.black-text(href=`/etudiant/questionnaire/afficher/${questionnaire._idEspaceCours}/${questionnaire._id}`)
+                                    div.card.hoverable
+                                        div.card-content
+                                            div.card-title 
+                                                i.material-icons.inline.padding-right book
+                                                |#{questionnaire._nom}                    
+                                            p Afficher le questionnaire 
+                        else
+                            div.col.s12
+                                em Vous n'avez pas de questionnaire 
+
+    

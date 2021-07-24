@@ -1,9 +1,10 @@
-import { EspaceCours } from "../model/EspaceCours";
+import { UnauthorizedError } from "../errors/UnauthorizedError";
 import { Question } from "../model/questions/Question";
-import { Remise } from "../model/Remise";
+import { EtatTentative, Tentative } from "../model/Tentative";
 import { Universite } from "../service/Universite";
 
 export class GestionnaireQuestionnaire {
+
     private universite: Universite;
 
     constructor(universite: Universite) {
@@ -60,8 +61,36 @@ export class GestionnaireQuestionnaire {
     public recupererUnQuestionnaire(idEspaceCours: number, idQuestionnaire: number, ordreTri: number = 0) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
-        questionnaire.setRemise(Remise.orderBy(questionnaire.getRemise(), ordreTri))
+        questionnaire.setTentative(Tentative.orderBy(questionnaire.getTentative(), ordreTri));
         return JSON.stringify(questionnaire);
+    }
+
+    public faireTentativeEtudiant(idEspaceCours: number, idQuestionnaire: number, idEtudiant: number) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
+        let tentative = questionnaire.getTentativeEtudiant(idEtudiant);
+
+        if (tentative.etat == EtatTentative.NonComplete)
+            tentative.commencerTentative();
+
+        return JSON.stringify(tentative);
+    }
+
+    public terminerTentativeEtudiant(idEspaceCours: number, idQuestionnaire: number, idEtudiant: number) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
+        let tentative = questionnaire.getTentativeEtudiant(idEtudiant);
+        tentative.finirTentative();
+    }
+
+    public ajouterReponseTentative(idEspaceCours: number, idQuestionnaire: number, idQuestion: number, idEtudiant: number, responseJSON: string) {
+        let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
+        let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
+        questionnaire.repondreQuestion(idQuestion, idEtudiant, responseJSON);
+      
+
+
+
     }
 
     public recupererIdsQuestionsQuestionnaire(idEspaceCours: number, idQuestionnaire: number) {
@@ -85,5 +114,6 @@ export class GestionnaireQuestionnaire {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         espaceCours.modifierQuestionnaire(IdQuestionnaire, jsonString);
     }
+
 
 }

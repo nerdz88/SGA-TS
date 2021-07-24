@@ -6,6 +6,7 @@ import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuest
 import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
+import { EtatTentative } from '../core/model/Tentative';
 import { TypeQuestion } from '../core/model/TypeQuestion';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
@@ -353,6 +354,52 @@ export class WebAppRouteur {
     //#endregion Devoirs
 
 
+    //#region Questionnaire
+
+    public recupererTousQuestionnairesEtudiant(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.id);
+        let questionnaires = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(idEspaceCours);
+        res.render("etudiant/questionnaire/liste-questionnaires", {
+            questionnaires: JSON.parse(questionnaires),
+            returnUrl: req.headers.referer
+        });
+    }
+
+    public recupererPasserQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let indexQuestion = parseInt(req.params.indexQuestion);
+
+        let questionnaire = JSON.parse(this.gestionnaireQuestionnaire.recupererUnQuestionnaire(idEspaceCours, idQuestionnaire));
+        let tentative = JSON.parse(this.gestionnaireQuestionnaire
+            .faireTentativeEtudiant(idEspaceCours,
+                idQuestionnaire,
+                AuthorizationHelper.getIdUser(req)));
+
+        let isRelecture = tentative._etat == EtatTentative.Complete;
+        if (!Number.isInteger(indexQuestion)) {
+            indexQuestion = 0;
+        }
+        let question: any = questionnaire._questions[indexQuestion];       
+
+        res.render(`etudiant/questionnaire/${isRelecture ? "relecture" : "passer"}/question/${question._type}`, {
+            tentative: tentative,
+            question: question,
+            titreTypeQuestion: TypeQuestion.getTitle(question._type),
+            idEspaceCours: idEspaceCours,
+            idQuestionnaire: idQuestionnaire,
+            indexQuestion: indexQuestion,
+            nbQuestions: questionnaire._questions.length,
+            returnUrl: req.headers.referer
+        });
+    }
+
+
+
+
+    //#endregion Questionnaire
+
+
     //#endregion Étudiant
 
 
@@ -408,16 +455,16 @@ export class WebAppRouteur {
 
         //Cours
         this.router.get('/etudiant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
-
         //Devoirs
         this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
         this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
 
 
         // //Questionnaire
-        // this.router.get('/etudiant/questionnaire/', this.recupererTousQuestionnaires.bind(this));
-        // this.router.get('/etudiant/questionnaire/:id', this.recupererTousQuestionnaires.bind(this));
-        // this.router.get('/etudiant/questionnaire/detail/:idEspaceCours/:idQuestionnaire', this.recupererUnQuestionnaire.bind(this));
+
+        this.router.get('/etudiant/questionnaire/:id', this.recupererTousQuestionnairesEtudiant.bind(this));
+        this.router.get('/etudiant/questionnaire/afficher/:idEspaceCours/:idQuestionnaire', this.recupererPasserQuestionnaire.bind(this));
+        this.router.get('/etudiant/questionnaire/afficher/:idEspaceCours/:idQuestionnaire/:indexQuestion', this.recupererPasserQuestionnaire.bind(this));
 
 
         //#endregion Routes Étudiants

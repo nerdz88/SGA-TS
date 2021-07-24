@@ -19,7 +19,9 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                 }
             });
     } else {
-        res.redirect("/erreur", code)
+        //TODO remettre apres dev
+      //  res.redirect("/erreur")
+      next();
     }
 
 }

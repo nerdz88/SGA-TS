@@ -1,5 +1,6 @@
-import { Etudiant } from "./Etudiant";
 import { Type } from 'class-transformer';
+import { OrdreTri } from "./enum/OrdreTri";
+import { Etudiant } from "./Etudiant";
 
 export enum Etat {
     NonRemis = "Non Remis",
@@ -29,16 +30,16 @@ export class Remise {
     public static orderBy(remises: Remise[], ordreTri: number): Remise[] {
         return remises.sort((a, b) => {
             switch (ordreTri) {
-                case OrdreTriRemise.NomEtudiantAlphaCroissant: {
+                case OrdreTri.NomEtudiantAlphaCroissant: {
                     return a.etudiant.getNomComplet().localeCompare(b.etudiant.getNomComplet())
                 }
-                case OrdreTriRemise.NomEtudiantAlphaDecroissant: {
+                case OrdreTri.NomEtudiantAlphaDecroissant: {
                     return b.etudiant.getNomComplet().localeCompare(a.etudiant.getNomComplet())
                 }
-                case OrdreTriRemise.NoteCroissant: {
+                case OrdreTri.NoteCroissant: {
                     return a.note - b.note
                 }
-                case OrdreTriRemise.NomEtudiantAlphaDecroissant: {
+                case OrdreTri.NomEtudiantAlphaDecroissant: {
                     return b.note - a.note
                 }
                 default: {
@@ -96,7 +97,7 @@ export class Remise {
         this._dateDeCorrection = value;
     }
 
-    
+
     get pathFichier(): string {
         return this._pathFichier;
     }
@@ -112,12 +113,4 @@ export class Remise {
     set pathFichierCorrection(value: string) {
         this._pathFichierCorrection = value;
     }
-}
-
-export enum OrdreTriRemise {
-    Default,
-    NomEtudiantAlphaCroissant,
-    NomEtudiantAlphaDecroissant,
-    NoteCroissant,
-    NoteDecroissant
 }

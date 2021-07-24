@@ -1,0 +1,15 @@
+extends ../../../master-template-etudiant.pug 
+block content
+    //- Start bloc content
+    +btn-back(`Relecture questionnaire -${indexQuestion + 1}/${nbQuestions}`,  returnUrl) 
+       
+    div.row
+        div.col.s10.offset-s1   
+            +navigation-passer-questionnaire(indexQuestion, nbQuestions)                    
+           
+           
+
+            //- +navigation-passer-questionnaire(indexQuestion, nbQuestions)
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/etudiant/questionnaire/passer-questionnaire.js")

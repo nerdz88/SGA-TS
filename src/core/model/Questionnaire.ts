@@ -1,7 +1,9 @@
-import { Remise } from "./Remise";
 import { Type } from 'class-transformer';
+import { NotFoundError } from '../errors/NotFoundError';
+import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { Etudiant } from "./Etudiant";
 import { Question } from "./questions/Question";
+import { Tentative } from "./Tentative";
 
 export class Questionnaire {
     private _id: number;
@@ -12,8 +14,8 @@ export class Questionnaire {
     private _status: boolean
     @Type(() => Question)
     private _questions: Question[]
-    @Type(() => Remise)
-    private _remises: Remise[]
+    @Type(() => Tentative)
+    private _tentatives: Tentative[]
 
     constructor(questionnaireJson: string, etudiants: Etudiant[]) {
         if (questionnaireJson == undefined)
@@ -25,7 +27,7 @@ export class Questionnaire {
         this._description = values.description;
         this._status = values.status;
         this._questions = [];
-        this._remises = this.initRemises(etudiants);
+        this._tentatives = this.initTentative(etudiants);
         this._id = ++Questionnaire.currentId;
     }
 
@@ -36,10 +38,30 @@ export class Questionnaire {
         this._status = values.status;
     }
 
-    private initRemises(etudiants: Etudiant[]): Remise[] {
-        var listRemise = [];
-        etudiants.forEach(etudiant => listRemise.push(new Remise(etudiant)));
-        return listRemise;
+    private initTentative(etudiants: Etudiant[]): Tentative[] {
+        var lstTentative = [];
+        etudiants.forEach(etudiant => lstTentative.push(new Tentative(etudiant)));
+        return lstTentative;
+    }
+
+    public getQuestionById(idQuestion: number): Question {
+        let question = this.getQuestions().find(q => q.getId() == idQuestion);
+        if (question == undefined)
+            throw new NotFoundError(`La question [${idQuestion}] n'existe pas dans le questionnaire [${this._id}]`);
+        return question;
+    }
+
+    public getTentativeEtudiant(idEtudiant: number): Tentative {
+        let tentative = this.getTentative().find(t => t.etudiant.getId() == idEtudiant);
+        if (tentative == undefined)
+            throw new UnauthorizedError(`L'étudiant [${idEtudiant}] n'est pas dans le questionnaire [${this._id}]`);
+        return tentative
+    }
+
+    public repondreQuestion(idQuestion : number, idEtudiant : number, reponseJSON: string) {
+        let reponse = JSON.parse(reponseJSON);      
+        let tentative = this.getTentativeEtudiant(idEtudiant);
+        tentative.repondre(idQuestion, reponse);        
     }
 
     public getId() {
@@ -54,8 +76,8 @@ export class Questionnaire {
     public getDescription() {
         return this._description;
     }
-    public getRemise(): Remise[] {
-        return this._remises;
+    public getTentative(): Tentative[] {
+        return this._tentatives;
     }
     public getStatus() {
         return this._status;
@@ -68,8 +90,8 @@ export class Questionnaire {
         this._questions = arrayQuestion;
     }
 
-    public setRemise(arrayRemise: Remise[]) {
-        this._remises = arrayRemise;
+    public setTentative(arrayRemise: Tentative[]) {
+        this._tentatives = arrayRemise;
     }
 
     public ajouterQuestion(question: Question) {
