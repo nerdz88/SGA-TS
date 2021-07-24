@@ -19,8 +19,7 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                 }
             });
     } else {
-        //TODO si c'est webApp redirect sur page d'erreur custom 
-        next(error)
+        res.redirect("/erreur", code)
     }
 
 }
