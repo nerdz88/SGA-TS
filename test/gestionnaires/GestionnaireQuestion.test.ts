@@ -7,8 +7,8 @@ var request =  session(app)
 var authenticatedSession;
 const COURSEVALUE1 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}'
 const COURSEVALUE2 = '{"_id":2,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"02","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-02","_date_fin":"2019-09-03"}'
-const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","idQuestion":"","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true"}';
-const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","idQuestion":"","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false"}';
+const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"1","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true"}';
+const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","typeQuestion":"question-vrai-faux", "idQuestion":"2","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false"}';
 const QUESTIONNAIRE1 = '{"idEspaceCours":"1","estModification":"false","idQuestionnaire":"","nom":"Questionnaire1","description":"description1","status":"on"}'
 
 beforeAll((done)=>{
