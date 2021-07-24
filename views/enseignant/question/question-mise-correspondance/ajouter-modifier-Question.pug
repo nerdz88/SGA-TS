@@ -1,18 +1,20 @@
 extends ../ajouter-modifier-question.pug 
 block question
     <div class="col s12 center">
-        <table id="tableauCorrespondance" title="Liste des correspondance">
-        </table>
-        <div class="input-field inline">
-            <input id="valeurCorrespondance" type="text">
-            <label>correspondance</label>
-        </div>
-        <div class="input-field inline">
-            <button id="creerCorrespondance"class="btn waves-effect waves-light" type="submit" name="action">Ajouter
+        <div class="row">
+            <table id="tableauCorrespondance" title="Liste des correspondance"></table>       
+        </div> 
+        <div class="row">
+            <div class="input-field inline">
+                <input id="valeurCorrespondance" type="text">
+                <label for="valeurCorrespondance">correspondance</label>
+            </div>           
+            <button id="creerCorrespondance"class="btn waves-effect waves-light inline" type="submit" name="action">Ajouter
                 <i class="material-icons right">send</i>
-        </div>
+            </button>         
+        </div> 
     </div>
-    </button>
+   
     form.form-ajouter-question.section(id="form-ajouter-question-vf")
         input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
         input(type="hidden" name="typeQuestion", value=estModification ? question._type : typeQuestion) 
@@ -30,25 +32,26 @@ block question
                 label(for="tags") Tags (Séparer par des ",")
             div.col.s12(class="input-field")
                 input(type="text" id="question" required value=estModification ? question._descriptionQuestion :"")
-                <label for="text">Entrer votre courte question !</label>
-            div.row(id="questionTotal")
+                <label for="question">Entrer votre courte question !</label>
+            div(id="questionTotal")
                 div.col.s12(class="input-field")
                     input(type="text" name="reponses" class="reponses" required)
                     <label for="text">Entrer une description</label>
-                <label>Selectionner la correspondance équivalente</label>
-                <select class="browser-default">
-                    <option value="" disabled selected>Choisissez la correspondance</option>
-                </select>
+                div.col.s12
+                    <label>Selectionner la correspondance équivalente</label>
+                    <select class="browser-default">
+                        <option value="" disabled selected>Choisissez la correspondance</option>
+                    </select>
                 div.input-field.col.s6
-                    textarea(class="materialize-textarea descriptionReponse" name="descriptionReponse")
+                    textarea(class="materialize-textarea descriptionReponse" name="descriptionReponse" id="descriptionReponse")
                         |#{""}
                     label(for="descriptionReponse") Description bonne réponse
                 div.input-field.col.s6
-                    textarea(class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
+                    textarea(class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse" id="descriptionMauvaiseReponse")
                         |#{""}
                     label(for="descriptionMauvaiseReponse") Description mauvaise réponse
                 div.col.s12  
-                    <a href="#!" class="waves-effect waves-circle waves-light btn-floating secondary-content">
+                    <a href="javascript:void(0)" class="waves-effect waves-circle waves-light btn-floating btn-large right">
                         <i class="material-icons ajouterCourteQuestion">add</i>
                     </a>
         div.col.s12  

@@ -17,7 +17,7 @@ block question
             div.col.s12(class="input-field")
                 input(type="text" id="question" required value=estModification ? question._descriptionQuestion :"")
                 <label for="text">Entrer votre courte question !</label>
-            div.row(id="questionTotal")
+            div(id="questionTotal")
                 div.col.s12(class="input-field")
                     input(type="text" name="reponses" class="reponses" required)
                     <label for="text">Entrer votre réponse</label>
@@ -30,7 +30,7 @@ block question
                         |#{""}
                     label(for="descriptionMauvaiseReponse") Description mauvaise réponse
                 div.col.s12  
-                    <a href="#!" class="waves-effect waves-circle waves-light btn-floating secondary-content">
+                    <a href="javascript:void(0)" class="waves-effect waves-circle waves-light btn-floating btn-large right">
                         <i class="material-icons ajouterCourteQuestion">add</i>
                     </a>
         div.col.s12  

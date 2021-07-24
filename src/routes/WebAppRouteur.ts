@@ -136,8 +136,8 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        let jsonQuestion= JSON.parse(question);
-        res.render("enseignant/question/"+jsonQuestion._type+"/detail-question", { question: jsonQuestion });
+        let jsonQuestion = JSON.parse(question);
+        res.render("enseignant/question/" + jsonQuestion._type + "/detail-question", { question: jsonQuestion });
     }
 
 
@@ -148,12 +148,13 @@ export class WebAppRouteur {
         let id = req.params.id;
         let choix = req.params.type;
         var enumChoixType = TypeQuestion[choix]
-        res.render("enseignant/question/" + enumChoixType+"/ajouter-modifier-Question",
+        res.render("enseignant/question/" + enumChoixType + "/ajouter-modifier-Question",
             {
                 idEspaceCours: id,
                 question: {},
                 estModification: false,
-                typeQuestion:enumChoixType
+                typeQuestion: enumChoixType,
+                titreTypeQuestion: TypeQuestion.getTitle(enumChoixType)
             });
     }
 
@@ -176,12 +177,13 @@ export class WebAppRouteur {
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
         let jsonQuestion = JSON.parse(question);
-        res.render("enseignant/question/"+jsonQuestion._type+"/ajouter-modifier-Question",
+        res.render("enseignant/question/" + jsonQuestion._type + "/ajouter-modifier-Question",
             {
                 idEspaceCours: idEspaceCours,
                 question: jsonQuestion,
                 estModification: true,
-                returnUrl: req.headers.referer
+                returnUrl: req.headers.referer,
+                titreTypeQuestion: TypeQuestion.getTitle(jsonQuestion._type)
             });
     }
 
@@ -299,11 +301,11 @@ export class WebAppRouteur {
     public corrigerDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let espaceCours = JSON.parse(this.gestionnaireCours.recupererUnEspaceCours(idEspaceCours));
-    
+
         let data;
         data = {
             espaceCours: espaceCours,
-            returnURL: req.headers.referer 
+            returnURL: req.headers.referer
         }
 
         let path;

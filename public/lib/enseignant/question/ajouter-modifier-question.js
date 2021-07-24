@@ -29,7 +29,7 @@ if (reponseChoix != undefined) {
 
     }
 }
-
+M.updateTextFields();
 
 
 function addTextValues($newElement, reponse) {
@@ -75,6 +75,7 @@ $(document).on("click", ".ajouterCourteQuestion", function (e) {
         this.parentElement.parentElement.parentElement.remove();
     }
     moveBoutonAjouter();
+    M.updateTextFields();
 })
 
 
@@ -91,6 +92,7 @@ $(document).on("click", "#creerCorrespondance", function (e) {
         }
         correspondance.value = "";
     }
+    M.updateTextFields();
 })
 
 
@@ -98,6 +100,7 @@ function createOption(value) {
     var option = document.createElement("option");
     option.value = value;
     option.innerHTML = value;
+    M.updateTextFields();
     return option;
 }
 
@@ -105,6 +108,7 @@ function moveBoutonAjouter() {
     $elem = $('#addAll')
     $('#form-ajouter-question-vf').append($elem.clone());
     $elem.remove();
+    M.updateTextFields();
 }
 
 function buildFormat(type, form, idEspaceCours) {
@@ -226,6 +230,7 @@ window.addEventListener("load", function () {
         console.log("Envoyer formulaire - Ajax - Ajouter/Modifier Question");
         envoyerFormulaireAjax(form, format, estModification, idEspaceCours, endPoint);
     });
+    M.updateTextFields();
     console.log("ajouter-question.js => Page Load");
 });
 

@@ -7,3 +7,32 @@ export enum TypeQuestion {
     "question-numerique" = 5
 
 }
+
+export namespace TypeQuestion {
+    export function getTitle(type: string): string {
+        let value = "";
+        switch (type) {
+            case "question-choix-multiples": {
+                value = "Choix multiples";
+                break;
+            }
+            case "question-vrai-faux": {
+                value = "Vrai Faux";
+                break;
+            }
+            case "question-mise-correspondance": {
+                value = "Mise en correspondance";
+                break;
+            }
+            case "question-reponse-courte": {
+                value = "Réponse courte";
+                break;
+            }
+            case "question-numerique": {
+                value = "Numérique";
+                break;
+            }
+        }
+        return value;
+    }
+}
