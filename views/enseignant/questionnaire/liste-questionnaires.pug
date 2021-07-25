@@ -25,8 +25,7 @@ block content
                                             a(class="btn-detail-questionnaire" href=`/enseignant/questionnaire/detail/${questionnaire._idEspaceCours}/${questionnaire._id}`) Détail
                                             if estModifiable
                                                 a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/modifier/${questionnaire._idEspaceCours}/${questionnaire._id}`) Modifier         
-                                            a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/question/${questionnaire._idEspaceCours}/${questionnaire._id}`) Gérer Questions 
-                                            if estModifiable         
+                                                a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/question/${questionnaire._idEspaceCours}/${questionnaire._id}`) Gérer Questions         
                                                 a(class="btn-delete-questionnaire" href="javascript:void(0)"
                                                     data-id-questionnaire=questionnaire._id
                                                     data-nom=questionnaire._nom

@@ -1,12 +1,7 @@
 import { Type } from 'class-transformer';
+import { Etat } from './enum/Etat';
 import { OrdreTri } from "./enum/OrdreTri";
 import { Etudiant } from "./Etudiant";
-
-export enum Etat {
-    NonRemis = "Non Remis",
-    Remis = "Remis",
-    RemisCorrige = "Remis et Corrigé"
-}
 
 export class Remise {
     private _id: number;

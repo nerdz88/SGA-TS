@@ -6,7 +6,8 @@ import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuest
 import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
-import { EtatTentative } from '../core/model/Tentative';
+import { EtatTentative } from '../core/model/enum/EtatTentative';
+
 import { TypeQuestion } from '../core/model/TypeQuestion';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)

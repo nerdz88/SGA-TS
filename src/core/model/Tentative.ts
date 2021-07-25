@@ -3,12 +3,9 @@ import { Type } from 'class-transformer';
 import { OrdreTri } from "./enum/OrdreTri";
 import { HttpError } from "../errors/HttpError";
 import { Pointage } from "./questions/Pointage";
+import { EtatTentative } from "./enum/EtatTentative";
 
-export enum EtatTentative {
-    NonComplete = "Non complété",
-    EnCours = "En cours",
-    Complete = "Complété"
-}
+
 
 export class Tentative {
     private _id: number;

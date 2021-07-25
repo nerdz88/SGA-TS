@@ -1,6 +1,7 @@
-import { UnauthorizedError } from "../errors/UnauthorizedError";
+import { HttpError } from "../errors/HttpError";
+import { EtatTentative } from "../model/enum/EtatTentative";
 import { Question } from "../model/questions/Question";
-import { EtatTentative, Tentative } from "../model/Tentative";
+import { Tentative } from "../model/Tentative";
 import { Universite } from "../service/Universite";
 
 export class GestionnaireQuestionnaire {
@@ -17,11 +18,14 @@ export class GestionnaireQuestionnaire {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
 
-        if (questionnaire != null) {
-            questionnaire.getQuestions().forEach((question) => {
-                question.setNbOccurence(question.getNbOccurence() - 1)
-            })
-        }
+        if (questionnaire.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
+            throw new HttpError("Impossible de modifier un questionnaire, déjà commencé par un étudiant");
+
+
+        questionnaire.getQuestions().forEach((question) => {
+            question.setNbOccurence(question.getNbOccurence() - 1)
+        });
+        
 
         questionnaire.setQuestion([]);
         arrayIdQuestion.forEach(idQuestion => {

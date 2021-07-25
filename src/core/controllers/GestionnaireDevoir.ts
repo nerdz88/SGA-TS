@@ -1,8 +1,9 @@
-import { Etat, Remise } from "../model/Remise";
+import { Remise } from "../model/Remise";
 import { Universite } from "../service/Universite";
 import * as fs from 'fs';
 import * as AdmZip from 'adm-zip';
 import { InvalidParameterError } from "../errors/InvalidParameterError";
+import { Etat } from "../model/enum/Etat";
 
 export class GestionnaireDevoir {
 
@@ -103,9 +104,9 @@ export class GestionnaireDevoir {
             contentBufferCSV.push(contentRowCSV.join(";"));
         });
         zipper.addFile(`correction-devoir-${idDevoir}.csv`, contentBufferCSV.join("\r\n"));
-        let zipPath = `uploads/devoirs/${idEspaceCours}/${idDevoir}`;       
+        let zipPath = `uploads/devoirs/${idEspaceCours}/${idDevoir}`;
         fs.mkdirSync(zipPath, { recursive: true });
-        let nomFichier = `/correction-devoir-${idDevoir}-${new Date().getTime()}.zip`;        
+        let nomFichier = `/correction-devoir-${idDevoir}-${new Date().getTime()}.zip`;
         zipper.writeZip(zipPath + nomFichier);
         return zipPath + nomFichier;
     }
@@ -130,7 +131,7 @@ export class GestionnaireDevoir {
             let nomFichierRetro = lineCorrectionCSV[3];
             let note = parseInt(lineCorrectionCSV[4]);
 
-            if (!Number.isInteger(note)|| note < 0)
+            if (!Number.isInteger(note) || note < 0)
                 throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le fichier CSV contient" +
                     " une note invalide, la note doit être un nombre plus grand que 0");
             let pathfichierRetro = `${pathContenuZip}/${nomFichierRetro}`;

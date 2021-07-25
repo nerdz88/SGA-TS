@@ -6,7 +6,7 @@ import { Questionnaire } from "./Questionnaire";
 import { Devoir } from "./Devoir";
 import { InvalidParameterError } from "../errors/InvalidParameterError";
 import { Type } from 'class-transformer';
-import { Etat } from "./Remise";
+
 import { HttpError } from "../errors/HttpError";
 import { Question } from "./questions/Question";
 import { TypeQuestion } from "./TypeQuestion";
@@ -16,7 +16,9 @@ import { QuestionNumerique } from "./questions/QuestionNumerique";
 import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 import { QuestionEssaie } from "./questions/QuestionEssaie";
-import { EtatTentative } from "./Tentative";
+import { EtatTentative } from "./enum/EtatTentative";
+import { Etat } from "./enum/Etat";
+
 
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
