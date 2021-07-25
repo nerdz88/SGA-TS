@@ -1,14 +1,22 @@
-extends ../passer-question
+extends ../relire-question
 block question
     div.row
         div.col.s12
             h2.no-margin #{question._nom} 
             p #{question._descriptionQuestion} 
 
-        - var reponseQuestion = tentative._mapReponse[question._id] 
+        - var reponseQuestion = tentative._mapReponse[question._id]       
+        - var choixQuestion = question._answerChoix[0]
 
         div.input-field.col.s12
             input#reponse(type="number" name="reponse" 
                 value=reponseQuestion && reponseQuestion["reponse"] ? parseInt(reponseQuestion["reponse"]) : "" 
-                onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))")
+                disabled)
             label(for="reponse") Réponse
+
+            +feedback-question(reponseQuestion["isValid"],
+                    choixQuestion.bonneReponseText,
+                    choixQuestion.mauvaiseReponseText)
+
+
+

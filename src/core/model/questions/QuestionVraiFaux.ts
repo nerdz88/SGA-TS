@@ -28,10 +28,11 @@ export class QuestionVraiFaux extends Question {
 
     public corriger(tentative: Tentative): Pointage {
         let reponse = tentative.getReponse(this.getId());
+        let reponseVal = reponse["reponse"] == "on";
         let isValid = false
         this._answerChoix.forEach((answerChoix: ReponseVraiFaux) => {
             let bonneReponse = answerChoix.getReponse();
-            if (reponse["reponse"] == bonneReponse) {
+            if (reponseVal == bonneReponse) {
                 isValid = true;
             }
         });

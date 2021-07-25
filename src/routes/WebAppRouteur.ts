@@ -361,6 +361,7 @@ export class WebAppRouteur {
         let questionnaires = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(idEspaceCours);
         res.render("etudiant/questionnaire/liste-questionnaires", {
             questionnaires: JSON.parse(questionnaires),
+            idEtudiant: AuthorizationHelper.getIdUser(req),
             returnUrl: req.headers.referer
         });
     }

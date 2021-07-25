@@ -16,7 +16,8 @@ block content
                     - var point = tentative._mapReponse[question._id]["pointage"].point
                     - var pointMax = tentative._mapReponse[question._id]["pointage"].pointMax
                     |Note: #{point} / #{pointMax} 
-                    | - #{(point / pointMax * 100).toFixed(2)} %    
+                    if pointMax != 0
+                        | - #{(point / pointMax * 100).toFixed(2)} %    
             hr
             form.section(id="form-repondre-question" style="display: none")
                 input(type="hidden" name="idEspaceCours", value=idEspaceCours) 

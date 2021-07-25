@@ -8,7 +8,7 @@ block question
         - var reponseQuestion = tentative._mapReponse[question._id] 
         - var choixQuestion = question._answerChoix[0]
 
-        div.input-field.col.s6
+        div.input-field.col.s12
             input#reponse(type="text" name="reponse" value=reponseQuestion && reponseQuestion["reponse"] ? reponseQuestion["reponse"] : "")
             label(for="reponse") Réponse
 

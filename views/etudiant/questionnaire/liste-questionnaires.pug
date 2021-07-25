@@ -16,6 +16,10 @@ block content
                                                 i.material-icons.inline.padding-right book
                                                 |#{questionnaire._nom}                    
                                             p Afficher le questionnaire 
+                                            - var tentative = questionnaire._tentatives.find(t => t._etudiant._id == idEtudiant)
+                                            if tentative && tentative._etat == "Complété"
+                                                p Note: #{tentative._pointage.point} / #{tentative._pointage.pointMax} 
+                                                | - #{(tentative._pointage.point / tentative._pointage.pointMax * 100).toFixed(2)} %
                         else
                             div.col.s12
                                 em Vous n'avez pas de questionnaire 
