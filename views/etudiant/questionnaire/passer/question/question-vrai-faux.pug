@@ -1,41 +1,21 @@
 extends ../passer-question
 block question
-    form.form-ajouter-question.section(id="form-ajouter-question-vf")
-        input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
-        input(type="hidden" name="typeQuestion", value=estModification ? question._type : typeQuestion) 
-        if estModification   
-            input(type="hidden" name="estModification", value=estModification.toString())   
-            input(type="hidden" name="idQuestion", value=question._id)  
-            input(type="hidden" name="reponsesChoix", value=question._answerChoix)  
-        div.row
-            div.input-field.col.s6
-                input#nom(type="text" name="nom" value=estModification ? question._nom : "" required)
-                label(for="nom") Nom
-            div.input-field.col.s6
-                input#tags(type="text" name="tags" value=estModification ? question._tags.join(",") : "")
-                label(for="tags") Tags (Séparer par des ",")
-            div.col.s12(class="input-field")
-                input(type="text" id="question" required value=estModification ? question._descriptionQuestion :"")
-                <label for="text">Entrer votre description question !</label>
-            div(id="questionTotal")
-                div.col.s12
-                    label Réponse
-                div.col.s12(class="reponse")
-                    .switch
-                        label
-                            | faux
-                            input(type='checkbox' name="reponses" class="inputLever" )
-                            span.lever
-                            |           Vrai
+    div.row
+        div.col.s12
+            h2.no-margin #{question._nom} 
+            p #{question._descriptionQuestion} 
 
-                div.input-field.col.s6
-                    textarea#descriptionReponse(class="materialize-textarea descriptionReponse" name="descriptionReponse")
-                        |#{""}
-                    label(for="descriptionReponse") Description bonne réponse
-                div.input-field.col.s6
-                    textarea#descriptionMauvaiseReponse(class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
-                        |#{""}
-                    label(for="descriptionMauvaiseReponse") Description mauvaise réponse
-        div.col.s12  
-            button(class="waves-effect waves-light btn" id="addAll" type="submit") #{estModification ? "Modifier" : "Ajouter"} 
-    
+        - var reponseQuestion = tentative._mapReponse[question._id]       
+
+        div.col.s12
+            div(style="margin-bottom:5px")
+                label Réponse
+
+        div.col.s12
+            div.switch
+                label Faux 
+                    input#reponse(type="checkbox" name="reponse" 
+                        checked=reponseQuestion ? reponseQuestion["reponse"] : false )
+                    span.lever 
+                    |Vrai
+

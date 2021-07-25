@@ -1,44 +1,14 @@
 extends ../passer-question
-block content
-    +btn-back("Détail courte question",  "/enseignant/question/" + question._idEspaceCours)
+block question
     div.row
-        div.col.s10.offset-s1   
-            div.row
-                a(class="waves-effect waves-light btn btn-modifier-question blue accent-2 left" 
-                    href="/enseignant/question/modifier/" + question._idEspaceCours + "/" + question._id) Modifier                       
-                a(class="waves-effect waves-light btn red btn-delete-question right" href="javascript:void(0)" 
-                    data-id-question=question._id
-                    data-nom=question._nom
-                    data-id-espace-cours=question._idEspaceCours) Supprimer 
+        div.col.s12
+            h2.no-margin #{question._nom} 
+            p #{question._descriptionQuestion} 
 
-            form.form-ajouter-question.section(id="form-ajouter-question-vf")
-                input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
-                input(type="hidden" name="reponsesChoix", value=question._answerChoix) 
-                div.row
-                    div.input-field.col.s6
-                        input#nom(type="text" name="nom" value=question._nom disabled)
-                        label(for="nom") Nom
-                    div.input-field.col.s6
-                        input#tags(type="text" name="tags" value=question._tags.join(",") disabled)
-                        label(for="tags") Tags (Séparer par des ",")
-                    div.col.s12(class="input-field")
-                        input(type="text" id="question" required value= question._descriptionQuestion disabled)
-                        <label for="text">Entrer votre courte question !</label>
-                    div(id="questionTotal")
-                        div.col.s12(class="input-field")
-                            input(type="text" name="reponses" disabled class="reponses" required)
-                            <label for="text">Entrer votre réponse</label>
-                        div.input-field.col.s6
-                            textarea#descriptionReponse(disabled class="materialize-textarea descriptionReponse" name="descriptionReponse")
-                                |#{""}
-                            label(for="descriptionReponse") Description bonne réponse
-                        div.input-field.col.s6
-                            textarea#descriptionMauvaiseReponse(disabled class="materialize-textarea descriptionMauvaiseReponse" name="descriptionMauvaiseReponse")
-                                |#{""}
-                            label(for="descriptionMauvaiseReponse") Description mauvaise réponse
-                    
+        - var reponseQuestion = tentative._mapReponse[question._id] 
+        - var choixQuestion = question._answerChoix[0]
 
-    //- End bloc content
-block more-script
-    script(type="text/javascript" src="/lib/enseignant/question/question.js")
-    script(type="text/javascript" src="/lib/enseignant/question/ajouter-modifier-question.js")
+        div.input-field.col.s6
+            input#reponse(type="text" name="reponse" value=reponseQuestion && reponseQuestion["reponse"] ? reponseQuestion["reponse"] : "")
+            label(for="reponse") Réponse
+
