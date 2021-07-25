@@ -33,7 +33,7 @@ export namespace TypeQuestion {
                 break;
             }
             case "question-essay": {
-                value = "essaie";
+                value = "Rédaction";
                 break;
             }
         }

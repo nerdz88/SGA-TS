@@ -97,7 +97,9 @@ main {
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
-
+.card.card-content {
+  height: 150px;
+} 
 /* 
 #main {
   display: flex;

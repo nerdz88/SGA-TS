@@ -10,6 +10,10 @@ export class ReponseChoixMultiple extends Reponse{
         //this.ponderation = ponderation;
     }
 
+    public getChoix() : string {
+        return this.choix;
+    }
+
     public getPonderation(): number {
         return this.ponderation;
     }

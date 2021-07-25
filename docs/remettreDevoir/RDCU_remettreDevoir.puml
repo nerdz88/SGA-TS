@@ -1,0 +1,51 @@
+@startuml recupererUnDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererUnDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "devoirs : Devoirs[]" as devoirs
+
+-> gestionnaireDevoir : devoir = recupererUnDevoir(idEspaceCours: number,\nIdDevoir: number)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours : int)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : devoir = recupererUnDevoir(IdDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+cours -> devoirs : devoir = find(idDevoir)
+note left : Selon expert, devoirs est l'attribut\nd'espaceCours qui stocke les devoirs
+@enduml
+
+@startuml remettreDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour remettreRemise
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "devoir : Devoir" as devoir
+participant "remises : Remise[]" as remises
+participant "remiseCourante : Remise" as remise
+
+-> gestionnaireDevoir : remettreRemise(idEspaceCours, idDevoir,\nidEtudiant, pathFichier)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : devoir = recupererUnDevoir(idDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+gestionnaireDevoir -> devoir : remettreRemise(idEtudiant, pathFichier)
+note left : Selon expert, devoir contient\ntoutes ses remises
+alt currentDate.isBetween(dateDebut, dateFin)
+devoir -> remises : remiseCourante = getRemise(idEtudiant)
+note left : Selon expert
+devoir -> remise : remettreRemise(pathFichier)
+note left : Selon expert, il faut modifier\nles attributs de remise afin\nqu'il en devienne l'expert
+remise -> remise : setPathFichier(pathFichier)
+note left : Selon expert
+remise -> remise : setDateRemise(currentDate)
+note left : Selon expert
+remise -> remise : setEtat("Remis")
+note left : Selon expert
+end
+@enduml

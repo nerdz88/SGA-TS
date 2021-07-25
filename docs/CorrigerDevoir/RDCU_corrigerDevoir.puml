@@ -1,0 +1,182 @@
+@startuml récupérer tous les cours créés
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer tous les espaceCours créés d'un enseignant
+participant ":GestionnaireCours" as controleur
+participant ": Universite" as mapCours
+participant "espaceCours : EspaceCours[]" as cours 
+participant "espaceCoursCourant : EspaceCours" as courant 
+participant "espaceCoursResultant : EspaceCours[]" as resultat
+
+->controleur : espacesCours = recupererTousEspaceCours(token)
+note right : Selon Contôleur,\ncontrôleur de session
+controleur -> mapCours : espacesCoursResultant = recupererTousEspaceCours(token)
+note left : Selon expert, Universite a toute\nles informations requises\npour exécuter recupererTousEspaceCours
+mapCours --> resultat** : create()
+note left : Selon créateur, universite utilise\nétroitement espaceCoursResultant.\nUtilisé pour stocker les espaceCours\nà retourner.
+loop espaceCours.length
+mapCours -> cours : espaceCoursCourant = espaceCours[i]
+note left : EspaceCours correspond à l'attribut\nd'universite qui enregistre tous\nles espaceCours. EspaceCoursCourant\ncorrespond à l'espaceCours qui est\nen train d'être analysé
+mapCours -> courant : id = getIdEnseignant()
+note left : Selon expert
+alt id == token
+mapCours -> resultat : push(espaceCoursCourant)
+note left : Selon expert
+end
+end
+@enduml
+
+@startuml recupererTousDevoirsEspaceCours
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererTousDevoirsEspaceCours
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+
+-> gestionnaireDevoir : devoirs = recupererTousDevoirsEspaceCours(idEspaceCours)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : devoirs = recupererTousDevoirs()
+note left : Selon expert, espaceCours\ncontient les devoirs
+@enduml
+
+@startuml recupererUnDevoirEtudiant
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour recupererUnDevoirEtudiant
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant ":Universite" as universite
+participant "espaceCours : EspaceCours" as cours
+participant "devoir : Devoir" as devoir
+participant "remises : Remise[]" as remises
+participant "remiseCourante : Remise" as remise
+
+-> gestionnaireDevoir : remise = \nrecupererUnDevoirEtudiant\n(idEspaceCours, IdDevoir, idEtudiant)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> universite : espaceCours = recupererUnEspaceCours(idEspaceCours)
+note left : Selon expert, universite\ncontient les espaceCours
+gestionnaireDevoir -> cours : devoir = recupererUnDevoir(idDevoir)
+note left : Selon expert, espaceCours\ncontient les devoirs
+gestionnaireDevoir -> devoir : remise = getRemiseEtudiant(idEtudiant)
+note left : Selon expert
+loop remises.length
+devoir -> remises : remiseCourante = getRemise(i)
+note left : Selon expert
+devoir -> remise : idEtudiantRemiseCourante = getIdEtudiant()
+note left : Selon expert
+alt idEtudiantRemiseCourante == idEtudiant
+devoir -> devoir : remise = remiseCourante
+note left : return remise
+end
+end
+@enduml
+
+@startuml corrigerDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour corrigerDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant "remise : Remise" as remise
+
+-> gestionnaireDevoir : corrigerDevoir(idEspaceCours, idDevoir,\nidEtudiant, note, pathFichierCorrection)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> gestionnaireDevoir : remise = recupererUnDevoirEtudiant(idEspaceCours, idDevoir, idEtudiant)
+note left : Selon expert, operation représenté\ndans un des RDCU précédent du\nmême cas d'utilisation
+gestionnaireDevoir -> remise : corrigerDevoir(note, pathFichierCorrection)
+note left : Selon expert, l'oppération veut\nmodifier les attributs de remise
+remise -> remise : setNote(note)
+note left : Selon expert
+remise -> remise : setPathFichierCorrection(pathFichierCorrection)
+note left : Selon expert
+remise -> remise : setdate(currentDate)
+note left : Selon expert
+remise -> remise : setEtat("RemisCorrige")
+note left : Selon expert
+@enduml
+
+@startuml creerZipCorrectionDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour creerZipCorrectionDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant "devoir : Devoir" as devoir
+participant "zipper : AdmZip" as zip
+participant "contentBufferCSV : string[]" as content
+participant "remises : Remises" as remises
+participant "currentRemise : Remise" as remise
+participant "contentRowCsv : string[]" as contentRow
+
+-> gestionnaireDevoir : zipName = creerZipCorrectionDevoir(idEspaceCours,\nidDevoir)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> gestionnaireDevoir : devoir = recupererUnDevoir(idEspaceCours, IdDevoir)
+note left : Selon expert, operation représenté\ndans un des RDCU précédent du\nmême cas d'utilisation
+gestionnaireDevoir -> devoir : creerZipCorrectionDevoir()
+note left : Selon expert, l'on veut créer un zip avec\ntoutes les remise d'un devoir
+devoir --> zip**: create() 
+note left : Selon createur, Devoir utilise\nétroitement zipper
+devoir --> content**: create()
+note left : Selon createur, Devoir utilise\nétroitement contentBufferCSV
+devoir -> content : push("ID; Code permanent; Nom complet; Nom du fichier de retroaction; Note")
+note left : Selon expert
+devoir -> devoir : remises = getRemises()
+note left : Selon expert
+loop remises.length
+devoir -> remises : currentRemise = get(i)
+note left : Selon expert
+devoir -> remise : etat = getEtat()
+note left : Selon expert
+alt etat == "Remis"
+devoir -> remise : path = getPathFichier()
+note left : Selon expert
+devoir -> zip : addFile(path)
+note left : Selon expert
+devoir -> remise : contentRowCsv = getcontentRow()
+note left : Selon expert
+remise --> contentRow** : create(id, codePermanent, nomComplet)
+note left : Selon createur, . Remise a les données pour\ninitialiser son contentRowCsv
+devoir -> content : push(contentRowCsv)
+note left : Selon expert
+end
+end
+devoir -> zip : addFile(contentBufferCSV)
+devoir -> devoir : zipPath = getZipPath()
+note left : Selon expert, retourne "uploads/devoirs/"\n+ idEspaceCours + "/" + idDevoir`
+devoir -> devoir : nomFichier = getNomFichier()
+note left : Selon expert, retourn "/correction-devoir-"\n+ idDevoir + ".zip"
+devoir -> zip : writeZip(zipPath + nomFichier)
+note left : Selon expert
+devoir --> gestionnaireDevoir : zipPath + nomFichier
+@enduml
+
+' TO DO
+@startuml corrigerTousDevoirsZip
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour corrigerTousDevoirsZip
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant "zipper : AdmZip" as zip
+participant "fichierCsv : String[]" as csv
+
+-> gestionnaireDevoir : corrigerTousDevoirsZip(idEspaceCours, idDevoir, pathFichierZip)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir --> zip** : create(pathFichierZip)
+note left : Selon createur, gestionniareDevoir\nutilise étroitement zipper
+gestionnaireDevoir -> zip : fichierCSV = getEntries().find("*.csv")
+note left : Selon expert, fichierCSV\nest un tableau de String\nreprésentatif du CSV où\nchaque case représente\nune remise
+gestionnaireDevoir -> gestionnaireDevoir : pathContenuZip = "./uploads/devoirs/idEspaceCours/idDevoir/retroaction"
+note left : Selon créateur, gestionniareDevoir\nutilise étroitement pathContenuZip.\nIci la création de la variable\npathContenuZip est utilisée pour\nêtre plus rapide que d'écrire la string\ncomplète à chaque fois qu'elle est utilisée
+gestionnaireDevoir -> zip : extractAllTo(pathContenuZip)
+note left : Selon expert
+loop fichierCSV.length
+gestionnaireDevoir -> csv : idRemise = getIdRemise()
+note left : Selon expert
+gestionnaireDevoir -> csv : nomFichierRetro = getNomFichierRetro()
+note left : Selon expert
+gestionnaireDevoir -> csv : note = getNote()
+note left : Selon expert
+gestionnaireDevoir -> gestionnaireDevoir : corrigerDevoir(idEspaceCours, idDevoir,\nidRemise, note, pathContenuZip + nomFichierRetro)
+note left : Selon expert, operation représenté\ndans un des RDCU précédent du\nmême cas d'utilisation
+end
+@enduml

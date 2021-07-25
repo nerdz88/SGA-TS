@@ -54,14 +54,12 @@ questionnaire --> tentative** : create(questions)
 note left : Selon createur, gestionnaireQuestion\n contient Tentative\nquestions est le tableau de question\ndu questionnaire stocké en attribut
 tentative --> questions** : create(questions)
 note left : Selon createur, Tentative\ncontient les questions
-loop !terminerAjouterReponseTentative
 questionnaire -> tentative : repondre(idQuestion, reponse)
 note left : Selon expert, tentative doit initialiser\nles reponse à ses questions
 tentative -> questions : question = getQuestion(idQuestion)
 note left : Selon expert
 tentative -> question : setReponse(reponse)
 note left : Selon expert
-end
 @enduml
 
 @startuml terminerAjouterReponseTentative

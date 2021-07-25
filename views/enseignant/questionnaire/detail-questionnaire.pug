@@ -12,7 +12,7 @@ block content
                         li Description: #{questionnaire._description} 
                         li Nombre de questions: #{questionnaire._questions.length} 
 
-            +table-remise-etudiants(questionnaire._remises , `/enseignant/questionnaire/detail/${questionnaire._idEspaceCours}/${questionnaire._id}`, currentOrdre)
+            +table-resultat-etudiants(questionnaire._tentatives , `/enseignant/questionnaire/detail/${questionnaire._idEspaceCours}/${questionnaire._id}`, currentOrdre)
 
             div.section
                 div.row
@@ -20,7 +20,8 @@ block content
                         a(class="waves-effect waves-light btn red right btn-delete-questionnaire" href="javascript:void(0)" 
                             data-id-questionnaire=questionnaire._id
                             data-nom=questionnaire._nom
-                            data-id-espace-cours=questionnaire._idEspaceCours) Supprimer 
+                            data-id-espace-cours=questionnaire._idEspaceCours
+                            disabled=questionnaire._tentatives.find(t => t.etat != "Non complété") != undefined) Supprimer 
     //- End bloc content
 block more-script
     script(type="text/javascript" src="/lib/enseignant/questionnaire/questionnaire.js")

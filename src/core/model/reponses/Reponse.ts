@@ -1,14 +1,12 @@
 export abstract class Reponse {
-       
+
     protected reponse: any;
     protected bonneReponseText: string;
     protected mauvaiseReponseText: string;
 
-
-    
     constructor(reponse: any, bonneReponseText: string, mauvaiseReponseText: string) {
         this.reponse = reponse;
-        this.bonneReponseText= bonneReponseText;
+        this.bonneReponseText = bonneReponseText;
         this.mauvaiseReponseText = mauvaiseReponseText;
     }
 
@@ -36,8 +34,8 @@ export abstract class Reponse {
     public setMauvaiseReponseText(mauvaiseReponseText: string): void {
         this.mauvaiseReponseText = mauvaiseReponseText;
     }
-    abstract modifier(reponseJson : string);
+    abstract modifier(reponseJson: string);
 
-    
+
 
 }

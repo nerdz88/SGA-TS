@@ -2,7 +2,10 @@ import { Type } from 'class-transformer';
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "../model/Cours";
+import { Devoir } from '../model/Devoir';
 import { EspaceCours } from "../model/EspaceCours";
+import { Questionnaire } from '../model/Questionnaire';
+import { Question } from '../model/questions/Question';
 import { SGBService } from "./SGBService";
 
 export class Universite {
@@ -25,6 +28,9 @@ export class Universite {
     public setUniversite(universite: Universite) {
         this.arrayCours = universite.arrayCours;
         this.arrayEspaceCours = universite.arrayEspaceCours;
+        Question.currentId = this.arrayEspaceCours.map(ec => ec.recupererToutesQuestions().length).reduce((sum, current) => sum + current, 0);
+        Questionnaire.currentId = this.arrayEspaceCours.map(ec => ec.recupererToutQuestionnaires().length).reduce((sum, current) => sum + current, 0);
+        Devoir.currentId = this.arrayEspaceCours.map(ec => ec.recupererTousDevoirs().length).reduce((sum, current) => sum + current, 0);
     }
 
 

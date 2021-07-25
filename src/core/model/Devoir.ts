@@ -2,9 +2,10 @@ import { Type } from 'class-transformer';
 import { HttpError } from '../errors/HttpError';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { Etudiant } from './Etudiant';
-import { Etat, Remise } from "./Remise";
+import { Remise } from "./Remise";
 import moment = require('moment');
 import { NotFoundError } from '../errors/NotFoundError';
+import { Etat } from './enum/Etat';
 
 export class Devoir {
     private _id: number;
