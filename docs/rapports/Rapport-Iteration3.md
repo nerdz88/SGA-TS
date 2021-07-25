@@ -167,7 +167,8 @@ _PostCondition_
 _PostCondition_
 
 - Une instance "i" de Tentantive a été créée
-- les attributs de "i" ont été initialisée
+- l'attribut id de "i" a été initialisé a un nombre aléatoire inutilisé
+- l'attribut note de "i" a été initialisé a la note attribuée par l'enseignant
 - "i" a été liée à un Questionnaire sur la base de correspondance avec idQuestionnaire
 
 **RDCU**
@@ -180,7 +181,7 @@ _PostCondition_
 
 _PostCondition_
 
-- l'attribut statut de "i" a été modifié a corrigé
+- l'attribut statut de "i" a été modifié pour "corrigé"
 - l'attribut resultat de "i" a été modifié pour la note de l'élève
 
 **RDCU**
