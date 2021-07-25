@@ -188,14 +188,33 @@ mixin navigation-passer-questionnaire(indexQuestion, nbQuestions, isRelecture)
             if(indexQuestion > 0)
                 a(class="waves-effect waves-light btn left btn-nav-questionnaire btn-previous-question-ajout blue accent-2" + isRelecture ? " isRelecture": "" 
                     href="javascript:void(0)")
-                    i(class="material-icons left medium waves-effect waves-light btn-retour") chevron_left 
+                    i(class="material-icons left medium waves-effect waves-light") chevron_left 
                     |Précédent
             if(indexQuestion < (nbQuestions - 1))
                 a(class="waves-effect waves-light btn right btn-nav-questionnaire btn-next-question blue accent-2" + isRelecture ? " isRelecture": "" 
                     href="javascript:void(0)")                      
-                    i(class="material-icons right medium waves-effect waves-light btn-retour") chevron_right
+                    i(class="material-icons right medium waves-effect waves-light") chevron_right
                     |Suivant
             else 
                 a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-terminer-tentative ${isRelecture ? " isRelecture": ""}` 
                     href="javascript:void(0)")                      
-                    |Terminer #{isRelecture ? "la relecture": "Et Corriger"}
+                    |Terminer #{isRelecture ? "la relecture": "Et Corriger"}`
+
+mixin feedback-question(isValid, messageIsValid, messageIsNotValid)
+    div.white(style="margin: 25px 0;padding: 5px 10px")
+        if isValid
+            +feedback-question-isValid(messageIsValid)
+        else 
+            +feedback-question-isNotValid(messageIsNotValid)
+
+mixin feedback-question-isValid(message)
+    h4.green-text.text-lighten-1.with-icon #[b Bonne réponse]
+        i(class="material-icons waves-effect waves-light" style="padding-left:5px") check
+    if message && message.length > 0
+        p #{message}
+
+mixin feedback-question-isNotValid(message)
+    h4.red-text.text-lighten-1.with-icon #[b Mauvaise réponse]
+        i(class="material-icons waves-effect waves-light" style="padding-left:5px") error_outline
+    if message && message.length > 0
+        p #{message}

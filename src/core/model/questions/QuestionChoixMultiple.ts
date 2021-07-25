@@ -39,7 +39,7 @@ export class QuestionChoixMultiple extends Question {
             }
 
         });
-        let pointage = new Pointage(nbBonChoix, this._answerChoix.length);
+        let pointage = new Pointage(nbBonChoix, this._answerChoix.filter(a => a.getReponse()).length);
         reponse["pointage"] = pointage;
 
         return pointage

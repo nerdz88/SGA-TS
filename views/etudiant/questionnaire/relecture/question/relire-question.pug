@@ -5,8 +5,27 @@ block content
        
     div.row
         div.col.s10.offset-s1   
-            +navigation-passer-questionnaire(indexQuestion, nbQuestions, true)                   
-            block question 
+            +navigation-passer-questionnaire(indexQuestion, nbQuestions, true)     
+            div.row.section 
+                div.col.s6
+                    h3.no-margin Questionnaire:
+                    |Note: #{tentative._pointage.point} / #{tentative._pointage.pointMax} 
+                    | - #{(tentative._pointage.point / tentative._pointage.pointMax * 100).toFixed(2)} %
+                div.col.s6
+                    h3.no-margin Question #{indexQuestion + 1} 
+                    - var point = tentative._mapReponse[question._id]["pointage"].point
+                    - var pointMax = tentative._mapReponse[question._id]["pointage"].pointMax
+                    |Note: #{point} / #{pointMax} 
+                    | - #{(point / pointMax * 100).toFixed(2)} %    
+            hr
+            form.section(id="form-repondre-question" style="display: none")
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
+                input(type="hidden" name="idQuestionnaire", value=idQuestionnaire) 
+                input(type="hidden" name="indexQuestion", value=indexQuestion) 
+                input(type="hidden" name="nbQuestions", value=nbQuestions) 
+                input(type="hidden" name="idQuestion", value=question._id)
+            div.section
+                block question 
 
     //- End bloc content
 block more-script
