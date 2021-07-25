@@ -19,7 +19,7 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                 }
             });
     } else {
-        res.redirect("/erreur", code)
+        res.redirect("/erreur")
     }
 
 }
