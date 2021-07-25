@@ -21,7 +21,8 @@ window.addEventListener("load", function () {
     $(".btn-retour").on("click", function () {
         window.location = $(this).data("lienRetour");
     });
-
+    
+    $('.sidenav').sidenav();
 });
 
 

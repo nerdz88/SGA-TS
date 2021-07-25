@@ -10,7 +10,7 @@ block question
         each choix in question._answerChoix
             div(class="input-field col s12")
                 h3.no-margin #{choix["reponse"]}
-                select(name=choix["reponse"] id=`select-${choix["reponse"]}`) 
+                select.browser-default(name=choix["reponse"] id=`select-${choix["reponse"]}`) 
                     option(value="" disabled 
                         selected=!reponseQuestion || !reponseQuestion[choix["reponse"]] ? true : false) Selectionnez la correspondance
                     each correspondance in lstCorrespondance
