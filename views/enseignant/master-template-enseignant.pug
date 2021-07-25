@@ -26,8 +26,10 @@ html
           div.container
             div.row
               div.col.s12 
-               a(href="/" class="brand-logo center") SGA
-                ul#nav-mobile(class="left hide-on-med-and-down")
+                a(href="/" class="brand-logo center") SGA
+                a(href="#" data-target="mobile-sidenav" class="sidenav-trigger")
+                  i.material-icons menu
+                ul(class="left hide-on-med-and-down")
                   li
                     a(href="/enseignant/cours") Cours
                   li
@@ -35,9 +37,20 @@ html
                   li
                     a(href="/enseignant/questionnaire") Questionnaires
 
-                ul#nav-mobile(class="right hide-on-med-and-down")
+                ul(class="right hide-on-med-and-down")
                   li
-                    a.btn-logout Logout
+                    a.btn-logout Déconnexion
+
+      ul#mobile-sidenav(class="sidenav")
+        li
+          a.btn-logout Déconnexion
+        li
+          a(href="/enseignant/cours") Cours
+        li
+          a(href="/enseignant/question") Questions
+        li
+          a(href="/enseignant/questionnaire") Questionnaires
+
 
     //- Fin navbar
 
