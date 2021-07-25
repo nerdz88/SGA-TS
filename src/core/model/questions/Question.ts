@@ -1,4 +1,12 @@
+import { Type } from 'class-transformer';
 import { Reponse } from "../reponses/Reponse";
+import { ReponseChoixMultiple } from '../reponses/ReponseChoixMultiple';
+import { ReponseCourte } from '../reponses/ReponseCourte';
+import { ReponseMiseEnCorrespondance } from '../reponses/ReponseMiseEnCorrespondance';
+import { ReponseNumerique } from '../reponses/ReponseNumerique';
+import { ReponseVraiFaux } from '../reponses/ReponseVraiFaux';
+import { Tentative } from "../Tentative";
+import { Pointage } from "./Pointage";
 
 export abstract class Question {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -10,15 +18,29 @@ export abstract class Question {
     private _descriptionQuestion: string
     private _nbOccurence: number
     static currentId: number = 0;
+    //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
+    //Permet de garder l'héritage après le plainToClass
+    @Type(() => Reponse, {
+        discriminator: {
+            property: '__type',
+            subTypes: [
+                {value: ReponseChoixMultiple, name: "reponsechoixmultiple"},
+                {value: ReponseMiseEnCorrespondance, name: "reponsemisenecorrespondance"},
+                {value: ReponseNumerique, name: "reponsenumerique"},
+                {value: ReponseCourte, name: "reponsecourte"},
+                {value: ReponseVraiFaux, name: "reponsevraifaux"},
+            ]
+        }
+    })
     protected _answerChoix: Reponse[];
-    private _type:string;
+    private _type: string;
 
 
     constructor(questionJson: string) {
         if (questionJson == undefined)
             return;
 
-        this._answerChoix=[];
+        this._answerChoix = [];
         let values = JSON.parse(questionJson);
         this._idEspaceCours = parseInt(values.idEspaceCours);
         this._type = values.typeQuestion;
@@ -39,6 +61,8 @@ export abstract class Question {
         this._descriptionQuestion = values.description;
     }
 
+    public abstract corriger(tentative: Tentative): Pointage;
+
     public getIdEspaceCours() {
         return this._idEspaceCours;
     }
@@ -48,12 +72,12 @@ export abstract class Question {
     public getNom() {
         return this._nom;
     }
-    
+
     public getTag() {
         return this._tags;
     }
 
-    public getType(){
+    public getType() {
         return this._type;
     }
     public getDescriptionQuestion() {
@@ -63,7 +87,7 @@ export abstract class Question {
     public setNbOccurence(nbOccurence: number) {
         this._nbOccurence = nbOccurence
     }
-    
+
     public getNbOccurence() {
         return this._nbOccurence
     }

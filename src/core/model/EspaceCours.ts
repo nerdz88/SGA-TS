@@ -6,16 +6,19 @@ import { Questionnaire } from "./Questionnaire";
 import { Devoir } from "./Devoir";
 import { InvalidParameterError } from "../errors/InvalidParameterError";
 import { Type } from 'class-transformer';
-import { Etat } from "./Remise";
+
 import { HttpError } from "../errors/HttpError";
 import { Question } from "./questions/Question";
 import { TypeQuestion } from "./TypeQuestion";
 import { QuestionChoixMultiple } from "./questions/QuestionChoixMultiple";
 import { QuestionMiseEnCorrespondance } from "./questions/QuestionMiseEnCorrespondance";
 import { QuestionNumerique } from "./questions/QuestionNumerique";
-import { QuestionReponseCourte as QuestionCourte } from "./questions/QuestionReponseCourte";
+import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 import { QuestionEssaie } from "./questions/QuestionEssaie";
+import { EtatTentative } from "./enum/EtatTentative";
+import { Etat } from "./enum/Etat";
+
 
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -24,7 +27,21 @@ export class EspaceCours {
     private _enseignantId: number;
     @Type(() => Etudiant)
     private _etudiants: Etudiant[];
-    @Type(() => Question)
+     //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
+    //Permet de garder l'héritage après le plainToClass
+    @Type(() => Question, {
+        discriminator: {
+            property: '__type',
+            subTypes: [
+                {value: QuestionChoixMultiple, name: "questionchoixmultiple"},
+                {value: QuestionEssaie, name: "questionessaie"},
+                {value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance"},
+                {value: QuestionNumerique, name: "questionnumerique"},
+                {value: QuestionReponseCourte, name: "questionreponsecourte"},
+                {value: QuestionVraiFaux, name: "questionvraifaux"},
+            ]
+        }
+    })
     private _questions: Question[];
     @Type(() => Devoir)
     private _devoirs: Devoir[];
@@ -68,7 +85,12 @@ export class EspaceCours {
     }
 
     public modifierQuestionnaire(idQuestionnaire: number, questionnaireJson) {
+
         let q = this.recupererUnQuestionnaire(idQuestionnaire);
+        
+        if (q.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
+            throw new HttpError("Impossible de modifier un questionnaire, déjà commencé par un étudiant");
+                   
         q.modifier(questionnaireJson);
     }
 
@@ -83,7 +105,7 @@ export class EspaceCours {
             case "question-numerique":
                 return new QuestionNumerique(jsonString);
             case "question-reponse-courte":
-                return new QuestionCourte(jsonString);
+                return new QuestionReponseCourte(jsonString);
             case "question-essay":
                 return new QuestionEssaie(jsonString);
         }
@@ -213,7 +235,14 @@ export class EspaceCours {
     }
 
     public suprimerQuestionnaire(idQuestionnaire: number): boolean {
+
+        let questionnaire = this.recupererUnQuestionnaire(idQuestionnaire);
+        
+        if (questionnaire.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
+            throw new HttpError("Impossible de supprimer un questionnaire, déjà commencé par un étudiant")
+
         let index = this._questionnaires.findIndex(q => q.getId() == idQuestionnaire);
+        
         if (index != -1) {
             let questions = this._questionnaires[index].getQuestions()
             this._questionnaires.splice(index, 1);

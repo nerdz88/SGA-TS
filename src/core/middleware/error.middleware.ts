@@ -18,8 +18,8 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                     message: message
                 }
             });
-    } else {
-        res.redirect("/erreur", code)
+    } else {      
+        res.redirect("/erreur")
     }
 
 }

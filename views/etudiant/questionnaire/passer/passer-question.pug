@@ -1,0 +1,21 @@
+extends ../../master-template-etudiant.pug 
+block content
+    //- Start bloc content
+    +btn-back(`Passer questionnaire - ${indexQuestion + 1}/${nbQuestions}`,  `/etudiant/questionnaire/${idEspaceCours}`) 
+       
+    div.row
+        div.col.s10.offset-s1   
+            +navigation-passer-questionnaire(indexQuestion, nbQuestions, false)                    
+           
+            form.section(id="form-repondre-question")
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours) 
+                input(type="hidden" name="idQuestionnaire", value=idQuestionnaire) 
+                input(type="hidden" name="indexQuestion", value=indexQuestion) 
+                input(type="hidden" name="nbQuestions", value=nbQuestions) 
+                input(type="hidden" name="idQuestion", value=question._id) 
+                block question 
+
+            //- +navigation-passer-questionnaire(indexQuestion, nbQuestions)
+    //- End bloc content
+block more-script
+    script(type="text/javascript" src="/lib/etudiant/questionnaire/passer-questionnaire.js")

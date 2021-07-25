@@ -1,0 +1,21 @@
+extends ../passer-question
+block question
+    div.row
+        div.col.s12
+            h2.no-margin #{question._nom} 
+            p #{question._descriptionQuestion} 
+
+        - var reponseQuestion = tentative._mapReponse[question._id]       
+
+        div.col.s12
+            div(style="margin-bottom:5px")
+                label Réponse
+
+        div.col.s12
+            div.switch
+                label Faux 
+                    input#reponse(type="checkbox" name="reponse" 
+                        checked=reponseQuestion ? reponseQuestion["reponse"] : false )
+                    span.lever 
+                    |Vrai
+

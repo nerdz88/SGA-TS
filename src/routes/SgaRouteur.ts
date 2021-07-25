@@ -522,6 +522,47 @@ export class SgaRouteur {
 
     //#endregion Devoir
 
+
+    //#region Questionnaire
+
+    public ajouterReponseTentative(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let idQuestion = parseInt(req.params.idQuestion);
+
+        this.gestionnaireQuestionnaire
+            .ajouterReponseTentative(idEspaceCours,
+                idQuestionnaire,
+                idQuestion,
+                AuthorizationHelper.getIdUser(req),
+                JSON.stringify(req.body));
+
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+
+            });
+    }
+
+    public terminerTentative(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+
+        this.gestionnaireQuestionnaire
+            .terminerTentativeEtudiant(idEspaceCours, idQuestionnaire, AuthorizationHelper.getIdUser(req));
+
+        res.status(200)
+            .send({
+                message: 'Success',
+                status: res.status,
+
+            });
+    }
+
+    //#endregion Questionnaire
+
+
     //#endregion Étudiants
 
     /**
@@ -581,8 +622,11 @@ export class SgaRouteur {
         //Devoirs
         this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
         this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
-
         this.router.post('/etudiant/devoir/remettre', this.remettreDevoir.bind(this));
+
+        //Questionnaire
+        this.router.post('/etudiant/questionnaire/question/save/:idEspaceCours/:idQuestionnaire/:idQuestion', this.ajouterReponseTentative.bind(this));
+        this.router.get('/etudiant/questionnaire/terminer/:idEspaceCours/:idQuestionnaire', this.terminerTentative.bind(this));
 
         //#endregion Étudiant
 
