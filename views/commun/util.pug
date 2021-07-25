@@ -10,11 +10,12 @@ mixin btn-back(titre, lienRetour)
 //- Tableau pour afficher  les remises d'un devoir/questionnaires
 //- TODO les questionnaires ne vont plus avoir de remise alors il faudrait faire un autre version du tableau pour les questionnaires
 //- Plus besoin de l'avoir dans le util.pug   
-mixin table-remise-etudiants(remises, baseURL, currentOrdre)
+mixin table-resultat-etudiants(resultats, baseURL, currentOrdre)
     h3 Remises des étudiants
     div.row.table-container
         div.col.s12
             table.bordered.highlight
+                - var isDevoir = resultats[0]._dateRemise
                 thead 
                     tr  
                         th.data-field 
@@ -24,22 +25,43 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                                     i.material-icons #{currentOrdre == 1 ? "arrow_drop_up" : "arrow_drop_down"} 
                         th.data-field Code permanent 
                         th.data-field Etat
-                        th.data-field Date de remise
-                        th.data-field Date de correction
+                        th.data-field #{isDevoir ? "Date de remise" : "Date de début"}
+                        th.data-field #{isDevoir ? "Date de correction" : "Date de fin"} 
                         th.data-field
                             - var valueOrdreNote = currentOrdre == 3 ? 4 : 3 
                             a.sort-header.with-icon(href=baseURL + "?o=" + valueOrdreNote) Note 
                                 if currentOrdre == 3 || currentOrdre == 4
                                     i.material-icons #{currentOrdre == 3 ? "arrow_drop_up" : "arrow_drop_down"} 
                 tbody 
-                    each remise in remises        
-                        tr 
-                            td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
-                            td #{remise._etudiant._code_permanent}
-                            td #{remise._etat}
-                            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
-                            td #{remise._dateDeCorrection ? moment(remise._dateDeCorrection).format("LLL") : "-"} 
-                            td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
+                    if(isDevoir)
+                        +table-remise-etudiants-data(resultats)
+                    else  
+                        +table-tentative-etudiants-data(resultats)
+mixin table-remise-etudiants-data(remises)
+    each remise in remises        
+        tr 
+            td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
+            td #{remise._etudiant._code_permanent}
+            td #{remise._etat}
+            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
+            td #{remise._dateDeCorrection ? moment(remise._dateDeCorrection).format("LLL") : "-"} 
+            td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
+
+mixin table-tentative-etudiants-data(tentatives)
+    each tentative in tentatives        
+        tr 
+            td #{tentative._etudiant._nom}, #{tentative._etudiant._prenom} 
+            td #{tentative._etudiant._code_permanent}
+            td #{tentative._etat}
+            td #{tentative._dateDebut ? moment(tentative._dateDebut).format("LLL") : "-"} 
+            td #{tentative._dateFin ? moment(tentative._dateFin).format("LLL") : "-"} 
+            td 
+                if tentative._etat == "Complété"
+                    |#{tentative._pointage.point} / #{tentative._pointage.pointMax} 
+                    | - #{(tentative._pointage.point / tentative._pointage.pointMax * 100).toFixed(2)} %
+                else 
+                    |-
+
 
 mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
     - var unDevoirRemis = 0

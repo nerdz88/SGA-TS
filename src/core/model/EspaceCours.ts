@@ -16,6 +16,7 @@ import { QuestionNumerique } from "./questions/QuestionNumerique";
 import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 import { QuestionEssaie } from "./questions/QuestionEssaie";
+import { EtatTentative } from "./Tentative";
 
 export class EspaceCours {
     // classe inspirée de la classe conceptuelle (du MDD)
@@ -82,7 +83,12 @@ export class EspaceCours {
     }
 
     public modifierQuestionnaire(idQuestionnaire: number, questionnaireJson) {
+
         let q = this.recupererUnQuestionnaire(idQuestionnaire);
+        
+        if (q.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
+            throw new HttpError("Impossible de modifier un questionnaire, déjà commencé par un étudiant");
+                   
         q.modifier(questionnaireJson);
     }
 
@@ -227,7 +233,14 @@ export class EspaceCours {
     }
 
     public suprimerQuestionnaire(idQuestionnaire: number): boolean {
+
+        let questionnaire = this.recupererUnQuestionnaire(idQuestionnaire);
+        
+        if (questionnaire.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
+            throw new HttpError("Impossible de supprimer un questionnaire, déjà commencé par un étudiant")
+
         let index = this._questionnaires.findIndex(q => q.getId() == idQuestionnaire);
+        
         if (index != -1) {
             let questions = this._questionnaires[index].getQuestions()
             this._questionnaires.splice(index, 1);

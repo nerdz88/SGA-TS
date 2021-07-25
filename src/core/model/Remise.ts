@@ -39,7 +39,7 @@ export class Remise {
                 case OrdreTri.NoteCroissant: {
                     return a.note - b.note
                 }
-                case OrdreTri.NomEtudiantAlphaDecroissant: {
+                case OrdreTri.NoteDecroissant: {
                     return b.note - a.note
                 }
                 default: {

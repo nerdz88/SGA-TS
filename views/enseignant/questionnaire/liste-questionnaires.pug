@@ -21,13 +21,16 @@ block content
                                                 div.text-bolder #{questionnaire._nom}                                                          
                                             div #{questionnaire._descriptionQuestionnaire}                                                  
                                         div.card-action
+                                            - var estModifiable = questionnaire._tentatives.find(t => t.etat != "Non complété") == undefined
                                             a(class="btn-detail-questionnaire" href=`/enseignant/questionnaire/detail/${questionnaire._idEspaceCours}/${questionnaire._id}`) Détail
-                                            a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/modifier/${questionnaire._idEspaceCours}/${questionnaire._id}`) Modifier         
-                                            a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/question/${questionnaire._idEspaceCours}/${questionnaire._id}`) Gérer Questions          
-                                            a(class="btn-delete-questionnaire" href="javascript:void(0)"
-                                                data-id-questionnaire=questionnaire._id
-                                                data-nom=questionnaire._nom
-                                                data-id-espace-cours=questionnaire._idEspaceCours) Supprimer 
+                                            if estModifiable
+                                                a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/modifier/${questionnaire._idEspaceCours}/${questionnaire._id}`) Modifier         
+                                            a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/question/${questionnaire._idEspaceCours}/${questionnaire._id}`) Gérer Questions 
+                                            if estModifiable         
+                                                a(class="btn-delete-questionnaire" href="javascript:void(0)"
+                                                    data-id-questionnaire=questionnaire._id
+                                                    data-nom=questionnaire._nom
+                                                    data-id-espace-cours=questionnaire._idEspaceCours) Supprimer 
                 else
                     div.col.s12
                         em Vous n'avez pas de questionnaires

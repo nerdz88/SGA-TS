@@ -42,7 +42,7 @@ export class Tentative {
                 case OrdreTri.NoteCroissant: {
                     return a._pointage.point - b._pointage.point
                 }
-                case OrdreTri.NomEtudiantAlphaDecroissant: {
+                case OrdreTri.NoteDecroissant: {
                     return b._pointage.point - a._pointage.point
                 }
                 default: {
