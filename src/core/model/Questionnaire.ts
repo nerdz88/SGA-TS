@@ -2,8 +2,16 @@ import { Type } from 'class-transformer';
 import { NotFoundError } from '../errors/NotFoundError';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { Etudiant } from "./Etudiant";
+import { Pointage } from './questions/Pointage';
 import { Question } from "./questions/Question";
+import { QuestionChoixMultiple } from './questions/QuestionChoixMultiple';
+import { QuestionEssaie } from './questions/QuestionEssaie';
+import { QuestionMiseEnCorrespondance } from './questions/QuestionMiseEnCorrespondance';
+import { QuestionNumerique } from './questions/QuestionNumerique';
+import { QuestionReponseCourte } from './questions/QuestionReponseCourte';
+import { QuestionVraiFaux } from './questions/QuestionVraiFaux';
 import { Tentative } from "./Tentative";
+import { TypeQuestion } from './TypeQuestion';
 
 export class Questionnaire {
     private _id: number;
@@ -12,7 +20,22 @@ export class Questionnaire {
     private _description: string;
     private _nom: string;
     private _status: boolean
-    @Type(() => Question)
+
+    //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
+    //Permet de garder l'héritage après le plainToClass
+    @Type(() => Question, {
+        discriminator: {
+            property: '__type',
+            subTypes: [
+                {value: QuestionChoixMultiple, name: "questionchoixmultiple"},
+                {value: QuestionEssaie, name: "questionessaie"},
+                {value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance"},
+                {value: QuestionNumerique, name: "questionnumerique"},
+                {value: QuestionReponseCourte, name: "questionreponsecourte"},
+                {value: QuestionVraiFaux, name: "questionvraifaux"},
+            ]
+        }
+    })
     private _questions: Question[]
     @Type(() => Tentative)
     private _tentatives: Tentative[]
@@ -58,10 +81,19 @@ export class Questionnaire {
         return tentative
     }
 
-    public repondreQuestion(idQuestion : number, idEtudiant : number, reponseJSON: string) {
-        let reponse = JSON.parse(reponseJSON);      
+    public repondreQuestion(idQuestion: number, idEtudiant: number, reponseJSON: string) {
+        let reponse = JSON.parse(reponseJSON);
         let tentative = this.getTentativeEtudiant(idEtudiant);
-        tentative.repondre(idQuestion, reponse);        
+        tentative.repondre(idQuestion, reponse);
+    }
+
+    public terminerTentativeEtudiant(idEtudiant: number) {
+
+        let tentative = this.getTentativeEtudiant(idEtudiant);
+        this.getQuestions().forEach((question: Question) => {
+            tentative.augementerPointage(question.corriger(tentative));
+        });
+        tentative.finirTentative();
     }
 
     public getId() {

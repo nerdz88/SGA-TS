@@ -1,0 +1,16 @@
+extends ./relire-question
+block question
+    div.row
+        div.col.s12
+            h2.no-margin #{question._nom} 
+            p #{question._descriptionQuestion} 
+        each choix in question._answerChoix
+            div.col.s12
+                label
+                    input(class="with-gap ckb-choix" type="checkbox" 
+                    name= choix.choix disabled 
+                    checked= tentative._mapReponse[question._id][choix.choix])  
+                    span #{choix.choix}       
+                p test
+
+

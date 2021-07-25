@@ -1,10 +1,14 @@
 import { ReponseCourte } from "../reponses/ReponseCourte";
+import { Tentative } from "../Tentative";
+import { Pointage } from "./Pointage";
 import { Question } from "./Question";
 
 export class QuestionEssaie extends Question {
 
     constructor(questionJson: string) {
         super(questionJson)
+        if (questionJson == undefined)
+            return;
         let values = JSON.parse(questionJson)
         /*JSON.parse(values.reponses).forEach( reponse => {
             let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
@@ -20,5 +24,9 @@ export class QuestionEssaie extends Question {
             let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });*/
+    }
+
+    public corriger(tentative: Tentative): Pointage {    
+        return new Pointage(0, 0);
     }
 }

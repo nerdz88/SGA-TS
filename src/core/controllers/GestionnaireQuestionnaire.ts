@@ -79,8 +79,7 @@ export class GestionnaireQuestionnaire {
     public terminerTentativeEtudiant(idEspaceCours: number, idQuestionnaire: number, idEtudiant: number) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
-        let tentative = questionnaire.getTentativeEtudiant(idEtudiant);
-        tentative.finirTentative();
+        questionnaire.terminerTentativeEtudiant(idEtudiant);      
     }
 
     public ajouterReponseTentative(idEspaceCours: number, idQuestionnaire: number, idQuestion: number, idEtudiant: number, responseJSON: string) {

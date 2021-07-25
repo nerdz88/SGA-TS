@@ -5,11 +5,9 @@ block content
        
     div.row
         div.col.s10.offset-s1   
-            +navigation-passer-questionnaire(indexQuestion, nbQuestions)                    
-           
-           
+            +navigation-passer-questionnaire(indexQuestion, nbQuestions, true)                   
+            block question 
 
-            //- +navigation-passer-questionnaire(indexQuestion, nbQuestions)
     //- End bloc content
 block more-script
     script(type="text/javascript" src="/lib/etudiant/questionnaire/passer-questionnaire.js")

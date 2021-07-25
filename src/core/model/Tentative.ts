@@ -2,6 +2,7 @@ import { Etudiant } from "./Etudiant";
 import { Type } from 'class-transformer';
 import { OrdreTri } from "./enum/OrdreTri";
 import { HttpError } from "../errors/HttpError";
+import { Pointage } from "./questions/Pointage";
 
 export enum EtatTentative {
     NonComplete = "Non complété",
@@ -16,7 +17,7 @@ export class Tentative {
     private _etudiant: Etudiant;
     private _dateDebut: Date;
     private _dateFin: Date;
-    private _note: number;
+    private _pointage: Pointage;
     private _etat: EtatTentative;
     private _mapReponse: {};
     static currentId: number = 0;
@@ -26,6 +27,7 @@ export class Tentative {
         this._etudiant = etudiant;
         this._etat = EtatTentative.NonComplete;
         this._mapReponse = {};
+        this._pointage = new Pointage(0, 0);
     }
 
     public static orderBy(tentative: Tentative[], ordreTri: number): Tentative[] {
@@ -38,10 +40,10 @@ export class Tentative {
                     return b.etudiant.getNomComplet().localeCompare(a.etudiant.getNomComplet())
                 }
                 case OrdreTri.NoteCroissant: {
-                    return a.note - b.note
+                    return a._pointage.point - b._pointage.point
                 }
                 case OrdreTri.NomEtudiantAlphaDecroissant: {
-                    return b.note - a.note
+                    return b._pointage.point - a._pointage.point
                 }
                 default: {
                     return a.id - a.id
@@ -57,6 +59,11 @@ export class Tentative {
     public getReponse(idQuestion: number): any {
         return this._mapReponse[idQuestion];
     }
+
+    public augementerPointage(pointage: Pointage) {
+        this.pointage.point = pointage.point;
+        this.pointage.pointMax= pointage.pointMax;
+    } 
 
     public commencerTentative() {
         if(this._etat == EtatTentative.NonComplete)
@@ -110,12 +117,12 @@ export class Tentative {
         this._dateFin = value;
     }
 
-    get note(): number {
-        return this._note;
+    get pointage(): Pointage {
+        return this._pointage;
     }
 
-    set note(value: number) {
-        this._note = value;
+    set pointage(value: Pointage) {
+        this._pointage = value;
     }
 
     get etat(): EtatTentative {

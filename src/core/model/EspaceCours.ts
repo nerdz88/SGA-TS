@@ -13,7 +13,7 @@ import { TypeQuestion } from "./TypeQuestion";
 import { QuestionChoixMultiple } from "./questions/QuestionChoixMultiple";
 import { QuestionMiseEnCorrespondance } from "./questions/QuestionMiseEnCorrespondance";
 import { QuestionNumerique } from "./questions/QuestionNumerique";
-import { QuestionReponseCourte as QuestionCourte } from "./questions/QuestionReponseCourte";
+import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 import { QuestionEssaie } from "./questions/QuestionEssaie";
 
@@ -24,7 +24,21 @@ export class EspaceCours {
     private _enseignantId: number;
     @Type(() => Etudiant)
     private _etudiants: Etudiant[];
-    @Type(() => Question)
+     //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
+    //Permet de garder l'héritage après le plainToClass
+    @Type(() => Question, {
+        discriminator: {
+            property: '__type',
+            subTypes: [
+                {value: QuestionChoixMultiple, name: "questionchoixmultiple"},
+                {value: QuestionEssaie, name: "questionessaie"},
+                {value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance"},
+                {value: QuestionNumerique, name: "questionnumerique"},
+                {value: QuestionReponseCourte, name: "questionreponsecourte"},
+                {value: QuestionVraiFaux, name: "questionvraifaux"},
+            ]
+        }
+    })
     private _questions: Question[];
     @Type(() => Devoir)
     private _devoirs: Devoir[];
@@ -83,7 +97,7 @@ export class EspaceCours {
             case "question-numerique":
                 return new QuestionNumerique(jsonString);
             case "question-reponse-courte":
-                return new QuestionCourte(jsonString);
+                return new QuestionReponseCourte(jsonString);
             case "question-essay":
                 return new QuestionEssaie(jsonString);
         }
