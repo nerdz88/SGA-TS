@@ -1,0 +1,13 @@
+@startuml dss_remettreDevoir
+title DSS remettreDevoir
+hide footbox
+actor ":Enseignant" as enseignant
+participant ":Systeme" as systeme
+
+enseignant ->  systeme : recupererTousDevoirsEspaceCours(idEspaceCours: number)
+systeme --> enseignant : devoirs à remettre
+enseignant -> systeme : recupererUnDevoir(idEspaceCours: number, IdDevoir: number)
+systeme --> enseignant : détails du devoir
+enseignant -> systeme : remettreRemise(idEspaceCours: number, idDevoir: number,\nidEtudiant: number, pathFichier: string)
+systeme --> enseignant : confirmation de réception du devoir
+@enduml

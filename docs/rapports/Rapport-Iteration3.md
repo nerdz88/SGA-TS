@@ -69,6 +69,45 @@ Après la [confirmation du professeur](https://github.com/log210-cfuhrman/lab1-e
 
 <hr />
 
+## DSS CU03 - Corriger devoir
+![DSS_corrigerDevoir](../../out/docs/CorrigerDevoir/DSS_corrigerDevoir/dss_corrigerDevoir.svg)
+
+### `recupererTousEspaceCours(token : String)` 
+**RDCU**
+![recupererTousEspaceCours](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/récupérer%20tous%20les%20cours%20créés.svg)
+
+### `recupererTousDevoirsEspaceCours(idEspaceCours: number)` 
+**RDCU**
+![recupererTousDevoirsEspaceCours](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/recupererTousDevoirsEspaceCours.svg)
+
+### `recupererUnDevoirEtudiant(idEspaceCours: number, IdDevoir: number, idEtudiant: number)` 
+**RDCU**
+![recupererUnDevoirEtudiant](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/recupererUnDevoirEtudiant.svg)
+
+### `corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, idEtudiant : number, note: number, pathFichierCorrection: string)` 
+**RDCU**
+![corrigerDevoir](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/corrigerDevoir.svg)
+
+
+## DSS CU03 - Corriger devoir alternatif
+![DSS_corrigerDevoirAlternatif](../../out/docs/CorrigerDevoir/DSS_corrigerDevoir/dss_corrigerDevoirAlternatif.svg)
+
+### `recupererTousEspaceCours(token : String)` 
+**RDCU**</br>
+[recupererTousEspaceCours](#recuperertousespacecourstoken--string)
+
+### `recupererTousDevoirsEspaceCours(idEspaceCours: number)` 
+**RDCU**</br>
+[recupererTousDevoirsEspaceCours](#recuperertousdevoirsespacecoursidespacecours-number)
+
+### `creerZipCorrectionDevoir(idEspaceCours: number, idDevoir: number)` 
+**RDCU**</br>
+![creerZipCorrectionDevoir](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/creerZipCorrectionDevoir.svg)
+
+### `corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number, pathFichierZip: string)` 
+**RDCU**</br>
+![corrigerTousDevoirsZip](../../out/docs/CorrigerDevoir/RDCU_corrigerDevoir/corrigerTousDevoirsZip.svg)
+
 ## CU07 - Passer questionnaire
 **Acteur principal:**  Étudiant
 
@@ -135,7 +174,7 @@ _PostCondition_
 
 ![ajouterReponseTentative](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/ajouterReponseTentative.svg)
 
-### `terminerAjouterReponseTentative(idEspaceCours : number,\nidQuestionnaire : number)` 
+### `terminerAjouterReponseTentative(idEspaceCours : number, idQuestionnaire : number)` 
 
 **Contrat d'opération**
 
@@ -147,3 +186,44 @@ _PostCondition_
 **RDCU**
 
 ![terminerAjouterReponseTentative](../../out/docs/Passer%20questionnaire/RDCU_passerQuestionnaire/terminerAjouterReponseTentative.svg)
+
+
+<hr />
+
+## CU06 - Remettre devoir
+**Acteur principal:**  Étudiant
+
+**Préconditions:** 
+- L’étudiant est authentifié.
+
+**Garanties en cas de succès (postconditions):**  
+- Un devoir remis est associé à un étudiant
+
+**Scénario principal (succès):** 
+1. L’étudiant sélectionne un cours parmi la liste des cours auxquels il est inscrit
+1. Le système affiche les devoirs à remettre
+1. L’étudiant sélectionne un devoir
+1. Le système affiche les détails du devoir
+1. L’étudiant téléverse (upload) son devoir
+1. Le système confirme la réception du devoir
+
+**Extensions (ou scénarios alternatifs):** 
+
+&nbsp;&nbsp;&nbsp;3a. Un devoir ne peut être sélectionné si la date actuelle n’est pas à l’intérieur de la plage d’ouverture du devoir ou si celui-ci est inactif.
+
+<hr />
+
+## DSS CU06 - Remettre devoir
+![DSS_remettreDevoir](../../out/docs/remettreDevoir/DSS_remettreDevoir/dss_remettreDevoir.svg)
+
+### `recupererTousDevoirsEspaceCours(idEspaceCours: number)` 
+**RDCU**</br>
+[recupererTousDevoirsEspaceCours](#recuperertousdevoirsespacecoursidespacecours-number)
+
+### `recupererUnDevoir(idEspaceCours: number, IdDevoir: number)` 
+**RDCU**</br>
+![recupererUnDevoir](../../out/docs/remettreDevoir/RDCU_remettreDevoir/recupererUnDevoir.svg)
+
+### `remettreRemise(idEspaceCours: number, idDevoir: number, idEtudiant: number, pathFichier: string)` 
+**RDCU**</br>
+![remettreRemise](../../out/docs/remettreDevoir/RDCU_remettreDevoir/remettreDevoir.svg)
