@@ -7,9 +7,7 @@ mixin btn-back(titre, lienRetour)
                     data-lien-retour=lienRetour) chevron_left
                 |#{titre}
 
-//- Tableau pour afficher  les remises d'un devoir/questionnaires
-//- TODO les questionnaires ne vont plus avoir de remise alors il faudrait faire un autre version du tableau pour les questionnaires
-//- Plus besoin de l'avoir dans le util.pug   
+//- Tableau pour afficher  les remises d'un devoir/questionnaires 
 mixin table-resultat-etudiants(resultats, baseURL, currentOrdre)
     h3 Remises des étudiants
     div.row.table-container
@@ -62,34 +60,6 @@ mixin table-tentative-etudiants-data(tentatives)
                 else 
                     |-
 
-
-mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
-    - var unDevoirRemis = 0
-    each remise in devoir._remises
-        if remise._etat == "Non Remis"
-            - unDevoirRemis = 1
-    if unDevoirRemis != 1
-        a(class="waves-effect waves-light btn disabled red right btn-delete-devoir" href="javascript:void(0)"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
-    else
-        a(class="waves-effect waves-light btn red right btn-delete-devoir" href="javascript:void(0)"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
-
-
-mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
-    -  unDevoirRemis = 0
-    each remise in devoir._remises
-        if remise._etat === "Non Remis" 
-            - unDevoirRemis = 1
-    if unDevoirRemis == 1
-        a(class="btn-delete-devoir"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
 
 //- Modal pour remettre un devoir
 mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)

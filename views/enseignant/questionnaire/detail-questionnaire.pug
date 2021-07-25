@@ -21,7 +21,7 @@ block content
                             data-id-questionnaire=questionnaire._id
                             data-nom=questionnaire._nom
                             data-id-espace-cours=questionnaire._idEspaceCours
-                            disabled=questionnaire._tentatives.find(t => t.etat != "Non complété") != undefined) Supprimer 
+                            disabled=questionnaire._tentatives.find(t => t._etat != "Non complété") != undefined) Supprimer 
     //- End bloc content
 block more-script
     script(type="text/javascript" src="/lib/enseignant/questionnaire/questionnaire.js")

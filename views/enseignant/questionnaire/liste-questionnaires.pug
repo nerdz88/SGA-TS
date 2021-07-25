@@ -21,7 +21,7 @@ block content
                                                 div.text-bolder #{questionnaire._nom}                                                          
                                             div #{questionnaire._descriptionQuestionnaire}                                                  
                                         div.card-action
-                                            - var estModifiable = questionnaire._tentatives.find(t => t.etat != "Non complété") == undefined
+                                            - var estModifiable = questionnaire._tentatives.find(t => t._etat != "Non complété") == undefined
                                             a(class="btn-detail-questionnaire" href=`/enseignant/questionnaire/detail/${questionnaire._idEspaceCours}/${questionnaire._id}`) Détail
                                             if estModifiable
                                                 a(class="btn-modifier-questionnaire" href=`/enseignant/questionnaire/modifier/${questionnaire._idEspaceCours}/${questionnaire._id}`) Modifier         
