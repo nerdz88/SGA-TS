@@ -85,11 +85,7 @@ export class GestionnaireQuestionnaire {
     public ajouterReponseTentative(idEspaceCours: number, idQuestionnaire: number, idQuestion: number, idEtudiant: number, responseJSON: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
-        questionnaire.repondreQuestion(idQuestion, idEtudiant, responseJSON);
-      
-
-
-
+        questionnaire.repondreQuestion(idQuestion, idEtudiant, responseJSON);   
     }
 
     public recupererIdsQuestionsQuestionnaire(idEspaceCours: number, idQuestionnaire: number) {

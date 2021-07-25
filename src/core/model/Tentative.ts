@@ -61,8 +61,8 @@ export class Tentative {
     }
 
     public augementerPointage(pointage: Pointage) {
-        this.pointage.point = pointage.point;
-        this.pointage.pointMax= pointage.pointMax;
+        this.pointage.point += pointage.point;
+        this.pointage.pointMax += pointage.pointMax;
     } 
 
     public commencerTentative() {

@@ -30,16 +30,25 @@ export class QuestionChoixMultiple extends Question {
         let reponse = tentative.getReponse(this.getId());
         let nbBonChoix = 0;
         this._answerChoix.forEach((choix: ReponseChoixMultiple) => {
-            if (reponse[choix.getChoix()] && choix.getReponse()) {
-                reponse[choix.getChoix() + "-isValid"] = true;
-                nbBonChoix++;
+            if (reponse[choix.getChoix()]) {
+                if (choix.getReponse()) {
+                    reponse[choix.getChoix() + "-isValid"] = true;
+                    nbBonChoix++;
+                }
+                else {
+                    reponse[choix.getChoix() + "-isValid"] = false;
+                }
+            } else {
+                if (choix.getReponse()) {
+                    reponse[choix.getChoix() + "-isValid"] = false;
+                }
+                else {
+                    reponse[choix.getChoix() + "-isValid"] = true;
+                    nbBonChoix++;
+                }
             }
-            else {
-                reponse[choix.getChoix() + "-isValid"] = false;
-            }
-
         });
-        let pointage = new Pointage(nbBonChoix, this._answerChoix.filter(a => a.getReponse()).length);
+        let pointage = new Pointage(nbBonChoix, this._answerChoix.length);
         reponse["pointage"] = pointage;
 
         return pointage

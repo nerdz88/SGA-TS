@@ -1,7 +1,7 @@
-extends ../../../master-template-etudiant.pug 
+extends ../../master-template-etudiant.pug 
 block content
     //- Start bloc content
-    +btn-back(`Passer questionnaire -${indexQuestion + 1}/${nbQuestions}`,  returnUrl) 
+    +btn-back(`Passer questionnaire -${indexQuestion + 1}/${nbQuestions}`,  `/etudiant/questionnaire/${idEspaceCours}`) 
        
     div.row
         div.col.s10.offset-s1   

@@ -1,4 +1,4 @@
-extends ./passer-question
+extends ../passer-question
 block question
     div.row
         div.col.s12
@@ -6,9 +6,10 @@ block question
             p #{question._descriptionQuestion} 
 
         each choix in question._answerChoix
-            div.col.s12
+            div.col.s12(style="margin-bottom:15px")
                 label
-                    input(class="with-gap ckb-choix" type="checkbox" name=choix.choix) 
+                    input(class="with-gap ckb-choix" type="checkbox" name=choix.choix
+                        checked=tentative._mapReponse[question._id] ? tentative._mapReponse[question._id][choix.choix] : false)                     
                     span #{choix.choix}                            
 
 

@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
         var idQuestionnaire = $(form).find('input[name="idQuestionnaire"]').val();
         var idQuestion = $(form).find('input[name="idQuestion"]').val();
         var indexQuestion = $(form).find('input[name="indexQuestion"]').val();
-        var newIndexQuestion = isNext ? (indexQuestion + 1) : (indexQuestion - 1);
+        var newIndexQuestion = parseInt(isNext ? (indexQuestion + 1) : (indexQuestion - 1));
 
         if (!isRelecture) {        
            

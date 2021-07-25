@@ -186,19 +186,19 @@ mixin navigation-passer-questionnaire(indexQuestion, nbQuestions, isRelecture)
     div.row
         div.col.s12
             if(indexQuestion > 0)
-                a(class="waves-effect waves-light btn left btn-nav-questionnaire btn-previous-question-ajout blue accent-2" + isRelecture ? " isRelecture": "" 
+                a(class=`waves-effect waves-light btn left btn-nav-questionnaire btn-previous-question-ajout blue accent-2 ${isRelecture ? " isRelecture": ""}`
                     href="javascript:void(0)")
                     i(class="material-icons left medium waves-effect waves-light") chevron_left 
                     |Précédent
             if(indexQuestion < (nbQuestions - 1))
-                a(class="waves-effect waves-light btn right btn-nav-questionnaire btn-next-question blue accent-2" + isRelecture ? " isRelecture": "" 
+                a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-next-question blue accent-2 ${isRelecture ? " isRelecture": ""}`
                     href="javascript:void(0)")                      
                     i(class="material-icons right medium waves-effect waves-light") chevron_right
                     |Suivant
             else 
                 a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-terminer-tentative ${isRelecture ? " isRelecture": ""}` 
                     href="javascript:void(0)")                      
-                    |Terminer #{isRelecture ? "la relecture": "Et Corriger"}`
+                    |Terminer #{isRelecture ? "la relecture": "Et Corriger"}
 
 mixin feedback-question(isValid, messageIsValid, messageIsNotValid)
     div.white(style="margin: 25px 0;padding: 5px 10px")

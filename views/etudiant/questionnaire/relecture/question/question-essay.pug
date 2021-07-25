@@ -1,4 +1,4 @@
-extends ../passer-question
+extends ../relire-question
 block question
     div.row
         div.col.s12
@@ -6,7 +6,7 @@ block question
             p #{question._descriptionQuestion} 
 
         div(class="input-field col s12")
-            textarea(id="txtArea-reponse" class="materialize-textarea" name="reponse")
+            textarea(id="txtArea-reponse" class="materialize-textarea" name="reponse" disabled)
                 |#{tentative._mapReponse[question._id] ? tentative._mapReponse[question._id]["reponse"] : ""}
             label(for="txtArea-reponse") Réponse
       

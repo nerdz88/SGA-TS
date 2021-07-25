@@ -26,7 +26,9 @@ export class QuestionEssaie extends Question {
         });*/
     }
 
-    public corriger(tentative: Tentative): Pointage {    
-        return new Pointage(0, 0);
+    public corriger(tentative: Tentative): Pointage {  
+        let reponse = tentative.getReponse(this.getId());
+        reponse["pointage"] = new Pointage(0, 0);  
+        return reponse["pointage"];
     }
 }
