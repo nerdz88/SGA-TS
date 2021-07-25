@@ -16,5 +16,8 @@ export class ReponseMiseEnCorrespondance extends Reponse{
         this.mauvaiseReponseText = values._mauvaiseReponseText;
         
     }
+    public  getCorrespondance(): string {
+        return this.correspondance;
+    }
 
 }

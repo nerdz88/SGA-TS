@@ -26,8 +26,18 @@ export class QuestionReponseCourte extends Question {
             this._answerChoix.push(answer);
         });
     }
-
-    public corriger(tentative: Tentative): Pointage {    
-        return new Pointage(0, 0);
+    public corriger(tentative: Tentative): Pointage {
+        let reponse = tentative.getReponse(this.getId());
+        let isValid = false
+        this._answerChoix.forEach((answerChoix: ReponseCourte) => {
+            let bonneReponse = answerChoix.getReponse();
+            if (reponse["reponse"] == bonneReponse) {
+                isValid = true;                
+            }
+        });
+        reponse["isValid"] = isValid;
+        let pointage = new Pointage(isValid ? 1 : 0, 1);
+        reponse["pointage"] = pointage;
+        return pointage
     }
 }

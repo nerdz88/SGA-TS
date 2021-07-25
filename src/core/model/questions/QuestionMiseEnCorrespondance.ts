@@ -32,6 +32,22 @@ export class QuestionMiseEnCorrespondance extends Question {
     }
 
     public corriger(tentative: Tentative): Pointage {
-        return new Pointage(0, 0);
+        let reponse = tentative.getReponse(this.getId());
+        let nbBonneReponse = 0;
+        this._answerChoix.forEach((answerChoix: ReponseMiseEnCorrespondance) => {
+            let correspondance = answerChoix.getCorrespondance();
+            let option = answerChoix.getReponse();
+
+            if (reponse[option] == correspondance) {
+                reponse[option + "-isValid"] = true;
+                nbBonneReponse++;
+            }
+            else {
+                reponse[option + "-isValid"] = false;
+            }
+        });
+        let pointage = new Pointage(nbBonneReponse, this._answerChoix.length);
+        reponse["pointage"] = pointage;
+        return pointage
     }
 }
