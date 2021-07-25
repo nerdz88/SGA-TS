@@ -5,15 +5,18 @@ block question
             h2.no-margin #{question._nom} 
             p #{question._descriptionQuestion} 
 
-        - var reponseQuestion = tentative._mapReponse[question._id]       
-        - var choixQuestion = question._answerChoix[0]
-
+        - var reponseQuestion = tentative._mapReponse[question._id]      
+        - var repoonseQuestionVal =  reponseQuestion && reponseQuestion["reponse"] ? reponseQuestion["reponse"] : ""
+        
+    
         div.input-field.col.s12
             input#reponse(type="text" name="reponse" 
-                value=reponseQuestion && reponseQuestion["reponse"] ? reponseQuestion["reponse"] : ""
+                value=repoonseQuestionVal
                 disabled)
             label(for="reponse") Réponse
 
-            +feedback-question(reponseQuestion["isValid"],
-                    choixQuestion.bonneReponseText,
-                    choixQuestion.mauvaiseReponseText)
+            each choixQuestion in question._answerChoix
+                +feedback-question(reponseQuestion["isValid"] && repoonseQuestionVal == choixQuestion.reponse,
+                        choixQuestion.bonneReponseText,
+                        choixQuestion.mauvaiseReponseText,
+                        choixQuestion.reponse)

@@ -200,21 +200,25 @@ mixin navigation-passer-questionnaire(indexQuestion, nbQuestions, isRelecture)
                     href="javascript:void(0)")                      
                     |Terminer #{isRelecture ? "la relecture": "Et Corriger"}
 
-mixin feedback-question(isValid, messageIsValid, messageIsNotValid)
+mixin feedback-question(isValid, messageIsValid, messageIsNotValid, choixBonnesReponses)
     div.white(style="margin: 25px 0;padding: 5px 10px")
         if isValid
-            +feedback-question-isValid(messageIsValid)
+            +feedback-question-isValid(messageIsValid, choixBonnesReponses)
         else 
-            +feedback-question-isNotValid(messageIsNotValid)
+            +feedback-question-isNotValid(messageIsNotValid, choixBonnesReponses)
 
 mixin feedback-question-isValid(message)
     h4.green-text.text-lighten-1.with-icon #[b Bonne réponse]
         i(class="material-icons waves-effect waves-light" style="padding-left:5px") check
     if message && message.length > 0
         p #{message}
+    if choixBonnesReponses
+        p #[b Réponse(s):] #{choixBonnesReponses} 
 
-mixin feedback-question-isNotValid(message)
+mixin feedback-question-isNotValid(message, choixBonnesReponses)
     h4.red-text.text-lighten-1.with-icon #[b Mauvaise réponse]
         i(class="material-icons waves-effect waves-light" style="padding-left:5px") error_outline
     if message && message.length > 0
         p #{message}
+    if choixBonnesReponses
+        p #[b Réponse(s):] #{choixBonnesReponses} 
