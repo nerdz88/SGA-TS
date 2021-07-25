@@ -5,11 +5,12 @@ block question
             h2.no-margin #{question._nom} 
             p #{question._descriptionQuestion} 
 
+        - var reponseQuestion = tentative._mapReponse[question._id] 
         each choix in question._answerChoix
             div.col.s12(style="margin-bottom:15px")
                 label
                     input(class="with-gap ckb-choix" type="checkbox" name=choix.choix
-                        checked=tentative._mapReponse[question._id] ? tentative._mapReponse[question._id][choix.choix] : false)                     
+                        checked=reponseQuestion ? reponseQuestion[choix.choix] : false)                     
                     span #{choix.choix}                            
 
 

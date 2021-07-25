@@ -2,6 +2,8 @@
 
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
 window.addEventListener("load", function () {
+    $('select').formSelect();
+    
     $(".btn-nav-questionnaire").on("click", function (e) {
         var isNext = $(this).hasClass("btn-next-question");
         var isTerminerTentative = $(this).hasClass("btn-terminer-tentative");
@@ -12,7 +14,7 @@ window.addEventListener("load", function () {
         var idQuestionnaire = $(form).find('input[name="idQuestionnaire"]').val();
         var idQuestion = $(form).find('input[name="idQuestion"]').val();
         var indexQuestion = $(form).find('input[name="indexQuestion"]').val();
-        var newIndexQuestion = parseInt(isNext ? (indexQuestion + 1) : (indexQuestion - 1));
+        var newIndexQuestion = isNext ? (parseInt(indexQuestion) + 1) : (parseInt(indexQuestion) - 1);
 
         if (!isRelecture) {        
            
