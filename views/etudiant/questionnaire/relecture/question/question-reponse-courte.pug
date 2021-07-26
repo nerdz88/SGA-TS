@@ -1,0 +1,22 @@
+extends ../relire-question
+block question
+    div.row
+        div.col.s12
+            h2.no-margin #{question._nom} 
+            p #{question._descriptionQuestion} 
+
+        - var reponseQuestion = tentative._mapReponse[question._id]      
+        - var repoonseQuestionVal =  reponseQuestion && reponseQuestion["reponse"] ? reponseQuestion["reponse"] : ""
+        
+    
+        div.input-field.col.s12
+            input#reponse(type="text" name="reponse" 
+                value=repoonseQuestionVal
+                disabled)
+            label(for="reponse") Réponse
+
+            each choixQuestion in question._answerChoix
+                +feedback-question(reponseQuestion["isValid"] && repoonseQuestionVal == choixQuestion.reponse,
+                        choixQuestion.bonneReponseText,
+                        choixQuestion.mauvaiseReponseText,
+                        choixQuestion.reponse)

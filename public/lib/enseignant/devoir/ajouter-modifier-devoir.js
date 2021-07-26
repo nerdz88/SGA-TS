@@ -44,7 +44,7 @@ window.addEventListener("load", function () {
 
 function envoyerFormulaireAjax(form, estModification, idEspaceCours, endPoint) {
     $.ajax({
-        type: "POST",
+        type: estModification ? "PUT" : "POST",
         url: endPoint,
         data: $(form).serialize(),
         success: function () {

@@ -10,7 +10,7 @@ block content
   div.row 
     div.col.s12
         each espace in espaceCours     
-          div.col.s12.l4
+          div.col.s12.m12.l4
             div.card
               div.card-content
                 div.card-title
@@ -18,9 +18,10 @@ block content
                 div #{espace._cours._titre}                
                 div Gr: #{espace._numero}            
               div.card-action
-                a(class="btn-detail-cours" href="/etudiant/cours/detail/" + espace._id) Détail&nbsp;
-                //- TODO get le nombre de devoir non remis et memem chose pour questionnaire
+                a(class="btn-detail-cours" href="/etudiant/cours/detail/" + espace._id) Détail
+                br
                 a(class="btn-devoir-cours" href="/etudiant/devoir/" + espace._id) Devoirs
+                br
                 a(class="btn-questionnaire-cours" href="/etudiant/questionnaire/" + espace._id) Questionnaires             
         else
           div.col.s12

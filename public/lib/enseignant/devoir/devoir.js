@@ -1,7 +1,7 @@
 //Fichier Javascript pour les pages de devoir
 
 // Si vous modifiez ce fichier, exécutez "npm run build" pour que votre server utilise la nouvelle version. Sinon le navigateur conserve l'ancienne version en cache.
-window.addEventListener("load", function () {  
+window.addEventListener("load", function () {
 
     $(".btn-delete-devoir").on("click", function () {
         var nomDevoir = $(this).data("nom");
@@ -31,6 +31,7 @@ window.addEventListener("load", function () {
 
 
     initCorrigerDevoir();
+    initCorrigerDevoirBatch();
 
     console.log("devoir.js => Page Load");
 });
@@ -40,29 +41,40 @@ function initCorrigerDevoir() {
     $(".form-corriger-devoir").on("submit", function (e) {
         //On veut envoyer le formulaire!
         e.preventDefault();
-
-        var form = this;
         var endPoint = "/api/v1/enseignant/devoir/corriger"
-        $.ajax({
-            type: "POST",
-            url: endPoint,
-            data: new FormData(form),
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                $.alert({
-                    title: 'Succès',
-                    type: 'green',
-                    content: 'Le devoir a bien été corrigé',
-                    onClose: function() {
-                        window.location.reload();
-                    }
-                });           
-            },
-            error: function (e) {
-                showErrorToast(e.responseJSON.error.message);
-            }
-        });
+        ajaxCallCorrigerDevoir(this, endPoint)
     });
+}
 
+function initCorrigerDevoirBatch() {
+    $('.modal').modal();
+    $(".form-corriger-devoir-batch").on("submit", function (e) {
+        //On veut envoyer le formulaire!
+        e.preventDefault();
+        var endPoint = "/api/v1/enseignant/devoir/corriger/batch";
+        ajaxCallCorrigerDevoir(this, endPoint)
+    });
+}
+
+function ajaxCallCorrigerDevoir(form, endPoint) {
+    $.ajax({
+        type: "POST",
+        url: endPoint,
+        data: new FormData(form),
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            $.alert({
+                title: 'Succès',
+                type: 'green',
+                content: 'Le devoir a bien été corrigé',
+                onClose: function () {
+                    window.location.reload();
+                }
+            });
+        },
+        error: function (e) {
+            showErrorToast(e.responseJSON.error.message);
+        }
+    });
 }

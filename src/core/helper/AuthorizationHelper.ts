@@ -34,14 +34,20 @@ export class AuthorizationHelper {
         if (this.isPublicFile(req))
             return true;
         if (this.isLoggedIn(req)) {
-            return req.url == "/" || req.url == "/api/v1/logout" || req.url == "/api/v1/download" ||
+            return this.isRouteWithoutRole(req.url) || 
                 (this.isEtudiant(req) && req.url.startsWith("/etudiant/")) ||
-                (!this.isEtudiant(req) && req.url.startsWith("/enseignant/"));
+                (this.isEtudiant(req) && req.url.startsWith("/api/v1/etudiant/")) ||
+                (!this.isEtudiant(req) && req.url.startsWith("/enseignant/")) ||
+                (!this.isEtudiant(req) && req.url.startsWith("/api/v1/enseignant/"));
         }
         else
             return false;
     }
 
+    private static isRouteWithoutRole(url: string): boolean {
+        return url == "/" || url == "/api/v1/logout" || url.startsWith("/api/v1/download") ||
+            url.startsWith("/download") || url == "/favicon.ico";
+    }
     public static isPublicFile(req: Request): boolean {
         return req.url.startsWith("/lib") || req.url.startsWith("/css");
     }

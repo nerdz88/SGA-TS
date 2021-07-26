@@ -1,17 +1,25 @@
-extends ajouter-modifier-question.pug
+extends ../master-template-enseignant.pug 
+block content
+    //- Start bloc content
+    +btn-back("Ajouter une question " + (titreTypeQuestion ? ` - ${titreTypeQuestion}` : ""), 
+        returnUrl || `/enseignant/question/${idEspaceCours}`)  
+    div.row
+        div.col.s10.offset-s1   
+            if !estModification 
+                div.row
+                    div.col.s12
+                        a(class="waves-effect waves-light btn right btn-terminer-ajout blue accent-2" href="/enseignant/question/" + idEspaceCours) Terminer l'ajout
 
-block question
-
-    ul(class="collection with-header")
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/1`) Choix multiples
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/2`) Vrai Faux
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/3`) Mise en correspondance
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/4`) Réponse courte
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/5`) Numérique
-        li(class="collection-item")
-            a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/6`) Choix essai
+            ul(class="collection with-header")
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/1`) Choix multiples
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/2`) Vrai Faux
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/3`) Mise en correspondance
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/4`) questions courtes
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/5`) Numérique
+                li(class="collection-item")
+                    a.blacktext(href=`/enseignant/question/ajouter/${idEspaceCours}/6`) Rédaction

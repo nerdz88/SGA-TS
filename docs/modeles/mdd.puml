@@ -69,37 +69,55 @@ package SGA{
         état : boolean
     }
 
-    class Tentative <<(3, green) >>{
+    class Tentative <<(3, orange) >>{
         id : number
         note : number
         statut : Sring
     }
 
-    class QuestionChoixMultiple <<(3, green) >> extends Question {
+    class QuestionChoixMultiple <<(3, orange) >> extends Question {
         reponse : String
     }
 
-    class QuestionVraiFaux<<(3, green) >> extends Question {
+    class QuestionVraiFaux<<(3, orange) >> extends Question {
         reponse : boolean
     }
 
-    class QuestionMiseEnCorrespondance<<(3, green) >> extends Question {
+    class QuestionMiseEnCorrespondance<<(3, orange) >> extends Question {
         reponse : String
     }
 
-    class QuestionReponseCourte<<(3, green) >> extends Question {
+    class QuestionReponseCourte<<(3, orange) >> extends Question {
         reponse : String
     }
 
-    class QuestionNumerique<<(3, green) >> extends Question {
+    class QuestionNumerique<<(3, orange) >> extends Question {
         reponse : number
     }
 
-    class QuestionChoixEssai<<(3, green) >> extends Question {
-        reponse : String
-    }
     class EspaceCours << (2,red) >>{
         idEspaceGroupeCours : number
+    }
+    class Reponse << (3,orange) >>{
+        reponse : String
+        bonnneReponseText: String
+        mauvaiseReponseText: String
+    }
+
+    class ReponseChoixMultiple << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseNumerique << (3,orange) >> extends Reponse {
+        ponderation: number
+    }
+    class ReponseVraiFaux << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseMiseEnCorrespondance << (3,orange) >> extends Reponse {
+
+    }
+    class ReponseReponseCourte << (3,orange) >> extends Reponse {
+
     }
 }
 
@@ -120,13 +138,22 @@ Etudiant "1" -- "*" Remise : Crée >
 Enseignant "1" -- "*" Question : Crée >
 Enseignant "1" -- "*" Questionnaire : Crée >
 Enseignant "1" -- "*" Devoir : Crée >
-Tentative "1" -- "*" Question : Contient > 
-Questionnaire"1" -- "*"Tentative : Contient >
+Questionnaire"1" -- "1"Tentative : est effuctué sur <
+Etudiant "1" -- "1" Tentative : effectue une >
+Tentative "1" -- "*" Reponse : contient >
+QuestionVraiFaux "1" -- "*" ReponseVraiFaux : contient >
+QuestionReponseCourte "1" -- "*" ReponseReponseCourte : contient >
+QuestionNumerique "1" -- "*" ReponseNumerique : contient >
+QuestionChoixMultiple "1" -- "*" ReponseChoixMultiple : contient >
+QuestionMiseEnCorrespondance "1" -- "*" ReponseMiseEnCorrespondance : contient >
+
+
 
 legend
 |= |= Type |
 |<back:blue>_1_</back>| Classe non modifiée première itération |
 |<back:yellow>_1_</back>| Classe modifiée première itération |
 |<back:red>_2_</back>| Nouvelle classe deuxième itération |
+|<back:orange>_3_</back> | Nouvelle classe troisième itération |
 endlegend
 @enduml

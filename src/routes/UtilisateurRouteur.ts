@@ -112,6 +112,12 @@ export class UtilisateurRouteur {
             next();
         });
     }
+
+    public recupererErreur(req: Request, res: Response, next: NextFunction) {
+
+        let code = req.body.code;
+        res.render("commun/erreur",code)
+    }
     
 
     /**
@@ -124,5 +130,6 @@ export class UtilisateurRouteur {
         this.router.post('/api/v1/login', this.login.bind(this));
         this.router.get('/api/v1/logout', authMiddleware, this.logout.bind(this));
         this.router.get("/api/v1/download/:pathFichier", this.download.bind(this))
+        this.router.get('/erreur', this.recupererErreur.bind(this));
     }
 }

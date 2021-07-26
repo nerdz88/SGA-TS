@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { LogHelper } from '../helper/LogHelper';
 
 function errorMiddleware(error: any, req: Request, res: Response, next: NextFunction) {
-    const code = error.code || 500;
+    const code = Number.isInteger(error.code) ? error.code : 500;
     const message = error.message || 'Une erreur est survenue';
+    const stack = error.stack ? "\r\n" + error.stack : "";
 
     var isApi = req.url.startsWith("/api/v");
 
-    LogHelper.logErreur(code, (isApi ? "API" : "WebApp"), message);
+    LogHelper.logErreur(code, (isApi ? "API" : "WebApp"), message + stack);
 
     if (isApi) {
         res.status(code)
@@ -17,9 +18,8 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                     message: message
                 }
             });
-    } else {
-        //TODO si c'est webApp redirect sur page d'erreur custom 
-        next(error)
+    } else {      
+        res.redirect("/erreur")
     }
 
 }

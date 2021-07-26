@@ -1,0 +1,30 @@
+@startuml dss_corrigerDevoir
+title DSS corrigerDevoir
+hide footbox
+actor ":Enseignant" as enseignant
+participant ":Systeme" as systeme
+
+enseignant ->  systeme : recupererTousEspaceCours(token : String)
+enseignant <-- systeme : cours actifs de l’enseignant ainsi\nque le nombre de devoirs à corriger\npour chaque cours
+enseignant -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours: number)
+systeme --> enseignant : devoirs à corriger pour le cours
+loop terminerCorrigerDevoirs
+enseignant -> systeme : recupererUnDevoirEtudiant(idEspaceCours: number,\nIdDevoir: number, idEtudiant: number)
+enseignant -> systeme : corrigerDevoir(idEspaceCours: number, idDevoir: number,\nidRemise: number, idEtudiant : number, note: number, pathFichierCorrection: string)
+end
+@enduml
+
+@startuml dss_corrigerDevoirAlternatif
+title DSS corrigerDevoirAlternatif
+hide footbox
+actor ":Enseignant" as enseignant
+participant ":Systeme" as systeme
+
+enseignant ->  systeme : recupererTousEspaceCours(token : String)
+enseignant <-- systeme : cours actifs de l’enseignant ainsi\nque le nombre de devoirs à corriger\npour chaque cours
+enseignant -> systeme : recupererTousDevoirsEspaceCours(idEspaceCours: number)
+systeme --> enseignant : devoirs à corriger pour le cours
+enseignant -> systeme : creerZipCorrectionDevoir(idEspaceCours: number, idDevoir: number)
+systeme --> enseignant : fichier zip. avec les fichier pdf\nnommé avec un nom unique,\nun fichier CSV avec 3 colonnes:\nle code permanent de l'étudiant,\nle nom complet de l'étudiant,\nla note (champ vide) et le nom du\npdf attribué à l'étudiant
+enseignant -> systeme : corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number,\npathFichierZip: string)
+@enduml

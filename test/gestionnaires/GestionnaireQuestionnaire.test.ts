@@ -139,7 +139,7 @@ describe("Test modifier un questionnaire", ()=>{
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
 
-        let reponse = await authenticatedSession.post("/api/v1/enseignant/questionnaire/modifier/1/1").send(QUESTIONNAIREMODIF)
+        let reponse = await authenticatedSession.put("/api/v1/enseignant/questionnaire/modifier/1/1").send(QUESTIONNAIREMODIF)
 
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")

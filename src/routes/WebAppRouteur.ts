@@ -6,6 +6,8 @@ import { GestionnaireQuestionnaire } from '../core/controllers/GestionnaireQuest
 import { UnauthorizedError } from '../core/errors/UnauthorizedError';
 import { AuthorizationHelper } from '../core/helper/AuthorizationHelper';
 import authMiddleware from '../core/middleware/auth.middleware';
+import { EtatTentative } from '../core/model/enum/EtatTentative';
+
 import { TypeQuestion } from '../core/model/TypeQuestion';
 
 //Le routeur permettant de gérer les routes pour notre site web (Render des Vues)
@@ -136,7 +138,8 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        res.render("enseignant/question/detail-question", { question: JSON.parse(question) });
+        let jsonQuestion = JSON.parse(question);
+        res.render("enseignant/question/" + jsonQuestion._type + "/detail-question", { question: jsonQuestion });
     }
 
 
@@ -147,12 +150,13 @@ export class WebAppRouteur {
         let id = req.params.id;
         let choix = req.params.type;
         var enumChoixType = TypeQuestion[choix]
-        console.log(enumChoixType)
-        res.render("enseignant/question/" + enumChoixType,
+        res.render("enseignant/question/" + enumChoixType + "/ajouter-modifier-Question",
             {
                 idEspaceCours: id,
                 question: {},
-                estModification: false
+                estModification: false,
+                typeQuestion: enumChoixType,
+                titreTypeQuestion: TypeQuestion.getTitle(enumChoixType)
             });
     }
 
@@ -174,12 +178,14 @@ export class WebAppRouteur {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let idQuestion = parseInt(req.params.idQuestion);
         let question = this.gestionnaireQuestion.recupererUneQuestion(idEspaceCours, idQuestion);
-        res.render("enseignant/question/question-vrai-faux",
+        let jsonQuestion = JSON.parse(question);
+        res.render("enseignant/question/" + jsonQuestion._type + "/ajouter-modifier-Question",
             {
                 idEspaceCours: idEspaceCours,
-                question: JSON.parse(question),
+                question: jsonQuestion,
                 estModification: true,
-                returnUrl: req.headers.referer
+                returnUrl: req.headers.referer,
+                titreTypeQuestion: TypeQuestion.getTitle(jsonQuestion._type)
             });
     }
 
@@ -297,11 +303,11 @@ export class WebAppRouteur {
     public corrigerDevoir(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.idEspaceCours);
         let espaceCours = JSON.parse(this.gestionnaireCours.recupererUnEspaceCours(idEspaceCours));
-    
+
         let data;
         data = {
             espaceCours: espaceCours,
-            returnURL: req.headers.referer 
+            returnURL: req.headers.referer
         }
 
         let path;
@@ -347,6 +353,55 @@ export class WebAppRouteur {
 
 
     //#endregion Devoirs
+
+
+    //#region Questionnaire
+
+    public recupererTousQuestionnairesEtudiant(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.id);
+        let questionnaires = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(idEspaceCours);
+        res.render("etudiant/questionnaire/liste-questionnaires", {
+            questionnaires: JSON.parse(questionnaires),
+            idEtudiant: AuthorizationHelper.getIdUser(req),
+            returnUrl: req.headers.referer
+        });
+    }
+
+    public recupererPasserQuestionnaire(req: Request, res: Response, next: NextFunction) {
+        let idEspaceCours = parseInt(req.params.idEspaceCours);
+        let idQuestionnaire = parseInt(req.params.idQuestionnaire);
+        let indexQuestion = parseInt(req.params.indexQuestion);
+
+        let questionnaire = JSON.parse(this.gestionnaireQuestionnaire.recupererUnQuestionnaire(idEspaceCours, idQuestionnaire));
+        let tentative = JSON.parse(this.gestionnaireQuestionnaire
+            .faireTentativeEtudiant(idEspaceCours,
+                idQuestionnaire,
+                AuthorizationHelper.getIdUser(req)));
+
+        let isRelecture = tentative._etat == EtatTentative.Complete;
+        if (!Number.isInteger(indexQuestion)) {
+            indexQuestion = 0;
+        }
+        let question: any = questionnaire._questions[indexQuestion];   
+        if(question == undefined)
+            question = questionnaire._questions[0];   
+
+        res.render(`etudiant/questionnaire/${isRelecture ? "relecture" : "passer"}/question/${question._type}`, {
+            tentative: tentative,
+            question: question,
+            titreTypeQuestion: TypeQuestion.getTitle(question._type),
+            idEspaceCours: idEspaceCours,
+            idQuestionnaire: idQuestionnaire,
+            indexQuestion: indexQuestion,
+            nbQuestions: questionnaire._questions.length,
+            returnUrl: req.headers.referer
+        });
+    }
+
+
+
+
+    //#endregion Questionnaire
 
 
     //#endregion Étudiant
@@ -404,16 +459,16 @@ export class WebAppRouteur {
 
         //Cours
         this.router.get('/etudiant/cours/detail/:id', this.recupererUnEspaceCours.bind(this));
-
         //Devoirs
         this.router.get('/etudiant/devoir/:id', this.recupererTousDevoirsEtudiant.bind(this));
         this.router.get('/etudiant/devoir/detail/:idEspaceCours/:idDevoir', this.recupererUnDevoirEtudiant.bind(this));
 
 
         // //Questionnaire
-        // this.router.get('/etudiant/questionnaire/', this.recupererTousQuestionnaires.bind(this));
-        // this.router.get('/etudiant/questionnaire/:id', this.recupererTousQuestionnaires.bind(this));
-        // this.router.get('/etudiant/questionnaire/detail/:idEspaceCours/:idQuestionnaire', this.recupererUnQuestionnaire.bind(this));
+
+        this.router.get('/etudiant/questionnaire/:id', this.recupererTousQuestionnairesEtudiant.bind(this));
+        this.router.get('/etudiant/questionnaire/afficher/:idEspaceCours/:idQuestionnaire', this.recupererPasserQuestionnaire.bind(this));
+        this.router.get('/etudiant/questionnaire/afficher/:idEspaceCours/:idQuestionnaire/:indexQuestion', this.recupererPasserQuestionnaire.bind(this));
 
 
         //#endregion Routes Étudiants

@@ -7,8 +7,8 @@ var request =  session(app)
 var authenticatedSession;
 const COURSEVALUE1 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}'
 const COURSEVALUE2 = '{"_id":2,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"02","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-02","_date_fin":"2019-09-03"}'
-const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","idQuestion":"","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true"}';
-const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","idQuestion":"","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false"}';
+let QUESTION12 = '{"idEspaceCours":"1","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"1","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true","reponses":[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]}';
+const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"2","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false","reponses":[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]}';
 const QUESTIONNAIRE1 = '{"idEspaceCours":"1","estModification":"false","idQuestionnaire":"","nom":"Questionnaire1","description":"description1","status":"on"}'
 
 beforeAll((done)=>{
@@ -24,11 +24,26 @@ beforeAll((done)=>{
 beforeEach(() => {
     //Permet de ne pas afficher les console.error du middleware.error.ts
     jest.spyOn(console, 'error').mockImplementation(() => {});
+    let fd : FormData = new FormData();
+    fd.append("idEspaceCours","2");
+    
 });
 
 afterEach(function () {
     universite.reset();
 });
+
+let QUESTION1 = ():FormData => {
+    let fd: FormData = new FormData()
+    fd.append("idEspaceCours","1")
+    fd.append("typeQuestion","question-vrai-faux")
+    fd.append("nom","Question1")
+    fd.append("tags","q1,q2")
+    fd.append("description","description")
+    fd.append("reponses",'[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]')
+    return fd;
+}
+
 
 describe('Ajouter une question', ()=> {
 
@@ -36,9 +51,11 @@ describe('Ajouter une question', ()=> {
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
 
         const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1())
         expect(reponse.status).toBe(201)
         expect(reponse.body.message).toContain("Success")
+        let questions = universite.recupererUnEspaceCours(1).recupererToutesQuestions();
+        expect(questions[0].getId()).toBe(1);
 
     })
 })
@@ -49,7 +66,7 @@ describe('Details questions', ()=> {
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
 
         const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         expect(reponse.status).toBe(201)
         expect(reponse.body.message).toContain("Success")
 
@@ -74,9 +91,9 @@ describe('Recuperer toutes questions', ()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-        .send(JSON.parse(QUESTION1))
+        .send(QUESTION1)
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION2))
+                                .send(QUESTION2)
 
         const reponse = await authenticatedSession.get("/api/v1/enseignant/question")
         expect(reponse.status).toBe(200)
@@ -92,9 +109,9 @@ describe('Recuperer question espace cours', ()=> {
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE2})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/2")
-                                .send(JSON.parse(QUESTION2))
+                                .send(QUESTION2)
 
 
         const reponse = await authenticatedSession.get("/api/v1/enseignant/question/2")
@@ -113,9 +130,9 @@ describe('Modifier question', ()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         
-        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/modifier/1/1").send(JSON.parse(QUESTION2))
+        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/modifier/1/1").send(QUESTION2)
 
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
@@ -133,7 +150,7 @@ describe('Supprimer question', ()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         const reponse = await authenticatedSession.delete("/api/v1/enseignant/question/supprimer/1/1")
 
         expect(reponse.status).toBe(200)
@@ -156,7 +173,7 @@ describe("Test occurence d'une question", ()=> {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1}) 
         let reponse = await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: '1'})
         let question = universite.recupererUnEspaceCours(1).recupererUneQuestion(1)
@@ -171,7 +188,7 @@ describe("Test occurence d'une question", ()=> {
         
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({data: COURSEVALUE1})
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+                                .send(QUESTION1)
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send({QUESTIONNAIRE1}) 
         let reponse = await authenticatedSession.post("/api/v1/enseignant/questionnaire/question/1/1").send({data: ''})
 

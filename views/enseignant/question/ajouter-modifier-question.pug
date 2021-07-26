@@ -1,8 +1,9 @@
 extends ../master-template-enseignant.pug 
 block content
     //- Start bloc content
-    +btn-back(estModification ? "Modifier une question" : "Ajouter une question", 
-        returnUrl || `/enseignant/question/${idEspaceCours}`)  
+    +btn-back((estModification ? "Modifier une question" : "Ajouter une question") + (titreTypeQuestion ? ` - ${titreTypeQuestion}` : ""), 
+        returnUrl || `/enseignant/question/choix/${idEspaceCours}`)  
+
     div.row
         div.col.s10.offset-s1   
             if !estModification 

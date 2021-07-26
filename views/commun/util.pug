@@ -7,14 +7,13 @@ mixin btn-back(titre, lienRetour)
                     data-lien-retour=lienRetour) chevron_left
                 |#{titre}
 
-//- Tableau pour afficher  les remises d'un devoir/questionnaires
-//- TODO les questionnaires ne vont plus avoir de remise alors il faudrait faire un autre version du tableau pour les questionnaires
-//- Plus besoin de l'avoir dans le util.pug   
-mixin table-remise-etudiants(remises, baseURL, currentOrdre)
+//- Tableau pour afficher  les remises d'un devoir/questionnaires 
+mixin table-resultat-etudiants(resultats, baseURL, currentOrdre)
     h3 Remises des étudiants
     div.row.table-container
         div.col.s12
             table.bordered.highlight
+                - var isDevoir = resultats[0]._dateRemise
                 thead 
                     tr  
                         th.data-field 
@@ -24,50 +23,43 @@ mixin table-remise-etudiants(remises, baseURL, currentOrdre)
                                     i.material-icons #{currentOrdre == 1 ? "arrow_drop_up" : "arrow_drop_down"} 
                         th.data-field Code permanent 
                         th.data-field Etat
-                        th.data-field Date de remise
-                        th.data-field Date de correction
+                        th.data-field #{isDevoir ? "Date de remise" : "Date de début"}
+                        th.data-field #{isDevoir ? "Date de correction" : "Date de fin"} 
                         th.data-field
                             - var valueOrdreNote = currentOrdre == 3 ? 4 : 3 
                             a.sort-header.with-icon(href=baseURL + "?o=" + valueOrdreNote) Note 
                                 if currentOrdre == 3 || currentOrdre == 4
                                     i.material-icons #{currentOrdre == 3 ? "arrow_drop_up" : "arrow_drop_down"} 
                 tbody 
-                    each remise in remises        
-                        tr 
-                            td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
-                            td #{remise._etudiant._code_permanent}
-                            td #{remise._etat}
-                            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
-                            td #{remise._dateDeCorrection ? moment(remise._dateDeCorrection).format("LLL") : "-"} 
-                            td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
+                    if(isDevoir)
+                        +table-remise-etudiants-data(resultats)
+                    else  
+                        +table-tentative-etudiants-data(resultats)
+mixin table-remise-etudiants-data(remises)
+    each remise in remises        
+        tr 
+            td #{remise._etudiant._nom}, #{remise._etudiant._prenom} 
+            td #{remise._etudiant._code_permanent}
+            td #{remise._etat}
+            td #{remise._dateRemise ? moment(remise._dateRemise).format("LLL") : "-"} 
+            td #{remise._dateDeCorrection ? moment(remise._dateDeCorrection).format("LLL") : "-"} 
+            td #{remise._note || "-"} / #{questionnaire ? questionnaire._questions.length : devoir._noteMaximale} 
 
-mixin montrer-bouton-supprimer-pour-detail-devoir(devoir)
-    - var unDevoirRemis = 0
-    each remise in devoir._remises
-        if remise._etat == "Remis"
-            - unDevoirRemis = 1
-    if unDevoirRemis == 1
-        a(class="waves-effect waves-light btn disabled red right btn-delete-devoir" href="javascript:void(0)"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
-    else
-        a(class="waves-effect waves-light btn red right btn-delete-devoir" href="javascript:void(0)"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
+mixin table-tentative-etudiants-data(tentatives)
+    each tentative in tentatives        
+        tr 
+            td #{tentative._etudiant._nom}, #{tentative._etudiant._prenom} 
+            td #{tentative._etudiant._code_permanent}
+            td #{tentative._etat}
+            td #{tentative._dateDebut ? moment(tentative._dateDebut).format("LLL") : "-"} 
+            td #{tentative._dateFin ? moment(tentative._dateFin).format("LLL") : "-"} 
+            td 
+                if tentative._etat == "Complété"
+                    |#{tentative._pointage.point} / #{tentative._pointage.pointMax} 
+                    | - #{(tentative._pointage.point / tentative._pointage.pointMax * 100).toFixed(2)} %
+                else 
+                    |-
 
-
-mixin montrer-bouton-supprimer-pour-liste-devoir(devoir)
-    -  unDevoirRemis = 0
-    each remise in devoir._remises
-        if remise._etat === "Remis"
-            - unDevoirRemis = 1
-    if unDevoirRemis != 1
-        a(class="btn-delete-devoir"
-            data-id-devoir=devoir._id
-            data-nom=devoir._nom
-            data-id-espace-cours=devoir._idEspaceCours) Supprimer
 
 //- Modal pour remettre un devoir
 mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
@@ -91,29 +83,54 @@ mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
 
 
 //- Modal pour corriger un devoir 
-mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise, idEtudiant)
-    div.modal(id=`modal-corriger-devoir-${idDevoir}-${idRemise}`)
+mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise)
+    div.modal(id=`modal-corriger-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`)
         div.modal-content
             h1#modal-titre Corriger : #{titre} - #{nomEtudiant}
             p Êtes vous sure de vouloir remettre la correction du devoir de #[b #{nomEtudiant}] maintenant? La correction est #[b définitive]. 
-            form.form-corriger-devoir(id=`form-corriger-devoir-${idDevoir}-${idRemise}`)
+            form.form-corriger-devoir(id=`form-corriger-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`)
                 input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
                 input(type="hidden" name="idDevoir", value=idDevoir) 
                 input(type="hidden" name="idRemise", value=idRemise)
-                input(type="hidden" name="idEtudiant", value=idEtudiant)
                 div.row
                     div.file-field.input-field.col.s12   
                         div(class="waves-effect waves-light btn blue accent-2") 
                             span Fichier 
                             input(type="file" accept=".pdf" name="devoirRetroaction")
                         .file-path-wrapper 
-                            input(class="file-path validate" id=`fichier-devoir-${idDevoir}-${idRemise}` type="text" accept=".pdf")
-                            label(for=`fichier-devoir-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
+                            input(class="file-path validate" id=`fichier-devoir-${idEspaceCours}-${idDevoir}-${idRemise}` type="text" accept=".pdf")
+                            label(for=`fichier-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`) Rétroaction (optionnel)
                     div.input-field.col.s12
-                        input(id=`note-devoir-${idDevoir}-${idRemise}` type="number" name="noteDevoir" 
+                        input(id=`note-devoir-${idEspaceCours}-${idDevoir}-${idRemise}` type="number" name="noteDevoir" 
                             onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))"
                             required)
-                        label(for=`note-devoir-${idDevoir}-${idRemise}`) Note
+                        label(for=`note-devoir-${idEspaceCours}-${idDevoir}-${idRemise}`) Note
+                div.row
+                    div.col.s12  
+                        button(class="waves-effect waves-light btn" type="submit") Corriger
+
+
+//- Modal pour corriger un devoir 
+mixin modal-corriger-devoir-batch(titre, idEspaceCours, idDevoir)
+    div.modal(id=`modal-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+        div.modal-content
+            h1#modal-titre Corriger : #{titre} - Mode Multiple
+            p Êtes vous sure de vouloir remettre la correction des devoirs remis maintenant?
+                br
+                |Le fichier Zip #[b doit] contenir le Fichier CSV et #[b peut] contenir les fichiers de retroactions des étudiants
+                br 
+                |#[b Note:] Le téléchargement en Mode Multiple n'ajoute pas les remises déjà corrigés
+            form.form-corriger-devoir-batch(id=`form-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+                input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
+                input(type="hidden" name="idDevoir", value=idDevoir) 
+                div.row
+                    div.file-field.input-field.col.s12   
+                        div(class="waves-effect waves-light btn blue accent-2") 
+                            span Fichier 
+                            input(type="file" accept=".zip" name="devoirRetroactionZip")
+                        .file-path-wrapper 
+                            input(class="file-path validate" id=`fichier-devoir-batch-${idEspaceCours}-${idDevoir}` type="text" accept=".zip" required)
+                            label(for=`fichier-devoir-batch-${idEspaceCours}-${idDevoir}`) Zip de correction
                 div.row
                     div.col.s12  
                         button(class="waves-effect waves-light btn" type="submit") Corriger
@@ -123,26 +140,29 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
 mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
     ul(class="collection with-header")
         li.collection-header 
-            h2 #{titreDevoir}      
+            h2 #{titreDevoir}    
+                a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-batch-${idEspaceCours}-${idDevoir}`)
+                            i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") library_add 
+                a(class="secondary-content" href=`/api/v1/enseignant/devoir/zip/${idEspaceCours}/${idDevoir}`)
+                    i(class="material-icons small waves-effect waves-light blue-text text-acccent-2") file_download                  
         each remise in remises.filter(r => r._etat != "Non Remis") 
             li.collection-item 
                 - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
-                - var idEtudiant = remise._etudiant._id
                 div #{infoEtudiant}
                     if remise._etat == "Remis et Corrigé"
                         a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichierCorrection)}`)
                             i(class="material-icons small waves-effect waves-light") library_books                   
                     else 
-                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
+                        a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idEspaceCours}-${idDevoir}-${remise._id}`)
                             i(class="material-icons small waves-effect waves-light ") library_add
-                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id, idEtudiant)
+                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
                     a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichier)}`)
                         i(class="material-icons small waves-effect waves-light") file_download                   
                         
         else
             li.collection-item 
                 em Aucune remise.
-
+    +modal-corriger-devoir-batch(titreDevoir, idEspaceCours, idDevoir)
 
 //- Permet d'afficher tous les devoirs remis d'un espace cours pour la correction
 mixin corriger-devoir-espace-cours(idEspace, devoirs)
@@ -153,3 +173,45 @@ mixin corriger-devoir-espace-cours(idEspace, devoirs)
             else
                 em Aucun devoir ayant au moins une remise.
 
+
+mixin navigation-passer-questionnaire(indexQuestion, nbQuestions, isRelecture)
+    div.row
+        div.col.s12
+            if(indexQuestion > 0)
+                a(class=`waves-effect waves-light btn left btn-nav-questionnaire btn-previous-question-ajout blue accent-2 ${isRelecture ? " isRelecture": ""}`
+                    href="javascript:void(0)")
+                    i(class="material-icons left medium waves-effect waves-light") chevron_left 
+                        span.hide-on-small-only Précédent
+            if(indexQuestion < (nbQuestions - 1))
+                a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-next-question blue accent-2 ${isRelecture ? " isRelecture": ""}`
+                    href="javascript:void(0)")                      
+                    i(class="material-icons right medium waves-effect waves-light") chevron_right
+                        span.hide-on-small-only Suivant
+            else 
+                a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-terminer-tentative ${isRelecture ? " isRelecture": ""}` 
+                    href="javascript:void(0)")
+                    i(class="material-icons right medium waves-effect waves-light show-on-small") send                      
+                    span.hide-on-small-only Terminer #{isRelecture ? "la relecture": "Et Corriger"}
+
+mixin feedback-question(isValid, messageIsValid, messageIsNotValid, choixBonnesReponses)
+    div.white(style="margin: 25px 0;padding: 5px 10px")
+        if isValid
+            +feedback-question-isValid(messageIsValid, choixBonnesReponses)
+        else 
+            +feedback-question-isNotValid(messageIsNotValid, choixBonnesReponses)
+
+mixin feedback-question-isValid(message)
+    h4.green-text.text-lighten-1.with-icon #[b Bonne réponse]
+        i(class="material-icons waves-effect waves-light" style="padding-left:5px") check
+    if message && message.length > 0
+        p #{message}
+    if choixBonnesReponses
+        p #[b Réponse(s):] #{choixBonnesReponses} 
+
+mixin feedback-question-isNotValid(message, choixBonnesReponses)
+    h4.red-text.text-lighten-1.with-icon #[b Mauvaise réponse]
+        i(class="material-icons waves-effect waves-light" style="padding-left:5px") error_outline
+    if message && message.length > 0
+        p #{message}
+    if choixBonnesReponses
+        p #[b Réponse(s):] #{choixBonnesReponses} 

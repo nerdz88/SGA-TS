@@ -65,7 +65,7 @@ describe('Modifier devoir', ()=> {
         await authenticatedSession.post("/api/v1/enseignant/devoir/ajouter/1")
             .send(JSON.parse(DEVOIR1))
 
-        const reponse = await authenticatedSession.post("/api/v1/enseignant/devoir/modifier/1/1").send(JSON.parse(DEVOIR2))
+        const reponse = await authenticatedSession.put("/api/v1/enseignant/devoir/modifier/1/1").send(JSON.parse(DEVOIR2))
 
         expect(reponse.status).toBe(200)
         expect(reponse.body.message).toContain("Success")
