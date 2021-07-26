@@ -52,7 +52,7 @@ class App {
 
       this.expressApp.use(fileUpload({
         useTempFiles: true,
-        tempFileDir: "/temp/upload/"
+        tempFileDir: "/tmp/"
       }))
 
     //this.expressApp.use(flash); // https://www.npmjs.com/package/node-twinkle typed using https://stackoverflow.com/a/53786892/1168342 (solution #2)
