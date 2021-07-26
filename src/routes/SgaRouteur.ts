@@ -282,7 +282,7 @@ export class SgaRouteur {
         let idEspaceCours = req.body.idEspaceCours;
         let idDevoir = req.body.idDevoir;
         let idRemise = req.body.idRemise;
-        let idEtudiant = req.body.idEtudiant;
+        // let idEtudiant = req.body.idEtudiant;
         let note = req.body.noteDevoir;
         let token = AuthorizationHelper.getCurrentToken(req);
         let pathUpload;
@@ -302,12 +302,16 @@ export class SgaRouteur {
 
         let self = this;
         function doCorrectionDevoir() {
-            self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir, idRemise, note, pathUpload ?? "", token, idEtudiant);
-            res.status(200).send({
-                message: 'Success',
-                status: res.status,
-                path: pathUpload ?? "NONE"
-            });
+            self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir,
+                    idRemise, note,
+                    pathUpload ?? "", token)
+                .then(() => {
+                    res.status(200).send({
+                        message: 'Success',
+                        status: res.status,
+                        path: pathUpload ?? "NONE"
+                    });
+                }).catch(next);
         }
     }
 
@@ -324,6 +328,7 @@ export class SgaRouteur {
 
         let idEspaceCours = req.body.idEspaceCours;
         let idDevoir = req.body.idDevoir;
+        let token = AuthorizationHelper.getCurrentToken(req);
 
         let pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}`;
         fs.mkdirSync(pathUpload, { recursive: true });
@@ -331,13 +336,14 @@ export class SgaRouteur {
         pathUpload += `/${newFilename}`;
 
         req.files.devoirRetroactionZip.mv(pathUpload).then(() => {
-            this.gestionnaireDevoir.corrigerTousDevoirsZip(idEspaceCours, idDevoir, pathUpload);
-            res.status(200).send({
-                message: 'Success',
-                status: res.status
-            });
+            this.gestionnaireDevoir.corrigerTousDevoirsZip(idEspaceCours, idDevoir, pathUpload, token)
+                .then(() => {
+                    res.status(200).send({
+                        message: 'Success',
+                        status: res.status
+                    });
+                }).catch(next);
         }).catch(next);
-
     }
 
 
