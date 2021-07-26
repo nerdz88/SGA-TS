@@ -68,12 +68,15 @@ export class GestionnaireDevoir {
         devoir.remettreDevoir(idEtudiant, pathFichier);
     }
 
-    public corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string) {
+    public corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string, token: string, studentId : number) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let devoir = espaceCours.recupererUnDevoir(idDevoir);
         devoir.corrigerDevoir(idRemise, note, pathFichierCorrection);
+        this.ajouterNoteEtudiant(token, idEspaceCours, "devoir", idDevoir, note, studentId);
     }
 
-
+    private async ajouterNoteEtudiant(token: string, idEspaceCours: number, type: string, type_id : number, note: number, studentId : number){
+        return await this.universite.ajouterNoteEtudiant(token, idEspaceCours, type, type_id , note, studentId);
+    }
 }
 

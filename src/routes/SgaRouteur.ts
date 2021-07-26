@@ -281,7 +281,9 @@ export class SgaRouteur {
         let idEspaceCours = req.body.idEspaceCours;
         let idDevoir = req.body.idDevoir;
         let idRemise = req.body.idRemise;
+        let idEtudiant = req.body.idEtudiant;
         let note = req.body.noteDevoir;
+        let token = AuthorizationHelper.getCurrentToken(req);
         let pathUpload;
 
         if (hasFichier) {
@@ -297,8 +299,7 @@ export class SgaRouteur {
 
         let self = this;
         function doCorrectionDevoir() {
-            self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir, idRemise, note, pathUpload ?? "");
-
+            self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir, idRemise, note, pathUpload ?? "", token, idEtudiant);
             res.status(200).send({
                 message: 'Success',
                 status: res.status,

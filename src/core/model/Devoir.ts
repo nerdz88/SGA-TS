@@ -5,6 +5,7 @@ import { Etudiant } from './Etudiant';
 import { Etat, Remise } from "./Remise";
 import moment = require('moment');
 import { NotFoundError } from '../errors/NotFoundError';
+import {universite} from "../../App";
 
 export class Devoir {
     private _id: number;

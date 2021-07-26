@@ -91,7 +91,7 @@ mixin modal-remettre-devoir(titre, idEspaceCours, idDevoir)
 
 
 //- Modal pour corriger un devoir 
-mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise)
+mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemise, idEtudiant)
     div.modal(id=`modal-corriger-devoir-${idDevoir}-${idRemise}`)
         div.modal-content
             h1#modal-titre Corriger : #{titre} - #{nomEtudiant}
@@ -99,7 +99,8 @@ mixin modal-corriger-devoir(titre, nomEtudiant, idEspaceCours, idDevoir, idRemis
             form.form-corriger-devoir(id=`form-corriger-devoir-${idDevoir}-${idRemise}`)
                 input(type="hidden" name="idEspaceCours", value=idEspaceCours)   
                 input(type="hidden" name="idDevoir", value=idDevoir) 
-                input(type="hidden" name="idRemise", value=idRemise) 
+                input(type="hidden" name="idRemise", value=idRemise)
+                input(type="hidden" name="idEtudiant", value=idEtudiant)
                 div.row
                     div.file-field.input-field.col.s12   
                         div(class="waves-effect waves-light btn blue accent-2") 
@@ -126,6 +127,7 @@ mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
         each remise in remises.filter(r => r._etat != "Non Remis") 
             li.collection-item 
                 - var infoEtudiant = `${remise._etudiant._nom}, ${remise._etudiant._prenom} - ${remise._etudiant._code_permanent}`
+                - var idEtudiant = remise._etudiant._id
                 div #{infoEtudiant}
                     if remise._etat == "Remis et Corrigé"
                         a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichierCorrection)}`)
@@ -133,7 +135,7 @@ mixin corriger-devoir(titreDevoir, idDevoir, idEspaceCours, remises)
                     else 
                         a(class="secondary-content modal-trigger" href=`#modal-corriger-devoir-${idDevoir}-${remise._id}`)
                             i(class="material-icons small waves-effect waves-light ") library_add
-                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id)
+                        +modal-corriger-devoir(titreDevoir, infoEtudiant, idEspaceCours, idDevoir, remise._id, idEtudiant)
                     a(class="secondary-content" href=`/api/v1/download/${encodeURIComponent(remise._pathFichier)}`)
                         i(class="material-icons small waves-effect waves-light") file_download                   
                         
