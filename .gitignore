@@ -5,7 +5,7 @@ dist
 coverage
 typings-custom/flash.ts.broken
 package-lock.json
-
+.idea/*
 uploads/devoirs/*
 src/data/log/*/*
 !*.placeholder
