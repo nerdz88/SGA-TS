@@ -27,7 +27,7 @@
 </details>
 
 # Introduction
-L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, les cas d'utilisations CU04 (a,b,c,d) ainsi que CU05 (a,b,c,d) ont été implémentés, testés et documentés. Ces cas correspondent à la gestion des devoirs ainsi que des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système.
+L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, CU02 - Gérer questions à été modifier afin d'ajouter le support pour divers types de questions. De plus les cas : CU03, CU06, CU07, ainsi que CU05 (a,b,c,d) ont été implémentés incluant les scénarios alternatifs, testés et documentés. Ces cas correspondent à la correction et la remises des devoirs ainsi que le passage des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système. Finalement, certaine mesure mesure FURPS+ ont été instauré notamment : F1, F2, U1, R1, S3.
 
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
