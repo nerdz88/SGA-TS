@@ -494,11 +494,11 @@ export class SgaRouteur {
     }
 
     public remettreDevoir(req: any, res: Response, next: NextFunction) {
-        if (!req.files.devoir)
+        if (!req.files || !req.files.devoir)
             throw new InvalidParameterError("Vous devez fournir un fichier pdf");
 
-        let idEspaceCours = req.body.idEspaceCours;
-        let idDevoir = req.body.idDevoir;
+        let idEspaceCours = parseInt(req.body.idEspaceCours);
+        let idDevoir = parseInt(req.body.idDevoir);
         let etudiant = AuthorizationHelper.getCurrentUserInfo(req);
 
         let pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}/remise`;
