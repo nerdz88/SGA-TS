@@ -1,0 +1,403 @@
+{
+    "arrayEspaceCours": [
+        {
+            "_id": 3,
+            "_numero": "03",
+            "_cours": {
+                "_titre": "Analyse et conception de logiciels",
+                "_sigle": "LOG210",
+                "_nbMaxEtudiant": 5
+            },
+            "_dateDebut": "2019-09-03",
+            "_dateFin": "2019-11-04",
+            "_etudiants": [
+                {
+                    "_nom": "last_name2",
+                    "_prenom": "firstname2",
+                    "_email": "student+2@gmail.com",
+                    "_id": 2,
+                    "_code_permanent": "lastf2"
+                },
+                {
+                    "_nom": "last_name6",
+                    "_prenom": "firstname6",
+                    "_email": "student+6@gmail.com",
+                    "_id": 6,
+                    "_code_permanent": "lastf6"
+                }
+            ],
+            "_questions": [
+                {
+                    "_answerChoix": [
+                        {
+                            "reponse": false,
+                            "bonneReponseText": "wow bravo",
+                            "mauvaiseReponseText": "Git gut",
+                            "choix": "La bonne réponse",
+                            "__type": "reponsechoixmultiple"
+                        },
+                        {
+                            "reponse": true,
+                            "bonneReponseText": "Bon bon bon",
+                            "mauvaiseReponseText": "Git gut",
+                            "choix": "La mauvaise réponse!",
+                            "__type": "reponsechoixmultiple"
+                        }
+                    ],
+                    "_idEspaceCours": 3,
+                    "_type": "question-choix-multiples",
+                    "_tags": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "_nom": "Choix multiple 1",
+                    "_descriptionQuestion": "Trouver la bonne réponse ",
+                    "_id": 1,
+                    "_nbOccurence": 5,
+                    "__type": "questionchoixmultiple"
+                },
+                {
+                    "_answerChoix": [],
+                    "_idEspaceCours": 3,
+                    "_type": "question-essay",
+                    "_tags": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "_nom": "Rédaction 1",
+                    "_descriptionQuestion": "Git gud kids",
+                    "_id": 2,
+                    "_nbOccurence": 4,
+                    "__type": "questionessaie"
+                },
+                {
+                    "_answerChoix": [
+                        {
+                            "reponse": "abc",
+                            "bonneReponseText": "Good job",
+                            "mauvaiseReponseText": "bruhhh",
+                            "correspondance": "lettre",
+                            "__type": "reponsemisenecorrespondance"
+                        },
+                        {
+                            "reponse": "123",
+                            "bonneReponseText": "Good job",
+                            "mauvaiseReponseText": "cmon dude",
+                            "correspondance": "nombre",
+                            "__type": "reponsemisenecorrespondance"
+                        }
+                    ],
+                    "_idEspaceCours": 3,
+                    "_type": "question-mise-correspondance",
+                    "_tags": [
+                        "ez",
+                        "pz"
+                    ],
+                    "_nom": "Correspondance 1",
+                    "_descriptionQuestion": "Faire le bon match",
+                    "_id": 3,
+                    "_nbOccurence": 2,
+                    "correspondances": "[\"lettre\",\"nombre\"]",
+                    "__type": "questionmisenecorrespondance"
+                },
+                {
+                    "_answerChoix": [
+                        {
+                            "reponse": true,
+                            "bonneReponseText": "lucky guess?",
+                            "mauvaiseReponseText": "ah well gg",
+                            "__type": "reponsevraifaux"
+                        }
+                    ],
+                    "_idEspaceCours": 3,
+                    "_type": "question-vrai-faux",
+                    "_tags": [
+                        "b",
+                        "c"
+                    ],
+                    "_nom": "Vrai faux 1",
+                    "_descriptionQuestion": "Je suis vrai mais je suis faux alors je suis?",
+                    "_id": 4,
+                    "_nbOccurence": 1,
+                    "__type": "questionvraifaux"
+                },
+                {
+                    "_answerChoix": [
+                        {
+                            "reponse": "Courte",
+                            "bonneReponseText": "Courte",
+                            "mauvaiseReponseText": "Courte rip",
+                            "__type": "reponsecourte"
+                        },
+                        {
+                            "reponse": "réponse",
+                            "bonneReponseText": "okok ",
+                            "mauvaiseReponseText": "réponse rip",
+                            "__type": "reponsecourte"
+                        }
+                    ],
+                    "_idEspaceCours": 3,
+                    "_type": "question-reponse-courte",
+                    "_tags": [
+                        "a",
+                        "d"
+                    ],
+                    "_nom": "Question réponse courte 1",
+                    "_descriptionQuestion": "Je suis une question à réponse courte",
+                    "_id": 5,
+                    "_nbOccurence": 1,
+                    "__type": "questionreponsecourte"
+                },
+                {
+                    "_answerChoix": [
+                        {
+                            "reponse": "1",
+                            "bonneReponseText": "ok good",
+                            "mauvaiseReponseText": "WEll you suck",
+                            "__type": "reponsenumerique"
+                        },
+                        {
+                            "reponse": "2",
+                            "bonneReponseText": "gasg ag",
+                            "mauvaiseReponseText": "agag",
+                            "__type": "reponsenumerique"
+                        },
+                        {
+                            "reponse": "3",
+                            "bonneReponseText": "sgsgsg",
+                            "mauvaiseReponseText": "sgsgsg",
+                            "__type": "reponsenumerique"
+                        }
+                    ],
+                    "_idEspaceCours": 3,
+                    "_type": "question-numerique",
+                    "_tags": [
+                        "a",
+                        "b",
+                        "c",
+                        ""
+                    ],
+                    "_nom": "Numérique 1",
+                    "_descriptionQuestion": "Chiffres entre 1 à 3",
+                    "_id": 6,
+                    "_nbOccurence": 1,
+                    "__type": "questionnumerique"
+                }
+            ],
+            "_questionnaires": [
+                {
+                    "_idEspaceCours": "3",
+                    "_nom": "Questionnaire 1",
+                    "_description": "wow",
+                    "_status": "on",
+                    "_questions": [
+                        {
+                            "_answerChoix": [
+                                {
+                                    "reponse": false,
+                                    "bonneReponseText": "wow bravo",
+                                    "mauvaiseReponseText": "Git gut",
+                                    "choix": "La bonne réponse",
+                                    "__type": "reponsechoixmultiple"
+                                },
+                                {
+                                    "reponse": true,
+                                    "bonneReponseText": "Bon bon bon",
+                                    "mauvaiseReponseText": "Git gut",
+                                    "choix": "La mauvaise réponse!",
+                                    "__type": "reponsechoixmultiple"
+                                }
+                            ],
+                            "_idEspaceCours": 3,
+                            "_type": "question-choix-multiples",
+                            "_tags": [
+                                "a",
+                                "b",
+                                "c"
+                            ],
+                            "_nom": "Choix multiple 1",
+                            "_descriptionQuestion": "Trouver la bonne réponse ",
+                            "_id": 1,
+                            "_nbOccurence": 5,
+                            "__type": "questionchoixmultiple"
+                        },
+                        {
+                            "_answerChoix": [],
+                            "_idEspaceCours": 3,
+                            "_type": "question-essay",
+                            "_tags": [
+                                "a",
+                                "b",
+                                "c"
+                            ],
+                            "_nom": "Rédaction 1",
+                            "_descriptionQuestion": "Git gud kids",
+                            "_id": 2,
+                            "_nbOccurence": 4,
+                            "__type": "questionessaie"
+                        },
+                        {
+                            "_answerChoix": [
+                                {
+                                    "reponse": "abc",
+                                    "bonneReponseText": "Good job",
+                                    "mauvaiseReponseText": "bruhhh",
+                                    "correspondance": "lettre",
+                                    "__type": "reponsemisenecorrespondance"
+                                },
+                                {
+                                    "reponse": "123",
+                                    "bonneReponseText": "Good job",
+                                    "mauvaiseReponseText": "cmon dude",
+                                    "correspondance": "nombre",
+                                    "__type": "reponsemisenecorrespondance"
+                                }
+                            ],
+                            "_idEspaceCours": 3,
+                            "_type": "question-mise-correspondance",
+                            "_tags": [
+                                "ez",
+                                "pz"
+                            ],
+                            "_nom": "Correspondance 1",
+                            "_descriptionQuestion": "Faire le bon match",
+                            "_id": 3,
+                            "_nbOccurence": 2,
+                            "correspondances": "[\"lettre\",\"nombre\"]",
+                            "__type": "questionmisenecorrespondance"
+                        },
+                        {
+                            "_answerChoix": [
+                                {
+                                    "reponse": true,
+                                    "bonneReponseText": "lucky guess?",
+                                    "mauvaiseReponseText": "ah well gg",
+                                    "__type": "reponsevraifaux"
+                                }
+                            ],
+                            "_idEspaceCours": 3,
+                            "_type": "question-vrai-faux",
+                            "_tags": [
+                                "b",
+                                "c"
+                            ],
+                            "_nom": "Vrai faux 1",
+                            "_descriptionQuestion": "Je suis vrai mais je suis faux alors je suis?",
+                            "_id": 4,
+                            "_nbOccurence": 1,
+                            "__type": "questionvraifaux"
+                        },
+                        {
+                            "_answerChoix": [
+                                {
+                                    "reponse": "Courte",
+                                    "bonneReponseText": "Courte",
+                                    "mauvaiseReponseText": "Courte rip",
+                                    "__type": "reponsecourte"
+                                },
+                                {
+                                    "reponse": "réponse",
+                                    "bonneReponseText": "okok ",
+                                    "mauvaiseReponseText": "réponse rip",
+                                    "__type": "reponsecourte"
+                                }
+                            ],
+                            "_idEspaceCours": 3,
+                            "_type": "question-reponse-courte",
+                            "_tags": [
+                                "a",
+                                "d"
+                            ],
+                            "_nom": "Question réponse courte 1",
+                            "_descriptionQuestion": "Je suis une question à réponse courte",
+                            "_id": 5,
+                            "_nbOccurence": 1,
+                            "__type": "questionreponsecourte"
+                        },
+                        {
+                            "_answerChoix": [
+                                {
+                                    "reponse": "1",
+                                    "bonneReponseText": "ok good",
+                                    "mauvaiseReponseText": "WEll you suck",
+                                    "__type": "reponsenumerique"
+                                },
+                                {
+                                    "reponse": "2",
+                                    "bonneReponseText": "gasg ag",
+                                    "mauvaiseReponseText": "agag",
+                                    "__type": "reponsenumerique"
+                                },
+                                {
+                                    "reponse": "3",
+                                    "bonneReponseText": "sgsgsg",
+                                    "mauvaiseReponseText": "sgsgsg",
+                                    "__type": "reponsenumerique"
+                                }
+                            ],
+                            "_idEspaceCours": 3,
+                            "_type": "question-numerique",
+                            "_tags": [
+                                "a",
+                                "b",
+                                "c",
+                                ""
+                            ],
+                            "_nom": "Numérique 1",
+                            "_descriptionQuestion": "Chiffres entre 1 à 3",
+                            "_id": 6,
+                            "_nbOccurence": 1,
+                            "__type": "questionnumerique"
+                        }
+                    ],
+                    "_tentatives": [
+                        {
+                            "_id": 1,
+                            "_etudiant": {
+                                "_nom": "last_name2",
+                                "_prenom": "firstname2",
+                                "_email": "student+2@gmail.com",
+                                "_id": 2,
+                                "_code_permanent": "lastf2"
+                            },
+                            "_etat": "Non complété",
+                            "_mapReponse": {},
+                            "_pointage": {
+                                "point": 0,
+                                "pointMax": 0
+                            }
+                        },
+                        {
+                            "_id": 2,
+                            "_etudiant": {
+                                "_nom": "last_name6",
+                                "_prenom": "firstname6",
+                                "_email": "student+6@gmail.com",
+                                "_id": 6,
+                                "_code_permanent": "lastf6"
+                            },
+                            "_etat": "Non complété",
+                            "_mapReponse": {},
+                            "_pointage": {
+                                "point": 0,
+                                "pointMax": 0
+                            }
+                        }
+                    ],
+                    "_id": 1
+                }
+            ],
+            "_devoirs": [],
+            "_enseignantId": 3
+        }
+    ],
+    "arrayCours": [
+        {
+            "_titre": "Analyse et conception de logiciels",
+            "_sigle": "LOG210",
+            "_nbMaxEtudiant": 5
+        }
+    ]
+}
