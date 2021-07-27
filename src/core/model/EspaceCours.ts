@@ -18,6 +18,8 @@ import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
 import { QuestionEssaie } from "./questions/QuestionEssaie";
 import { EtatTentative } from "./enum/EtatTentative";
 import { Etat } from "./enum/Etat";
+import { Remise } from "./Remise";
+import { Tentative } from "./Tentative";
 
 
 export class EspaceCours {
@@ -70,6 +72,8 @@ export class EspaceCours {
         Devoir.currentId = 0;
         Question.currentId = 0;
         Questionnaire.currentId = 0;
+        Remise.currentId = 0;
+        Tentative.currentId = 0;
     }
 
     public ajouterEtudiants(etudiants: any) {

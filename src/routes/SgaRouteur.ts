@@ -277,15 +277,17 @@ export class SgaRouteur {
     }
 
     public corrigerDevoir(req: any, res: Response, next: NextFunction) {
-        let hasFichier = req.files.devoirRetroaction != undefined;
+        let hasFichier = req.files != undefined && req.files.devoirRetroaction != undefined;
 
-        let idEspaceCours = req.body.idEspaceCours;
-        let idDevoir = req.body.idDevoir;
-        let idRemise = req.body.idRemise;
+        let idEspaceCours = parseInt(req.body.idEspaceCours);
+        let idDevoir = parseInt(req.body.idDevoir);
+        let idRemise = parseInt(req.body.idRemise);
         // let idEtudiant = req.body.idEtudiant;
-        let note = req.body.noteDevoir;
+        let note = parseInt(req.body.noteDevoir);
         let token = AuthorizationHelper.getCurrentToken(req);
         let pathUpload;
+
+        let self = this;
 
         if (hasFichier) {
             pathUpload = `./uploads/devoirs/${idEspaceCours}/${idDevoir}/retroaction`;
@@ -300,7 +302,7 @@ export class SgaRouteur {
             doCorrectionDevoir();
         }
 
-        let self = this;
+     
         function doCorrectionDevoir() {
             self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir,
                     idRemise, note,
@@ -323,7 +325,7 @@ export class SgaRouteur {
     }
 
     public corrigerTousDevoirsZip(req: any, res: Response, next: NextFunction) {
-        if (!req.files.devoirRetroactionZip)
+        if (!req.files || !req.files.devoirRetroactionZip)
             throw new InvalidParameterError("Vous devez fournir un fichier zip");
 
         let idEspaceCours = req.body.idEspaceCours;

@@ -36,10 +36,10 @@ export class GestionnaireDevoir {
 
         let devoirsEtudiant = [];
         devoirsEspaceCours.forEach((d: any) => {
-            if (!d._visible)
-                return;
-            d._remiseEtudiant = d._remises.find(r => r._etudiant._id == idEtudiant);
-            devoirsEtudiant.push(d);
+            if (d._visible){
+                d._remiseEtudiant = d._remises.find(r => r._etudiant._id == idEtudiant);
+                devoirsEtudiant.push(d);
+            }                   
         });
 
         return JSON.stringify(devoirsEtudiant);
@@ -127,9 +127,10 @@ export class GestionnaireDevoir {
 
         let data = fs.readFileSync(`${pathContenuZip}/${fichierCSV.entryName}`);
         let contenuFichierCSV: string[] = data.toString().replace(/\r\n/g, '\n').split('\n');
+        let noteError = false;
         contenuFichierCSV.forEach(async (line, index) => {
             //On skip le header
-            if (index == 0 || line == "")
+            if (index == 0 || line == "" || noteError)
                 return;
 
             let lineCorrectionCSV = line.split(";");
@@ -138,8 +139,11 @@ export class GestionnaireDevoir {
             let note = parseInt(lineCorrectionCSV[4]);
 
             if (!Number.isInteger(note) || note < 0)
-                throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le fichier CSV contient" +
-                    " une note invalide, la note doit être un nombre plus grand que 0");
+            {
+                noteError = true;
+                return;
+            }
+                
             let pathfichierRetro = `${pathContenuZip}/${nomFichierRetro}`;
             let hasRetro = fs.existsSync(pathfichierRetro);
             await this.corrigerDevoir(idEspaceCours, idDevoir,
@@ -149,6 +153,9 @@ export class GestionnaireDevoir {
                 tokenEnseignant);
         });
 
+        if(noteError)
+            throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le fichier CSV contient" +
+                    " une note invalide, la note doit être un nombre plus grand que 0");
     }
 
 
