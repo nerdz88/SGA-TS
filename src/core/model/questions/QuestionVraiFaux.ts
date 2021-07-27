@@ -10,7 +10,7 @@ export class QuestionVraiFaux extends Question {
         if (questionJson == undefined)
             return;
         let values = JSON.parse(questionJson)
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseVraiFaux(reponse.reponse,/*reponse.ponderation,*/reponse.descriptionReponse, reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });

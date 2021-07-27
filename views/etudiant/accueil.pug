@@ -9,22 +9,22 @@ block content
                    
   div.row 
     div.col.s12
-        each espace in espaceCours     
-          div.col.s12.m12.l4
-            div.card
-              div.card-content
-                div.card-title
-                  div.text-bold #{espace._cours._sigle}       
-                div #{espace._cours._titre}                
-                div Gr: #{espace._numero}            
-              div.card-action
-                a(class="btn-detail-cours" href="/etudiant/cours/detail/" + espace._id) Détail
-                br
-                a(class="btn-devoir-cours" href="/etudiant/devoir/" + espace._id) Devoirs
-                br
-                a(class="btn-questionnaire-cours" href="/etudiant/questionnaire/" + espace._id) Questionnaires             
-        else
-          div.col.s12
-            em Vous n'avez pas de cours
+      each espace in espaceCours     
+        div.col.s12.m12.l4
+          div.card
+            div.card-content
+              div.card-title
+                div.text-bold #{espace._cours._sigle}       
+              div #{espace._cours._titre}                
+              div Gr: #{espace._numero}            
+            div.card-action
+              a(class="btn-detail-cours" href="/etudiant/cours/detail/" + espace._id) Détail
+              br
+              a(class="btn-devoir-cours" href="/etudiant/devoir/" + espace._id) Devoirs
+              br
+              a(class="btn-questionnaire-cours" href="/etudiant/questionnaire/" + espace._id) Questionnaires             
+      else
+        div.col.s12
+          em Vous n'avez pas de cours
 
   //- End bloc content

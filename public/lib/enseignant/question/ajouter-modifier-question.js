@@ -151,8 +151,8 @@ function buildQuestionCorrespondance(type, form, idEspaceCours) {
         tags: document.getElementById("tags").value,
         nom: document.getElementById("nom").value,
         idEspaceCours: idEspaceCours,
-        reponses: JSON.stringify(arrayReponses),
-        correspondances: JSON.stringify(arrayCorrespondance)
+        reponses: arrayReponses,
+        correspondances: arrayCorrespondance
     };
 }
 
@@ -173,7 +173,7 @@ function buildQuestionMultiple(type, form, idEspaceCours) {
         tags: document.getElementById("tags").value,
         nom: document.getElementById("nom").value,
         idEspaceCours: idEspaceCours,
-        reponses: JSON.stringify(arrayReponses)
+        reponses: arrayReponses
     };
 }
 
@@ -193,7 +193,7 @@ function buildQuestionVraiFaux(type, form, idEspaceCours) {
         tags: document.getElementById("tags").value,
         nom: document.getElementById("nom").value,
         idEspaceCours: idEspaceCours,
-        reponses: JSON.stringify(arrayReponses)
+        reponses: arrayReponses
     };
 }
 
@@ -213,7 +213,7 @@ function buildReponseCourte(type, form, idEspaceCours) {
         tags: document.getElementById("tags").value,
         nom: document.getElementById("nom").value,
         idEspaceCours: idEspaceCours,
-        reponses: JSON.stringify(arrayReponses)
+        reponses: arrayReponses
     };
 }
 
@@ -242,7 +242,8 @@ function envoyerFormulaireAjax(form, data, estModification, idEspaceCours, endPo
     $.post({
         type: estModification ? "PUT" : "POST",
         url: endPoint,
-        data: data,
+        data: JSON.stringify(data),
+        processData: false,
         success: function () {
             console.log("Ajouter-Modifier Question - OK");
             if (estModification) {
