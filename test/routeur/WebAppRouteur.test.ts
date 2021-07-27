@@ -1,6 +1,7 @@
 import * as supertest from "supertest";
 import 'jest-extended';
 import app from '../../src/App';
+import { TypeQuestion } from "../../src/core/model/TypeQuestion";
 
 var session = require('supertest-session');
 var testSession = session(app);
@@ -8,8 +9,6 @@ var testSession = session(app);
 let idEspaceCours = "3";
 let idQuestionnaire = "1";
 let idQuestion = "1";
-let idDevoir = "1";
-let typeQuestion = "question-vrai-faux";
 
 let pathPages = [
     {path: "/", titre: "Bonjour"},
@@ -32,6 +31,9 @@ let pathPages = [
     {path: `/enseignant/questionnaire/modifier/${idEspaceCours}/${idQuestionnaire}`, titre: "Modifier un questionnaire"},
     {path: `/enseignant/questionnaire/question/${idEspaceCours}/${idQuestionnaire}`, titre: "Gérer les questions du questionnaire"},
 ]
+for(var type=1;type<=6;type++){
+    pathPages.push({path: `/enseignant/question/ajouter/${idEspaceCours}/${type}`, titre: "Ajouter une question"})
+}
 
 var authenticatedSession;
 beforeAll((done) => {
