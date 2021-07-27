@@ -8,6 +8,10 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
         return next();
     }
 
+    if (AuthorizationHelper.isPublicPage(req)) {
+        return next();
+    }
+
     //On n'est pas login
     if (!AuthorizationHelper.isLoggedIn(req)) {
         if (req.url.startsWith("/api/v")) {

@@ -4,6 +4,7 @@ import authMiddleware from '../../src/core/middleware/auth.middleware';
 
 let PATH_PUBLIC_RESSOURCE_FILE = "/css/materialStyle.css";
 let PATH_PUBLIC_PAGE = "/login";
+let PATH_ETUDIANT_API = "/etudiant/cours/";
 let PATH_PRIVATE_PAGE = "/";
 let PATH_PRIVATE_API = "/api/v1/enseignant/cours";
 
@@ -57,7 +58,8 @@ describe('Auth middleware Test - Login', () => {
     beforeEach(() => {
         mockRequest = {
             session: {
-                token: "123"
+                token: "123",
+                isEtudiant: false,
             }
         };
         mockResponse = {
@@ -88,6 +90,13 @@ describe('Auth middleware Test - Login', () => {
         mockRequest.url = PATH_PRIVATE_API;
         authMiddleware(mockRequest, mockResponse, nextFunction);
         expect(nextFunction).toBeCalledTimes(1);
+    });
+
+    it("Enseignant droit etudiant - UnauthorizedError", () => {
+        mockRequest.url = PATH_ETUDIANT_API;
+        expect(() => {
+            authMiddleware(mockRequest, mockResponse, nextFunction);
+        }).toThrow(UnauthorizedError);
     });
 })
 

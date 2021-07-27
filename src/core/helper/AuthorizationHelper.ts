@@ -51,4 +51,7 @@ export class AuthorizationHelper {
     public static isPublicFile(req: Request): boolean {
         return req.url.startsWith("/lib") || req.url.startsWith("/css");
     }
+    public static isPublicPage(req: Request): boolean {
+        return req.url == "/login";
+    }
 }
