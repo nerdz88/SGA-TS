@@ -1,4 +1,4 @@
-import supertestSession from "supertest-session"
+/*import supertestSession from "supertest-session"
 import 'jest-extended';
 import { SGBService } from "../../src/core/service/SGBService";
 import { SgbError } from "../../src/core/errors/SgbError";
@@ -46,3 +46,4 @@ describe('Test ajouter un Questionnaire', () => {
     })
 
 })
+*/
