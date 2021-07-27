@@ -1,0 +1,55 @@
+@startuml robustesse_corrigerDevoir
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour corrigerDevoir
+participant ":GestionnaireDevoir" as gestionnaireDevoir
+participant "remise : Remise" as remise
+participant ":ProxyServiceHelper" as proxy
+participant ":SGBService" as service
+participant ":LocalStorageHelper" as storage
+participant "noteDevoirJSON : JSON" as json
+participant ":Sgb" as sgb
+
+-> gestionnaireDevoir : corrigerDevoir(idEspaceCours, idDevoir,\nidEtudiant, note, pathFichierCorrection)
+note left : Selon contrôleur,\ncontôleur de session
+gestionnaireDevoir -> gestionnaireDevoir : remise = recupererUnDevoirEtudiant(idEspaceCours, idDevoir, idEtudiant)
+note left : Selon expert, operation représenté\ndans un des RDCU précédent du\nmême cas d'utilisation
+gestionnaireDevoir -> remise : corrigerDevoir(note, pathFichierCorrection)
+note left : Selon expert, l'oppération veut\nmodifier les attributs de remise
+remise -> remise : setNote(note)
+note left : Selon expert
+remise -> remise : setPathFichierCorrection(pathFichierCorrection)
+note left : Selon expert
+remise -> remise : setdate(currentDate)
+note left : Selon expert
+remise -> remise : setEtat("RemisCorrige")
+note left : Selon expert
+gestionnaireDevoir -> proxy : ajouterNoteEtudiantService(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon exert, ProxyServiceHelper fait\nla gestion d'un SGB non disponible
+proxy -> service : reponse = ajouterNoteEtudiant(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon indirection, évite le couplage\nentre GestionnaireDevoir et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+alt !reponse.ok
+proxy --> json** : noteDevoirJSON = create(idEspaceCours, typeQuestion, typeId, note, studentId)
+note left : Selon créateur, ProxyServiceHelper\nutilise étroitement noteDevoirJSON
+proxy -> storage : pushData(noteDevoirJSON)
+note left : Selon expert, crée un stockage persistent
+proxy -> proxy : scheduleSGBFallbackJob()
+note left : initialise l'appel a chaque 5 minutes de SGBFallbackJob()
+end
+proxy -> proxy ++: SGBFallbackJob()
+note left : fonction appelée a chaque 5 minuutes
+proxy -> storage : data = getAllData()
+note left : selon expert, data est un tableau de JSON
+loop data.length
+proxy -> service : reponseTentativeAjout = ajouterNoteEtudiant(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon indirection, évite le couplage\nentre GestionnaireDevoir et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+service -> sgb : reponse = post(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon expert.
+end
+alt reponseTentativeAjout.ok
+proxy -> proxy : stopScheduleSGBFallbackJob()
+note left : si la tentative réussi\narrête de tenter de pousser au SGB
+proxy -> storage --: clearData()
+note left : selon expert
+end
+@enduml

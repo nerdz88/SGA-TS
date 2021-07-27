@@ -242,6 +242,15 @@ Référence: https://nozzlegear.com/blog/implementing-a-jwt-auth-system-with-typ
 Ici un RDCU a été présenté pour la sécurité avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
 ![securite](../../out/docs/sécurité/RDCU_sécurité/securite.svg)
 
+## Fiabilité (Reliability)
+### R1 – Robustesse
+En cas d’indisponibilité du système connecté (SGB - système de gestion des bordereaux de saisie de notes), il faut une solution de recouvrement. P. ex. un stockage temporaire qui permet de sauvegarder quand même les résultats de la correction d’un devoir. Lorsque le SGB est à nouveau disponible, les notes locales doivent y être transférées.
+**Note:** Larman propose des solutions avec plusieurs patrons de conception pour réaliser cette exigence. Voir le chapitre F30/A35.
+R1 s’applique uniquement à l’exigence CU03-Corriger devoir pour les scénarios suivants:
+&nbsp;&nbsp;&nbsp;&nbsp;9. L’enseignant téléverse (“upload”) la version corrigée du devoir.
+&nbsp;&nbsp;&nbsp;10. L’enseignant indique la note du devoir.
+![robustesse](../../out/docs/Robustesse/robustesse/robustesse_corrigerDevoir.svg)
+
 ### S3 - Contrainte de développement: gestion sémantique de version 
 Les décisionnaires de SGA insistent pour une gestion sémantique de version pour le logiciel. Vous devez avoir rempli les exigences pendant au moins deux itérations.
 **Note:** pour réaliser cette exigence il faudra comprendre https://linuxfr.org/news/gestion-semantique-de-version et https://docs.npmjs.com/about-semantic-versioning
