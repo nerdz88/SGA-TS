@@ -7,6 +7,7 @@ import { EspaceCours } from "../model/EspaceCours";
 import { Questionnaire } from '../model/Questionnaire';
 import { Question } from '../model/questions/Question';
 import { SGBService } from "./SGBService";
+import {ProxyServiceHelper} from "../helper/ProxyServiceHelper";
 
 export class Universite {
     @Type(() => EspaceCours)
@@ -101,7 +102,7 @@ export class Universite {
     }
 
     public async ajouterNoteEtudiant(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
-        let response = await SGBService.ajouterNoteEtudiant(token, idEspaceCours, type, type_id, note, studentId);
+        let response = await ProxyServiceHelper.ajouterNoteEtudiantService(token, idEspaceCours, type, type_id, note, studentId);
     }
 
 }

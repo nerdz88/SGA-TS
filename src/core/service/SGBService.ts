@@ -65,10 +65,7 @@ export class SGBService {
                 if (!reponse.ok) {
                     throw new SgbError("Erreur lors du fetch etudiant")
                 }
-                return reponse.json();
-            })
-            .then(data => {
-                return data.data;
+                return reponse;
             })
             .catch((error: Error) => {
                 //Si on est ici, le SGB est surement down

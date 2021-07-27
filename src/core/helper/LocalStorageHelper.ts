@@ -19,4 +19,10 @@ export class LocalStorageHelper {
     private static pushNoteDevoir(noteDevoirJSON: { studentId: number; note: number; idEspaceCours: number; type_id: number; type: string }) {
         this.db.push("/NoteDevoir" + noteDevoirJSON.type_id ,noteDevoirJSON);
     }
+
+    public static getAllData() {
+        // This gets all data from the root
+        return this.db.getData("/");
+    }
+
 }
