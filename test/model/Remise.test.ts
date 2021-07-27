@@ -2,8 +2,8 @@ import 'jest-extended';
 import 'reflect-metadata';
 import { Etudiant } from "../../src/core/model/Etudiant"
 import { Remise } from "../../src/core/model/Remise"
-import { Etat } from "../../src/core/model/Remise"
-import { OrdreTriRemise } from "../../src/core/model/Remise"
+import { Etat } from "../../src/core/model/enum/Etat"
+import { OrdreTri } from "../../src/core/model/enum/OrdreTri"
 
 const etudiant1 = new Etudiant(1,"Larouche","Mathieu","lm@gmail.com","LM1");
 const etudiant2 = new Etudiant(2,"Zoubir","Imad","lm@gmail.com","ZI1");
@@ -23,9 +23,9 @@ describe("Test Model Remise", ()=> {
 
     it("Devrais retourner la liste d'etudiant dans l'ordre spécifié", ()=> {
 
-        Remise.orderBy(remises, OrdreTriRemise.NomEtudiantAlphaCroissant)
+        Remise.orderBy(remises, OrdreTri.NomEtudiantAlphaCroissant)
         expect(remises[0].etudiant.getNom()).toContain("Larouche")
-        Remise.orderBy(remises, OrdreTriRemise.NomEtudiantAlphaDecroissant)
+        Remise.orderBy(remises, OrdreTri.NomEtudiantAlphaDecroissant)
         expect(remises[0].etudiant.getNom()).toContain("Zoubir")
 
     })
@@ -37,11 +37,11 @@ describe("Test Model Remise", ()=> {
         remise3.note = 100
         remise4.note = 35
 
-        Remise.orderBy(remises, OrdreTriRemise.NoteCroissant)
+        Remise.orderBy(remises, OrdreTri.NoteCroissant)
         expect(remises[0].etudiant.getNom()).toContain("Price")
 
-        Remise.orderBy(remises, OrdreTriRemise.NoteDecroissant)
-        expect(remises[0].etudiant.getNom()).toContain("Price")
+        Remise.orderBy(remises, OrdreTri.NoteDecroissant)
+        expect(remises[0].etudiant.getNom()).toContain("Tremblay")
 
     })
 

@@ -20,7 +20,7 @@ export class QuestionVraiFaux extends Question {
         super.modifier(questionJson);
         let values = JSON.parse(questionJson)
         this._answerChoix = [];
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseVraiFaux(reponse.reponse, reponse.descriptionReponse, reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });

@@ -13,7 +13,7 @@ export class QuestionMiseEnCorrespondance extends Question {
         let values = JSON.parse(questionJson)
         //this.isShuffled = values.isShuffled;
         this.correspondances = values.correspondances;
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseMiseEnCorrespondance(reponse.reponse, reponse.descriptionReponse, reponse.descriptionMauvaiseReponse, reponse.correspondance);
             this._answerChoix.push(answer);
         });
@@ -25,7 +25,7 @@ export class QuestionMiseEnCorrespondance extends Question {
         let values = JSON.parse(questionJson);
         this._answerChoix = [];
         this.correspondances = values.correspondances;
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseMiseEnCorrespondance(reponse.reponse, reponse.descriptionReponse, reponse.descriptionMauvaiseReponse, reponse.correspondance);
             this._answerChoix.push(answer);
         });

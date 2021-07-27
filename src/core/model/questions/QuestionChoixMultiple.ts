@@ -9,7 +9,7 @@ export class QuestionChoixMultiple extends Question {
         if (questionJson == undefined)
             return;
         let values = JSON.parse(questionJson)
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseChoixMultiple(reponse.reponse,/*reponse.ponderation,*/reponse.descriptionReponse, reponse.descriptionMauvaiseReponse, reponse.choix);
             this._answerChoix.push(answer);
         });
@@ -19,7 +19,7 @@ export class QuestionChoixMultiple extends Question {
         super.modifier(questionJson);
         let values = JSON.parse(questionJson)
         this._answerChoix = [];
-        JSON.parse(values.reponses).forEach(reponse => {
+        values.reponses.forEach(reponse => {
             let answer = new ReponseChoixMultiple(reponse.reponse,/*reponse.ponderation,*/reponse.descriptionReponse, reponse.descriptionMauvaiseReponse, reponse.choix);
             this._answerChoix.push(answer);
         });
