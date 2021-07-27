@@ -243,7 +243,7 @@ function envoyerFormulaireAjax(form, data, estModification, idEspaceCours, endPo
         type: estModification ? "PUT" : "POST",
         url: endPoint,
         data: JSON.stringify(data),
-        processData: false,
+        contentType: "application/json",
         success: function () {
             console.log("Ajouter-Modifier Question - OK");
             if (estModification) {
