@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
 import { HttpError } from '../errors/HttpError';
+import { NotFoundError } from '../errors/NotFoundError';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
+import { Etat } from './enum/Etat';
 import { Etudiant } from './Etudiant';
 import { Remise } from "./Remise";
 import moment = require('moment');
-import { NotFoundError } from '../errors/NotFoundError';
-import { Etat } from './enum/Etat';
 
 export class Devoir {
     private _id: number;
@@ -41,6 +41,14 @@ export class Devoir {
         var listRemise = [];
         etudiants.forEach(etudiant => listRemise.push(new Remise(etudiant)));
         return listRemise;
+    }
+
+    public getRemiseById(idRemise: number) {
+        let remise = this.remises.find(r => r.id == idRemise);
+        if (remise == undefined)
+            throw new NotFoundError(`La remise [${idRemise}] n'existe pas dans le devoir [${this.id}]`);
+
+        return remise;
     }
 
     public remettreDevoir(idEtudiant: number, pathFichier: string) {

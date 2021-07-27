@@ -59,5 +59,21 @@ export class SGBService {
             });
     }
 
+    public static async ajouterNoteEtudiant(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
+        return fetch(this.baseUrlV1 + "note?student_id=" + studentId + "&" + "course_id=" + idEspaceCours + "&" + "type=" + type + "&" + "type_id=" + type_id + "&" + "note=" + note, { method: 'POST', headers: { token: token } })
+            .then(reponse => {
+                if (!reponse.ok) {
+                    throw new SgbError("Erreur lors du fetch etudiant")
+                }
+                return reponse.json();
+            })
+            .then(data => {
+                return data.data;
+            })
+            .catch((error: Error) => {
+                //Si on est ici, le SGB est surement down
+                throw new SgbError("Erreur lors de l'ajout de la note de l'etudiant " + error.message);
+            });
+    }
 
 }

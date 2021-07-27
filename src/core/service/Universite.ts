@@ -100,4 +100,8 @@ export class Universite {
         return this.arrayEspaceCours.findIndex(c => c.getID() == id);
     }
 
+    public async ajouterNoteEtudiant(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
+        let response = await SGBService.ajouterNoteEtudiant(token, idEspaceCours, type, type_id, note, studentId);
+    }
+
 }

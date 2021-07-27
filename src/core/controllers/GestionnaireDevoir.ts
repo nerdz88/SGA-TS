@@ -72,10 +72,16 @@ export class GestionnaireDevoir {
         devoir.remettreDevoir(idEtudiant, pathFichier);
     }
 
-    public corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string) {
+    public async corrigerDevoir(idEspaceCours: number, idDevoir: number, idRemise: number, note: number, pathFichierCorrection: string, token: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let devoir = espaceCours.recupererUnDevoir(idDevoir);
+        let studentId = devoir.getRemiseById(idRemise).etudiant.getId();
         devoir.corrigerDevoir(idRemise, note, pathFichierCorrection);
+        return await this.ajouterNoteEtudiant(token, idEspaceCours, "devoir", idDevoir, note, studentId);
+    }
+
+    private async ajouterNoteEtudiant(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
+        return await this.universite.ajouterNoteEtudiant(token, idEspaceCours, type, type_id, note, studentId);
     }
 
     public creerZipCorrectionDevoir(idEspaceCours: number, idDevoir: number): string {
@@ -111,7 +117,7 @@ export class GestionnaireDevoir {
         return zipPath + nomFichier;
     }
 
-    public corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number, pathFichierZip: string) {
+    public async corrigerTousDevoirsZip(idEspaceCours: number, idDevoir: number, pathFichierZip: string, tokenEnseignant: string) {
         const zipper = new AdmZip(pathFichierZip);
         let fichierCSV = zipper.getEntries().find(f => f.entryName.toLowerCase().endsWith(".csv"))
         if (fichierCSV == undefined)
@@ -121,7 +127,7 @@ export class GestionnaireDevoir {
 
         let data = fs.readFileSync(`${pathContenuZip}/${fichierCSV.entryName}`);
         let contenuFichierCSV: string[] = data.toString().replace(/\r\n/g, '\n').split('\n');
-        contenuFichierCSV.forEach((line, index) => {
+        contenuFichierCSV.forEach(async (line, index) => {
             //On skip le header
             if (index == 0 || line == "")
                 return;
@@ -136,7 +142,11 @@ export class GestionnaireDevoir {
                     " une note invalide, la note doit être un nombre plus grand que 0");
             let pathfichierRetro = `${pathContenuZip}/${nomFichierRetro}`;
             let hasRetro = fs.existsSync(pathfichierRetro);
-            this.corrigerDevoir(idEspaceCours, idDevoir, parseInt(idRemise), note, hasRetro ? pathfichierRetro : "");
+            await this.corrigerDevoir(idEspaceCours, idDevoir,
+                parseInt(idRemise),
+                note,
+                hasRetro ? pathfichierRetro : "",
+                tokenEnseignant);
         });
 
     }
