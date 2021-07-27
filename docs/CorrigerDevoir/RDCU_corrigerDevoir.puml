@@ -61,7 +61,8 @@ gestionnaireDevoir -> cours : devoir = recupererUnDevoir(idDevoir)
 note left : Selon expert, espaceCours\ncontient les devoirs
 gestionnaireDevoir -> devoir : remise = getRemiseEtudiant(idEtudiant)
 note left : Selon expert
-loop remises.length
+devoir -> remises : length = getLength()
+loop length
 devoir -> remises : remiseCourante = getRemise(i)
 note left : Selon expert
 devoir -> remise : idEtudiantRemiseCourante = getIdEtudiant()
@@ -79,6 +80,8 @@ skinparam defaultfontname Verdana
 title RDCU pour corrigerDevoir
 participant ":GestionnaireDevoir" as gestionnaireDevoir
 participant "remise : Remise" as remise
+participant ":SGBService" as service
+participant ":Sgb" as sgb
 
 -> gestionnaireDevoir : corrigerDevoir(idEspaceCours, idDevoir,\nidEtudiant, note, pathFichierCorrection)
 note left : Selon contrôleur,\ncontôleur de session
@@ -94,6 +97,11 @@ remise -> remise : setdate(currentDate)
 note left : Selon expert
 remise -> remise : setEtat("RemisCorrige")
 note left : Selon expert
+
+gestionnaireDevoir -> service : ajouterNoteEtudiant(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon indirection, évite le couplage\nentre GestionnaireDevoir et le SGB. Tous\nles appels vers SGB sont fait\npar SGBService
+service -> sgb : post(idEspaceCours, idEtudiant, typeDevoir, typeId, note)
+note left : Selon expert.
 @enduml
 
 @startuml creerZipCorrectionDevoir

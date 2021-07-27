@@ -1,0 +1,21 @@
+@startuml traitementErreur
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour traitementErreur
+participant ":SgaRouteur" as routeur
+participant ":GestionnaireCours" as gestionnaire
+participant ":Universite" as universite
+participant ":Error.Middleware" as erreur
+participant ":LogHelper" as helper
+
+routeur -> gestionnaire : recupererTousEspaceCours(req, res, next)
+note left : Selon expert.
+gestionnaire -> universite : recupererTousEspaceCours(idEnseignant)
+note left : Selon expert.
+universite --> routeur : <<exception>>\nHttpError()
+note left : Peut être n'importe quelle exception
+routeur -> erreur : errorMiddleware(error, req, res, next)
+note left : Selon expert.
+erreur -> helper : logErreur(error.code)
+note left : Selon expert.
+@enduml

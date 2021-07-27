@@ -168,7 +168,6 @@ _PostCondition_
 
 - Une instance "i" de Tentantive a été créée
 - l'attribut id de "i" a été initialisé a un nombre aléatoire inutilisé
-- l'attribut note de "i" a été initialisé a la note attribuée par l'enseignant
 - "i" a été liée à un Questionnaire sur la base de correspondance avec idQuestionnaire
 
 **RDCU**
@@ -228,3 +227,25 @@ _PostCondition_
 ### `remettreRemise(idEspaceCours: number, idDevoir: number, idEtudiant: number, pathFichier: string)` 
 **RDCU**</br>
 ![remettreRemise](../../out/docs/remettreDevoir/RDCU_remettreDevoir/remettreDevoir.svg)
+
+
+### F1 - Journalisation et traitement d’erreurs
+Toutes les erreurs doivent être journalisées en mémoire persistante.
+**Note:** Larman F30.3/A35.3 propose plusieurs patrons pour aider avec cette exigence.</br></br>
+Ici un RDCU a été présenté pour le traitement d'erreur avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
+![traitementErreur](../../out/docs/traitementErreur/RDCU_traitementErreur/traitementErreur.svg)
+
+### F2 - Sécurité
+Toute utilisation implique une authentification avec le Système d’authentification (SSO). 
+Vous devez remplacer la mécanique d'authentification actuelle par une authentification par Intergiciel de type JWT (Json Web Token)
+Référence: https://nozzlegear.com/blog/implementing-a-jwt-auth-system-with-typescript-and-node</br></br>
+Ici un RDCU a été présenté pour la sécurité avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
+![securite](../../out/docs/sécurité/RDCU_sécurité/securite.svg)
+
+### S3 - Contrainte de développement: gestion sémantique de version 
+Les décisionnaires de SGA insistent pour une gestion sémantique de version pour le logiciel. Vous devez avoir rempli les exigences pendant au moins deux itérations.
+**Note:** pour réaliser cette exigence il faudra comprendre https://linuxfr.org/news/gestion-semantique-de-version et https://docs.npmjs.com/about-semantic-versioning
+Version | Description | détails
+------ | ------ | ------
+V2.0   | 2ième itération | CU01-CU02-CU04-CU05
+V3.0   | 3ième itération | CU01-CU02-CU03-CU03(5-6-7a)-CU04-CU05-CU06-CU07-F1-F2-U1-R1-S3
