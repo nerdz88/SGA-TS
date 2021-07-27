@@ -1,7 +1,15 @@
-extends ../enseignant/master-template-enseignant
+extends ../etudiant/master-template-etudiant
 
 block content 
 
+    
+    +btn-back("Retour Accueil", "/")
+
     div.row
         div.col.s12
-            h1.cente-align Erreur 
+            h1(class="center-align") Une erreur est survenue !
+                h2(class="center-align") Félicitation, vous avez brisé le site. 
+                h2(class="center-align") Vous attendez surement une explication,
+                h2(class="center-align") mais on ne l'a pas. ¯\_(ツ)_/¯
+
+        

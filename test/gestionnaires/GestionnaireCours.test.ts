@@ -7,7 +7,7 @@ var testSession = session(app);
 
 
 const COURSEVALUE1 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
-//const COURSEVALUE2 = '{"_id":1,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
+const COURSEVALUE2 = '{"_id":2,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
 
 var authenticatedSession;
 beforeAll((done) => {
@@ -186,6 +186,50 @@ describe('Test recuperer groupe cours de SGB', ()=>{
         let listeGroupeCours = await gc.recupererGroupesCours("e44cd054a9b7f4edee4f1f0ede5ee704")
 
         expect(listeGroupeCours).toBeArrayOfSize(2)
+
+    })
+
+})
+
+describe("Test recuperer cours d'un etudiant", ()=> {
+
+    var authenticatedSessionEtudiant;
+
+    beforeAll((done) => {
+        testSession.post('/api/v1/login')
+            .send({ email: 'student+1@gmail.com', password: '123' })
+            .expect(200)
+            .end(function (err) {
+                if (err) return done(err);
+                authenticatedSessionEtudiant = testSession;
+                return done();
+            });
+    });
+
+    beforeEach(async ()=> {
+        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE1),"e44cd054a9b7f4edee4f1f0ede5ee704",1)
+        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE2),"e44cd054a9b7f4edee4f1f0ede5ee704",1)
+    })
+
+    it("Devrais retourner la liste des groupe cours ou un etudiant est inscrit", async()=> {
+
+        let reponse = await authenticatedSessionEtudiant.get('/api/v1/etudiant/cours');
+
+        expect(reponse.status).toBe(200);
+        expect(reponse.type).toBe("application/json")
+        expect(reponse.body.espaceCours[0]._id).toBe(1)
+
+    })
+
+    it("Devrais retourner les details d'un cours d'un etudiant", async ()=> {
+        
+        let reponse = await authenticatedSessionEtudiant.get('/api/v1/etudiant/cours/detail/1')
+
+        expect(reponse.status).toBe(200);
+        expect(reponse.type).toBe("application/json");
+        expect(reponse.body.espaceCours._id).toBe(1);
+        expect(reponse.body.espaceCours._cours._sigle).toContain("LOG210")
+        expect(reponse.body.espaceCours._etudiants).toBeArrayOfSize(2)
 
     })
 
