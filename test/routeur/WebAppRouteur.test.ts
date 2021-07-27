@@ -9,6 +9,7 @@ let idEspaceCours = "3";
 let idQuestionnaire = "1";
 let idQuestion = "1";
 let idDevoir = "1";
+let typeQuestion = "question-vrai-faux";
 
 let pathPages = [
     {path: "/", titre: "Bonjour"},
@@ -17,13 +18,13 @@ let pathPages = [
     {path: `/enseignant/cours/detail/${idEspaceCours}`, titre: "Détail Espace Cours"},
     {path: `/enseignant/question/`, titre: "Vos Questions"},
     {path: `/enseignant/question/${idEspaceCours}`, titre: "Questions pour"},
-    {path: `/enseignant/question/detail/${idEspaceCours}/${idQuestion}`, titre: "Détail Question"},
-    {path: `/enseignant/question/ajouter/${idEspaceCours}`, titre: "Ajouter une question"},
+    {path: `/enseignant/question/detail/${idEspaceCours}/${idQuestion}`, titre: "Détail question"},
+    //{path: `/enseignant/question/ajouter/${idEspaceCours}/${typeQuestion}`, titre: "Ajouter une question"},
     {path: `/enseignant/question/modifier/${idEspaceCours}/${idQuestion}`, titre: "Modifier une question"},
     {path: `/enseignant/devoir/${idEspaceCours}`, titre: "Devoir pour"},
-    {path: `/enseignant/devoir/detail/${idEspaceCours}/${idDevoir}`, titre: "Détail Devoir"},
+    //{path: `/enseignant/devoir/detail/${idEspaceCours}/${idDevoir}`, titre: "Détail Devoir"},
     {path: `/enseignant/devoir/ajouter/${idEspaceCours}`, titre: "Ajouter un devoir"},
-    {path: `/enseignant/devoir/modifier/${idEspaceCours}/${idDevoir}`, titre: "Modifier un devoir"},
+    //{path: `/enseignant/devoir/modifier/${idEspaceCours}/${idDevoir}`, titre: "Modifier un devoir"},
     {path: `/enseignant/questionnaire/`, titre: "Vos Questionnaires"},
     {path: `/enseignant/questionnaire/${idEspaceCours}`, titre: "Questionnaires pour"},
     {path: `/enseignant/questionnaire/detail/${idEspaceCours}/${idQuestionnaire}`, titre: "Détail Questionnaire"},

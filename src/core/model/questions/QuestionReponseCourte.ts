@@ -11,7 +11,7 @@ export class QuestionReponseCourte extends Question {
         if (questionJson == undefined)
             return;
         let values = JSON.parse(questionJson)
-        JSON.parse(values.reponses).forEach( reponse => {
+        values.reponses.forEach( reponse => {
             let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
@@ -21,7 +21,7 @@ export class QuestionReponseCourte extends Question {
         super.modifier(questionJson);
         let values = JSON.parse(questionJson);
         this._answerChoix=[];
-        JSON.parse(values.reponses).forEach( reponse => {
+        values.reponses.forEach( reponse => {
             let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
