@@ -10,6 +10,10 @@ const COURSEVALUE2 = '{"_id":2,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"
 const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"1","nom":"Question1","tags":"q1,q2","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"true","reponses":[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]}';
 const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"2","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false","reponses":[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]}';
 const QUESTIONCM = '{"typeQuestion":"question-choix-multiples","description":"Description CM","tags":"a,b,c","nom":"Question CM","idEspaceCours":"3","reponses":[{"reponse":true,"choix":"Bonne reponse","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail"},{"reponse":false,"choix":"Mauvaise reponse","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail"}]}';
+const QUESTIONCORRESPONDANCE = '{"typeQuestion":"question-mise-correspondance","description":"Question courte","tags":"a,b,c","nom":"Correspondance","idEspaceCours":"3","reponses":[{"reponse":"Description ","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","correspondance":"chapeau"}],"correspondances":["chapeau"]}';
+const QUESTIONCOURTE = '{"typeQuestion":"question-reponse-courte","description":"Le txt","tags":"a,c,b","nom":"Question Courte","idEspaceCours":"3","reponses":[{"reponse":"La reponse","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"FAil"}]}';
+const QUESTIONNUMERIQUE = '{"typeQuestion":"question-numerique","description":"5 + 5","tags":"a,c,v","nom":"Question Num","idEspaceCours":"3","reponses":[{"reponse":"10","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail"}]}';
+const QUESTIONREDACTION = '{"typeQuestion":"question-essay","description":"La question essaie","tags":"a,b,c,","nom":"Question Redaction","idEspaceCours":"3","reponses":[]}';
 const QUESTIONNAIRE1 = '{"idEspaceCours":"1","estModification":"false","idQuestionnaire":"","nom":"Questionnaire1","description":"description1","status":"on"}'
 
 beforeAll((done)=>{
@@ -52,6 +56,42 @@ describe('Ajouter une question', ()=> {
 
         const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
                                 .send(JSON.parse(QUESTIONCM))
+        expect(reponse.status).toBe(201)
+        expect(reponse.body.message).toContain("Success")
+
+    })
+
+    it("Ajouter une question par correspondace", async()=> {
+
+        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTIONCORRESPONDANCE))
+        expect(reponse.status).toBe(201)
+        expect(reponse.body.message).toContain("Success")
+
+    })
+
+    it("Ajouter une question a reponse courte", async()=> {
+
+        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTIONCOURTE))
+        expect(reponse.status).toBe(201)
+        expect(reponse.body.message).toContain("Success")
+
+    })
+
+    it("Ajouter une question numerique", async() => {
+
+        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTIONNUMERIQUE))
+        expect(reponse.status).toBe(201)
+        expect(reponse.body.message).toContain("Success")
+
+    })
+
+    it("Ajouter une question redaction", async()=> {
+
+        const reponse = await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
+                                .send(JSON.parse(QUESTIONREDACTION))
         expect(reponse.status).toBe(201)
         expect(reponse.body.message).toContain("Success")
 
