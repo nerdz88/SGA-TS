@@ -40,9 +40,6 @@ let pathPages = [
     {path: `/enseignant/questionnaire/modifier/${idEspaceCours}/${idQuestionnaire}`, titre: "Modifier un questionnaire"},
     {path: `/enseignant/questionnaire/question/${idEspaceCours}/${idQuestionnaire}`, titre: "Gérer les questions du questionnaire"},
 ]
-for(var type=1;type<=6;type++){
-    pathPages.push({path: `/enseignant/question/ajouter/${idEspaceCours}/${type}`, titre: "Ajouter une question"})
-}
 
 var authenticatedSession;
 beforeAll((done) => {
