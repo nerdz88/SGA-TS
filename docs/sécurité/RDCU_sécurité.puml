@@ -1,0 +1,22 @@
+@startuml securite
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour securite
+participant ":SgaRouteur" as routeur
+participant ":Auth.Middleware" as authentification
+participant ":AuthorizationHelper" as helper
+participant ":GestionnaireCours" as gestionnaire
+participant ":Universite" as universite
+
+routeur -> authentification : authMiddleware(req, res, next)
+note left : Selon expert.\nÀ l'initialisation du routeur,\nil est défini que le routeur\nutilise authMiddleware.\nIl fait donc cet appel\navant chaque opération
+authentification -> helper : logged = isLoggedIn(req)
+note left : Selon expert.
+alt !logged
+helper --> routeur : <<exception>>\nUnauthorizedError()
+end
+routeur -> gestionnaire : recupererTousEspaceCours(req, res, next)
+note left : Selon expert.
+gestionnaire -> universite : recupererTousEspaceCours(idEnseignant)
+note left : Selon expert.
+@enduml
