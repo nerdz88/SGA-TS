@@ -87,6 +87,34 @@ describe('Test ajouter un Questionnaire dans le SGA', () => {
         expect(reponseTerminer.status).toBe(200)
         expect(reponseTerminer.body.message).toContain("Success")
     })
+    it("Devrais pas terminer une tentative non commencer du questionnaire d'un etudiant",async () => {
+        await preCondition();
+        for(var i=0;i<REPONSESQUESTIONNAIRES.length;i++){
+            let reponse = await authenticatedSession.post("/api/v1/etudiant/questionnaire/question/save/1/1/"+(i+1)).send(REPONSESQUESTIONNAIRES[i]);
+            expect(reponse.status).toBe(200)
+            expect(reponse.body.message).toContain("Success")
+        }
+        try {
+            await authenticatedSession.get("/api/v1/etudiant/questionnaire/terminer/1/1");
+        } catch (error) {
+            expect(error+"").toContain("Impossible de commencer une tentative terminée ou en cours")
+        }
+    })
+    it("Devrais pas lancer une tentative déjà lancer du questionnaire d'un etudiant",async () => {
+        await preCondition();
+        for(var i=0;i<REPONSESQUESTIONNAIRES.length;i++){
+            let reponse = await authenticatedSession.post("/api/v1/etudiant/questionnaire/question/save/1/1/"+(i+1)).send(REPONSESQUESTIONNAIRES[i]);
+            expect(reponse.status).toBe(200)
+            expect(reponse.body.message).toContain("Success")
+        }
+        try {
+            universite.recupererUnEspaceCours(1).recupererUnQuestionnaire(1).getTentative()[0].commencerTentative();        
+            universite.recupererUnEspaceCours(1).recupererUnQuestionnaire(1).getTentative()[0].commencerTentative();
+
+        } catch (error) {
+            expect(error+"").toContain("Impossible de commencer une tentative terminée ou en cours")
+        }
+    })
 })
 async function preCondition() {
     await universite.ajouterEspaceCours(COURSEVALUE1, TOKENENSEIGNANT, 1);
