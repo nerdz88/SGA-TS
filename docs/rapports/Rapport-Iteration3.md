@@ -27,7 +27,7 @@
 </details>
 
 # Introduction
-L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, les cas d'utilisations CU04 (a,b,c,d) ainsi que CU05 (a,b,c,d) ont été implémentés, testés et documentés. Ces cas correspondent à la gestion des devoirs ainsi que des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système.
+L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, CU02 - Gérer questions à été modifier afin d'ajouter le support pour divers types de questions. De plus les cas : CU03, CU06, CU07, ainsi que CU05 (a,b,c,d) ont été implémentés incluant les scénarios alternatifs, testés et documentés. Ces cas correspondent à la correction et la remises des devoirs ainsi que le passage des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système. Finalement, certaine mesure mesure FURPS+ ont été instauré notamment : F1, F2, U1, R1, S3.
 
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
@@ -168,7 +168,6 @@ _PostCondition_
 
 - Une instance "i" de Tentantive a été créée
 - l'attribut id de "i" a été initialisé a un nombre aléatoire inutilisé
-- l'attribut note de "i" a été initialisé a la note attribuée par l'enseignant
 - "i" a été liée à un Questionnaire sur la base de correspondance avec idQuestionnaire
 
 **RDCU**
@@ -228,3 +227,34 @@ _PostCondition_
 ### `remettreRemise(idEspaceCours: number, idDevoir: number, idEtudiant: number, pathFichier: string)` 
 **RDCU**</br>
 ![remettreRemise](../../out/docs/remettreDevoir/RDCU_remettreDevoir/remettreDevoir.svg)
+
+
+### F1 - Journalisation et traitement d’erreurs
+Toutes les erreurs doivent être journalisées en mémoire persistante.
+**Note:** Larman F30.3/A35.3 propose plusieurs patrons pour aider avec cette exigence.</br></br>
+Ici un RDCU a été présenté pour le traitement d'erreur avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
+![traitementErreur](../../out/docs/traitementErreur/RDCU_traitementErreur/traitementErreur.svg)
+
+### F2 - Sécurité
+Toute utilisation implique une authentification avec le Système d’authentification (SSO). 
+Vous devez remplacer la mécanique d'authentification actuelle par une authentification par Intergiciel de type JWT (Json Web Token)
+Référence: https://nozzlegear.com/blog/implementing-a-jwt-auth-system-with-typescript-and-node</br></br>
+Ici un RDCU a été présenté pour la sécurité avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
+![securite](../../out/docs/sécurité/RDCU_sécurité/securite.svg)
+
+## Fiabilité (Reliability)
+### R1 – Robustesse
+En cas d’indisponibilité du système connecté (SGB - système de gestion des bordereaux de saisie de notes), il faut une solution de recouvrement. P. ex. un stockage temporaire qui permet de sauvegarder quand même les résultats de la correction d’un devoir. Lorsque le SGB est à nouveau disponible, les notes locales doivent y être transférées.
+**Note:** Larman propose des solutions avec plusieurs patrons de conception pour réaliser cette exigence. Voir le chapitre F30/A35.
+R1 s’applique uniquement à l’exigence CU03-Corriger devoir pour les scénarios suivants:
+&nbsp;&nbsp;&nbsp;&nbsp;9. L’enseignant téléverse (“upload”) la version corrigée du devoir.
+&nbsp;&nbsp;&nbsp;10. L’enseignant indique la note du devoir.
+![robustesse](../../out/docs/Robustesse/robustesse/robustesse_corrigerDevoir.svg)
+
+### S3 - Contrainte de développement: gestion sémantique de version 
+Les décisionnaires de SGA insistent pour une gestion sémantique de version pour le logiciel. Vous devez avoir rempli les exigences pendant au moins deux itérations.
+**Note:** pour réaliser cette exigence il faudra comprendre https://linuxfr.org/news/gestion-semantique-de-version et https://docs.npmjs.com/about-semantic-versioning
+Version | Description | détails
+------ | ------ | ------
+V2.0   | 2ième itération | CU01-CU02-CU04-CU05
+V3.0   | 3ième itération | CU01-CU02-CU03-CU03(5-6-7a)-CU04-CU05-CU06-CU07-F1-F2-U1-R1-S3
