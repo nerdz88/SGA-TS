@@ -46,7 +46,7 @@ export class Questionnaire {
         this._idEspaceCours = values.idEspaceCours;
         this._nom = values.nom;
         this._description = values.description;
-        this._status = values.status == "on";
+        this._status = values.status;
         this._questions = [];
         this._tentatives = this.initTentative(etudiants);
         this._id = ++Questionnaire.currentId;
@@ -56,7 +56,7 @@ export class Questionnaire {
         let values = JSON.parse(questionJson);
         this._nom = values.nom;
         this._description = values.description;
-        this._status = values.status == "on";
+        this._status = values.status;
     }
 
     private initTentative(etudiants: Etudiant[]): Tentative[] {
