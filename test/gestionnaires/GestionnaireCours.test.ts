@@ -1,4 +1,3 @@
-import * as supertest from "supertest";
 import 'jest-extended';
 import app, { universite } from '../../src/App';
 import { GestionnaireCours } from "../../src/core/controllers/GestionnaireCours";
@@ -143,6 +142,7 @@ describe('Test gestionnaire des cours - Récupérer 1 espaces cours', () => {
 
 describe('Test gestionnaire des cours - Supprimer 1 espaces cours', () => {
     it("Supprimer un EspaceCours Vide DELETE /api/v1/enseignant/cours/supprimer/:id", async (done) => {
+        universite.reset();
         authenticatedSession.delete('/api/v1/enseignant/cours/supprimer/1')
             .end(function (err, res) {
                 expect(res.status).toBe(404);
@@ -177,9 +177,9 @@ describe('Test gestionnaire des cours - Supprimer 1 espaces cours', () => {
 
 });
 
-describe('Test recuperer groupe cours de SGB', ()=>{
+describe('Test recuperer groupe cours de SGB', () => {
 
-    it("devrais retourner la liste des groupe cours provenant du SGB avec le token", async()=> {
+    it("devrais retourner la liste des groupe cours provenant du SGB avec le token", async () => {
 
         let gc = new GestionnaireCours(universite)
 
@@ -191,7 +191,7 @@ describe('Test recuperer groupe cours de SGB', ()=>{
 
 })
 
-describe("Test recuperer cours d'un etudiant", ()=> {
+describe("Test recuperer cours d'un etudiant", () => {
 
     var authenticatedSessionEtudiant;
 
@@ -206,12 +206,12 @@ describe("Test recuperer cours d'un etudiant", ()=> {
             });
     });
 
-    beforeEach(async ()=> {
-        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE1),"e44cd054a9b7f4edee4f1f0ede5ee704",1)
-        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE2),"e44cd054a9b7f4edee4f1f0ede5ee704",1)
+    beforeEach(async () => {
+        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE1), "e44cd054a9b7f4edee4f1f0ede5ee704", 1)
+        await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE2), "e44cd054a9b7f4edee4f1f0ede5ee704", 1)
     })
 
-    it("Devrais retourner la liste des groupe cours ou un etudiant est inscrit", async()=> {
+    it("Devrais retourner la liste des groupe cours ou un etudiant est inscrit", async () => {
 
         let reponse = await authenticatedSessionEtudiant.get('/api/v1/etudiant/cours');
 
@@ -221,8 +221,8 @@ describe("Test recuperer cours d'un etudiant", ()=> {
 
     })
 
-    it("Devrais retourner les details d'un cours d'un etudiant", async ()=> {
-        
+    it("Devrais retourner les details d'un cours d'un etudiant", async () => {
+
         let reponse = await authenticatedSessionEtudiant.get('/api/v1/etudiant/cours/detail/1')
 
         expect(reponse.status).toBe(200);

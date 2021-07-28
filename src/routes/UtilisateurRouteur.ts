@@ -105,7 +105,7 @@ export class UtilisateurRouteur {
             });
     }
 
-    public download(req: Request, res: Response, next: NextFunction){
+    public download(req: Request, res: Response, next: NextFunction) {
         //TODO maybe une validation des doits mais bon...
         let pathFichier = decodeURIComponent(req.params.pathFichier);
         res.download(pathFichier, (e) => {
@@ -116,9 +116,9 @@ export class UtilisateurRouteur {
     public recupererErreur(req: Request, res: Response, next: NextFunction) {
 
         let code = req.body.code;
-        res.render("commun/erreur",code)
+        res.render("commun/erreur", code)
     }
-    
+
 
     /**
      * Take each handler, and attach to one of the Express.Router's

@@ -24,11 +24,11 @@ export abstract class Question {
         discriminator: {
             property: '__type',
             subTypes: [
-                {value: ReponseChoixMultiple, name: "reponsechoixmultiple"},
-                {value: ReponseMiseEnCorrespondance, name: "reponsemisenecorrespondance"},
-                {value: ReponseNumerique, name: "reponsenumerique"},
-                {value: ReponseCourte, name: "reponsecourte"},
-                {value: ReponseVraiFaux, name: "reponsevraifaux"},
+                { value: ReponseChoixMultiple, name: "reponsechoixmultiple" },
+                { value: ReponseMiseEnCorrespondance, name: "reponsemisenecorrespondance" },
+                { value: ReponseNumerique, name: "reponsenumerique" },
+                { value: ReponseCourte, name: "reponsecourte" },
+                { value: ReponseVraiFaux, name: "reponsevraifaux" },
             ]
         }
     })

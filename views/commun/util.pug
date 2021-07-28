@@ -181,12 +181,12 @@ mixin navigation-passer-questionnaire(indexQuestion, nbQuestions, isRelecture)
                 a(class=`waves-effect waves-light btn left btn-nav-questionnaire btn-previous-question-ajout blue accent-2 ${isRelecture ? " isRelecture": ""}`
                     href="javascript:void(0)")
                     i(class="material-icons left medium waves-effect waves-light") chevron_left 
-                        span.hide-on-small-only Précédent
+                    span.hide-on-small-only Précédent
             if(indexQuestion < (nbQuestions - 1))
                 a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-next-question blue accent-2 ${isRelecture ? " isRelecture": ""}`
                     href="javascript:void(0)")                      
                     i(class="material-icons right medium waves-effect waves-light") chevron_right
-                        span.hide-on-small-only Suivant
+                    span.hide-on-small-only Suivant
             else 
                 a(class=`waves-effect waves-light btn right btn-nav-questionnaire btn-terminer-tentative ${isRelecture ? " isRelecture": ""}` 
                     href="javascript:void(0)")

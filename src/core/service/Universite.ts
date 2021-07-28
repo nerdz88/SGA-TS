@@ -1,13 +1,13 @@
 import { Type } from 'class-transformer';
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
 import { NotFoundError } from "../errors/NotFoundError";
+import { ProxyServiceHelper } from "../helper/ProxyServiceHelper";
 import { Cours } from "../model/Cours";
 import { Devoir } from '../model/Devoir';
 import { EspaceCours } from "../model/EspaceCours";
 import { Questionnaire } from '../model/Questionnaire';
 import { Question } from '../model/questions/Question';
 import { SGBService } from "./SGBService";
-import {ProxyServiceHelper} from "../helper/ProxyServiceHelper";
 
 export class Universite {
     @Type(() => EspaceCours)

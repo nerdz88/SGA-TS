@@ -11,8 +11,8 @@ export class QuestionReponseCourte extends Question {
         if (questionJson == undefined)
             return;
         let values = JSON.parse(questionJson)
-        values.reponses.forEach( reponse => {
-            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
+        values.reponses.forEach(reponse => {
+            let answer = new ReponseCourte(reponse.reponse, reponse.descriptionReponse, reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
@@ -20,9 +20,9 @@ export class QuestionReponseCourte extends Question {
     public modifier(questionJson: string) {
         super.modifier(questionJson);
         let values = JSON.parse(questionJson);
-        this._answerChoix=[];
-        values.reponses.forEach( reponse => {
-            let answer = new ReponseCourte(reponse.reponse,reponse.descriptionReponse,reponse.descriptionMauvaiseReponse);
+        this._answerChoix = [];
+        values.reponses.forEach(reponse => {
+            let answer = new ReponseCourte(reponse.reponse, reponse.descriptionReponse, reponse.descriptionMauvaiseReponse);
             this._answerChoix.push(answer);
         });
     }
@@ -32,7 +32,7 @@ export class QuestionReponseCourte extends Question {
         this._answerChoix.forEach((answerChoix: ReponseCourte) => {
             let bonneReponse = answerChoix.getReponse();
             if (reponse["reponse"] == bonneReponse) {
-                isValid = true;                
+                isValid = true;
             }
         });
         reponse["isValid"] = isValid;

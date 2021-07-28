@@ -7,7 +7,7 @@ import { UnauthorizedError } from "../../src/core/errors/UnauthorizedError"
 
 describe("Test des classes d'erreur", () => {
 
-    it("Devrais avoir les codes appropries pour les classes d'erreurs", ()=> {
+    it("Devrais avoir les codes appropries pour les classes d'erreurs", () => {
 
         let alreadyExistError = new AlreadyExistsError("Already Exist Error")
         let invalidParameterError = new InvalidParameterError("Invalid Parameter Error")

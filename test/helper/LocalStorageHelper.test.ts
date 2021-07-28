@@ -1,13 +1,12 @@
 import 'jest-extended';
-import {LocalStorageHelper} from "../../src/core/helper/LocalStorageHelper";
 import 'reflect-metadata';
-import {DataError} from "node-json-db/dist/lib/Errors";
+import { LocalStorageHelper } from "../../src/core/helper/LocalStorageHelper";
 
 const noteDevoirJSON1 = {
     "token": "test",
     "idEspaceCours": 1,
     "type": "test",
-    "type_id" : 1,
+    "type_id": 1,
     "note": 90,
     "studentId": 1
 };
@@ -16,7 +15,7 @@ const noteDevoirJSON2 = {
     "token": "test",
     "idEspaceCours": 2,
     "type": "test",
-    "type_id" : 2,
+    "type_id": 2,
     "note": 100,
     "studentId": 2
 };

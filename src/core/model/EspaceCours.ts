@@ -1,25 +1,24 @@
+import { Type } from 'class-transformer';
 import { AlreadyExistsError } from "../errors/AlreadyExistsError";
+import { HttpError } from "../errors/HttpError";
+import { InvalidParameterError } from "../errors/InvalidParameterError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Cours } from "./Cours";
+import { Devoir } from "./Devoir";
+import { Etat } from "./enum/Etat";
+import { EtatTentative } from "./enum/EtatTentative";
 import { Etudiant } from "./Etudiant";
 import { Questionnaire } from "./Questionnaire";
-import { Devoir } from "./Devoir";
-import { InvalidParameterError } from "../errors/InvalidParameterError";
-import { Type } from 'class-transformer';
-
-import { HttpError } from "../errors/HttpError";
 import { Question } from "./questions/Question";
-import { TypeQuestion } from "./TypeQuestion";
 import { QuestionChoixMultiple } from "./questions/QuestionChoixMultiple";
+import { QuestionEssaie } from "./questions/QuestionEssaie";
 import { QuestionMiseEnCorrespondance } from "./questions/QuestionMiseEnCorrespondance";
 import { QuestionNumerique } from "./questions/QuestionNumerique";
 import { QuestionReponseCourte } from "./questions/QuestionReponseCourte";
 import { QuestionVraiFaux } from "./questions/QuestionVraiFaux";
-import { QuestionEssaie } from "./questions/QuestionEssaie";
-import { EtatTentative } from "./enum/EtatTentative";
-import { Etat } from "./enum/Etat";
 import { Remise } from "./Remise";
 import { Tentative } from "./Tentative";
+
 
 
 export class EspaceCours {
@@ -29,18 +28,18 @@ export class EspaceCours {
     private _enseignantId: number;
     @Type(() => Etudiant)
     private _etudiants: Etudiant[];
-     //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
+    //https://github.com/typestack/class-transformer#providing-more-than-one-type-option
     //Permet de garder l'héritage après le plainToClass
     @Type(() => Question, {
         discriminator: {
             property: '__type',
             subTypes: [
-                {value: QuestionChoixMultiple, name: "questionchoixmultiple"},
-                {value: QuestionEssaie, name: "questionessaie"},
-                {value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance"},
-                {value: QuestionNumerique, name: "questionnumerique"},
-                {value: QuestionReponseCourte, name: "questionreponsecourte"},
-                {value: QuestionVraiFaux, name: "questionvraifaux"},
+                { value: QuestionChoixMultiple, name: "questionchoixmultiple" },
+                { value: QuestionEssaie, name: "questionessaie" },
+                { value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance" },
+                { value: QuestionNumerique, name: "questionnumerique" },
+                { value: QuestionReponseCourte, name: "questionreponsecourte" },
+                { value: QuestionVraiFaux, name: "questionvraifaux" },
             ]
         }
     })
@@ -91,15 +90,15 @@ export class EspaceCours {
     public modifierQuestionnaire(idQuestionnaire: number, questionnaireJson) {
 
         let q = this.recupererUnQuestionnaire(idQuestionnaire);
-        
+
         if (q.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
             throw new HttpError("Impossible de modifier un questionnaire, déjà commencé par un étudiant");
-                   
+
         q.modifier(questionnaireJson);
     }
 
-    private creerQuestion(type : string,jsonString : string) :Question{
-        switch(type){
+    private creerQuestion(type: string, jsonString: string): Question {
+        switch (type) {
             case "question-vrai-faux":
                 return new QuestionVraiFaux(jsonString);
             case "question-choix-multiples":
@@ -117,9 +116,9 @@ export class EspaceCours {
     }
 
     public ajouterQuestion(jsonString: string) {
-        let question =JSON.parse(jsonString);
+        let question = JSON.parse(jsonString);
         let type = question.typeQuestion;
-        let newQuestion = this.creerQuestion(type,jsonString);
+        let newQuestion = this.creerQuestion(type, jsonString);
         if (this._questions.find(q => q.getNom() == newQuestion.getNom()))
             throw new AlreadyExistsError("la question " + newQuestion.getNom() + " existe déjà")
         this._questions.push(newQuestion);
@@ -180,7 +179,7 @@ export class EspaceCours {
 
     public suprimerDevoir(idDevoir: number) {
         let devoir = this.recupererUnDevoir(idDevoir);
-        
+
         if (devoir.remises.find(r => r.etat != Etat.NonRemis) != undefined)
             throw new HttpError("Impossible de supprimer un devoir, ayant déjà une remise d'un étudiant")
 
@@ -241,12 +240,12 @@ export class EspaceCours {
     public suprimerQuestionnaire(idQuestionnaire: number): boolean {
 
         let questionnaire = this.recupererUnQuestionnaire(idQuestionnaire);
-        
+
         if (questionnaire.getTentative().find(t => t.etat != EtatTentative.NonComplete) != undefined)
             throw new HttpError("Impossible de supprimer un questionnaire, déjà commencé par un étudiant")
 
         let index = this._questionnaires.findIndex(q => q.getId() == idQuestionnaire);
-        
+
         if (index != -1) {
             let questions = this._questionnaires[index].getQuestions()
             this._questionnaires.splice(index, 1);

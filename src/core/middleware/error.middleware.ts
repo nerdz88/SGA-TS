@@ -18,7 +18,7 @@ function errorMiddleware(error: any, req: Request, res: Response, next: NextFunc
                     message: message
                 }
             });
-    } else {      
+    } else {
         res.redirect("/erreur")
     }
 

@@ -25,7 +25,7 @@ export class GestionnaireQuestionnaire {
         questionnaire.getQuestions().forEach((question) => {
             question.setNbOccurence(question.getNbOccurence() - 1)
         });
-        
+
 
         questionnaire.setQuestion([]);
         arrayIdQuestion.forEach(idQuestion => {
@@ -83,13 +83,13 @@ export class GestionnaireQuestionnaire {
     public terminerTentativeEtudiant(idEspaceCours: number, idQuestionnaire: number, idEtudiant: number) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
-        questionnaire.terminerTentativeEtudiant(idEtudiant);      
+        questionnaire.terminerTentativeEtudiant(idEtudiant);
     }
 
     public ajouterReponseTentative(idEspaceCours: number, idQuestionnaire: number, idQuestion: number, idEtudiant: number, responseJSON: string) {
         let espaceCours = this.universite.recupererUnEspaceCours(idEspaceCours);
         let questionnaire = espaceCours.recupererUnQuestionnaire(idQuestionnaire);
-        questionnaire.repondreQuestion(idQuestion, idEtudiant, responseJSON);   
+        questionnaire.repondreQuestion(idQuestion, idEtudiant, responseJSON);
     }
 
     public recupererIdsQuestionsQuestionnaire(idEspaceCours: number, idQuestionnaire: number) {

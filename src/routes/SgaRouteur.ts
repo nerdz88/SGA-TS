@@ -302,11 +302,11 @@ export class SgaRouteur {
             doCorrectionDevoir();
         }
 
-     
+
         function doCorrectionDevoir() {
             self.gestionnaireDevoir.corrigerDevoir(idEspaceCours, idDevoir,
-                    idRemise, note,
-                    pathUpload ?? "", token)
+                idRemise, note,
+                pathUpload ?? "", token)
                 .then(() => {
                     res.status(200).send({
                         message: 'Success',

@@ -1,15 +1,15 @@
-import {SGBService} from "../service/SGBService";
-import {LocalStorageHelper} from "./LocalStorageHelper";
+import { SGBService } from "../service/SGBService";
+import { LocalStorageHelper } from "./LocalStorageHelper";
 const cron = require('node-cron');
 export class ProxyServiceHelper {
 
     static task;
 
-    public static async ajouterNoteEtudiantService(token: string, idEspaceCours: number, type: string, type_id : number, note: number, studentId: number) {
+    public static async ajouterNoteEtudiantService(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
         // Si la reponse recu du SGBService est false, donc il y a eu un Error 500 ou un Timeout, nous allons stocker
         // donnees dans une db JSON
         let response = await SGBService.ajouterNoteEtudiant(token, idEspaceCours, type, type_id, note, studentId);
-        if (response == null){
+        if (response == null) {
             // once we persist data we should start a scheduled job on another thread
             // that periodically, tries to push the data
             this.scheduleSGBFallbackJob();
@@ -18,12 +18,12 @@ export class ProxyServiceHelper {
         return response;
     }
 
-    public static persistData(token: string, idEspaceCours: number, type: string, type_id : number, note: number, studentId: number){
+    public static persistData(token: string, idEspaceCours: number, type: string, type_id: number, note: number, studentId: number) {
         let noteDevoirJSON = {
             "token": token,
             "idEspaceCours": idEspaceCours,
             "type": type,
-            "type_id" : type_id,
+            "type_id": type_id,
             "note": note,
             "studentId": studentId
         };
@@ -31,18 +31,18 @@ export class ProxyServiceHelper {
         LocalStorageHelper.pushData(noteDevoirJSON);
     }
 
-    public static getTasks(){
+    public static getTasks() {
         return cron.getTasks();
     }
 
     public static scheduleSGBFallbackJob() {
-        this.task = cron.schedule('*/1 * * * *', async function() {
+        this.task = cron.schedule('*/1 * * * *', async function () {
             console.log('Attempting to send SGB request');
-            for (let i = 0; i < LocalStorageHelper.getDataCount(); i++){
+            for (let i = 0; i < LocalStorageHelper.getDataCount(); i++) {
                 let noteDevoir = LocalStorageHelper.getData(i);
                 if (noteDevoir != null) {
                     let response = await SGBService.ajouterNoteEtudiant(noteDevoir.token, noteDevoir.idEspaceCours, noteDevoir.type, noteDevoir.type_id, noteDevoir.note, noteDevoir.studentId);
-                    if (response == null){
+                    if (response == null) {
                         //We return and keep the cron scheduler going
                         return;
                     }

@@ -1,10 +1,10 @@
 
+import { deserialize, serialize } from 'class-transformer';
 import { Request } from 'express';
-import { universite } from '../../App'
 import * as fs from 'fs';
-import { AuthorizationHelper } from './AuthorizationHelper';
-import { serialize, deserialize } from 'class-transformer';
+import { universite } from '../../App';
 import { Universite } from '../service/Universite';
+import { AuthorizationHelper } from './AuthorizationHelper';
 
 //Petite classe d'aide pour facilité le dev    
 export class DevHelper {
@@ -47,6 +47,6 @@ export class DevHelper {
 
     public static isTestingJest() {
         return process.env.JEST_WORKER_ID !== undefined;
-    } 
+    }
 
 }

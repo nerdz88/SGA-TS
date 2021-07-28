@@ -1,5 +1,4 @@
 import 'jest-extended';
-import { send } from 'process';
 import app, { universite } from "../../src/App";
 import { Etat } from '../../src/core/model/enum/Etat';
 
@@ -390,7 +389,7 @@ describe('Corriger devoirs batch', () => {
 
         await universite.ajouterEspaceCours(JSON.parse(COURSEVALUE1), "e44cd054a9b7f4edee4f1f0ede5ee704", 1)
         let cours = universite.recupererUnEspaceCours(1);
-        cours.ajouterDevoir(DEVOIR1);        
+        cours.ajouterDevoir(DEVOIR1);
 
         await request.post("/api/v1/login")
             .send({ email: "student+1@gmail.com", password: "" })

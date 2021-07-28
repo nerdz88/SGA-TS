@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import { NotFoundError } from '../errors/NotFoundError';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { Etudiant } from "./Etudiant";
-import { Pointage } from './questions/Pointage';
 import { Question } from "./questions/Question";
 import { QuestionChoixMultiple } from './questions/QuestionChoixMultiple';
 import { QuestionEssaie } from './questions/QuestionEssaie';
@@ -11,7 +10,6 @@ import { QuestionNumerique } from './questions/QuestionNumerique';
 import { QuestionReponseCourte } from './questions/QuestionReponseCourte';
 import { QuestionVraiFaux } from './questions/QuestionVraiFaux';
 import { Tentative } from "./Tentative";
-import { TypeQuestion } from './TypeQuestion';
 
 export class Questionnaire {
     private _id: number;
@@ -27,12 +25,12 @@ export class Questionnaire {
         discriminator: {
             property: '__type',
             subTypes: [
-                {value: QuestionChoixMultiple, name: "questionchoixmultiple"},
-                {value: QuestionEssaie, name: "questionessaie"},
-                {value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance"},
-                {value: QuestionNumerique, name: "questionnumerique"},
-                {value: QuestionReponseCourte, name: "questionreponsecourte"},
-                {value: QuestionVraiFaux, name: "questionvraifaux"},
+                { value: QuestionChoixMultiple, name: "questionchoixmultiple" },
+                { value: QuestionEssaie, name: "questionessaie" },
+                { value: QuestionMiseEnCorrespondance, name: "questionmisenecorrespondance" },
+                { value: QuestionNumerique, name: "questionnumerique" },
+                { value: QuestionReponseCourte, name: "questionreponsecourte" },
+                { value: QuestionVraiFaux, name: "questionvraifaux" },
             ]
         }
     })

@@ -9,3 +9,4 @@ package-lock.json
 uploads/devoirs/*
 src/data/log/*/*
 !*.placeholder
+noteDevoir.json

@@ -34,7 +34,7 @@ export class AuthorizationHelper {
         if (this.isPublicFile(req))
             return true;
         if (this.isLoggedIn(req)) {
-            return this.isRouteWithoutRole(req.url) || 
+            return this.isRouteWithoutRole(req.url) ||
                 (this.isEtudiant(req) && req.url.startsWith("/etudiant/")) ||
                 (this.isEtudiant(req) && req.url.startsWith("/api/v1/etudiant/")) ||
                 (!this.isEtudiant(req) && req.url.startsWith("/enseignant/")) ||

@@ -1,7 +1,6 @@
-import * as supertest from "supertest";
 import 'jest-extended';
-import { SGBService } from "../../src/core/service/SGBService";
 import { SgbError } from "../../src/core/errors/SgbError";
+import { SGBService } from "../../src/core/service/SGBService";
 
 describe('Test gestionnaire des cours', () => {
 

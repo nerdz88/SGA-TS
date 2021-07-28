@@ -20,7 +20,7 @@ export class GestionnaireQuestion {
 
     public recupererToutesQuestions(idEnseignant: number): string {
         let arrayEspaceCours = this.universite.recupererTousEspaceCours(idEnseignant)
-        if (arrayEspaceCours.length == 0) 
+        if (arrayEspaceCours.length == 0)
             return "[]";
         return JSON.stringify(arrayEspaceCours.flatMap(ec => {
             let questions = ec.recupererToutesQuestions();

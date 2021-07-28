@@ -1,9 +1,9 @@
-import { Remise } from "../model/Remise";
-import { Universite } from "../service/Universite";
-import * as fs from 'fs';
 import * as AdmZip from 'adm-zip';
+import * as fs from 'fs';
 import { InvalidParameterError } from "../errors/InvalidParameterError";
 import { Etat } from "../model/enum/Etat";
+import { Remise } from "../model/Remise";
+import { Universite } from "../service/Universite";
 
 export class GestionnaireDevoir {
 
@@ -36,10 +36,10 @@ export class GestionnaireDevoir {
 
         let devoirsEtudiant = [];
         devoirsEspaceCours.forEach((d: any) => {
-            if (d._visible){
+            if (d._visible) {
                 d._remiseEtudiant = d._remises.find(r => r._etudiant._id == idEtudiant);
                 devoirsEtudiant.push(d);
-            }                   
+            }
         });
 
         return JSON.stringify(devoirsEtudiant);
@@ -138,12 +138,11 @@ export class GestionnaireDevoir {
             let nomFichierRetro = lineCorrectionCSV[3];
             let note = parseInt(lineCorrectionCSV[4]);
 
-            if (!Number.isInteger(note) || note < 0)
-            {
+            if (!Number.isInteger(note) || note < 0) {
                 noteError = true;
                 return;
             }
-                
+
             let pathfichierRetro = `${pathContenuZip}/${nomFichierRetro}`;
             let hasRetro = fs.existsSync(pathfichierRetro);
             await this.corrigerDevoir(idEspaceCours, idDevoir,
@@ -153,9 +152,9 @@ export class GestionnaireDevoir {
                 tokenEnseignant);
         });
 
-        if(noteError)
+        if (noteError)
             throw new InvalidParameterError("Erreur pour la correction du devoir en Mode Multiple - le fichier CSV contient" +
-                    " une note invalide, la note doit être un nombre plus grand que 0");
+                " une note invalide, la note doit être un nombre plus grand que 0");
     }
 
 

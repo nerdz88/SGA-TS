@@ -1,12 +1,12 @@
 import 'jest-extended';
 import 'reflect-metadata';
-import { Devoir } from '../../src/core/model/Devoir'
+import { Devoir } from '../../src/core/model/Devoir';
 
 var devoir
 
-beforeEach(()=>{
+beforeEach(() => {
     const DEVOIR1 = '{"nom":"devoir1","idEspaceCours":"1","description":"ceci est une description","noteMaximale":"90","dateDebut":"10-10-2021","dateFin":"11-11-2021","visible":"true"}';
-    devoir = new Devoir(DEVOIR1,[])
+    devoir = new Devoir(DEVOIR1, [])
 })
 
 afterEach(function () {

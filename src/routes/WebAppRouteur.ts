@@ -382,9 +382,9 @@ export class WebAppRouteur {
         if (!Number.isInteger(indexQuestion)) {
             indexQuestion = 0;
         }
-        let question: any = questionnaire._questions[indexQuestion];   
-        if(question == undefined)
-            question = questionnaire._questions[0];   
+        let question: any = questionnaire._questions[indexQuestion];
+        if (question == undefined)
+            question = questionnaire._questions[0];
 
         res.render(`etudiant/questionnaire/${isRelecture ? "relecture" : "passer"}/question/${question._type}`, {
             tentative: tentative,

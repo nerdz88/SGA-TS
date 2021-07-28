@@ -33,7 +33,7 @@ export class QuestionNumerique extends Question {
         this._answerChoix.forEach((answerChoix: ReponseNumerique) => {
             let bonneReponse = answerChoix.getReponse();
             if (parseInt(reponse["reponse"]) == parseInt(bonneReponse)) {
-                isValid = true;                
+                isValid = true;
             }
         });
         reponse["isValid"] = isValid;

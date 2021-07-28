@@ -1,8 +1,8 @@
-import 'jest-extended';
-
-import { DevHelper } from '../../src/core/helper/DevHelper';
-import app, { universite } from '../../src/App';
 import * as fs from 'fs';
+import 'jest-extended';
+import app, { universite } from '../../src/App';
+import { DevHelper } from '../../src/core/helper/DevHelper';
+
 var session = require('supertest-session');
 var testSession = session(app);
 const COURSEVALUE1 = '{"_id":3,"_sigle":"LOG210","_nb_max_student":5,"_groupe":"01","_titre":"Analyse et conception de logiciels","_date_debut":"2019-09-01","_date_fin":"2019-09-02"}';
@@ -90,10 +90,10 @@ describe('DevHelper Test - Login - Dev', () => {
         expect(universite.recupererTousEspaceCours(3)).toBeArrayOfSize(0);
         DevHelper.loadData(PATH_DATA);
         expect(universite.recupererTousEspaceCours(3)).toBeArrayOfSize(1);
-        try{
+        try {
             fs.unlinkSync(PATH_DATA);
-        }catch{}
-   
+        } catch { }
+
 
         done();
 

@@ -1,11 +1,5 @@
-import supertestSession from "supertest-session"
 import 'jest-extended';
-import { SGBService } from "../../src/core/service/SGBService";
-import { SgbError } from "../../src/core/errors/SgbError";
 import app, { universite } from "../../src/App";
-import { AuthorizationHelper } from "../../src/core/helper/AuthorizationHelper";
-import { doesNotReject } from "assert";
-import { ECONNRESET } from "constants";
 import { GestionnaireQuestionnaire } from "../../src/core/controllers/GestionnaireQuestionnaire";
 
 var session = require("supertest-session")
@@ -16,7 +10,7 @@ const QUESTION1 = '{"idEspaceCours":"1","estModification":"false","typeQuestion"
 const QUESTION2 = '{"idEspaceCours":"2","estModification":"false","typeQuestion":"question-vrai-faux","idQuestion":"2","nom":"Question2","tags":"q3,q4","description":"description","descriptionReponse":"Bravo","descriptionMauvaiseReponse":"Fail","reponse":"false","reponses":[{"reponse":"sdsd","descriptionReponse":"sdds","descriptionMauvaiseReponse":"sdsd"}]}';
 const QUESTIONNAIRE1 = { idEspaceCours: "1", "estModification": "false", idQuestionnaire: "", nom: "Questionnaire1", description: "description1", status: "on" }
 const QUESTIONNAIRE2 = { idEspaceCours: "1", "estModification": "false", idQuestionnaire: "", nom: "Questionnaire2", description: "description2", status: "off" }
-const QUESTIONNAIREMODIF = { nom: "QuestionnaireModifier", description: "descriptionModifier", status:"off"}
+const QUESTIONNAIREMODIF = { nom: "QuestionnaireModifier", description: "descriptionModifier", status: "off" }
 
 beforeAll((done) => {
     request.post("/api/v1/login")
@@ -75,7 +69,7 @@ describe('Test Recuperer Questionnaires', () => {
 
     })
 
-    it("Devrais retourner les questionnaires de l'espaceCours", async()=>{
+    it("Devrais retourner les questionnaires de l'espaceCours", async () => {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
@@ -132,9 +126,9 @@ describe("Test details d'un questionnaire", () => {
 
 })
 
-describe("Test modifier un questionnaire", ()=>{
+describe("Test modifier un questionnaire", () => {
 
-    it("devrais modifier le questionnaire", async()=> {
+    it("devrais modifier le questionnaire", async () => {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
@@ -154,15 +148,15 @@ describe("Test modifier un questionnaire", ()=>{
 
 })
 
-describe("Test recupererTagQuestion", ()=>{
+describe("Test recupererTagQuestion", () => {
 
-    it("Devrais retourner tous les tags d'un espace cours", async()=>{
+    it("Devrais retourner tous les tags d'un espace cours", async () => {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+            .send(JSON.parse(QUESTION1))
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
-        
+
         let gc = new GestionnaireQuestionnaire(universite)
         let tags = JSON.parse(gc.recupererTagQuestionParEspaceCours(1))
 
@@ -172,19 +166,19 @@ describe("Test recupererTagQuestion", ()=>{
 
     })
 
-    it("Devrais retourner les ids des questions du questionnaire", async()=>{
+    it("Devrais retourner les ids des questions du questionnaire", async () => {
 
         await authenticatedSession.post("/api/v1/enseignant/cours/ajouter").send({ data: COURSEVALUE1 })
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION1))
+            .send(JSON.parse(QUESTION1))
         await authenticatedSession.post("/api/v1/enseignant/question/ajouter/1")
-                                .send(JSON.parse(QUESTION2))
+            .send(JSON.parse(QUESTION2))
         await authenticatedSession.post("/api/v1/enseignant/questionnaire/ajouter/1").send(QUESTIONNAIRE1)
 
         let gc = new GestionnaireQuestionnaire(universite)
         var arrayIdQuestion = "1,2"
-        gc.gererQuestionsQuestionnaire(1,1,JSON.stringify(arrayIdQuestion.split(",")))
-        let ids = JSON.parse(gc.recupererIdsQuestionsQuestionnaire(1,1))
+        gc.gererQuestionsQuestionnaire(1, 1, JSON.stringify(arrayIdQuestion.split(",")))
+        let ids = JSON.parse(gc.recupererIdsQuestionsQuestionnaire(1, 1))
 
         expect(ids).toBeArrayOfSize(2)
         expect(ids[0]).toBe(1)

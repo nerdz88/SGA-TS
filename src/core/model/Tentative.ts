@@ -1,9 +1,9 @@
-import { Etudiant } from "./Etudiant";
 import { Type } from 'class-transformer';
-import { OrdreTri } from "./enum/OrdreTri";
 import { HttpError } from "../errors/HttpError";
-import { Pointage } from "./questions/Pointage";
 import { EtatTentative } from "./enum/EtatTentative";
+import { OrdreTri } from "./enum/OrdreTri";
+import { Etudiant } from "./Etudiant";
+import { Pointage } from "./questions/Pointage";
 
 
 
@@ -49,7 +49,7 @@ export class Tentative {
         });
     }
 
-    public repondre(idQuestion: number, reponse : any) {
+    public repondre(idQuestion: number, reponse: any) {
         this._mapReponse[idQuestion] = reponse;
     }
 
@@ -60,25 +60,23 @@ export class Tentative {
     public augementerPointage(pointage: Pointage) {
         this.pointage.point += pointage.point;
         this.pointage.pointMax += pointage.pointMax;
-    } 
+    }
 
     public commencerTentative() {
-        if(this._etat == EtatTentative.NonComplete)
-        {
+        if (this._etat == EtatTentative.NonComplete) {
             this._dateDebut = new Date();
             this._etat = EtatTentative.EnCours
         }
-        else 
+        else
             throw new HttpError("Impossible de commencer une tentative terminée ou en cours", 400);
     }
 
     public finirTentative() {
-        if(this._etat == EtatTentative.EnCours)
-        {
+        if (this._etat == EtatTentative.EnCours) {
             this._dateFin = new Date();
             this._etat = EtatTentative.Complete;
         }
-        else 
+        else
             throw new HttpError("Impossible de terminer une tentative terminé ou non complétée", 400);
     }
 

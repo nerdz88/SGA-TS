@@ -1,13 +1,12 @@
 import 'jest-extended';
-import {universite} from "../../src/App";
-import {LocalStorageHelper} from "../../src/core/helper/LocalStorageHelper";
-import {ProxyServiceHelper} from "../../src/core/helper/ProxyServiceHelper";
+import { LocalStorageHelper } from "../../src/core/helper/LocalStorageHelper";
+import { ProxyServiceHelper } from "../../src/core/helper/ProxyServiceHelper";
 
 const noteDevoirJSON1 = {
     "token": "test",
     "idEspaceCours": 1,
     "type": "test",
-    "type_id" : 1,
+    "type_id": 1,
     "note": 90,
     "studentId": 1
 };
@@ -15,7 +14,7 @@ const noteDevoirJSON1 = {
 describe('Test ajouterNoteEtudiantService du PoxyServiceHelper', () => {
     test("cette methode va push des donner dans un service local, si le SGB est down ou dans le SGB", () => {
         // Test lorsque le SGBservice est online
-        ProxyServiceHelper.ajouterNoteEtudiantService("59ff383eb192b445796a2826172e6545", 3, "devoir", 2, 34, 2).then( reponse => {
+        ProxyServiceHelper.ajouterNoteEtudiantService("59ff383eb192b445796a2826172e6545", 3, "devoir", 2, 34, 2).then(reponse => {
             expect(reponse.ok).toBe(true);
         });
     })

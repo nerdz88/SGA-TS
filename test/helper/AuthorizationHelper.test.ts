@@ -40,11 +40,11 @@ describe('AuthorizationHelper Test - Login', () => {
                 }
             }
         };
-    
+
         //Permet de ne pas afficher les console.error du middleware.error.ts
         jest.spyOn(console, 'error').mockImplementation(() => { });
     });
-    
+
 
     it("AuthorizationHelper - méthode avec mockedReq", () => {
         expect(AuthorizationHelper.isLoggedIn(mockedReqLogin)).toBeTrue();
