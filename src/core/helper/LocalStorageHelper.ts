@@ -17,12 +17,21 @@ export class LocalStorageHelper {
     }
 
     private static pushNoteDevoir(noteDevoirJSON: { studentId: number; note: number; idEspaceCours: number; type_id: number; type: string }) {
-        this.db.push("/NoteDevoir" + noteDevoirJSON.type_id ,noteDevoirJSON);
+        this.db.push("/data/NoteDevoir[]",noteDevoirJSON);
     }
 
-    public static getAllData() {
-        // This gets all data from the root
-        return this.db.getData("/");
+
+    public static getData(index : number) {
+        return this.db.getData('/data/NoteDevoir[' + index +']');
     }
+
+    public static getDataCount(){
+        return this.db.count("/data/NoteDevoir");
+    }
+
+    public static clearData(){
+        this.db.delete("/data");
+    }
+
 
 }

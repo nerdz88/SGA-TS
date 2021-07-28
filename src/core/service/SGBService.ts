@@ -68,8 +68,9 @@ export class SGBService {
                 return reponse;
             })
             .catch((error: Error) => {
+                return null;
                 //Si on est ici, le SGB est surement down
-                throw new SgbError("Erreur lors de l'ajout de la note de l'etudiant " + error.message);
+                //throw new SgbError("Erreur lors de l'ajout de la note de l'etudiant " + error.message);
             });
     }
 
