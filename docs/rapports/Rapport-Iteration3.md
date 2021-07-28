@@ -242,6 +242,13 @@ Référence: https://nozzlegear.com/blog/implementing-a-jwt-auth-system-with-typ
 Ici un RDCU a été présenté pour la sécurité avec recupererTousEspaceCours. Cependant, la méthodologie s'applique avec tous les appels de SgaRouteur.
 ![securite](../../out/docs/sécurité/RDCU_sécurité/securite.svg)
 
+## Convivialité
+### U1 - Facteurs humains
+Le client doit voir les informations (surtout les questions) clairement sur plusieurs formats d’écran: téléphone, tablette et écran PC. Alors, les pages web doivent supporter des appareils avec une taille d’écran de 320 par 568 pixels jusqu’à 1920 par 1080 pixels et le texte doit être lisible à une distance de 25 cm. Il ne doit y avoir aucun défilement horizontal sur la page ou ses éléments.
+**Note:** vous pouvez utiliser les outils de développement du navigateur pour simuler des appareils de différentes tailles d’écran. 
+
+Afin de respecter cette contrainte, nous acons décidé d'utiliser la librairie materializeCss qui est responsible (mobile friendly). Cette librairie permet le développement des pages web avec le style basé dur les règles de material designe (Un guideline de ui fait par google (https://material.io/design). Nous avons choisi cette librairie, car celle-ci est bien documenté, offre beaucoup d'options, contient beaucoup de composante, est façile d'utilisation et le plus important elle est reponsive.
+
 ## Fiabilité (Reliability)
 ### R1 – Robustesse
 En cas d’indisponibilité du système connecté (SGB - système de gestion des bordereaux de saisie de notes), il faut une solution de recouvrement. P. ex. un stockage temporaire qui permet de sauvegarder quand même les résultats de la correction d’un devoir. Lorsque le SGB est à nouveau disponible, les notes locales doivent y être transférées.
