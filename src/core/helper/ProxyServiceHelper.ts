@@ -15,6 +15,7 @@ export class ProxyServiceHelper {
             this.scheduleSGBFallbackJob();
             this.persistData(token, idEspaceCours, type, type_id, note, studentId);
         }
+        return response;
     }
 
     public static persistData(token: string, idEspaceCours: number, type: string, type_id : number, note: number, studentId: number){
@@ -30,7 +31,11 @@ export class ProxyServiceHelper {
         LocalStorageHelper.pushData(noteDevoirJSON);
     }
 
-    private static scheduleSGBFallbackJob() {
+    public static getTasks(){
+        return cron.getTasks();
+    }
+
+    public static scheduleSGBFallbackJob() {
         this.task = cron.schedule('*/1 * * * *', async function() {
             console.log('Attempting to send SGB request');
             for (let i = 0; i < LocalStorageHelper.getDataCount(); i++){
