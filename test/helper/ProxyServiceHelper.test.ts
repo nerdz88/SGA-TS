@@ -30,7 +30,7 @@ describe('Test persistData du PoxyServiceHelper', () => {
         expect(data.idEspaceCours).toBe(3);
         expect(data.type).toBe("devoir");
         expect(data.type_id).toBe(2);
-        expect(data.note).toBe(90);
+        expect(data.note).toBe(34);
         expect(data.studentId).toBe(2);
         LocalStorageHelper.clearData();
     })
