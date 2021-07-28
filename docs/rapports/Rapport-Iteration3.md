@@ -27,7 +27,7 @@
 </details>
 
 # Introduction
-L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, CU02 - Gérer questions à été modifier afin d'ajouter le support pour divers types de questions. De plus les cas : CU03, CU06, CU07, ainsi que CU05 (a,b,c,d) ont été implémentés incluant les scénarios alternatifs, testés et documentés. Ces cas correspondent à la correction et la remises des devoirs ainsi que le passage des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système. Finalement, certaine mesure mesure FURPS+ ont été instauré notamment : F1, F2, U1, R1, S3.
+L'objectif général de ce projet est de concevoir un système de gestion des apprentissages. Dans cette itération, CU02 - gérer questions a été modifier afin d'ajouter le support pour divers types de questions. De plus les cas : CU03, CU06, CU07, ainsi que CU05 (a,b,c,d) ont été implémentés incluant les scénarios alternatifs, testés et documentés. Ces cas correspondent à la correction et la remise des devoirs ainsi que le passage des questionnaires. Cette itération inclut notamment l'ajout de ces fonctionnalités, l'ajout de tests, l'incrémentation du MDD, l'ajout de DSS pour chaque cas d'utilisation ainsi que l'ajout de RDCU pour chacune des opérations système. Finalement, certaine mesure mesure FURPS+ ont été instaurés notamment : F1, F2, U1, R1, S3.
 
 # Modèle du domaine
 > ![MDD](../../out/docs/modeles/mdd/MDD.svg)
@@ -247,7 +247,7 @@ Ici un RDCU a été présenté pour la sécurité avec recupererTousEspaceCours.
 Le client doit voir les informations (surtout les questions) clairement sur plusieurs formats d’écran: téléphone, tablette et écran PC. Alors, les pages web doivent supporter des appareils avec une taille d’écran de 320 par 568 pixels jusqu’à 1920 par 1080 pixels et le texte doit être lisible à une distance de 25 cm. Il ne doit y avoir aucun défilement horizontal sur la page ou ses éléments.
 **Note:** vous pouvez utiliser les outils de développement du navigateur pour simuler des appareils de différentes tailles d’écran. 
 
-Afin de respecter cette contrainte, nous acons décidé d'utiliser la librairie materializeCss qui est responsible (mobile friendly). Cette librairie permet le développement des pages web avec le style basé dur les règles de material designe (Un guideline de ui fait par google (https://material.io/design). Nous avons choisi cette librairie, car celle-ci est bien documenté, offre beaucoup d'options, contient beaucoup de composante, est façile d'utilisation et le plus important elle est reponsive.
+Afin de respecter cette contrainte, nous acons décidé d'utiliser la librairie materializeCss qui est "responsible (mobile friendly)". Cette librairie permet le développement des pages web avec le style basé dur les règles de "material design" (un guideline de "UI" fait par Google (https://material.io/design). Nous avons choisi cette librairie, car celle-ci est bien documentée, offre beaucoup d'options, contient beaucoup de composantes, est facile d'utilisation et le plus important elle est "reponsive".
 
 ## Fiabilité (Reliability)
 ### R1 – Robustesse
