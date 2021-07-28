@@ -32,7 +32,7 @@ export class Devoir {
         this._noteMaximale = values.noteMaximale;
         this._dateDebut = values.dateDebut;
         this._dateFin = values.dateFin;
-        this._visible = values.visible;
+        this._visible = values.visible == "on";
         this._remises = this.initRemises(etudiants);
         this._id = ++Devoir.currentId;
     }
@@ -155,7 +155,7 @@ export class Devoir {
         this._noteMaximale = values.noteMaximale;
         this._dateDebut = values.dateDebut;
         this._dateFin = values.dateFin;
-        this._visible = values.visible;
+        this._visible = values.visible == "on";
         //TODO INIT LA LISTE DE REMISE
     }
 

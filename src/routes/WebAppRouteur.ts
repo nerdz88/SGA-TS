@@ -359,9 +359,10 @@ export class WebAppRouteur {
 
     public recupererTousQuestionnairesEtudiant(req: Request, res: Response, next: NextFunction) {
         let idEspaceCours = parseInt(req.params.id);
-        let questionnaires = this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(idEspaceCours);
+        let questionnaires = JSON.parse(this.gestionnaireQuestionnaire.recupererTousQuestionnairesEspaceCours(idEspaceCours));
+        
         res.render("etudiant/questionnaire/liste-questionnaires", {
-            questionnaires: JSON.parse(questionnaires),
+            questionnaires: questionnaires.filter(q => q._status),
             idEtudiant: AuthorizationHelper.getIdUser(req),
             returnUrl: req.headers.referer
         });
